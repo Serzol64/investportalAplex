@@ -1,0 +1,57 @@
+@import url('../dataAttributes.css');
+
+.ck.ck-editor__editable_inline{ height: 50vh; }
+
+#analytics-list{
+  padding-left: 1vw;
+  padding-right: 1vw;
+  padding-top: 2vw;
+  width: 96%;
+}
+#analytics-list > *[data-block='search'], #analytics-list > *[data-block='name']{
+  padding-top: 1%;
+  padding-bottom: 1%;
+}
+#analytics-list > *[data-block='list'], #analytics-list > *[data-block='form']{
+  padding-top: 2%;
+  height: 70vh;
+  overflow: auto;
+}
+*[data-block='search'] > *, *[data-block='name'] > *{
+  padding: 2%;
+  width: 88%;
+  text-indent: 2%;
+  font-size: 180%;
+  color: blue;
+}
+*[data-block='list'] > #news, *[data-block='form'] > #news{
+  width: 88%;
+  padding: 10px;
+  margin-top: 5%;
+}
+*[data-block='list'] > #news *{
+  display: block;
+}
+*[data-block='list'] > #news header{
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-left: 0.45em;
+  font-weight: bold;
+  font-size: 15mm;
+}
+*[data-block='list'] > #news main{
+  padding-top: 2.5em;
+  padding-bottom: 2.5em;
+  margin-left: 1.25em;
+  font-size: 21px;
+}
+*[data-block='list'] > #news footer{
+  padding-top: 1.2em;
+  padding-bottom: 1.2em;
+  float: right;
+  margin-right: 6mm;
+  margin-top: -3em;
+  font-size: 30px;
+  color: gray;
+  font-style: italic;
+}

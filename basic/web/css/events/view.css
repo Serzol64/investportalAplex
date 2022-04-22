@@ -1,0 +1,138 @@
+#news{ height: calc(1200px * 2); }
+
+#eventProgram{
+  padding: 4%;
+  border: solid 2px gray;
+  border-radius: 10px;
+}
+
+#eventProgram > *[data-type='day']{
+  margin-left: 2%;
+  font-size: 160%;
+  color: gray;
+}
+
+#eventProgram > *[data-type='todo'], #eventProgram > *[data-type='todo'] li{
+  list-style-type: none;
+  padding-bottom: 1%;
+  padding-top: 1%;
+}
+
+#eventProgram > *[data-type='todo'] li{
+  display: block;
+  padding-bottom: 1%;
+  padding-top: 1%;
+  border-bottom: solid 4px black;
+}
+#eventProgram > *[data-type='todo'] li span{
+  display: block;
+  padding: 4%;
+  font-size: 120%;
+}
+#eventProgram > *[data-type='todo'] li span:nth-last-child(1){
+  font-size: 130%;
+  font-weight: bolder;
+}
+#eventProgram > *[data-type='todo'] li .moreInfo{
+  vertical-align: middle;
+  width: 16%;
+  display: inline;
+  margin-left: 86%;
+}
+.modal > *[data-modalPart='header']{
+  background-color: #0079bf;
+  color: white;
+  padding: 2%;
+}
+.modal > *[data-modalPart='header'] h3{
+  font-size: 140%;
+}
+
+.modal > *[data-modalPart='content']{
+  font-size: 120%;
+  padding: 4%;
+}
+
+*[data-modalPart='content'] > p{
+  margin: 2%;
+}
+
+*[data-type='discussion']{ list-style-type: circle; }
+*[data-type='discussion'] > li{
+  margin-top: 4%;
+}
+
+
+@media all and (max-width: 600px){
+  #news{ padding-bottom: 160%; }
+  #eventProgram > *[data-type='todo'], #eventProgram > *[data-type='todo'] li {
+		width: 100%;
+		margin-left: -7%;
+  }
+  #eventProgram > *[data-type='todo'] li .moreInfo { margin-left: 75%; }  
+}
+@media all and (min-width: 600px) and (max-width: 768px){
+  #eventProgram > *[data-type='todo'], #eventProgram > *[data-type='todo'] li {
+		width: 100%;
+		margin-left: -7%;
+  }
+  #eventProgram > *[data-type='todo'] li .moreInfo { margin-left: 75%; } 
+}
+@media all and (min-width: 768px) and (max-width: 800px){
+  #news{ padding-bottom: 160%; }
+  #eventProgram > *[data-type='todo'], #eventProgram > *[data-type='todo'] li {
+		width: 100%;
+		margin-left: -7%;
+  }
+  #eventProgram > *[data-type='todo'] li .moreInfo { margin-left: 75%; }
+}
+@media all and (min-width: 800px) and (max-width: 960px){
+  #news{ padding-bottom: 160%; }
+  #eventProgram > *[data-type='todo'], #eventProgram > *[data-type='todo'] li {
+		width: 100%;
+		margin-left: -7%;
+  }
+  #eventProgram > *[data-type='todo'] li .moreInfo { margin-left: 75%; }
+}
+@media all and (min-width: 960px) and (max-width: 1024px){
+  #news{ padding-bottom: 160%; }
+  #eventProgram > *[data-type='todo'], #eventProgram > *[data-type='todo'] li {
+		width: 100%;
+		margin-left: -7%;
+  }
+  #eventProgram > *[data-type='todo'] li .moreInfo { margin-left: 75%; }
+}
+@media all and (min-width: 1024px) and (max-width: 1280px){
+  #eventProgram > *[data-type='todo'], #eventProgram > *[data-type='todo'] li {
+		width: 100%;
+		margin-left: -4%;
+		}
+  #eventProgram > *[data-type='todo'] li .moreInfo {margin-left: 86%;}
+}
+@media all and (min-width: 1280px) and (max-width: 1366px){
+  #eventProgram > *[data-type='todo'], #eventProgram > *[data-type='todo'] li {
+		width: 100%;
+		margin-left: -3%;
+		}
+  #eventProgram > *[data-type='todo'] li .moreInfo {margin-left: 88%;}
+}
+@media all and (min-width: 1366px) and (max-width: 1440px){
+  #eventProgram > *[data-type='todo'], #eventProgram > *[data-type='todo'] li {
+		width: 100%;
+		margin-left: -3%;
+		}
+  #eventProgram > *[data-type='todo'] li .moreInfo {margin-left: 85%;}
+}
+@media all and (min-width: 1440px) and (max-width: 1536px){
+  #eventProgram > *[data-type='todo'], #eventProgram > *[data-type='todo'] li {
+		width: 100%;
+		margin-left: -3%;
+		}
+  #eventProgram > *[data-type='todo'] li .moreInfo {margin-left: 89%;}
+}
+@media all and (min-width: 1536px){
+	#eventProgram > *[data-type='todo'], #eventProgram > *[data-type='todo'] li {
+		width: 100%;
+		margin-left: -3%;
+		}
+}

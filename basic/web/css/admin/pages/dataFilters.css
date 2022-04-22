@@ -1,0 +1,81 @@
+.data-page > header{
+  width: 100%;
+  height: calc(99px / 2);
+  background-color: #eff3f4;
+}
+.data-page > header h2{
+  font-size: 120%;
+  margin-left: 2%;
+  display: inline-block;
+}
+.data-page > header nav{
+  float: right;
+  margin-top: 1%;
+  margin-right: 2%;
+}
+.data-page > header nav a{
+  display: inline-table;
+  font-size: 100%;
+  color: #0079bf;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.add-fields, .edit-fields{
+  width: 80%;
+  margin-left: 10%;
+  padding: 1%;
+}
+.add-fields > header, .edit-fields > header{
+  font-size: 180%;
+}
+.add-fields > main, .edit-fields > main{
+  margin-top: 2%;
+  width: 90%;
+  height: auto;
+  overflow: auto;
+  padding-bottom: 4%;
+}
+.add-fields > main *, .edit-fields > main *{
+  width: 43%;
+  text-indent: 2%;
+  font-size: 90%;
+  padding: 3%;
+  display: inline-table;
+}
+.add-fields > main div, .edit-fields > main div{
+  display: block;
+}
+.add-fields > main input, .edit-fields > main input{
+  float:left;
+  margin-left: -2%;
+  width: 59%;
+}
+.add-fields > main select, .edit-fields > main select{
+  float:right;
+  margin-right: -28%;
+  width: 59%;
+}
+.add-fields > footer, .edit-fields > footer{
+  padding: 2%;
+}
+.add-fields > footer button, .edit-fields > footer button{
+  padding: 1%;
+  width: 15%;
+  border: none;
+  background-color: #0079bf;
+  color: white;
+  font-size: 100%;
+}
+
+.edit-fields > header input{
+  font-size: 180%;
+  width: 80%;
+  padding: 1%;
+}
+
+.edit-fields > main{ height: 35vh; }
+
+.add-fields > footer button:not(:nth-child(1)), .edit-fields > footer button:not(:nth-child(1)){ margin-left: 3%; }
+
+.edit-fields > footer button:nth-last-child(1){ width: 35%; }
