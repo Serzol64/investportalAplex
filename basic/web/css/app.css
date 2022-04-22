@@ -1352,28 +1352,25 @@ h4.title, p.descr{
 }
 @media all and (max-width: 414px){
     #promo {
-        height: 600px;
-    }
-    #news {
-        height: 280px;
+        min-height: 600px;
     }
     #investsearch {
-        height: 650px;
+        min-height: 650px;
     }
     #services {
-        height: 580px;
+        min-height: 580px;
     }
     #analytics {
-        height: 420px;
+        min-height: 420px;
     }
     #estate {
-        height: 710px;
+        min-height: 710px;
     }
     #reviews {
-        height: 320px;
+        min-height: 320px;
     }
     #eventcalendar {
-        height: 780px;
+        min-height: 780px;
     }
     #services > header .add-but, #estate > header .add-but {
         width: 90%;
@@ -1456,10 +1453,10 @@ h4.title, p.descr{
 }
 @media all and (min-width: 414px) and (max-width: 768px){
     #promo {
-        height: 650px;
+        min-height: 650px;
     }
     #news {
-        height: 280px;
+        min-height: 280px;
     }
     #investsearch {
         height: 650px;
@@ -1559,7 +1556,7 @@ h4.title, p.descr{
 }
 @media all and (min-width: 600px) and (max-width: 768px){
     #promo {
-        height: 630px;
+        min-height: 630px;
     }
     #investsearch > header a { margin-left: 53%; }
     #promo > header .links {
@@ -1659,7 +1656,7 @@ h4.title, p.descr{
         left: 20vw;
     }
     #promo {
-        height: 460px;
+        min-height: 460px;
     }
     #investsearch {
         height: 500px;
@@ -1772,10 +1769,10 @@ h4.title, p.descr{
         height: 22px;
     }
     #promo {
-        height: 550px;
+        min-height: 550px;
     }
     #news {
-        height: 300px;
+        min-height: 300px;
     }
     #investsearch {
         height: 600px;
@@ -1901,10 +1898,10 @@ h4.title, p.descr{
         margin-left: -25%;
     }
     #promo {
-        height: 500px;
+        min-height: 500px;
     }
     #news {
-        height: 180px;
+        min-height: 180px;
     }
     #investsearch {
         height: 520px;
@@ -1999,7 +1996,7 @@ h4.title, p.descr{
 
 @media all and (min-width: 1280px) and (max-width: 1366px){
     #promo {
-        height: 460px;
+        min-height: 460px;
     }
     #analytics > main #slider-view .analytic-feed .analytic:nth-child(1) {
         position: relative;
@@ -2038,7 +2035,7 @@ h4.title, p.descr{
         top: 28%;
     }
     #news {
-        height: 180px;
+        min-height: 180px;
         padding-bottom: 12%;
     }
     #estate > main {
@@ -2277,13 +2274,13 @@ h4.title, p.descr{
 }
 @media all and (width: 1024px){
     #promo {
-        height: 520px;
+        min-height: 520px;
     }
     #analytics > main {
         left: -22%;
     }
     #news {
-        height: 220px;
+        min-height: 220px;
     }
     #investsearch {
         height: 570px;
