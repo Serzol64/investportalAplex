@@ -16,6 +16,9 @@ $config = [
             'enableCookieValidation' => false,
             'baseUrl' => ''
         ],
+        'errorHandler' => [
+			'errorAction' => 'site/error',
+		],
         'sessionRedis' => [
 			'class' => 'yii\redis\Session'
 		],
@@ -62,10 +65,11 @@ $config = [
 				'analytics' => 'news/analytics-feed',
 				'analytics/<contentId:\d+>' => 'news/analytics-view',
 				'passport' => 'passport/service',
-				'passport/cart' => 'passport/cartdata',
+				'passport/cart' => 'passport/cart',
 				'passport/offers' => 'passport/offer',
 				'passport/profile' => 'passport/accountedit',
 				'passport/services' => 'passport/eventsedit',
+				'passport/api/<type>' => 'passport/passportservice',
 				'objects' => 'objects/index',
 				'objects/search' => 'objects/object',
 				'objects/<objectId:\d+>' => 'objects/view',

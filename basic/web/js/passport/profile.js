@@ -67,6 +67,35 @@ $(document).ready(function () {
         });
         
     }
+    
+    $('').click(function(e,t){
+		var pud = new FormData();
+		let puq = {
+			login: $('').val(),
+			query: {
+				fn: $('').val(),
+				sn: $('').val(),
+				newLogin: $('').val(),
+				password: $('').val(),
+				email: $('').val(),
+				phone: $('').val()
+			}
+		};
+		
+		pud.append('svcQuery', JSON.stringify(puq));
+		
+		fetch('/passport/api/post?svc=profile', { method: 'POST', body: pud })
+			.then((response) => {
+				if(response.ok){ alertify.set({ delay: 5000 }).success("Portal profile updated!"); }
+				else{ alertify.set({ delay: 5000 }).error("Portal profile update error!"); }
+			})
+			.catch(error => {
+				alert('Response error!');
+				console.log(error);
+			});
+			
+		
+	});
 
     
 });

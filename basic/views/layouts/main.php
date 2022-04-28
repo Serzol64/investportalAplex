@@ -162,7 +162,7 @@ $this->beginPage();
 		<footer class="footer">
 			<header>
 				<div class="logo">
-					<img src="images/icons/investportal-light.png" alt="InvestPortal" />
+					<img src="/images/icons/investportal-light.png" alt="InvestPortal" />
 				</div>
 				<span>International Platform <br />for Investors and<br /> Investment Projects</span>
 				<main>

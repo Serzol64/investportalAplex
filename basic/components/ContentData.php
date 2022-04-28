@@ -74,7 +74,7 @@ class ContentData extends Component{
 					}
 				}
 				else if($q['operation'] == 'delete'){
-					$currentN = News::findOne($q['query']['id']);
+					$currentN = News::findOne(['id' => $q['query']['id']]);
 					
 					if(!$currentN->delete()){
 							$response[1] = 500;

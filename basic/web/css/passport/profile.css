@@ -22,7 +22,7 @@
     display: block;
     margin-top: 2%;
 }
-.settings-form > .form-wrapper label, .settings-form > .form-wrapper-special label{
+.settings-form > .form-wrapper span, .settings-form > .form-wrapper-special span{
     color: gray;
     font-size: 60%;
     display: block;
@@ -84,7 +84,7 @@
         left: 88%;
         top: -36px;
     }
-    .settings-form > .form-wrapper label, .settings-form > .form-wrapper-special label{
+    .settings-form > .form-wrapper span, .settings-form > .form-wrapper-special span{
         width: 100px;
         font-size: 50%;
         padding-left: 2%;
@@ -128,7 +128,7 @@
     .settings-form > .form-wrapper, .settings-form > .form-wrapper-special{
         margin-top: -1%;
     }
-    .settings-form > .form-wrapper label, .settings-form > .form-wrapper-special label{
+    .settings-form > .form-wrapper span, .settings-form > .form-wrapper-special span{
         width: 100px;
         font-size: 50%;
         padding-left: 2%;
@@ -155,7 +155,7 @@
     .settings-form > .form-wrapper, .settings-form > .form-wrapper-special{
         margin-top: -1%;
     }
-    .settings-form > .form-wrapper label, .settings-form > .form-wrapper-special label{
+    .settings-form > .form-wrapper span, .settings-form > .form-wrapper-special span{
         width: 100px;
         font-size: 50%;
         padding-left: 2%;
@@ -183,7 +183,7 @@
     .settings-form > .form-wrapper, .settings-form > .form-wrapper-special{
         margin-top: -1%;
     }
-    .settings-form > .form-wrapper label, .settings-form > .form-wrapper-special label{
+    .settings-form > .form-wrapper span, .settings-form > .form-wrapper-special span{
         width: 100px;
         font-size: 50%;
         padding-left: 2%;
@@ -210,7 +210,7 @@
     .settings-form > .form-wrapper, .settings-form > .form-wrapper-special{
         margin-top: -1%;
     }
-    .settings-form > .form-wrapper label, .settings-form > .form-wrapper-special label{
+    .settings-form > .form-wrapper span, .settings-form > .form-wrapper-special span{
         width: 100px;
         font-size: 50%;
         padding-left: 2%;

@@ -6,7 +6,7 @@
   position: relative;
 }
 .passport-page > main .services-settings header:after {
-  content: "▼";
+  content: "\25BC";
   padding: 0 8px;
   font-size: 18px;
   position: absolute;
@@ -49,6 +49,8 @@
 .passport-page > main .services-settings footer{
   margin-top: -1%;
   margin-left: 0vw;
+  height: 182px;
+  overflow: auto;
 }
 .passport-page > main .services-settings footer .services-selectors{
   display: inline-table;

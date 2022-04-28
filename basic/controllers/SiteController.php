@@ -13,6 +13,13 @@ use app\models\User;
 
 
 class SiteController extends Controller{
+	public function actions(){
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+        ];
+    }
 	public function beforeAction($action) { 
 		$this->enableCsrfValidation = false; 
 		return parent::beforeAction($action); 
@@ -46,6 +53,31 @@ class SiteController extends Controller{
 				if($operation == 'get'){
 					\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 					return Yii::$app->regionDB->getFullDataFrame();
+				}
+				else{
+					Yii::$app->response->statusCode = 402;
+					\Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
+					return 'Operation not found'; 
+				}
+			break;
+			case 1: 
+				if($operation == 'post'){
+					$cuData = [];
+					
+					if($_POST['login']){
+						$portalId = $_POST['login'];
+						
+						$ud_response = User::find()->where(['login' => $portalId])->all();
+						
+						$cuData = $ud_response;
+					}
+					else{
+						Yii::$app->response->statusCode = 403;
+						$cuData = 'Action not found!';
+					}
+					
+					\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+					return $cuData;
 				}
 				else{
 					Yii::$app->response->statusCode = 402;
@@ -222,7 +254,7 @@ class SiteController extends Controller{
 									'msg' => $contentAuth
 								];
 								(new Client)->createRequest()->setMethod('GET')->setUrl('https://sms.ru/sms/send')->setData($smsQuery)->send();
-								setcookie('portalId', $login, strtotime("+1 year"), "/");
+								setcookie('portalId', $login, "/");
 								
 								return 'Registration success!'; 
 							}
@@ -366,6 +398,13 @@ class SiteController extends Controller{
 				return 'Service not found'; 
 		}
 	}
+	public function actionError(){
+		$exception = Yii::$app->errorHandler->exception;
+		if ($exception->statusCode == 404) {
+			return $this->redirect(['site/index']);
+		}
+	}
+	
 	
 }
 ?>
