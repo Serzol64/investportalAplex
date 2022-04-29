@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use app\assets\AppAsset;
+use app\widgets\PassportModals;
 
 use yii\httpclient\Client;
 /* @var $this yii\web\View */
@@ -23,7 +24,7 @@ $this->beginPage();
 		<script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
 		<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
 		<script src="https://kit.fontawesome.com/97c3285af2.js" crossorigin="anonymous"></script>
-<?php if(Yii::$app->controller->id == 'Objects' && Yii::$app->action->id == 'Object'){ ?>	
+<?php if(Yii::$app->controller->id == 'Objects' && Yii::$app->controller->action->id == 'Object'){ ?>	
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js" integrity="sha512-0bEtK0USNd96MnO4XhH8jhv3nyRF0eK87pJke6pkYf3cM0uDIhNJy9ltuzqgypoIFXw3JSuiy04tVk4AjpZdZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css" integrity="sha512-okE4owXD0kfXzgVXBzCDIiSSlpXn3tJbNodngsTnIYPJWjuYhtJ+qMoc0+WUwLHeOwns0wm57Ka903FqQKM1sA==" crossorigin="anonymous" />
@@ -32,7 +33,7 @@ $this->beginPage();
 	</head>
 	<?php $this->beginBody() ?>
 	<body>
-		<?php if(!isset($_COOKIE['portalId']) && Yii::$app->id != 'Passport'){ ?> 
+		<?php if(!isset($_COOKIE['portalId']) && Yii::$app->controller->id != 'Passport'){ ?> 
 			<script>
 				window.fbAsyncInit = function() {
 					FB.init({
@@ -223,7 +224,7 @@ $this->beginPage();
 				</div>
 			</main>
     </footer>
-		<?php if(!isset($_COOKIE['portalId']) && Yii::$app->id != 'Passport'){ ?>
+		<?php if(!isset($_COOKIE['portalId']) && Yii::$app->controller->id != 'Passport'){ ?>
 			    <div id="auth-lightbox" class="lightbox-closed">
         <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAADT0lEQVRYhe2WQWwUZRTHf++b3cIFT6SJtE0UOHAoF/GsbDdAgqRLg7deDIkJNIqJXWC3G0xJ2qXUGjWRJnDgpCekpZgeStidclc52AQulRgEDTfgAGxn5nn4htKdGXa7qzf7v8xk3vve/zczb+Z7sKH/u6Sl7NKtHvwgh/AB8BbQE0buo9zDMI/HHJOZP/9bgFKlC3W+QPUokGqcrAEiV5HgJOPZP/49QLHaD/I9sAWkBjqLcA2jt3m+Yu90c7obz7yDaA5kALQDeIqRQcb3/tQ+wMjip2jwDYhBuIIxpxl7/17DNYWb2zHOJMoR0ACVz5jIfNc6QLHaD8yCKCInKe/9uqFxDN4dRjkPKhhz+HVPIhmgVOkiMHeALYh83rJ5PcQUyBPE7KL83l/RFJO4MDBnrTlX2jYHKGe+ApkBfQOC0aSUOEDpVg/wEUgNY07H4sXF4+QXOmPX8wudFBePx647/imQGqpHKVW6mgP4QQ5wQGdjDVeoDoFOk+6o1EHkFzpJd1RAp23OGo1llxGdA1L4kmsOAAcBUJmLRbyVH4EloHcVYtWcXmApzKlXQFhLDjYHENlhj94vsdjUgUes1LJ1EGvNV2pZpg48iq1L6c+2JjuaA6DbANjkPIzHQgicPuC30LgXuIvHvkRzgJQ8CM+61wGAJhZpprTT4Kf2LPSRYB0AYr/VF/62xFr5hU7wq8Bu7KtYAnah/o3ErwPA2/ymPdHYU40DqC7bY2pPonn0nUd7IgnCk3dtTZabAxjmAezGElEq/SHRhos2ps2J1rS1ROabA3jMAR7IAIWb2+tiE33TIEOxbl+FkCGbs0YFdycqOcDD+NejdsmNU6xeAvkY4SrlTPyOWtGIO4MyAFzkXOZYNJy8F/jeKPAU5Qgj7nDb5kU3H5o/xmOdewHA5P6HGBm0+znn24Iounlgwk5IOsiXmb+T0hoPJAX3E0S/BTEgMzj+KcaysU6OrNmJYdLeuQaInKCcufC69HWMZO4hkB/slio1u7HoNVR+ZRN2JHtBN8oehMNADkgDjxEdpNwX6/zWAACG3a10yBnQIZoOpXiIXAYzmjSAtAfwUqVKF4HTDxxC9G00HMuF+wT8jsg8xr/OePZB40Ib2tAr/QNOXDy1WmL6DAAAAABJRU5ErkJggg==" class="close">
         <section class="module-page" data-screen="SignIn">
@@ -377,7 +378,16 @@ $this->beginPage();
     <script src="/js/addons/authmodule/script.js"></script>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/approvejs/3.1.2/approve.min.js" integrity="sha512-TmhOO3rUu5WfsLdsw9H1pB/p5/A/KnhydCuLNGlZoukfUUopMmA2sq6DWR9E+acuLB1DBk2A8cq63f7JMwHgVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-		<?php } ?>
+		<?php 
+		} 
+		else if(Yii::$app->id == 'Passport' && isset($_COOKIE['portalId'])){
+			switch(Yii::$app->action->id){
+				case 'Service': echo PassportModals::widget(['query' => 'request']); break;
+				case 'Offer': echo PassportModals::widget(['query' => 'offer']); break;
+				default: echo PassportModals::widget(['query' => 'default']); break;
+			}
+		}
+		?>
 	</body>
 	<?php $this->endBody() ?>
 </html>

@@ -15,12 +15,11 @@
     padding-right: 5px;
 }
 .passport-page > header, .passport-page > footer{
-    width: 100%;
+    width: 54%;
     height: calc((300px * 2) / 20);
     padding-top: 3%;
     padding-bottom: 3%;
     display: block;
-    padding-right: 5px;
 }
 .passport-page > main{
     width: 100%;
@@ -28,7 +27,6 @@
     padding-top: 1%;
     padding-bottom: 1%;
     display: block;
-    padding-right: 5px;
 }
 .passport-page > header #left-content, .passport-page > main #left-content, .passport-page > footer #left-content{
     float: left;
@@ -51,6 +49,8 @@
     background-color: #0079bf;
     left: -8%;
     position: relative;
+    width: 100%;
+    padding-right: 5px;
 }
 .passport-page > header #left-content, .passport-page > header #right-content{
    margin-top: 15px;

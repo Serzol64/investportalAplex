@@ -37,7 +37,7 @@ class SignIn extends Component{
 			$vPass = $authData->password;
 
 			if(($vLogin == $login || $vPhone == $login || $vMail == $login) && $vPass == $pass){
-				$auth = setcookie('portalId', $vLogin, "/"); 
+				$auth = setcookie('portalId', $vLogin, strtotime("+ 1 year"), "/"); 
 
 				if($auth){ return ['c' => 200, 'm' => 'Authorization success!']; }
 				else{ return ['c' => 409, 'm' => 'The portal accounting service is temporarily unavailable! Try again later;-(']; }

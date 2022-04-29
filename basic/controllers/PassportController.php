@@ -46,7 +46,7 @@ class PassportController extends Controller{
 			$query = $_COOKIE['portalId']; 
 			
 			$wsInit = new Curl();
-			$q = $wsInit->setOption(CURLOPT_POSTFIELDS, http_build_query(array('login' => $query)))->post((!empty($_SERVER['HTTPS'])) ? 'https' : 'http' . '://' . $_SERVER['HTTP_HOST'] ."/services/1/post");
+			$q = $wsInit->setOption(CURLOPT_POSTFIELDS, http_build_query(array('login' => $query)))->setHeaders(array('Content-Type' => 'application/x-www-form-urlencoded'))->post((!empty($_SERVER['HTTPS'])) ? 'https' : 'http' . '://' . $_SERVER['HTTP_HOST'] ."/services/1/post");
 			
 			$ud_data = JSON::decode($q, true);
 			return $this->render('passportProfile', ['ud_data' => $ud_data[0]]);
@@ -67,7 +67,7 @@ class PassportController extends Controller{
 			$query = $_COOKIE['portalId']; 
 			
 			$wsInit = new Curl();
-			$q = $wsInit->setOption(CURLOPT_POSTFIELDS, http_build_query(array('login' => $query)))->post((!empty($_SERVER['HTTPS'])) ? 'https' : 'http' . '://' . $_SERVER['HTTP_HOST'] ."/services/1/post");
+			$q = $wsInit->setOption(CURLOPT_POSTFIELDS, http_build_query(array('login' => $query)))->setHeaders(array('Content-Type' => 'application/x-www-form-urlencoded'))->post((!empty($_SERVER['HTTPS'])) ? 'https' : 'http' . '://' . $_SERVER['HTTP_HOST'] ."/services/1/post");
 			
 			$ud_data = JSON::decode($q, true);
 			return $this->render('passportServices', ['ud_data' => $ud_data[0]['country']]);

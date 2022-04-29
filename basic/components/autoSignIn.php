@@ -28,7 +28,7 @@ class autoSignIn extends Component{
 			$vMail = $authData->email;
 			
 			if($vLogin == $login || $vMail == $login || $vPhone == $login){ 
-				$auth = setcookie('portalId', $vLogin, "/");
+				$auth = setcookie('portalId', $vLogin, strtotime("+ 1 year"), "/");
 				
 				if($auth){ return ['c' => 200, 'm' => 'First authorization success!']; }
 				else{ return ['c' => 409, 'm' => 'The portal accounting service is temporarily unavailable! Try again later;-(']; }
