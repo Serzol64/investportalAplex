@@ -1,6 +1,6 @@
-@import url('services/lightbox-passport.css');
-@import url('passport/cart.css');
-@import url('addons/passportpagesadaptivemenu.css');
+@import url('/css/services/lightbox-passport.css');
+@import url('/css/passport/cart.css');
+@import url('/css/addons/passportpagesadaptivemenu.css');
 #passport{
     height: 780px;
 }

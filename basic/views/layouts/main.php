@@ -380,12 +380,10 @@ $this->beginPage();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/approvejs/3.1.2/approve.min.js" integrity="sha512-TmhOO3rUu5WfsLdsw9H1pB/p5/A/KnhydCuLNGlZoukfUUopMmA2sq6DWR9E+acuLB1DBk2A8cq63f7JMwHgVQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 		<?php 
 		} 
-		else if(Yii::$app->id == 'Passport' && isset($_COOKIE['portalId'])){
-			switch(Yii::$app->action->id){
-				case 'Service': echo PassportModals::widget(['query' => 'request']); break;
-				case 'Offer': echo PassportModals::widget(['query' => 'offer']); break;
-				default: echo PassportModals::widget(['query' => 'default']); break;
-			}
+		else if(isset($_COOKIE['portalId'])){
+			    if($_SERVER['REQUEST_URI'] == "/passport"){ echo PassportModals::widget(['query' => 'request']); }
+				else if($_SERVER['REQUEST_URI'] == "/passport/offers"){ echo PassportModals::widget(['query' => 'offer']); }
+				else if($_SERVER['REQUEST_URI'] == "/passport/services" || $_SERVER['REQUEST_URI'] == "/passport/cart" || $_SERVER['REQUEST_URI'] == "/passport/profile"){ echo PassportModals::widget(['query' => 'default']); }
 		}
 		?>
 	</body>

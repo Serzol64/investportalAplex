@@ -30,8 +30,9 @@ $config = [
         ],
         'urlManager' => [
 			 'class' => 'yii\web\UrlManager',
-			 'showScriptName' => false,
 			 'enablePrettyUrl' => true,
+             'showScriptName' => false,
+             'enableStrictParsing' => false,
 			 'rules' => [
 				'defaultRoute' => 'site/index',
 				'about' => 'site/about',

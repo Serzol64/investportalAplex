@@ -1,4 +1,4 @@
-@import url('../css/services/objects-searchform-content.css');
+@import url('/css/services/objects-searchform-content.css');
 .window-closed{ display: none; }
 #objects{ height: auto; }
 #objects > .projects-search-form{

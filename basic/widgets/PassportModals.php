@@ -1,9 +1,13 @@
 <?php
 namespace app\widgets;
 
+use Yii;
+use yii\base\Widget;
+use yii\web\View;
+use yii\helpers\Html;
+
 use app\models\ObjectAttribute;
 
-use yii\base\Widget;
 
 class PassportModals extends Widget{
     public $query;
@@ -11,8 +15,8 @@ class PassportModals extends Widget{
     public function init() {
 		parent::init();
 		
-		if($this->query == 'offer'){ $this->query = 'b'; }
-		else if($this->query == 'request'){ $this->query = 'a'; }
+		if($this->query === 'offer'){ $this->query = 'b'; }
+		else if($this->query === 'request'){ $this->query = 'a'; }
 		else{ $this->query = NULL; }
 	}
     public function run(){
@@ -55,13 +59,13 @@ class PassportModals extends Widget{
 					[156, 160],
 					[161, 165],
 					[166, 170],
-					[171, 175]
+					[171, 175],
 					[176, 90*2],
 					[181, 185],
 					[186, 95*2],
 					[191, 192]
 				];
-				return $this->render('passport-modal-services/requests', ['region' => $regionCont, 'datasets' => [ObjectAttribute::find()->all()]]);
+				return $this->render('passportModalServices/requests', ['region' => $regionCont, 'datasets' => [ObjectAttribute::find()->all()]]);
 			break;
 			case 'b': 
 				$regionContDouble = [
@@ -100,15 +104,15 @@ class PassportModals extends Widget{
 					[156, 160],
 					[161, 165],
 					[166, 170],
-					[171, 175]
+					[171, 175],
 					[176, 90*2],
 					[181, 185],
 					[186, 95*2],
 					[191, 192]
 				];
-				return $this->render('passport-modal-services/offers', ['region' => $regionContDouble, 'datasets' => [ObjectAttribute::find()->all()]]);
+				return $this->render('passportModalServices/offers', ['region' => $regionContDouble, 'datasets' => [ObjectAttribute::find()->all()]]);
 			break;
-			default: return $this->render('passport-modal-services/main'); break;
+			default: return $this->render('passportModalServices/main'); break;
 		}
 	}
 }

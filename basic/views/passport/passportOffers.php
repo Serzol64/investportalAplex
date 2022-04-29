@@ -60,7 +60,6 @@ $this->title = "Offers for Investors";
 								<h2>There is no requested data about your current offers!</h2>
 								<span>There is no data on offers with objects in your portal account, since you did not add them...</span>
 							</div>
-							<script>$(document).ready(function(){ $('.passport-page > footer #left-content').css('top', '-205px'); });</script>
 						<?php } ?>
                     </div>
                     <div id="right-content">
