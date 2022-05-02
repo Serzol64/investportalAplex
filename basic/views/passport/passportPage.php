@@ -42,7 +42,7 @@ $this->title = "Investment requests";
 								<tbody>
 									<?php
 										$id = 1;
-										foreach($getOffers as $offer){
+										foreach($requestData as $offer){
 									?>
 											<tr class="content">
 												<td><?php echo $id; ?></td>
@@ -73,7 +73,7 @@ $this->title = "Investment requests";
                     </div>
                 </main>
                 <footer>
-                    <div id="left-content" style="position:relative;left: -57vw;top: 428px;">
+                    <div id="left-content" style="position:relative;left: 1vw;top: 24px;">
                         <button class="add-but">Add Request</button>
                     </div>
                 </footer>

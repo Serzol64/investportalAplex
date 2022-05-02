@@ -15,6 +15,10 @@ use app\models\Offers;
 use app\models\Cart;
 
 class PassportController extends Controller{
+	public function beforeAction($action) { 
+		$this->enableCsrfValidation = false; 
+		return parent::beforeAction($action); 
+	}
 	public function actionService(){
 		$this->view->registerCssFile("/css/passport.css");
 		$this->view->registerCssFile("/css/inpage_codes/passport/1.css");
@@ -122,10 +126,10 @@ class PassportController extends Controller{
 	}
 	
 	public function actionPassportservice($type){
+		$responseData = [];
 		
 		if($type == "get"){
 			
-			\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 			
 			if(isset($_GET['svc'])){
 				$service = $_GET['svc'];
@@ -136,59 +140,66 @@ class PassportController extends Controller{
 			}
 			else{
 				Yii::$app->response->statusCode = 403;
-				return 'Action gateway error!';
+				$responseData = 'Action gateway error!';
 			}
 		}
 		else if($type == "post"){
-			
-			\Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
-			
 			if(isset($_GET['svc'])){
 				$service = $_GET['svc'];
-				
 				switch($service){
 					case 'profile':
 						if(isset($_POST['svcQuery'])){
 							$qp = JSON::decode($_POST['svcQuery']);
 							
-							$currentUser = News::findOne(['login' => $qp['login']]);
+							$currentUser = User::findOne(['login' => $qp['login']]);
 							
-							$currentUser->login = $qp['query']['newLogin'];
-							$currentUser->password = sha1($qp['query']['password']);
-							$currentUser->firstname = $qp['query']['fn'];
-							$currentUser->surname = $qp['query']['sn'];
-							$currentUser->email = $qp['query']['email'];
-							$currentUser->phone = $qp['query']['phone'];
+							if($qp['query']['newLogin']){ $currentUser->login = $qp['query']['newLogin']; }
+							else if($qp['query']['password']){ $currentUser->password = sha1($qp['query']['password']); }
+							else if($qp['query']['fn']){ $currentUser->firstname = $qp['query']['fn']; }
+							else if($qp['query']['sn']){ $currentUser->surname = $qp['query']['sn']; }
+							else if($qp['query']['email']){ $currentUser->email = $qp['query']['email']; }
+							else if($qp['query']['phone']){ $currentUser->phone = $qp['query']['phone']; }
 							
-							if($currentUser->save()){ 
-								setcookie('portalId', $qp['query']['newLogin'], "/"); 
-								return 'Investportal ID Update Success!'; 
+							if($currentUser->update()){ 
+								if($qp['query']['newLogin']){ setcookie('portalId', $qp['query']['newLogin'], strtotime("+ 1 year"), "/"); }
+								
+								\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+								$postProfile = 'Investportal ID Update Success!';
 							}
 							else{
+								\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 								Yii::$app->response->statusCode = 503;
-								return 'Investportal ID Update Failed!';
+								$postProfile = 'Investportal ID Update Failed!';
 							}
 						}
 						else{
+							\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 							Yii::$app->response->statusCode = 403;
-							return 'Query required!';
+							$postProfile = 'Query required!';
 						}
 					break;
 					default:
+						\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 						Yii::$app->response->statusCode = 404;
-						return 'Service not found!';
+						$postProfile = 'Service not found!';
 					break;
 				}
 			}
 			else{
+				\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 				Yii::$app->response->statusCode = 403;
-				return 'Action gateway error!';
+				$postProfile = 'Action gateway error!';
 			}
+			
+			$responseData = $postProfile;
 		}
 		else{
+			\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 			Yii::$app->response->statusCode = 402;
-			return 'Gateway error!';
+			$responseData = 'Gateway error!';
 		}
+		
+		return $responseData;
 	}
 }
 ?>

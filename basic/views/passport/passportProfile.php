@@ -40,7 +40,8 @@ $this->title = "Passport";
                             </div>
                             <div class="form-wrapper-special">
                               <span>New password</span>
-                              <input type="password" class="input">
+                              <input type="password" disabled="true" class="input">
+                              <button><i class="far fa-edit"></i></button>
                             </div>
                             <div class="form-wrapper">
                               <span>First name</span>

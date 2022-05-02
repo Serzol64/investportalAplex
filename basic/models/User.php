@@ -9,6 +9,7 @@ class User extends ActiveRecord{
 		return [
 			[['login','password','firstname','surname','email','phone','country'],'required']];
 	}
+	public static function primaryKey(){ return ['login']; }
 	public static function tableName(){ return 'users'; }
 }
 ?>

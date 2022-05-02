@@ -16,6 +16,28 @@ $(document).ready(function () {
                 inputState = true;
                 butState = "fa-edit";
                 butStateDel = "fa-save";
+                
+				
+				var pudm = new FormData(),
+					curValue = curPut.val();
+				
+				let puqm = {
+					login: get_cookie('portalId'),
+					query: {}
+				};
+					
+				if(index === 1){ puqm.query = { fn: curValue }; }
+				else if(index === 2){ puqm.query = { sn: curValue }; }
+				else if(index === 3){ puqm.query = { phone: curValue }; }
+				else{ puqm.query = { newLogin: curValue }; }
+				
+				pudm.append('svcQuery', JSON.stringify(puqm));
+				
+				fetch('/passport/api/post?svc=profile', { method: 'POST', body: pudm })
+					.then((response) => {
+						if(response.status === 200){ alertify.set({ delay: 5000 }).success("Portal profile data updated!"); }
+						else{ alertify.set({ delay: 5000 }).error("Portal profile data update error!"); }
+					});
             } 
             else { 
                 butState = "fa-save"; 
@@ -42,16 +64,32 @@ $(document).ready(function () {
                   curBCs = butConts.eq(index);
             let inputStates = false,
                 butStates = "",
-                butStateDels = "",
-                attrState = 'text';
+                butStateDels = "";
 
             if (!curPuts.prop('disabled')) {
                 inputStates = true;
                 butStates = "fa-edit";
                 butStateDels = "fa-save";
-
-                if(index === 1){ attrState = 'password'; }
-                else{ attrState = 'email'; }
+                
+				
+				var pud = new FormData(),
+					currentValue = curPuts.val();
+				
+				let puq = {
+					login: get_cookie('portalId'),
+					query: {}
+				};
+					
+				if(index === 1){ puq.query = { password: currentValue }; }
+				else{ puq.query = { email: currentValue }; }
+				
+				pud.append('svcQuery', JSON.stringify(puq));
+				
+				fetch('/passport/api/post?svc=profile', { method: 'POST', body: pud })
+					.then((response) => {
+						if(response.status === 200){ alertify.set({ delay: 5000 }).success("Portal profile data updated!"); }
+						else{ alertify.set({ delay: 5000 }).error("Portal profile data update error!"); }
+					});
             } 
             else { 
                 butStates = "fa-save"; 
@@ -59,7 +97,6 @@ $(document).ready(function () {
             }
             
             curPuts.prop('disabled',inputStates);
-            curPuts.attr('type',attrState);
 
             curBCs.addClass(butStates);
             curBCs.removeClass(butStateDels);
@@ -67,35 +104,6 @@ $(document).ready(function () {
         });
         
     }
-    
-    $('').click(function(e,t){
-		var pud = new FormData();
-		let puq = {
-			login: $('').val(),
-			query: {
-				fn: $('').val(),
-				sn: $('').val(),
-				newLogin: $('').val(),
-				password: $('').val(),
-				email: $('').val(),
-				phone: $('').val()
-			}
-		};
-		
-		pud.append('svcQuery', JSON.stringify(puq));
-		
-		fetch('/passport/api/post?svc=profile', { method: 'POST', body: pud })
-			.then((response) => {
-				if(response.ok){ alertify.set({ delay: 5000 }).success("Portal profile updated!"); }
-				else{ alertify.set({ delay: 5000 }).error("Portal profile update error!"); }
-			})
-			.catch(error => {
-				alert('Response error!');
-				console.log(error);
-			});
-			
-		
-	});
 
     
 });

@@ -39,8 +39,8 @@
 }
 .passport-page > footer #left-content{
     position: relative;
-    top: 210px;
-    left: -73%;
+    top: -42px;
+    left: 2%;
 }
 .passport-page > main #left-content #table-list .content td:nth-child(1)::after,  .passport-page > main #left-content #table-list .content td:nth-child(3)::before, .passport-page > main #left-content #table-list .content td:nth-child(4)::before{
     content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAA1CAYAAABm10p2AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5QMTCSMwGPDecgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAKUlEQVQoz2Os6+plQAZMSOw0dIGZ6AIMowKjAqMCRAvMQhdIZ2BgYAAAtnMD/8BCHfkAAAAASUVORK5CYII=');
@@ -61,7 +61,6 @@
     top: 19px;
     left: -5%;
 }
-
 @media all and (max-width: 414px){}
 @media all and (max-width: 600px){
     .passport-page > main #left-content #table-list .content td:nth-child(3),  .passport-page > main #left-content #table-list .header th:nth-child(3){
