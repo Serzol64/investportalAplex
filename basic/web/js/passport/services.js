@@ -1,25 +1,25 @@
 $(document).ready(function () {
     $('.add-but').click(function(e,t){
-		var sfd = new FormData();
-		let subscribeQuery = {
-				login: get_cookie('portalId'),
-				region: $('.passport-page > main .services-settings header select').val(),
-				svc: subscribeAttrsData()
-		};
-		
-		sfd.append('svcQuery', JSON.stringify(subscribeQuery));
-		
 		alertify.set('notifier','position', 'top-right');
 		alertify.set('notifier','delay', 5);
 		
-		
-		fetch('/passport/api/post?svc=services', { method: 'POST', body: sfd})
-			.then((response) => {
-				if(response.status === 200){ alertify.success("Subscribe data updated!"); }
-				else{ alertify.error("Subscribe data update error!"); }
-			});
-		
-		
+		if($('.passport-page > main .services-settings header select').val() !== "any"){
+			var sfd = new FormData();
+			let subscribeQuery = {
+					login: get_cookie('portalId'),
+					region: $('.passport-page > main .services-settings header select').val(),
+					svc: subscribeAttrsData()
+			};
+			
+			sfd.append('svcQuery', JSON.stringify(subscribeQuery));
+
+			fetch('/passport/api/post?svc=services', { method: 'POST', body: sfd})
+				.then((response) => {
+					if(response.status === 200){ alertify.success("Subscribe data updated!"); }
+					else{ alertify.error("Subscribe data update error!"); }
+				});
+		}
+		else{ alertify.error("Country this is required"); }
 	});
 });
 

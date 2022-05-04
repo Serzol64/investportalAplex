@@ -5,6 +5,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
+use app\models\Subscription;
 use app\models\ObjectAttribute;
 
 $this->title = "Services for Investors";
@@ -61,7 +62,14 @@ $this->title = "Services for Investors";
 											<div class="services-selectors" for="types">
 												<?php foreach($getAttr as $attr){ ?>
 													<label class="selector">
-														<input type="checkbox" name="types" value="<?php echo $attr->name; ?>" <?php echo array_search($attr->name, array_column($sd_data, 'service')) ? 'checked' : ''; ?>>
+														<?php 
+														 if(Subscription::find()->where(['login' => $_COOKIE['portalId'], 'attribute' => $attr->name])->exists()){
+															echo '<input type="checkbox" name="types" value="'. $attr->name . '" checked="'. $attr->name . '" />';
+														 } 
+														 else {
+															echo '<input type="checkbox" name="types" value="'. $attr->name . '" />';
+														 }
+														?>
 														<span><?php echo $attr->name; ?></span>
 													</label>
 												<?php } ?>
@@ -75,7 +83,14 @@ $this->title = "Services for Investors";
 										<div class="services-selectors" for="types">
 											<?php foreach($getFirstAttr as $fattr){ ?>
 												<label class="selector">
-													<input type="checkbox" name="types" value="<?php echo $fattr->name; ?>" <?php echo array_search($attr->name, array_column($sd_data, 'service')) ? 'checked' : ''; ?>>
+													<?php 
+													 if(Subscription::find()->where(['login' => $_COOKIE['portalId'], 'attribute' => $fattr->name])->exists()){
+														echo '<input type="checkbox" name="types" value="'. $fattr->name . '" checked />';
+													 } 
+													 else {
+														echo '<input type="checkbox" name="types" value="'. $fattr->name . '" />';
+													 }
+													?>
 													<span><?php echo $fattr->name; ?></span>
 												</label>
 											<?php } ?>

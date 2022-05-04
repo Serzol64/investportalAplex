@@ -13,11 +13,6 @@ $(document).ready(function () {
                 butStateDel = "";
 
             if (!curPut.prop('disabled')) {
-                inputState = true;
-                butState = "fa-edit";
-                butStateDel = "fa-save";
-                
-				
 				var pudm = new FormData(),
 					curValue = curPut.val();
 				
@@ -36,12 +31,21 @@ $(document).ready(function () {
 				alertify.set('notifier','position', 'top-right');
 				alertify.set('notifier','delay', 5);
 				
-				
-				fetch('/passport/api/post?svc=profile', { method: 'POST', body: pudm })
-					.then((response) => {
-						if(response.status === 200){ alertify.success("Portal profile data updated!"); }
-						else{ alertify.error("Portal profile data update error!"); }
-					});
+				if(curValue !== "" && validInputedQueries(0, index, curValue)){
+					inputState = true;
+					butState = "fa-edit";
+					butStateDel = "fa-save";
+					
+					fetch('/passport/api/post?svc=profile', { method: 'POST', body: pudm })
+						.then((response) => {
+							if(response.status === 200){ alertify.success("Portal profile data updated!"); }
+							else{ alertify.error("Portal profile data update error!"); }
+						});
+				}
+				else{
+					if(!validInputedQueries(0, index, curValue)){ alertify.error(validInputedQueriesError(0, index)); }
+					else if(curValue === ""){ alertify.error(validInputedQueriesEmpty(0, index)); }
+				}
             } 
             else { 
                 butState = "fa-save"; 
@@ -71,10 +75,6 @@ $(document).ready(function () {
                 butStateDels = "";
 
             if (!curPuts.prop('disabled')) {
-                inputStates = true;
-                butStates = "fa-edit";
-                butStateDels = "fa-save";
-                
 				
 				var pud = new FormData(),
 					currentValue = curPuts.val();
@@ -92,12 +92,22 @@ $(document).ready(function () {
 				alertify.set('notifier','position', 'top-right');
 				alertify.set('notifier','delay', 5);
 				
-				
-				fetch('/passport/api/post?svc=profile', { method: 'POST', body: pud })
+				if(curValue !== "" && validInputedQueries(1, index, curValue)){
+					inputStates = true;
+					butStates = "fa-edit";
+					butStateDels = "fa-save";
+					
+					fetch('/passport/api/post?svc=profile', { method: 'POST', body: pud })
 					.then((response) => {
 						if(response.status === 200){ alertify.success("Portal profile data updated!"); }
 						else{ alertify.error("Portal profile data update error!"); }
 					});
+                
+				}
+				else{
+					if(!validInputedQueries(1, index, curValue)){ alertify.error(validInputedQueriesError(1, index)); }
+					else if(curValue === ""){ alertify.error(validInputedQueriesEmpty(1, index)); }
+				}
             } 
             else { 
                 butStates = "fa-save"; 
@@ -115,3 +125,70 @@ $(document).ready(function () {
 
     
 });
+
+function validInputedQueries(formType,index,query){
+	let notErrorState = false;
+	
+	switch(index){
+		case 0: 
+			switch(index){
+				case 0: if(/^[a-zA-Z0-9_.]{1,30}$/.test(query)){ notErrorState = true; } break;
+				case 1: if(/^[a-zA-Z]+$/.test(query)){ notErrorState = true; } break;
+				case 2: if(/^[a-zA-Z]+$/.test(query)){ notErrorState = true; } break;
+				case 3: if(/^(\+)?((\d{2,3}) ?\d|\d)(([ -]?\d)|( ?(\d{2,3}) ?)){5,12}\d$/gm.test(query)){ notErrorState = true; } break;
+			}
+		break;
+		case 1: 
+			switch(index){
+				case 0: if(approve.value(query, { email: true })){ notErrorState = true; } break;
+				case 1: if(query !== ""){ notErrorState = true; } break;
+			}
+		break;
+	}
+	
+	return notErrorState;
+}
+function validInputedQueriesEmpty(formType,index){
+	let errorEState = "";
+	
+	switch(index){
+		case 0: 
+			switch(index){
+				case 0: errorEState = "Login field this is required"; break;
+				case 1: errorEState = "First name field this is required"; break;
+				case 2: errorEState = "Surname field this is required"; break;
+				case 3: errorEState = "Phone field this is required"; break;
+			}
+		break;
+		case 1: 
+			switch(index){
+				case 0: errorEState = "Email field this is required"; break;
+				case 1: errorEState = "Password field this is required"; break;
+			}
+		break;
+	}
+	
+	return errorEState;
+}
+function validInputedQueriesError(formType,index){
+	let errorState = "";
+	
+	switch(index){
+		case 0: 
+			switch(index){
+				case 0: errorState = "Input valid login, please!(Example: investportal2021)"; break;
+				case 1: errorState = "Input valid first name in English, please!(Example: John)"; break;
+				case 2: errorState = "Input valid surname in English, please!(Example: Johnson)"; break;
+				case 3: errorState = "Input valid phone, please!(Example: 79012345678)"; break;
+			}
+		break;
+		case 1: 
+			switch(index){
+				case 0: errorState = "Input valid email, please!(Example: john@gmail.com)"; break;
+				case 1: errorState = "Passwords don\'t match"; break;
+			}
+		break;
+	}
+	
+	return errorState;
+}

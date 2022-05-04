@@ -81,8 +81,7 @@ class PassportController extends Controller{
 			$q = $wsInit->setOption(CURLOPT_POSTFIELDS, http_build_query(array('login' => $query)))->setHeaders(array('Content-Type' => 'application/x-www-form-urlencoded'))->post((!empty($_SERVER['HTTPS'])) ? 'https' : 'http' . '://' . $_SERVER['HTTP_HOST'] ."/services/1/post");
 			
 			$ud_data = JSON::decode($q, true);
-			$sd_data = Subscription::findAll(['login' => $query]);
-			return $this->render('passportServices', ['ud_data' => $ud_data[0]['country'], 'sd_data' => $sd_data]);
+			return $this->render('passportServices', ['ud_data' => $ud_data[0]['country']]);
 		}
 		else{ 
 			Yii::$app->response->statusCode = 401;
@@ -216,16 +215,16 @@ class PassportController extends Controller{
 							$updateRegion = $wscInit->setOption(CURLOPT_POSTFIELDS, http_build_query(array('svcQuery' => $rq)))->setHeaders(array('Content-Type' => 'application/x-www-form-urlencoded'))->post((!empty($_SERVER['HTTPS'])) ? 'https' : 'http' . '://' . $_SERVER['HTTP_HOST'] ."/passport/api/post?svc=profile");
 							
 							//The third step is updating the requested subscriptions
-							
-							if(array_shift($qp['svc'])){
+							if(count($qp['svc']) > 0){
+								$sdq = [];
 								for($i = 0; $i < count($qp['svc']); $i++){
-									$sd = new Subscription();
-									
-									$sd->login = $qp['login'];
-									$sd->attribute = $qp['svc'][$i];
-									
-									if($sd->save()){ $postProfile[][] = "Send Success"; }
+									$sdq[] = [
+										'login' => $qp['login'],
+										'attribute' => $qp['svc'][$i]
+									];
 								}
+								
+								$postProfile[] = Yii::$app->db->createCommand()->batchInsert('userSubscriptions', ['login', 'attribute'], $sdq)->execute() ? TRUE : NULL;
 							}
 							else{ $postProfile[] = "Empty query"; }
 							
