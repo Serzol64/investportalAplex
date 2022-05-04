@@ -61,7 +61,7 @@ $this->title = "Services for Investors";
 											<div class="services-selectors" for="types">
 												<?php foreach($getAttr as $attr){ ?>
 													<label class="selector">
-														<input type="checkbox" name="types" value="<?php echo $attr->name; ?>">
+														<input type="checkbox" name="types" value="<?php echo $attr->name; ?>" <?php echo array_search($attr->name, array_column($sd_data, 'service')) ? 'checked' : ''; ?>>
 														<span><?php echo $attr->name; ?></span>
 													</label>
 												<?php } ?>
@@ -75,7 +75,7 @@ $this->title = "Services for Investors";
 										<div class="services-selectors" for="types">
 											<?php foreach($getFirstAttr as $fattr){ ?>
 												<label class="selector">
-													<input type="checkbox" name="types" value="<?php echo $fattr->name; ?>">
+													<input type="checkbox" name="types" value="<?php echo $fattr->name; ?>" <?php echo array_search($attr->name, array_column($sd_data, 'service')) ? 'checked' : ''; ?>>
 													<span><?php echo $fattr->name; ?></span>
 												</label>
 											<?php } ?>

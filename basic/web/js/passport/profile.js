@@ -33,10 +33,14 @@ $(document).ready(function () {
 				
 				pudm.append('svcQuery', JSON.stringify(puqm));
 				
+				alertify.set('notifier','position', 'top-right');
+				alertify.set('notifier','delay', 5);
+				
+				
 				fetch('/passport/api/post?svc=profile', { method: 'POST', body: pudm })
 					.then((response) => {
-						if(response.status === 200){ alertify.set({ delay: 5000 }).success("Portal profile data updated!"); }
-						else{ alertify.set({ delay: 5000 }).error("Portal profile data update error!"); }
+						if(response.status === 200){ alertify.success("Portal profile data updated!"); }
+						else{ alertify.error("Portal profile data update error!"); }
 					});
             } 
             else { 
@@ -85,10 +89,14 @@ $(document).ready(function () {
 				
 				pud.append('svcQuery', JSON.stringify(puq));
 				
+				alertify.set('notifier','position', 'top-right');
+				alertify.set('notifier','delay', 5);
+				
+				
 				fetch('/passport/api/post?svc=profile', { method: 'POST', body: pud })
 					.then((response) => {
-						if(response.status === 200){ alertify.set({ delay: 5000 }).success("Portal profile data updated!"); }
-						else{ alertify.set({ delay: 5000 }).error("Portal profile data update error!"); }
+						if(response.status === 200){ alertify.success("Portal profile data updated!"); }
+						else{ alertify.error("Portal profile data update error!"); }
 					});
             } 
             else { 
