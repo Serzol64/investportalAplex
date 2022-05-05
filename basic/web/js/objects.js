@@ -32,6 +32,27 @@ const ServiceSliderSwitcher_Go = (cntl,slider) => {
     });
 }
 
+const regionAutoList = (select) => {
+	var regionCont = $('#objects > .projects-search-form footer .filter .option:nth-child(2) #option-selector'),
+		rdbq = new FormData();
+		
+	rdbq.append('country', select.value);
+	
+	if(select.value !== 'any'){
+		fetch('/services/0/post', { method: 'POST', body: rdbq })
+			.then(response => response.json())
+			.then((data) => {
+				regionCont.html('');
+				regionCont.append('<option value="any">All Regions</option>');
+				
+				for(let i = 0; i < data.length; i++){ regionCont.append('<option value="' + data[i]['id'] + '">' + data[i]['region'] + '</option>'); }
+				
+				if(regionCont.prop('disabled')){ regionCont.prop('disabled', false); }
+			});
+	}
+	else{ regionCont.prop('disabled', true); }
+}
+
 $(document).ready(function () {
 
     let controlsBack = [

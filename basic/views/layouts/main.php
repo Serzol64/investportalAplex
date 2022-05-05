@@ -20,9 +20,6 @@ $this->beginPage();
 		<title><?= Html::encode($this->title) ?></title>
 		<?= Html::csrfMetaTags() ?>
 		<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js" integrity="sha512-kp7YHLxuJDJcOzStgd6vtpxr4ZU9kjn77e6dBsivSz+pUuAuMlE2UTdKB7jjsWT84qbS8kdCWHPETnP/ctrFsA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-		<script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
-		<script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
 		<script src="https://kit.fontawesome.com/97c3285af2.js" crossorigin="anonymous"></script>
 <?php if(Yii::$app->controller->id == 'Objects' && Yii::$app->controller->action->id == 'Object'){ ?>	
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous"></script>

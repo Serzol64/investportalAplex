@@ -1,6 +1,6 @@
 @import url('/css/services/objects-searchform-content.css');
 .window-closed{ display: none; }
-#objects{ height: auto; }
+#objects{min-height: auto;}
 #objects > .projects-search-form{
     width: 75%;
     height: auto;

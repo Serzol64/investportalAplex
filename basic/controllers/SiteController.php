@@ -54,6 +54,17 @@ class SiteController extends Controller{
 					\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 					return Yii::$app->regionDB->getFullDataFrame();
 				}
+				else if($operation == 'post'){
+					if(isset($_POST['country'])){
+						\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+						return Yii::$app->regionDB->listRegion(strtoupper($_POST['country']));
+					}
+					else{
+						Yii::$app->response->statusCode = 403;
+						\Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
+						return 'Query not found';
+					}
+				}
 				else{
 					Yii::$app->response->statusCode = 402;
 					\Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;

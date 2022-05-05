@@ -5,13 +5,21 @@ use Yii;
 use yii\web\Controller;
 use yii\web\View;
 
+use app\models\ObjectAttribute;
+
 class ObjectsController extends Controller{
 	public function actionIndex(){
 		$this->view->registerCssFile("/css/objects.css");
 		$this->view->registerCssFile("/css/inpage_codes/objects/1.css");
 		$this->view->registerJsFile("/js/objects.js", ['position' => View::POS_END]);
-	
-		return $this->render('objects');
+
+		$oads = [
+			ObjectAttribute::find()->limit(12)->all(),
+			ObjectAttribute::find()->limit(24)->offset(12)->all()
+		];
+		
+		
+		return $this->render('objects', ['attrs' => $oads]);
 	}
 	public function actionObject(){
 		$this->view->registerCssFile("/css/objects.css");

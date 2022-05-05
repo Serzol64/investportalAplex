@@ -9,6 +9,6 @@ class ObjectsData extends ActiveRecord{
 		return [
 			[['id', 'category', 'title', 'content', 'creator'],'required']];
 	}
-	public static function tableName(){ return 'objectdata'; }
+	public static function tableName(){ return 'objectData'; }
 }
 ?>
