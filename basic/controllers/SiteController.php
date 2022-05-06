@@ -10,6 +10,11 @@ use yii\httpclient\Client;
 use yii\web\NotFoundHttpException;
 
 use app\models\User;
+use app\models\ObjectAttribute;
+use app\models\Investments;
+use app\models\Offers;
+use app\models\ObjectsData;
+use app\models\PortalServices;
 
 
 class SiteController extends Controller{
@@ -28,10 +33,16 @@ class SiteController extends Controller{
 		$this->view->registerCssFile("https://unpkg.com/swiper/swiper-bundle.min.css");
 		$this->view->registerJsFile("https://unpkg.com/swiper/swiper-bundle.min.js", ['position' => View::POS_HEAD]);
 		$this->view->registerCssFile("/css/inpage_codes/homepage_styles.css");
+		$this->view->registerJsFile("/js/addons/slidesshow.js", ['position' => View::POS_END]);
 		$this->view->registerJsFile("/js/inpage_codes/homepage_script.js", ['position' => View::POS_END]);
 		
-
-		return $this->render('index');
+		
+		$sc = [
+			[ObjectsData::find()->count(), Investments::find()->count(), PortalServices::find()->count(), User::find()->count()], 
+			[ObjectAttribute::find()->count(), Offers::find()->count()]
+		];
+		
+		return $this->render('index', ['staticCount' => $sc[0], 'staticMeta' => $sc[1]]);
 	}
 	public function actionAbout(){
 		$this->view->registerCssFile("/css/about.css");

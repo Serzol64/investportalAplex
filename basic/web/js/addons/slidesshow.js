@@ -1,42 +1,47 @@
-var currentSlide,n,sllib;
+let currentSlide = 0,
+    n;
 
-function SliderSwitcher_Back(cntl,slider) {
+const SliderSwitcher_Back = (cntl,slider) => {
     cntl.click(function (e) { 
-        sllib = slider;
+        var sllib = slider;
         n = currentSlide - 1;
         
         sllib.eq(currentSlide).attr('id','hide');
-        sllib.eq((n+sllib.length)%sllib.length).attr('id','');
+        currentSlide = (n+sllib.length)%sllib.length;
+        sllib.eq(currentSlide).attr('id','');
 
     });
 }
-function SliderSwitcher_Go(cntl,slider) {
+const SliderSwitcher_Go = (cntl,slider) => {
     cntl.click(function (e) { 
-        sllib = slider;
+        var sllib = slider;
         n = currentSlide + 1;
         
         sllib.eq(currentSlide).attr('id','hide');
-        sllib.eq((n+sllib.length)%sllib.length).attr('id','');
+        currentSlide = (n+sllib.length)%sllib.length;
+        sllib.eq(currentSlide).attr('id','');
     });
 }
 
-function SliderSwitcher_Back$Copy(cntl,slider) {
+const SliderSwitcher_Back$Copy = (cntl,slider) => {
     cntl.click(function (e) { 
-        sllib = slider;
+        var sllib = slider;
         n = currentSlide - 1;
         
         sllib.eq(currentSlide).addClass('hide');
-        sllib.eq((n+sllib.length)%sllib.length).removeClass('hide');
+        currentSlide = (n+sllib.length)%sllib.length;
+        sllib.eq(currentSlide).removeClass('hide');
 
     });
 }
-function SliderSwitcher_Go$Copy(cntl,slider) {
+const SliderSwitcher_Go$Copy = (cntl,slider) => {
     cntl.click(function (e) { 
-        sllib = slider;
+        var sllib = slider;
         n = currentSlide + 1;
         
         sllib.eq(currentSlide).addClass('hide');
-        sllib.eq((n+sllib.length)%sllib.length).removeClass('hide');
+        currentSlide = (n+sllib.length)%sllib.length;
+        sllib.eq(currentSlide).removeClass('hide');
     });
 }
 
@@ -104,6 +109,4 @@ $(document).ready(function () {
         SliderSwitcher_Go$Copy(g,e);
         
     }
-
-    
 });

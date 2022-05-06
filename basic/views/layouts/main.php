@@ -93,13 +93,13 @@ $this->beginPage();
 						<footer>
 							<nav>
 								<?php echo Html::a('Investment objects', ['objects/index']); ?>
-								<a href="">Investors</a>
-								<a href="">Services</a>
-								<a href="">Experts</a>
-								<a href="">Analytics</a>
-								<a href="">About</a>
+								<?php echo Html::a('Investors', ['objects/investors']); ?>
+								<?php echo Html::a('Services', ['site/services']); ?>
+								<?php echo Html::a('Experts', ['objects/experts']); ?>
+								<?php echo Html::a('Analytics', ['news/analytics-feed']); ?>
+								<?php echo Html::a('About', ['site/about']); ?>
 								<?php echo Html::a('News', ['news/index']); ?>
-								<a href="">Events</a>
+								<?php echo Html::a('Events', ['news/events-feed']); ?>
 								<a href="" id="menu-image"><i class="fas fa-ellipsis-h" style="color: #0079bf;"></i></a>
 								<a href="" id="menu-image"><i class="fas fa-search" style="color: #0079bf;"></i></a>
 							</nav>     
@@ -134,14 +134,14 @@ $this->beginPage();
 							</header>
 							<main>
 								<nav>
-									<div class="active"><?php echo Html::a('Investment objects', ['objects/index']); ?></div>
-									<div><a href="">Investors</a></div>
-									<div><a href="">Services</a></div>
-									<div><a href="">Experts</a></div>
-									<div><a href="">Analytics</a></div>
-									<div><a href="">About</a></div>
+									<div><?php echo Html::a('Investment objects', ['objects/index']); ?></div>
+									<div><?php echo Html::a('Investors', ['objects/investors']); ?></div>
+									<div><?php echo Html::a('Services', ['site/services']); ?></div>
+									<div><?php echo Html::a('Experts', ['objects/experts']); ?></div>
+									<div><?php echo Html::a('Analytics', ['news/analytics-feed']); ?></div>
+									<div><?php echo Html::a('About', ['site/about']); ?></div>
 									<div><?php echo Html::a('News', ['news/index']); ?></div>
-									<div><a href="">Events</a></div>    
+									<div><?php echo Html::a('Events', ['news/events-feed']); ?></div>   
 								</nav>
 							</main>
 							<footer>

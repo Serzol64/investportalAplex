@@ -1,14 +1,32 @@
-$('body').after('<script src="/js/addons/slidesshow.js"></script>');
+var host;
+if (location.hostname === "investportal.aplex") { host = "http://investportal.aplex"; }
+else { host = "https://investportal.aplex.ru"; }
 
-function sleep(milliseconds) {
-  const date = Date.now();
-  let currentDate = null;
-  do {
-    currentDate = Date.now();
-  } while (currentDate - date < milliseconds);
+let notiaudio = [
+    new Audio(host + '/audios/chat_open.mp3'),
+    new Audio(host + '/audios/chat_close.mp3')
+];
+const OpenChat = () => {
+    window.setTimeout(function () {
+        $('#chat-lightbox').removeClass('lightbox-closed');
+        notiaudio[0].play();
+    }, 10000);
+}
+const CloseChat = () => {
+    var close = $('#chat-lightbox header img');
+
+    close.click(function () {
+        $('#chat-lightbox').addClass('lightbox-closed');
+        notiaudio[1].play();
+    });
 }
 
-function MarketingHeadBannerAdaptive() {
+const OnlineChat = () => {
+    OpenChat();
+    CloseChat();
+}
+
+const MarketingHeadBannerAdaptive = () => {
     let vw = $(this).width();
     let margin;
     if (vw == 1024 || vw == 1280 || vw < 1280) {
@@ -31,7 +49,7 @@ function MarketingHeadBannerAdaptive() {
     $('.banner-block').css("margin-left", margin);
 
 }
-function HomePageHorizontalAdaptiveLine() {
+const HomePageHorizontalAdaptiveLine = () => {
     let vw = $(this).width();
     let margin;
     if (vw == 1280) {
@@ -56,7 +74,7 @@ function HomePageHorizontalAdaptiveLine() {
 
     $('#promo > header hr').css({ "position": "relative", "top": margin });
 }
-function VideoPlayerUI(player) {
+const VideoPlayerUI = (player) => {
     var video = $(player).get(0);
     var watch = $('.video-player > .play img');
     var pause = $('.video-player .controls .pause');
@@ -96,8 +114,8 @@ function VideoPlayerUI(player) {
 
     });
 }
-function GeckoSupport() {
-    $.getJSON("/js/geckoElements.json", function (data, textStatus, jqXHR) {
+const GeckoSupport = () => {
+    $.getJSON(host + "/js/geckoElements.json", function (data, textStatus, jqXHR) {
             $(data.el.cont).addClass('gecko-fix');
         }
     );
@@ -115,12 +133,17 @@ $(document).ready(function () {
 
     $(window).resize(MarketingHeadBannerAdaptive);
     $(window).resize(HomePageHorizontalAdaptiveLine);
+
+
+    
+
+
 });
 
 
 //Paths
 
-function LastMenuLists() {
+const LastMenuLists = () => {
     let els = [$('#menu-image'), $('.header > #header_bottom .hb_bottom footer nav')];
 
     var menufont = els[1].css("font-size");
@@ -131,10 +154,12 @@ function LastMenuLists() {
 $(document).ready(function () {
     LastMenuLists();
     $(window).resize(LastMenuLists);
+
+    
 });
 
-function AdaptiveButtonEventer() {
-    $('.header > #header_bottom_adaptive header ul.adaptive-buttons li').eq(0).click(function () { 
+const AdaptiveButtonEventer = () => {
+    $('.header > #header_bottom_adaptive header ul.adaptive-buttons li').click(function () { 
         let curwin = $('.header > #header_bottom_adaptive footer #adaptive-window').eq($(this).index());
         if(curwin.css('display') == 'none'){
             curwin.css('display','');
@@ -150,24 +175,19 @@ $(document).ready(function () {
     AdaptiveButtonEventer();
 });
 
-function AuthLightBoxModuleOpen() {
+const AuthLightBoxModuleOpen = () => {
     $('.header > #header_bottom .hb_bottom header .header-informer footer .user-services a, .header > #header_bottom_adaptive header ul.adaptive-buttons li:nth-last-child(2)').click(function(e,t){
       e.preventDefault();
-      if($(this).data('profile') === 'passport'){ window.location.assign("/passport"); }
-      else{ 
-		  $('.module-page[data-screen="SignIn"] > main #form-submit:nth-last-child(2)').css('display','inherit');
-		  $('#auth-lightbox').removeClass('lightbox-closed'); 
-	  }
+      $('#auth-lightbox').removeClass('lightbox-closed');
     });
 }
-function AuthLightBoxModuleClose() {
+const AuthLightBoxModuleClose = () => {
     $('#auth-lightbox > .close').click(function(e,t){
       $('#auth-lightbox').addClass('lightbox-closed');
-      $('.module-page[data-screen="SignIn"] > main #form-submit:nth-last-child(2)').css('display','none');
       $('#auth-lightbox > .module-page').removeAttr('style');
     });
 }
-function AuthLightBoxModule() {
+const AuthLightBoxModule = () => {
     AuthLightBoxModuleOpen();
     AuthLightBoxModuleClose();
 }

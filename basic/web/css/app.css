@@ -190,14 +190,14 @@ h4.title, p.descr{
     display: inline-table;
 }
 
-#promo{height: 420px;}
-#news{min-height: 1610px;padding-top: 3%;}
-#investsearch{height: 481px;padding-top: 3%;}
-#eventcalendar{height: 590px;padding-top: 4%;}
-#services{height: 206px;padding-top: calc(1vw - 15px);}
-#analytics{height: 245px;padding-top: 34px;padding-bottom: 310px;}
-#estate{height: 304px;padding-top: 1vw;}
-#reviews{height: 245px;padding-top: 49px;padding-bottom: 135px;}
+#promo{min-height: 420px;}
+#news{min-height: 200px;padding-top: 3%;}
+#investsearch{min-height: 481px;padding-top: 3%;}
+#eventcalendar{min-height: 590px;padding-top: 4%;}
+#services{min-height: 206px;padding-top: calc(1vw - 15px);}
+#analytics{min-height: 245px;padding-top: 34px;padding-bottom: 310px;}
+#estate{min-height: 304px;padding-top: 1vw;}
+#reviews{min-height: 246px;padding-top: 49px;padding-bottom: 135px;}
 #link-switcher{
     width: 100%;
     background-color: white;
@@ -1347,7 +1347,7 @@ h4.title, p.descr{
     #reviews > main #slider-controller-adaptive, #reviews > main #slider-view-adaptive{ display: inherit; }
 
     #link-switcher {
-        height: 20px;
+        min-height: 20px;
     }
 }
 @media all and (max-width: 414px){
@@ -1438,7 +1438,7 @@ h4.title, p.descr{
         width: 50%;
     }
     .footer {
-        height: calc(165px * 8);
+        min-height: calc(165px * 8);
     }
     .footer > header {
         width: 72%;
@@ -1459,22 +1459,22 @@ h4.title, p.descr{
         min-height: 280px;
     }
     #investsearch {
-        height: 650px;
+        min-height: 650px;
     }
     #services {
-        height: 580px;
+        min-height: 580px;
     }
     #analytics {
-        height: 420px;
+        min-height: 420px;
     }
     #estate {
-        height: 633px;
+        min-height: 633px;
     }
     #reviews {
-        height: 380px;
+        min-height: 380px;
     }
     #eventcalendar {
-        height: 780px;
+        min-height: 780px;
     }
     #services > header .add-but, #estate > header .add-but {
         width: 90%;
@@ -1536,7 +1536,7 @@ h4.title, p.descr{
         width: 50%;
     }
     .footer {
-        height: calc(210px * 4);
+        min-height: calc(210px * 4);
     }
     .footer > header {
         width: 72%;
@@ -1595,7 +1595,7 @@ h4.title, p.descr{
         left: -15vw;
     }
     #estate {
-        height: 430px;
+        min-height: 430px;
     }
     #services > main{
         top: 12%;
@@ -1609,7 +1609,7 @@ h4.title, p.descr{
         width: 50%;
     }
     .footer {
-        height: calc(210px * 5);
+        min-height: calc(210px * 5);
     }
     .footer > header {
         width: 50%;
@@ -1637,7 +1637,7 @@ h4.title, p.descr{
         margin-top: -4%;
     }
     .footer {
-        height: calc(204px * 4);
+        min-height: calc(204px * 4);
     }
     .footer > main {
         top: 8%;
@@ -1659,14 +1659,14 @@ h4.title, p.descr{
         min-height: 460px;
     }
     #investsearch {
-        height: 500px;
+        min-height: 500px;
         padding-top: 15%;
     }
     #analytics > main #slider-view .analytic-feed .analytic h2, #analytics > main #slider-view-adaptive .analytic h2 {
         top: 5mm;
     }
     #services {
-        height: 567px;
+        min-height: 567px;
     }
     #analytics {
         padding-bottom: 450px;
@@ -1681,14 +1681,14 @@ h4.title, p.descr{
         margin-top: 6%;
     }
     #eventcalendar {
-        height: 729px;
+        min-height: 729px;
     }
     #estate > main {
         right: -2vw;
         top: -12%;
     }
     .footer {
-        height: calc(126px * 6);
+        min-height: calc(126px * 6);
     }
 
 }
@@ -1702,7 +1702,7 @@ h4.title, p.descr{
         height: 380px;
     }
     #investsearch {
-        height: 570px;
+        min-height: 570px;
     }  
     #eventcalendar > main .calendar footer {
         margin-top: 5%;
@@ -1712,13 +1712,13 @@ h4.title, p.descr{
         width: 50%;
     }
     #eventcalendar {
-        height: 630px;
+        min-height: 630px;
     }
     #services {
-        height: 640px;
+        min-height: 640px;
     }
     #estate {
-        height: calc(254px * 3);
+        min-height: calc(254px * 3);
     }
     #analytics {
         padding-bottom: calc(217px * 2);
@@ -1750,7 +1750,7 @@ h4.title, p.descr{
         margin-top: 50%;
     }
     .footer {
-        height: calc(210px * 4);
+        min-height: calc(210px * 4);
     }
     .footer > header {
         width: 50%;
@@ -1766,7 +1766,7 @@ h4.title, p.descr{
 }
 @media all and (min-width: 960px) and (max-width: 1024px){
     #link-switcher{
-        height: 22px;
+        min-height: 22px;
     }
     #promo {
         min-height: 550px;
@@ -1775,19 +1775,19 @@ h4.title, p.descr{
         min-height: 300px;
     }
     #investsearch {
-        height: 600px;
+        min-height: 600px;
     }
     #analytics {
-        height: 490px;
+        min-height: 490px;
     }
     #services {
-        height: calc(350px * 2);
+        min-height: calc(350px * 2);
     }
     #estate {
-        height: calc(390px * 2);
+        min-height: calc(390px * 2);
     }
     #reviews {
-        height: 400px;
+        min-height: 400px;
         padding-bottom: 37vw;
     }
     #news > main #slider-view,
@@ -1827,7 +1827,7 @@ h4.title, p.descr{
         top: 19%;
     }
     .footer {
-        height: calc(123px * 7);
+        min-height: calc(123px * 7);
     }
     .footer > header .logo img {
         width: 100%;
@@ -1904,13 +1904,13 @@ h4.title, p.descr{
         min-height: 180px;
     }
     #investsearch {
-        height: 520px;
+        min-height: 520px;
     }
     .footer > main #category_menu { 
         padding-right: 2%;
     }
     #eventcalendar {
-        height: 710px;
+        min-height: 710px;
     }
     #eventcalendar > main .calendar {
         height: 175px;
@@ -2026,7 +2026,7 @@ h4.title, p.descr{
         display: none;
     }
     #investsearch {
-        height: 520px;
+        min-height: 520px;
     }
     #eventcalendar > main .calendar footer {
         width: 80%;
@@ -2140,7 +2140,7 @@ h4.title, p.descr{
         top: 7%;
     }
     #investsearch {
-        height: 500px;
+        min-height: 500px;
     }
     #promo > header .marketing-info {
         margin-top: -13%;
@@ -2209,7 +2209,7 @@ h4.title, p.descr{
         margin-top: -13%;
     }
     #investsearch {
-        height: 500px;
+        min-height: 500px;
     }
     #services > main #slider-controller img {
         left: calc(30% / 1.5);
@@ -2283,7 +2283,7 @@ h4.title, p.descr{
         min-height: 220px;
     }
     #investsearch {
-        height: 570px;
+        min-height: 570px;
     }
 }
 input[type=number]::-webkit-outer-spin-button,
