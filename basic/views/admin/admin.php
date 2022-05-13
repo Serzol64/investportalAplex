@@ -20,6 +20,7 @@ $this->title = 'Admin Services portal';
 				 case "news": echo "<section class=\"data-page cms-service\"><header><h2></h2><nav></nav></header><main></main></section>"; break;
 				 case "events": echo "<section class=\"data-page cms-service\"><header><h2></h2><nav></nav></header><main></main></section>"; break;
 				 case "analytics": echo "<section class=\"data-page cms-service\"><header><h2></h2><nav></nav></header><main></main></section>"; break;
+				 case "portalServices": echo "<section class=\"data-page\"><header><h2></h2><nav></nav></header><main></main></section>"; break;
 				 default: echo "<section class=\"data-page\"><header><h2></h2><nav></nav></header><main></main></section>"; break;
 			 }
 		 }

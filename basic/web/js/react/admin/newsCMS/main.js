@@ -126,7 +126,7 @@ class Add extends React.Component{
 					<input type="text" id="title" placeholder="Input news title..."/>
 				  </header>
 				  <section data-block="titleImage">
-				    <label for="titleImageU"><input type="file" name="titleImageU" id="titleImageU" accept="image/*" />Upload title image</label>
+				    <label htmlFor="titleImageU"><input type="file" name="titleImageU" id="titleImageU" accept="image/*" />Upload title image</label>
 					<img src="https://storage.yandexcloud.net/printio/assets/realistic_views/canvas30x30/detailed/74c7d27d11c90643e74e99cf7e8c85a4f8d0dd88.png?1534453806" id="uploaded" />
 				  </section>
 				  <main data-block="form">
@@ -250,7 +250,7 @@ class Edit extends React.Component{
 					<input type="text" placeholder="Update news title..." value={ this.state.currentNews.title }/>
 				  </header>
 				  <section data-block="titleImage">
-				    <label for="titleImageU"><input type="file" name="titleImageU" id="titleImageU" accept="image/*" />Upload title image</label>
+				    <label htmlFor="titleImageU"><input type="file" name="titleImageU" id="titleImageU" accept="image/*" />Upload title image</label>
 					<img src={ this.state.currentNews.titleImage } id="uploaded" />
 				  </section>
 				  <main data-block="form">

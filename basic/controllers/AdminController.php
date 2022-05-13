@@ -15,6 +15,8 @@ use app\models\Admin;
 use app\models\News;
 use app\models\Analytic;
 use app\models\Event;
+use app\models\PortalServices;
+use app\models\PortalServicesCategory;
 
 class AdminController extends Controller{
 	public function beforeAction($action) { 
@@ -42,6 +44,10 @@ class AdminController extends Controller{
 							case "news": $service='newsCMS/main'; break;
 							case "analytics": $service='newsCMS/analytics'; break;
 							case "events": $service='newsCMS/events'; break;
+							case "portalServices":
+								if(isset($_GET['page'])){ $this->view->registerJsFile("/js/react/portalServices/managment.js"); }
+								$service = 'portalServices';
+							break;
 							default: $service = 'dataAttributes'; break;
 						 }
 						 
@@ -185,6 +191,40 @@ class AdminController extends Controller{
 					}
 										
 				}
+				else if($svc == "portalServices" || $svc == "portalServicesCategory"){
+					$SConnector = [
+						'c' => [new PortalServices, PortalServices::find()],
+						's' => [new PortalServicesCategory, PortalServicesCategory::find()]
+					];
+					
+					if($svc == "portalServicesCategory"){
+						if($q['query']['iconBlob']){
+							$lastId = $SConnector['s'][1]->orderBy('id desc')->limit(1)->all();
+						
+							if($lastId){
+								foreach($lastId as $code){ $newId = $code->id + 1; }
+							}
+							else{ $newId = 1; }
+							
+							$SConnector['s'][0]->id = $newId;
+							$SConnector['s'][0]->title = $q['query']['title'];
+							$SConnector['s'][0]->icon = $q['query']['iconBlob'];
+							
+							if($SConnector['s'][0]->save()){ $serviceResponse[] = 'New service category added!'; }
+							else{
+								Yii::$app->response->statusCode = 502;
+								$serviceResponse[] = 'Services gateway!';
+							}
+						}
+						else{
+							Yii::$app->response->statusCode = 402;
+							$serviceResponse[] = 'Icon required!';
+						}
+					}
+					else if($svc == "portalServices"){
+						
+					}
+				}
 				else if($svc == "adminPortalUsers"){
 					$adminDB = new Admin;
 					
@@ -267,6 +307,31 @@ class AdminController extends Controller{
 					}
 									
 				}
+				else if($svc == "portalServices" || $svc == "portalServicesCategory"){
+					$SConnector = [
+						'c' => [new PortalServices, PortalServices::find()],
+						's' => [new PortalServicesCategory, PortalServicesCategory::find()]
+					];
+					
+					if($svc == "portalServicesCategory"){
+						if($q['query']['iconBlob']){
+							$sq = $SConnector['s'][1]->where(['id' => $q['query']['id']])->one();
+						
+							
+							$sq->title = $q['query']['title'];
+							$sq->icon = $q['query']['iconBlob'];
+							
+							if($sq->save()){ $serviceResponse[] = 'Service category updated!'; }
+							else{
+								Yii::$app->response->statusCode = 502;
+								$serviceResponse[] = 'Services gateway!';
+							}
+					}
+					else{
+							Yii::$app->response->statusCode = 402;
+							$serviceResponse[] = 'Icon required!';
+					}
+				}
 				else if($svc == "adminPortalUsers"){
 					$currentLogin = $q['login'];
 					
@@ -337,6 +402,26 @@ class AdminController extends Controller{
 					else{
 						Yii::$app->response->statusCode = 502;
 						$serviceResponse[] = 'DBA Service Error!';
+					}
+				}
+				else if($svc == "portalServices" || $svc == "portalServicesCategory"){
+					$SConnector = [
+						'c' => [new PortalServices, PortalServices::find()],
+						's' => [new PortalServicesCategory, PortalServicesCategory::find()]
+					];
+					
+					if($svc == "portalServicesCategory"){
+						if($SConnector['s'][0]::deleteAll('id = :attr', [':attr' => $q['query']['id']])){ 
+							$serviceResponse[] = 'Current category deleted!'; 
+						}
+						else{
+							Yii::$app->response->statusCode = 502;
+							$serviceResponse[] = 'DBA Service Error!';
+						}
+					}
+					else{
+						Yii::$app->response->statusCode = 402;
+						$serviceResponse[] = 'Icon required!';
 					}
 				}
 				else if($svc == "adminPortalUsers"){
@@ -426,6 +511,19 @@ class AdminController extends Controller{
 					}
 					
 					
+				}
+				else if($svc == "portalServices" || $svc == "portalServicesCategory"){
+					$SConnector = [
+						'c' => [new PortalServices, PortalServices::find()],
+						's' => [new PortalServicesCategory, PortalServicesCategory::find()]
+					];
+					
+					if($svc == "portalServicesCategory"){ $serviceResponse = $SConnector['s'][1]->all(); }
+					else if($svc == "portalServicesCategory"){ $serviceResponse = $SConnector['c'][1]->all(); }
+					else{
+						Yii::$app->response->statusCode = 402;
+						$serviceResponse[] = 'Icon required!';
+					}
 				}
 				else{
 						Yii::$app->response->statusCode = 404;

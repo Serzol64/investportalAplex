@@ -4,12 +4,12 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 
-class PortalServices extends ActiveRecord{
+class PortalServicesCategory extends ActiveRecord{
 	public function rules(){
 		return [
-			[['id', 'title'],'required']];
+			[['id', 'name', 'icon'],'required']];
 	}
 	public static function primaryKey(){ return ['id']; }
-	public static function tableName(){ return 'serviceList'; }
+	public static function tableName(){ return 'servicesCategory'; }
 }
 ?>

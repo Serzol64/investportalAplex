@@ -56,7 +56,11 @@ class SiteController extends Controller{
 		$this->view->registerCssFile("/css/services.css");
 		$this->view->registerJsFile("/js/services.js", ['position' => View::POS_END]);
 		
-		return $this->render('services');
+		$sf = [
+			
+		];
+		
+		return $this->render('services', ['categories' => $sf[0]);
 	}
 	public function actionServicesApi($serviceId, $operation){
 		switch($serviceId){

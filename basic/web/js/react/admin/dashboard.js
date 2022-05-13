@@ -56,9 +56,17 @@ class DataTab extends React.Component{
 			  </div>
 			  <div>
 				<span>Managment Basic Services</span>
+				<nav>
+				  <a href="">All portal services</a>
+				  <a href="">All portal users</a>
+				</nav>
 			  </div>
 			  <div>
 				<span>Managment Critical Services</span>
+				<nav>
+				  <a href="">Add New Service Category</a>
+				  <a href="">All New Item to current Service Category</a>
+				</nav>
 			  </div>
 			</section>
 			<section id="dashboard-content">
@@ -77,9 +85,18 @@ class ContentTab extends React.Component{
 			  </div>
 			  <div>
 				<span>Managment Basic Services</span>
+				<nav>
+				  <a href="/admin?svc=dataManagment&subSVC=news#list">All news</a>
+				  <a href="/admin?svc=dataManagment&subSVC=analytics#list">All analytics articles</a>
+				  <a href="/admin?svc=dataManagment&subSVC=events#list">All events</a>
+				</nav>
 			  </div>
 			  <div>
 				<span>Managment Critical Services</span>
+				<nav>
+				  <a href="/admin?svc=dataManagment&subSVC=news#categories">All news categories</a>
+				  <a href="/admin?svc=dataManagment&subSVC=analytics#categories">All analytics categories</a>
+				</nav>
 			  </div>
 			</section>
 			<section id="dashboard-content">

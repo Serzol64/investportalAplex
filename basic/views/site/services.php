@@ -21,7 +21,7 @@ $this->title = 'Portal services';
 				  Example: <span id="exmpl"></span>
 				  
 				  <div class="categories">
-					<?php foreach($cl as $categories){ ?>
+					<?php foreach($categories as $cl){ ?>
 						<a href="">
 						  <img src="<?php echo $cl->catIcon; ?>" />
 						  <strong><?php echo $cl->catName; ?></strong>
