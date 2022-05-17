@@ -21,16 +21,22 @@ $this->title = 'Portal services';
 				  Example: <span id="exmpl"></span>
 				  
 				  <div class="categories">
-					<?php foreach($categories as $cl){ ?>
-						<a href="">
-						  <img src="<?php echo $cl->catIcon; ?>" />
-						  <strong><?php echo $cl->catName; ?></strong>
+					<?php foreach($categories[0] as $cl){ ?>
+						<a data-cat="<?php echo $cl->id; ?>">
+						  <img src="<?php echo $cl->name; ?>" />
+						  <strong><?php echo $cl->icon; ?></strong>
 						</a>
 					<?php } ?>
 				  </div>
 				</div>
 			  </header>
-			  <main id="list"><ul></ul></main>
+			  <main id="list">
+				  <ul>
+					<?php foreach($categories[1] as $sl){ ?>
+						<li><?php echo Html::a($sl->title, ['site/service-view', 'serviceId' => $sl->id]); ?></li>
+					<?php } ?>
+			  	  </ul>
+			  </main>
 			</div>
 			<h2 id="title">New services</h2>
 			<div class="news-feed">

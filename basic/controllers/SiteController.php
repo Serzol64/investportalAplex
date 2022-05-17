@@ -15,6 +15,7 @@ use app\models\Investments;
 use app\models\Offers;
 use app\models\ObjectsData;
 use app\models\PortalServices;
+use app\models\PortalServicesCategory;
 
 
 class SiteController extends Controller{
@@ -57,7 +58,7 @@ class SiteController extends Controller{
 		$this->view->registerJsFile("/js/services.js", ['position' => View::POS_END]);
 		
 		$sf = [
-			
+			[PortalServicesCategory::find()->all(), PortalServices::find()->select('id, title, JSON_EXTRACT(meta, \'$.seoData.categoryId\') as category')->where(['category' => 1])->orderBy('id desc')->all()]
 		];
 		
 		return $this->render('services', ['categories' => $sf[0]);
