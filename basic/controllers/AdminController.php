@@ -222,7 +222,26 @@ class AdminController extends Controller{
 						}
 					}
 					else if($svc == "portalServices"){
+						$lastId = $SConnector['c'][1]->orderBy('id desc')->limit(1)->all();
 						
+						if($lastId){
+							foreach($lastId as $code){ $newId = $code->id + 1; }
+						}
+						else{ $newId = 1; }
+
+						$SConnector['c'][0]->id = $newId;
+						$SConnector['c'][0]->title = $q['query']['title'];
+
+						if($q['query']['head']){ $SConnector['c'][0]->meta = $q['query']['head']; }
+						if($q['query']['body']){ $SConnector['c'][0]->content = $q['query']['body']; }
+						if($q['query']['footer']){ $SConnector['c'][0]->proc = $q['query']['footer']; }
+
+						if($SConnector['c'][0]->save()){ $serviceResponse[] = 'New service added!'; }
+						else{
+							Yii::$app->response->statusCode = 502;
+							$serviceResponse[] = 'Services gateway!';
+						}
+							
 					}
 				}
 				else if($svc == "adminPortalUsers"){
@@ -319,18 +338,40 @@ class AdminController extends Controller{
 						
 							
 							$sq->title = $q['query']['title'];
-							$sq->icon = $q['query']['iconBlob'];
+							if($q['query']['iconBlob']){ $sq->icon = $q['query']['iconBlob']; }
 							
 							if($sq->save()){ $serviceResponse[] = 'Service category updated!'; }
 							else{
 								Yii::$app->response->statusCode = 502;
 								$serviceResponse[] = 'Services gateway!';
 							}
+						}
+						else{
+								Yii::$app->response->statusCode = 402;
+								$serviceResponse[] = 'Icon required!';
+						}
+						
 					}
-					else{
-							Yii::$app->response->statusCode = 402;
-							$serviceResponse[] = 'Icon required!';
-					}
+					else if($svc == "portalServices"){
+						$sq = $SConnector['c'][1]->where(['id' => $q['query']['id']])->one();
+						
+							
+						$sq->title = $q['query']['title'];
+
+						if($q['query']['head']){ $sq->meta = $q['query']['head']; }
+						else{ $sq->meta = NULL; }
+
+						if($q['query']['body']){ $sq->content = $q['query']['body']; }
+						else{ $sq->content = NULL; }
+
+						if($q['query']['footer']){ $sq->proc = $q['query']['footer']; }
+						else{ $sq->proc = NULL; }
+
+						if($sq->save()){ $serviceResponse[] = 'Service data updated!'; }
+						else{
+							Yii::$app->response->statusCode = 502;
+							$serviceResponse[] = 'Services gateway!';
+						}
 				}
 				else if($svc == "adminPortalUsers"){
 					$currentLogin = $q['login'];
@@ -419,9 +460,14 @@ class AdminController extends Controller{
 							$serviceResponse[] = 'DBA Service Error!';
 						}
 					}
-					else{
-						Yii::$app->response->statusCode = 402;
-						$serviceResponse[] = 'Icon required!';
+					else if($svc == "portalServices"){
+						if($SConnector['c'][0]::deleteAll('id = :attr', [':attr' => $q['query']['id']])){ 
+							$serviceResponse[] = 'Current service deleted!'; 
+						}
+						else{
+							Yii::$app->response->statusCode = 502;
+							$serviceResponse[] = 'DBA Service Error!';
+						}
 					}
 				}
 				else if($svc == "adminPortalUsers"){
@@ -520,10 +566,6 @@ class AdminController extends Controller{
 					
 					if($svc == "portalServicesCategory"){ $serviceResponse = $SConnector['s'][1]->all(); }
 					else if($svc == "portalServicesCategory"){ $serviceResponse = $SConnector['c'][1]->all(); }
-					else{
-						Yii::$app->response->statusCode = 402;
-						$serviceResponse[] = 'Icon required!';
-					}
 				}
 				else{
 						Yii::$app->response->statusCode = 404;

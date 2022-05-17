@@ -1,0 +1,91 @@
+#add-category{
+    width: 70%;
+    display: block;
+    padding-top: 2%;
+    margin-left: 15%;
+}
+#add-category > *{
+    margin-top: 2%;
+}
+#add-category > div h2{
+    font-size: 200%;
+    color: #0079bf;
+}
+#add-category > div input#theme{
+    font-size: 180%;
+    width: 80%;
+    padding: 1%;
+}
+#add-category > *[data-block='titleImage'] label{
+	text-align: center;
+    color: white;
+    background-color: #0079bf;
+    border: none;
+    font-size: 100%;
+    padding: 10px;
+}
+#add-category > *[data-block='titleImage'] label #titleImageU{ display: none; }
+#add-category > *[data-block='titleImage'] #uploaded{
+	display: inline-block;
+    width: 10%;
+    object-fit: cover;
+    vertical-align: middle;
+    margin-left: 2%;
+}
+#add-category > button, #service-editor > button#send{
+    font-size: 100%;
+    width: 20%;
+    padding: 1%;
+    float: right;
+    margin-right: 8%;
+    margin-top: calc(2% * 3);
+    border: none;
+    color: #ffffff;
+    background-color: #0079bf;
+}
+
+
+#service-editor{}
+#service-editor > *[data-block='name']{}
+#service-editor > *[data-block='content']{}
+#service-editor > *[data-block='automatization']{}
+
+#service-editor > *[data-block='name'] input#title{}
+
+#service-editor > *[data-block='content'] h3{}
+#service-editor > *[data-block='content'] ul{}
+#service-editor > *[data-block='content'] ul li{}
+#service-editor > *[data-block='content'] ul li nav{}
+#service-editor > *[data-block='content'] ul li nav .wf{}
+.wf > *{}
+.wf > h4{}
+.wf > .editor-component{
+    width: 93%;
+    padding: 10px;
+    margin-top: 5%;
+}
+#service-editor > *[data-block='content'] ul[data-group='meta'] li nav .wf select{}
+#service-editor > *[data-block='content'] ul[data-group='meta'] li nav .wf .level{}
+#service-editor > *[data-block='content'] ul[data-group='meta'] li nav .wf .level li{}
+#service-editor > *[data-block='content'] ul[data-group='meta'] li nav .wf .level li #accessLevel{}
+#service-editor > *[data-block='content'] ul[data-group='meta'] li nav .wf .level li span{}
+#service-editor > *[data-block='content'] ul[data-group='content'] li nav .wf .add-questions{}
+#service-editor > *[data-block='content'] ul[data-group='content'] li nav .wf .add-formElements{}
+#service-editor > *[data-block='content'] ul[data-group='content'] li nav .wf .add-validator{}
+.add-questions > header{}
+.add-questions > main{}
+.add-questions > header div{}
+.add-questions > header div *{}
+.add-questions > header div #question{}
+.add-formElements > header{}
+.add-formElements > main{}
+.add-formElements > header div{}
+.add-formElements > header div #field{}
+.add-formElements > header div #fieldType{}
+.add-validator > header{}
+.add-questions > main button, .add-formElements > main button, .add-validator > main button{}
+
+#service-editor > *[data-block='automatization'] ul{}
+#service-editor > *[data-block='automatization'] ul li{}
+#service-editor > *[data-block='automatization'] ul li h4{}
+#service-editor > *[data-block='automatization'] ul li input{}
