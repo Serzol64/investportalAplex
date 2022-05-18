@@ -21,12 +21,37 @@ class Services extends React.Component{
 		this.state = { list: [] };
 	}
 	componentDidMount(){
+		fetch('/admin/api/dataServices/filters/portalServicesCategory/show', { method: 'GET'})
+			.then(response => response.json())
+			.then(this.generateSmartResponse)
+			.catch(error => {
+				alert('Response error!');
+				console.log(error);
+			});
 	}
+	generateSmartResponse(data){
+		let sr = [];
+
+		data.forEach((el) => {
+			let metaData = JSON.parse(el.meta),
+				query = this.query;
+
+			if(metaData.seoData.categoryId === query){ sr.push({ id: el.id, title: el.title}); }
+		});
+
+		this.setState({ list: sr });
+	}
+	linkGenerator(q){ return '/admin?svc=adminUsers&subSVC=portalServices&contentStatus=true&id=' + q + '#edit'; }
 	render(){
+		const renderList = this.state.list.map((query) => {
+			(
+				<li><a href={ this.linkGenearator(query.id) }>{ query.title }</a></li>
+			)
+		});
 		return (
 			<React.Fragment>
 				<ul>
-				  <li><a href="">Buy, sell and rent commercial real estate</a></li>
+				  { renderList }
 				</ul>
 			</React.Fragment>
 		);
@@ -36,21 +61,47 @@ class Services extends React.Component{
 class List extends React.Component{
 	constructor(props){
 		super(props);
-		this.state = { list: [], cQuery: [] };
+		this.state = { list: [], cQuery: { catId: 1 } };
 	}
 	componentDidMount(){
+		fetch('/admin/api/dataServices/filters/portalServices/send', { method: 'GET'})
+			.then(response => response.json())
+			.then(data => this.setState({ list: data }))
+			.catch(error => {
+				alert('Response error!');
+				console.log(error);
+			});
+
+		
+		$('#services-list > #list .categories a').click(function (e,t) { 
+			e.preventDefault();
+			
+			let currentCat = $('#services-list > #list .categories a').eq($(this).index()).data('cat');
+			this.setState({ cQuery: { catId: currentCat } });
+		});
+
+		$('#services-list > #list .categories a').eq(0).addClass('active-category');
+	}
+	blobToImage(q){
+		const reader = new FileReader();
+		reader.onloadend = () => { return reader.result; };
+		reader.readAsText(q);
 	}
 	render(){
+
+		const catsList = this.state.list.map((query) => {
+			(
+				<a data-cat={ query.id }>
+					<img src={ this.blobToImage(query.icon) } />
+					<strong>{ query.title }</strong>
+				</a>
+			)
+		});
 		return (
 			<React.Fragment>
 				<div id="services-list">
 				  <header id="search">
-					  <div class="categories">
-						<a data-cat="" class="active-category">
-						  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAC00lEQVRYhe2WO0wUURSGvzPDjqAmgDHEB43CxgeoibtWYCHWlhqxEKMJi6FCjBBD7AzRWuMOxldh1FjaGWJiFBsgBhRfC4UhROMLCoW4sPdY7C7PXXd2XbTxb2bm3nPP/fPff8658B//GJJuIhiOaA753qhM1/WHtn/wusDKYZPfYauo71HAfbXe64KMCvQ1+dPGpIpPwLMS+VYA4CVxJR7uvDJc9tcJxBzqgBdAtSP6ONNx5J3A8+P+zzGH/QkSGT1RkG8CwXBEiS4Y2irqewjsSBW/HB5Ihep0E3lTIN3fkqme/C0F8kcgGI5ojlUyJTwfQcDt81mmuDO5c9AdvqBMdPSHgtPJmKrLQ6tXWivqET1sYIvAulnibqR5aiZ6a6i56vv8vJ4VEC05r0Lr7IDqGcsUdyY/d18eriyynUEV7VKoE9gI2HPxXCqynYGAG6nIiQCqx+JPqRVLauKvnJhNZOtVYJPCACr1PjXlE1EKfWrKQY8oDACbLaVrflrvf4HE+4bYaG9j5TOW9pEaACsmB3qbK0eTg8MwBtwJuCM9qHmvUJsTAYFrCm1qtGdPODKuws2p0mj70KGqZNnxARhbHwTcdxetGevJeEw/ldpSZgrMXiHWluDs5ERgck30XOE3x4jSoMIGlJaicQfg1CKiu1C5rbZSYoOiiKZvqJ49MHSoKtrf5D/bd9K/MekBlIbFcSISQqVb49L/VBhDpVtEQqnyelYgGI6MAyViSQ3GFCTkXFIPDHKv/2RF1+LxgDtSLKibMwGEGygtarRnzn9yfUmcmscZPJAbganSaPvKr45J1gKBC6s+jnYs5ZmdBzwTSLj9dDAcaQXobfK3p4oTkZAaDqroNoG1Cl9E5bVY3Ff9kyNI4Dd3xGnA58EDC24L+byQPAX2ZfaAPsmKQLadL4MHRsTQmBWBP0QM+AD6VkXuThdN3hk8uuvHMu/5H9nhF5JAPQ7UqmmhAAAAAElFTkSuQmCC" />
-						  <strong>Investment and Objects</strong>
-						</a>
-					  </div>
+					  <div class="categories">{ catsList }</div>
 				  </header>
 				  <main id="list"><Services q={ this.state.cQuery } /></main>
 				</div>

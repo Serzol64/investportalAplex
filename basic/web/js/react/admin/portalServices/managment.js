@@ -573,6 +573,7 @@ class Edit extends React.Component{
 						</ul>
 					</footer>
 					<button id="send">Update current service in portal</button>
+					<button id="delete">Delete current service in portal</button>
 				</section></>
 			);
 		}
@@ -591,6 +592,7 @@ class Edit extends React.Component{
 						</section>
 					</div>
 					<button>Update category</button>
+					<button id="delete">Delete category</button>
 				</div></>
 			);
 		}
