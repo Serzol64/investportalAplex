@@ -40,11 +40,11 @@ $this->title = 'Portal services';
 			</div>
 			<h2 id="title">New services</h2>
 			<div class="news-feed">
-                <footer><div id="down-feed"><div class="down-feed-cont"><div id="cont-content"></div></div></div></footer>
+                <footer><div id="down-feed"><div class="down-feed-cont"><div id="cont-content"><ul><?php foreach($feed['new'] as $ns){ ?><li><?php echo Html::a($ns->title, ['site/service-view', 'serviceId' => $ns->id]); ?></li></ul></div></div></div></footer>
             </div>
 			<h2 id="title">Popular services</h2>
 			<div class="news-feed">
-                <footer><div id="down-feed"><div class="down-feed-cont"><div id="cont-content"></div></div></div></footer>
+			<footer><div id="down-feed"><div class="down-feed-cont"><div id="cont-content"><ul><?php foreach($feed['new'] as $ps){ ?><li><?php echo Html::a($ps->title, ['site/service-view', 'serviceId' => $ps->id]); ?></li></ul></div></div></div></footer>
             </div>
         </section>
  </main>

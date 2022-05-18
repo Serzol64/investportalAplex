@@ -58,10 +58,14 @@ class SiteController extends Controller{
 		$this->view->registerJsFile("/js/services.js", ['position' => View::POS_END]);
 		
 		$sf = [
-			[PortalServicesCategory::find()->all(), PortalServices::find()->select('id, title, JSON_EXTRACT(meta, \'$.seoData.categoryId\') as category')->where(['category' => 1])->orderBy('id desc')->all()]
+			[PortalServicesCategory::find()->all(), PortalServices::find()->select('id, title, JSON_EXTRACT(meta, \'$.seoData.categoryId\') as category')->where(['category' => 1])->orderBy('id desc')->all()],
+			[
+				'new' => PortalServices::find()->select('id,title')->orderBy('id desc')->limit(4)->all()
+			]
+		
 		];
 		
-		return $this->render('services', ['categories' => $sf[0]);
+		return $this->render('services', ['categories' => $sf[0], 'feed' => $sf[1]);
 	}
 	public function actionServicesApi($serviceId, $operation){
 		switch($serviceId){
