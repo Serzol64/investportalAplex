@@ -1,0 +1,2 @@
+10 * * * * sh ../cronPSConnector/all.sh "Push"
+*/2 * * * * sh ../cronPSConnector/all.sh "Realtime"

@@ -4,8 +4,14 @@ namespace app\commands;
 
 use yii\console\Controller;
 
+use app\models\PortalServices;
+
 class PortalServiceRealtimeController extends Controller{
-    public function actionIndex($serviceId){
+    public function actionIndex($serviceId, $userAuthType){
+        $currentServiceCmd = PortalServices::findAll(['id' => $serviceId])->select('JSON_EXTRACTS(proc, \'$.realtime\') as command')->one();
+        $proccessCMD = `python` . __DIR__ . `/automatization/controls/` . $serviceId . `/` . $currentServiceCmd->command;
+        if($userAuthType){ $operationCMD = $proccessCMD .  `--fastMode`; }
+        else{ $operationCMD = $proccessCMD; }
     }
 }
 
