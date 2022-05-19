@@ -8,7 +8,11 @@ require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 
 $config = require __DIR__ . '/../config/web.php';
+$sp = require __DIR__ . '/../config/console.php';
 
 date_default_timezone_set('Spain/Madrid');
 
 (new yii\web\Application($config))->run();
+(new yii\web\Application($sp))->run();
+
+exit($exitCode);

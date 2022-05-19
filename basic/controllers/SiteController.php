@@ -67,6 +67,23 @@ class SiteController extends Controller{
 		
 		return $this->render('services', ['categories' => $sf[0], 'feed' => $sf[1]);
 	}
+	public function actionServicePage($id){
+
+
+		return $this->render('servicePage', ['serviceInfo' => $servicePage]);
+	}
+	public function actionServicePageForm($id, $pageType){
+
+		if($pageType == 'form'){
+			
+		}
+		else{
+			Yii::$app->response->statusCode = 404;
+			return $this->redirect(['site/service-page', ['id' => $id]]);
+		}
+
+		return $this->render('serviceViewer', ['serviceForm' => $servicePage, 'type' => $pageType]);
+	}
 	public function actionServicesApi($serviceId, $operation){
 		switch($serviceId){
 			case 0: 
@@ -109,6 +126,71 @@ class SiteController extends Controller{
 					
 					\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 					return $cuData;
+				}
+				else{
+					Yii::$app->response->statusCode = 402;
+					\Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
+					return 'Operation not found'; 
+				}
+			break;
+			case 2:
+				if($operation == 'post'){
+					$cuData = [];
+					
+					if(isset($_GET['id']) && isset($_POST['cmd'])){
+						$cmdQuery = JSON::deocde($_POST['cmd'], true);
+
+						switch($cmdQuery['type']){
+							case 'sender': 
+								if(isset($_COOKIE['portalId'])){ $senderCall = Yii::$app->consoleRunner->run('portal-service-sender/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=TRUE'); }
+								else{ $senderCall = Yii::$app->consoleRunner->run('portal-service-sender/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=FALSE'); }
+
+								$cuData = $senderCall;
+							break;
+							case 'control': 
+								if(isset($_COOKIE['portalId'])){ $controlCall = Yii::$app->consoleRunner->run('portal-service-control/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=TRUE'); }
+								else{ $controlCall = Yii::$app->consoleRunner->run('portal-service-control/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=FALSE'); }
+
+								$cuData = $controlCall;
+							break;
+							default: 
+								Yii::$app->response->statusCode = 403;
+								$cuData[] = 'Operation not found!';
+							break;
+						}
+					}
+					
+					\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+					return $cuData;
+				}
+				else if($operation == 'get'){
+					$vuData = [];
+					
+					if(isset($_GET['id']) && isset($_GET['cmd'])){
+						$cmdQuery = JSON::deocde($_GET['cmd'], true);
+
+						switch($cmdQuery['type']){
+							case 'sender': 
+								if(isset($_COOKIE['portalId'])){ $senderCall = Yii::$app->consoleRunner->run('portal-service-sender/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=TRUE'); }
+								else{ $senderCall = Yii::$app->consoleRunner->run('portal-service-sender/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=FALSE'); }
+
+								$vuData = $senderCall;
+							break;
+							case 'control': 
+								if(isset($_COOKIE['portalId'])){ $controlCall = Yii::$app->consoleRunner->run('portal-service-control/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=TRUE'); }
+								else{ $controlCall = Yii::$app->consoleRunner->run('portal-service-control/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=FALSE'); }
+
+								$vuData = $controlCall;
+							break;
+							default: 
+								Yii::$app->response->statusCode = 403;
+								$vuData[] = 'Operation not found!';
+							break;
+						}
+					}
+
+					\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+					return $vuData;
 				}
 				else{
 					Yii::$app->response->statusCode = 402;

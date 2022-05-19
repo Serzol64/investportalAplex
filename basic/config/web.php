@@ -16,18 +16,13 @@ $config = [
             'enableCookieValidation' => false,
             'baseUrl' => ''
         ],
+		'consoleRunner' => [
+			'class' => 'vova07\console\ConsoleRunner',
+			'file' => __DIR__ . '/../yii'
+		],
         'errorHandler' => [
 			'errorAction' => 'site/error',
 		],
-        'sessionRedis' => [
-			'class' => 'yii\redis\Session'
-		],
-		'cacheRedis' => [
-			'class' => 'yii\redis\Cache'
-		],
-        'imageCreator' => [
-			'class' => 'app\components\ImageCreator'
-        ],
         'urlManager' => [
 			 'class' => 'yii\web\UrlManager',
 			 'enablePrettyUrl' => true,
@@ -37,6 +32,8 @@ $config = [
 				'defaultRoute' => 'site/index',
 				'about' => 'site/about',
 				'services' => 'site/services',
+				'services/<id: \d+>' => 'site/service-page',
+				'services/<id: \d+>/<page-type>' => 'site/service-page-form',
 				'services/<serviceId:\d+>/<operation>' => 'site/services-api',
 				'investors' => 'objects/investors',
 				'accounts/<service>' => '/site/account-service',
