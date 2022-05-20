@@ -69,13 +69,24 @@ class SiteController extends Controller{
 	}
 	public function actionServicePage($id){
 
+		$currentServiceQuery = [
+			PortalServices::findOne(['id' => $id]),
+			PortalServices::findOne(['id' => $id])->select('meta');
+		];
 
-		return $this->render('servicePage', ['servicePage' => $servicePage]);
+		$serviceMetaData = JSON::decode($currentServiceQuery[1]->meta, true);
+
+
+		return $this->render('servicePage', ['servicePage' => $currentServiceQuery[0]]);
 	}
 	public function actionServicePageForm($id, $pageType){
 
+		$this->view->registerJsFile("https://unpkg.com/@babel/standalone/babel.min.js", ['position' => View::POS_HEAD]);
+		$this->view->registerJsFile("https://unpkg.com/react@17/umd/react.production.min.js", ['position' => View::POS_HEAD]);
+		$this->view->registerJsFile("https://unpkg.com/react-dom@17/umd/react-dom.production.min.js", ['position' => View::POS_HEAD]);
+
 		if($pageType == 'form'){
-			
+			$this->view->registerJsFile("/js/react/serviceFormPage.js", ['position' => View::POS_END]);
 		}
 		else{
 			Yii::$app->response->statusCode = 404;
