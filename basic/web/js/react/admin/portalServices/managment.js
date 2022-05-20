@@ -258,7 +258,7 @@ class Add extends React.Component{
 														<option>Select form field type</option>
 														<option value="default">Text form</option>
 														<option value="list">List form</option>
-														<option value="upload">File uploader</option>
+														<option value="upload">Files upload form</option>
 														<option value="search">Search form</option>
 													</select>
 												</div>
@@ -511,7 +511,7 @@ class Edit extends React.Component{
 														<option>Select form field type</option>
 														<option value="default">Text form</option>
 														<option value="list">List form</option>
-														<option value="upload">File uploader</option>
+														<option value="upload">Files upload form</option>
 														<option value="search">Search form</option>
 													</select>
 												</div>
