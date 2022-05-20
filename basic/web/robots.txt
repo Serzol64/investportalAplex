@@ -1,42 +1,48 @@
-Host:good-adults.ru
+Host:investportal.aplex.ru
 
-Sitemap:https://good-adults.ru/sitemaps?svc=basic
+Sitemap:https://investportal.aplex.ru/sitemaps?svc=basic
 
 User-Agent:Yandex
 Disallow:/passport
 Disallow:/admin
 Disallow:/passport/*
 Disallow:/admin/*
+Disallow: /form$
 
 User-Agent:Mail.RU
 Disallow:/passport
 Disallow:/admin
 Disallow:/passport/*
 Disallow:/admin/*
+Disallow: /form$
 
 User-Agent:YandexPagechecker
 Disallow:/passport
 Disallow:/admin
 Disallow:/passport/*
 Disallow:/admin/*
+Disallow: /form$
 
 User-Agent:YandexImageResizer
 Disallow:/passport
 Disallow:/admin
 Disallow:/passport/*
 Disallow:/admin/*
+Disallow: /form$
 
 User-Agent:SputnikBot
 Disallow:/passport
 Disallow:/admin
 Disallow:/passport/*
 Disallow:/admin/*
+Disallow: /form$
 
 User-Agent:Googlebot
 Disallow:/passport
 Disallow:/admin
 Disallow:/passport/*
 Disallow:/admin/*
+Disallow: /form$
 
 
 User-Agent:Bingbot
@@ -44,6 +50,7 @@ Disallow:/passport
 Disallow:/admin
 Disallow:/passport/*
 Disallow:/admin/*
+Disallow: /form$
 
 
 User-Agent:Twitter
@@ -51,6 +58,7 @@ Disallow:/passport
 Disallow:/admin
 Disallow:/passport/*
 Disallow:/admin/*
+Disallow: /form$
 
 
 User-Agent:svetabot
@@ -61,9 +69,11 @@ Disallow:/passport
 Disallow:/admin
 Disallow:/passport/*
 Disallow:/admin/*
+Disallow: /form$
 
 User-Agent:Applebot
 Disallow:/passport
 Disallow:/admin
 Disallow:/passport/*
 Disallow:/admin/*
+Disallow: /form$

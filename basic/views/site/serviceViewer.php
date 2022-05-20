@@ -17,7 +17,7 @@ $this->title = $serviceForm->title . ':: Portal services';
                 switch ($type) {
                     case 'form':
             ?>
-                <div data-serviceForm-type="main" data-service="<?php echo $serviceForm->id; ?>"></div>
+                <div id="svcForm" data-serviceForm-type="main" data-service="<?php echo $serviceForm->id; ?>"></div>
             <?php
                     break;
                 }

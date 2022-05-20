@@ -5,7 +5,7 @@ class ServiceForm extends React.Component{
         super(props);
     }
     componentDidMount(){
-        
+
     }
     render(){
         return (
@@ -18,4 +18,4 @@ class ServiceForm extends React.Component{
     }
 }
 
-ReactDOM.render(<ServiceForm />, document.querySelector(''));
+ReactDOM.render(<ServiceForm />, document.getElementById('svcForm'));
