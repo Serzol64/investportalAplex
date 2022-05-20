@@ -268,20 +268,6 @@ class Add extends React.Component{
 									</div>
 								</nav>
 							</li>
-							<li>
-								{"<!--Validator Data-->"}
-								<nav>
-									<div className="wf">
-										<h4>Adding form validation errors</h4>
-										<div className="add-validator">
-											<header>
-
-											</header>
-											<main><button>Add validation data</button></main>
-										</div>
-									</div>
-								</nav>
-							</li>
 						</ul>
 					</main>
 					<footer data-block="automatization">
@@ -531,21 +517,6 @@ class Edit extends React.Component{
 												</div>
 											</header>
 											<main><button>Add element</button></main>
-										</div>
-									</div>
-								</nav>
-							</li>
-							<li>
-								{"<!--Validator Data-->"}
-								<nav>
-									<div className="wf">
-										<h4>Adding form validation errors</h4>
-										<div className="add-validator">
-											<header>
-												<div>
-												</div>
-											</header>
-											<main><button>Add validation data</button></main>
 										</div>
 									</div>
 								</nav>

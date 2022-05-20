@@ -71,7 +71,6 @@
 #service-editor > *[data-block='content'] ul[data-group='meta'] li nav .wf .level li span{}
 #service-editor > *[data-block='content'] ul[data-group='content'] li nav .wf .add-questions{}
 #service-editor > *[data-block='content'] ul[data-group='content'] li nav .wf .add-formElements{}
-#service-editor > *[data-block='content'] ul[data-group='content'] li nav .wf .add-validator{}
 .add-questions > header{}
 .add-questions > main{}
 .add-questions > header div{}
@@ -82,7 +81,6 @@
 .add-formElements > header div{}
 .add-formElements > header div #field{}
 .add-formElements > header div #fieldType{}
-.add-validator > header{}
 .add-questions > main button, .add-formElements > main button, .add-validator > main button{}
 
 #service-editor > *[data-block='automatization'] ul{}

@@ -70,7 +70,7 @@ class SiteController extends Controller{
 	public function actionServicePage($id){
 
 
-		return $this->render('servicePage', ['serviceInfo' => $servicePage]);
+		return $this->render('servicePage', ['servicePage' => $servicePage]);
 	}
 	public function actionServicePageForm($id, $pageType){
 
