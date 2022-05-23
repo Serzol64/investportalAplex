@@ -34,7 +34,7 @@ $this->title = "Passport";
                               <button><i class="far fa-edit"></i></button>
                             </div>
                             <div class="form-wrapper-special">
-                              <span>E-Mail</span>
+                              <span>E-Mail</span>                              
                               <input type="email" disabled="true" class="input" value="<?php echo $ud_data['email']; ?>">
                               <button><i class="far fa-edit"></i></button>
                             </div>
