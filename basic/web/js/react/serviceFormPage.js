@@ -42,6 +42,122 @@ class ServiceForm extends React.Component{
     }
     componentDidMount(){
         
+
+        $('#default-field').input(function(e,t){
+
+        });
+        $('#search-field').autocomplete({
+            noCache: true,
+            minChars: 2,
+            maxHeight: $(window).height() / 6,
+            lookup: this.findSearchData,
+            onSelect: this.searchQueryGenerator
+        });
+        $('#list-field').change(function(e,t){
+            
+        });
+        $('#upload-field').change(function(e,t){
+            
+        });
+        $('footer#formUI > #body button').click(function(e,t){
+            var message = $(this).text();
+
+            if(message.indexOf('Count')){
+                
+            }
+            else{
+               var cmd = new FormData();
+               let cmdQuery = null, fi, fields = $(''), textFields, searchFields, listFields, uploadFields;
+
+               if(get_cookie('portalId')){
+                   let authorizedQ = {
+                    type: 'send',
+                    parameters: {
+                        portalId: get_cookie('portalId'),
+                        text: [],
+                        search: [],
+                        list: [],
+                        upload: []
+                    }
+                   };
+
+                   for(fi = 0; fi < fields.length; fi++){
+                        textFields = fields.eq(fi).find('#default-field');
+                        searchFields = fields.eq(fi).find('#search-field');
+                        listFields = fields.eq(fi).find('#list-field');
+                        uploadFields = JSON.parse(sessionStorage.getItem('uploaders'));
+
+                        let aqi;
+
+                        if(textFields){
+                            for(aqi = 0; aqi < textFields.length; aqi){ authorizedQ.parameters.text.push(textFields.eq(aqi).val()); }
+                        }
+                        else if(searchFields){
+                            for(aqi = 0; aqi < searchFields.length; aqi){ authorizedQ.parameters.search.push(searchFields.eq(aqi).val()); }
+                        }
+                        else if(listFields){
+                            for(aqi = 0; aqi < listFields.length; aqi){ authorizedQ.parameters.list.push(listFields.eq(aqi).val()); }
+                        }
+                        else if(uploadFields){
+                            for(aqi = 0; aqi < uploadFields.length; aqi){ authorizedQ.parameters.upload.push(uploadFields[aqi]); }
+                        }
+                   }
+
+                   cmdQuery = visitorQ;
+               }
+               else{
+                    let visitorQ = {
+                        type: 'send',
+                        parameters: {
+                            visitor: {
+                                fn: $('').val + ' ' + $('').val(),
+                                country: $('').val(),
+                                contactData: {
+                                    email: $('').val(),
+                                    phone: $('').val()
+                                }
+                            },
+                            text: [],
+                            search: [],
+                            list: [],
+                            upload: []
+                        }
+                    };
+
+                    
+                   for(fi = 1; fi < fields.length; fi++){
+                        textFields = fields.eq(fi).find('#default-field');
+                        searchFields = fields.eq(fi).find('#search-field');
+                        listFields = fields.eq(fi).find('#list-field');
+                        uploadFields = JSON.parse(sessionStorage.getItem('uploaders'));
+
+                        let aqv;
+
+                        if(textFields){
+                            for(aqv = 0; aqv < textFields.length; aqv){ visitorQ.parameters.text.push(textFields.eq(aqv).val()); }
+                        }
+                        else if(searchFields){
+                            for(aqv = 0; aqv < searchFields.length; aqv){ visitorQ.parameters.search.push(searchFields.eq(aqv).val()); }
+                        }
+                        else if(listFields){
+                            for(aqv = 0; aqv < listFields.length; aqv){ visitorQ.parameters.list.push(listFields.eq(aqv).val()); }
+                        }
+                        else if(uploadFields){
+                            for(aqv = 0; aqv < uploadFields.length; aqv){ visitorQ.parameters.upload.push(uploadFields[aqv]); }
+                        }
+                   }
+
+                    cmdQuery = visitorQ;
+               }
+
+               cmd.append('cmd', cmdQuery);
+
+               fetch('/services/2/post?id=' + currentService, {method: 'POST', body: cmd})
+                .then(response => response.json())
+                .then(this.SuccessServiceResponse)
+                .catch(this.FailServiceResponse);
+            }
+        });
     }
     render(){
         return (
@@ -168,6 +284,12 @@ class ServiceForm extends React.Component{
 
         return formResponse;
     }
+    findSearchData(query,done){
+        
+    }
+    searchQueryGenerator(response){
+        
+    }
     isVisitor(q){
         let formVisibile = null;
         if(!get_cookie('portalId')){
@@ -229,6 +351,12 @@ class ServiceForm extends React.Component{
         }
 
         return formVisibile;
+    }
+    SuccessServiceResponse(data){
+
+    }
+    FailServiceResponse(data){
+
     }
 }
 

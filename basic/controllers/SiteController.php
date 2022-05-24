@@ -86,6 +86,7 @@ class SiteController extends Controller{
 		$this->view->registerJsFile("https://unpkg.com/react-dom@17/umd/react-dom.production.min.js", ['position' => View::POS_HEAD]);
 
 		if($pageType == 'form'){
+			$this->view->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.11/jquery.autocomplete.min.js", ['position' => View::POS_HEAD]);
 			$this->view->registerJsFile("/js/react/serviceFormPage.js", ['position' => View::POS_END]);
 		}
 		else{
