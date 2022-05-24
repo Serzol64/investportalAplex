@@ -1,5 +1,5 @@
 let currentService = $('#service-page-form > div[data-serviceForm-type="main"]').data('service');
-
+let currentStep = 0, n;
 
 class RegionList extends React.Component{
 	constructor(props){
@@ -41,10 +41,57 @@ class ServiceForm extends React.Component{
         }
     }
     componentDidMount(){
-        
+        let currentServiceForm = {
+            type: 'control',
+            parameters: {
+                service: 'getForm'
+            }
+        };
+        var psfr = new FormData();
+
+        psfr.append('cmd', JSON.stringify(currentServiceForm));
+        fetch('/services/2/get?id=' + currentService, { method: 'GET', body: psfr})
+            .then(response => response.json())
+            .then((data) => {
+                this.setState({
+                    header: data.steps.header,
+                    body: data.steps.content,
+                    footer: data.steps.countines
+                });
+            })
+            .catch((error) => {
+
+            });
 
         $('#default-field').input(function(e,t){
+            let curClass = this.className,
+                curValue = this.value;
 
+            var vsq = new FormData();
+
+            let validQuery = {
+                type: 'control',
+                parameters: {
+                    fieldFormName: curClass,
+                    fieldFormQuery: curValue
+                }
+            };
+
+            alertify.set('notifier','position', 'top-right');
+			alertify.set('notifier','delay', 5);
+
+            vsq.append('cmd', JSON.stringify(validQuery));
+
+            fetch('/services/2/get?id=' + currentService, { method: 'GET', body: vsq})
+            .then(response => response.json())
+            .then((data) => {
+                switch(data.valid.class){
+                    case true: return false; break;
+                    default: alertify.error(data.valid.error); break;
+                }
+            });
+
+            
         });
         $('#search-field').autocomplete({
             noCache: true,
@@ -63,11 +110,16 @@ class ServiceForm extends React.Component{
             var message = $(this).text();
 
             if(message.indexOf('Count')){
-                
+                var sllib = $('main#formUI > .formStep div#step');
+                    n = currentStep + 1;
+                    
+                sllib.eq(currentStep).css('display','none');
+                currentStep = (n+sllib.length)%sllib.length;
+                sllib.eq(currentStep).css('display','inthernit');
             }
             else{
                var cmd = new FormData();
-               let cmdQuery = null, fi, fields = $(''), textFields, searchFields, listFields, uploadFields;
+               let cmdQuery = null, fi, fields = $('main#formUI > .formStep div#step'), textFields, searchFields, listFields, uploadFields;
 
                if(get_cookie('portalId')){
                    let authorizedQ = {
@@ -90,16 +142,16 @@ class ServiceForm extends React.Component{
                         let aqi;
 
                         if(textFields){
-                            for(aqi = 0; aqi < textFields.length; aqi){ authorizedQ.parameters.text.push(textFields.eq(aqi).val()); }
+                            for(aqi = 0; aqi < textFields.length; aqi++){ authorizedQ.parameters.text.push(textFields.eq(aqi).val()); }
                         }
                         else if(searchFields){
-                            for(aqi = 0; aqi < searchFields.length; aqi){ authorizedQ.parameters.search.push(searchFields.eq(aqi).val()); }
+                            for(aqi = 0; aqi < searchFields.length; aqi++){ authorizedQ.parameters.search.push(searchFields.eq(aqi).val()); }
                         }
                         else if(listFields){
-                            for(aqi = 0; aqi < listFields.length; aqi){ authorizedQ.parameters.list.push(listFields.eq(aqi).val()); }
+                            for(aqi = 0; aqi < listFields.length; aqi++){ authorizedQ.parameters.list.push(listFields.eq(aqi).val()); }
                         }
                         else if(uploadFields){
-                            for(aqi = 0; aqi < uploadFields.length; aqi){ authorizedQ.parameters.upload.push(uploadFields[aqi]); }
+                            for(aqi = 0; aqi < uploadFields.length; aqi++){ authorizedQ.parameters.upload.push(uploadFields[aqi]); }
                         }
                    }
 
@@ -110,11 +162,11 @@ class ServiceForm extends React.Component{
                         type: 'send',
                         parameters: {
                             visitor: {
-                                fn: $('').val + ' ' + $('').val(),
-                                country: $('').val(),
+                                fn: $('#fn').val() + ' ' + $('#sn').val(),
+                                country: $('#region').val(),
                                 contactData: {
-                                    email: $('').val(),
-                                    phone: $('').val()
+                                    email: $('#email').val(),
+                                    phone: $('#phone').val()
                                 }
                             },
                             text: [],
@@ -134,23 +186,23 @@ class ServiceForm extends React.Component{
                         let aqv;
 
                         if(textFields){
-                            for(aqv = 0; aqv < textFields.length; aqv){ visitorQ.parameters.text.push(textFields.eq(aqv).val()); }
+                            for(aqv = 0; aqv < textFields.length; aqv++){ visitorQ.parameters.text.push(textFields.eq(aqv).val()); }
                         }
                         else if(searchFields){
-                            for(aqv = 0; aqv < searchFields.length; aqv){ visitorQ.parameters.search.push(searchFields.eq(aqv).val()); }
+                            for(aqv = 0; aqv < searchFields.length; aqv++){ visitorQ.parameters.search.push(searchFields.eq(aqv).val()); }
                         }
                         else if(listFields){
-                            for(aqv = 0; aqv < listFields.length; aqv){ visitorQ.parameters.list.push(listFields.eq(aqv).val()); }
+                            for(aqv = 0; aqv < listFields.length; aqv++){ visitorQ.parameters.list.push(listFields.eq(aqv).val()); }
                         }
                         else if(uploadFields){
-                            for(aqv = 0; aqv < uploadFields.length; aqv){ visitorQ.parameters.upload.push(uploadFields[aqv]); }
+                            for(aqv = 0; aqv < uploadFields.length; aqv++){ visitorQ.parameters.upload.push(uploadFields[aqv]); }
                         }
                    }
 
                     cmdQuery = visitorQ;
                }
 
-               cmd.append('cmd', cmdQuery);
+               cmd.append('cmd', JSON.stringify(cmdQuery));
 
                fetch('/services/2/post?id=' + currentService, {method: 'POST', body: cmd})
                 .then(response => response.json())
@@ -237,7 +289,7 @@ class ServiceForm extends React.Component{
                     const sfld = newField.form.map((sfd) => {
                         <label>
                             <span>{ sfd.name }</span>
-                            <input type="search" id="search-field" className={ sfd.fieldName } data-searchSource={ sfd.dSource } placeholer={ sfd.dExample } />
+                            <input type="search" id="search-field" className={ sfd.fieldName } data-dSource={ sfd.dSource } data-dMethod={ sfd.dMethod } placeholer={ sfd.dExample } />
                         </label>
                     });
 
@@ -285,10 +337,15 @@ class ServiceForm extends React.Component{
         return formResponse;
     }
     findSearchData(query,done){
-        
+        var sf = new FormData();
+
+        fetch($(this).data('dSource'), {method: $(this).data('dMethod') ? 'GET' : 'POST', body: sf })
+            .then(response => response.json())
+            .then(data => done(data));
     }
     searchQueryGenerator(response){
-        
+        $(this).val(response.value);
+        $(this).prop('disabled', true);
     }
     isVisitor(q){
         let formVisibile = null;
