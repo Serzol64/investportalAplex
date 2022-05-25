@@ -90,8 +90,6 @@ class ServiceForm extends React.Component{
                     default: alertify.error(data.valid.error); break;
                 }
             });
-
-            
         });
         $('#search-field').autocomplete({
             noCache: true,
@@ -101,27 +99,200 @@ class ServiceForm extends React.Component{
             onSelect: this.searchQueryGenerator
         });
         $('#list-field').change(function(e,t){
-            
+            $(this).css('border', 'solid 2px #0079bf');
         });
         $('#upload-field').change(function(e,t){
-            
+            let fileQuery = {},
+                uploadedFiles = e.target.files,
+                readersUpload = new FileReader();
+
+            if($(this).length > 1){
+                if(sessionStorage.getItem('uploaders')){
+                    let existingData = JSON.parse(sessionStorage.getItem('uploaders'));
+
+                    if(existingData.length === 1 || existingData.length > 1){
+                        fileQuery.push(existingData);
+                        fileQuery.push({});
+                        for(var i = 0; i < uploadedFiles.length; i++){ fileQuery[(existingData.length - 1) + 1].push(readersUpload.result); }
+                    }
+                    else{
+                        fileQuery.push(existingData);
+                        fileQuery.push({});
+                        for(var i = 0; i < uploadedFiles.length; i++){ fileQuery[$(this).index()%$(this).length].push(readersUpload.result); }
+                    }
+
+                    sessionStorage.removeItem('uploaders');
+                }
+                else{
+                    fileQuery.push({});
+                    for(var i = 0; i < uploadedFiles.length; i++){ fileQuery[$(this).index()%$(this).length].push(readersUpload.result); }
+                }
+            }
+            else{
+                readersUpload.onloadend = () => {
+                    for(var i = 0; i < uploadedFiles.length; i++){ fileQuery.push(readersUpload.result); }
+                };
+            }
+
+            readersUpload.readAsDataURL(uploadedFiles);
+            sessionStorage.setItem('uploaders', JSON.stringify(fileQuery));
+
+            $('main#formUI > .formStep #step #upload-field-content span').eq($(this).index()).text('You uploaded of files: ' + uploadedFiles.length);
         });
         $('footer#formUI > #body button').click(function(e,t){
-            var message = $(this).text();
+            var message = $(this).text(),
+                validCMD = new FormData();
+            let formError = [],
+                formValidQuery = {},
+                errorContentForm = '';
 
             if(message.indexOf('Count')){
-                var sllib = $('main#formUI > .formStep div#step');
+                var sllib = $('#formUI > .formStep #step');
                     n = currentStep + 1;
-                    
-                sllib.eq(currentStep).css('display','none');
-                currentStep = (n+sllib.length)%sllib.length;
-                sllib.eq(currentStep).css('display','inthernit');
+
+                let validField = [
+                    $('main#formUI > .formStep #step').eq(currentStep).find('#default-field'),
+                    $('main#formUI > .formStep #step').eq(currentStep).find('#search-field'),
+                    $('main#formUI > .formStep #step').eq(currentStep).find('#list-field'),
+                    $('main#formUI > .formStep #step').eq(currentStep).find('#upload-field')
+                 ];
+
+                 if(validField[1]){
+                    formValidQuery = {
+                        type: 'control',
+                        parameters: {
+                            multiValidator: {
+                                fieldsName: getArrayClasses(validField[1]),
+                                fieldsValue: getArrayValues(validField[1])
+                            }
+                        }
+                    };
+                 }
+                 else if(validField[0]){
+                    formValidQuery = {
+                        type: 'control',
+                        parameters: {
+                            multiValidator: {
+                                fieldsName: getArrayClasses(validField[0]),
+                                fieldsValue: getArrayValues(validField[0])
+                            }
+                        }
+                    };
+                 }
+                 else if(validField[2]){
+                    formValidQuery = {
+                        type: 'control',
+                        parameters: {
+                            multiValidator: {
+                                fieldsName: getArrayClasses(validField[2]),
+                                fieldsValue: getArrayValues(validField[2])
+                            }
+                        }
+                    };
+                 }
+                 else if(validField[3]){
+                    formValidQuery = {
+                        type: 'control',
+                        parameters: {
+                            multiValidator: {
+                                fieldsName: getArrayClasses(validField[3]),
+                                fieldsValue: getArrayValues(validField[3])
+                            }
+                        }
+                    };
+                 }
+
+                 validCMD.append('cmd', JSON.stringify(formValidQuery));
+
+                 fetch('/services/2/post?id=' + currentService, {method: 'POST', body: validCMD})
+                 .then(response => response.json())
+                 .then((data) => {
+                    if(data.error.length > 0){
+                        for(var i = 0; i < data.error.length; i++){ formError.push(data.error[i]); }
+                    }
+                 });
+
+                if(formError.length === 0){
+                    sllib.eq(currentStep).css('display','none');
+                    currentStep = (n+sllib.length)%sllib.length;
+                    sllib.eq(currentStep).css('display','inthernit');
+                }
+                else{
+                    alertify.set('notifier','position', 'bottom-right');
+			        alertify.set('notifier','delay', 10);
+
+                    for(var i = 0; i < formError.length; i++){ errorContentForm += formError[i] + '\n\n'; }
+
+                    alertify.error(errorContentForm);
+                }
             }
             else{
                var cmd = new FormData();
                let cmdQuery = null, fi, fields = $('main#formUI > .formStep div#step'), textFields, searchFields, listFields, uploadFields;
+               
+               let validFinal = [
+                  $('main#formUI > .formStep #step').eq($('main#formUI > .formStep #step').length - 1).find('#default-field'),
+                  $('main#formUI > .formStep #step').eq($('main#formUI > .formStep #step').length - 1).find('#search-field'),
+                  $('main#formUI > .formStep #step').eq($('main#formUI > .formStep #step').length - 1).find('#list-field'),
+                  $('main#formUI > .formStep #step').eq($('main#formUI > .formStep #step').length - 1).find('#upload-field')
+               ];
 
-               if(get_cookie('portalId')){
+               if(validFinal[1]){
+                    formValidQuery = {
+                        type: 'control',
+                        parameters: {
+                            multiValidator: {
+                                fieldsName: getArrayClasses(validFinal[1]),
+                                fieldsValue: getArrayValues(validFinal[1])
+                            }
+                        }
+                    };
+               }
+               else if(validFinal[0]){
+                    formValidQuery = {
+                        type: 'control',
+                        parameters: {
+                            multiValidator: {
+                                fieldsName: getArrayClasses(validFinal[0]),
+                                fieldsValue: getArrayValues(validFinal[0])
+                            }
+                        }
+                    };
+               }
+               else if(validFinal[2]){
+                    formValidQuery = {
+                        type: 'control',
+                        parameters: {
+                            multiValidator: {
+                                fieldsName: getArrayClasses(validFinal[2]),
+                                fieldsValue: getArrayValues(validFinal[2])
+                            }
+                        }
+                    };
+               }
+               else if(validFinal[3]){
+                    formValidQuery = {
+                        type: 'control',
+                        parameters: {
+                            multiValidator: {
+                                fieldsName: getArrayClasses(validFinal[3]),
+                                fieldsValue: getArrayValues(validFinal[3])
+                            }
+                        }
+                    };
+               }
+
+               validCMD.append('cmd', JSON.stringify(formValidQuery));
+
+                fetch('/services/2/post?id=' + currentService, {method: 'POST', body: validCMD})
+                 .then(response => response.json())
+                 .then((data) => {
+                    if(data.error.length > 0){
+                        for(var i = 0; i < data.error.length; i++){ formError.push(data.error[i]); }
+                    }
+                 });
+               
+               if(formError.length === 0 && get_cookie('portalId')){
                    let authorizedQ = {
                     type: 'send',
                     parameters: {
@@ -157,7 +328,7 @@ class ServiceForm extends React.Component{
 
                    cmdQuery = visitorQ;
                }
-               else{
+               else if(formError.length === 0 && !get_cookie('portalId')){
                     let visitorQ = {
                         type: 'send',
                         parameters: {
@@ -201,13 +372,25 @@ class ServiceForm extends React.Component{
 
                     cmdQuery = visitorQ;
                }
+               else{
+                alertify.set('notifier','position', 'bottom-right');
+                alertify.set('notifier','delay', 10);
 
-               cmd.append('cmd', JSON.stringify(cmdQuery));
+                for(var i = 0; i < formError.length; i++){ errorContentForm += formError[i] + '\n\n'; }
+                alertify.error(errorContentForm);
+              }
 
-               fetch('/services/2/post?id=' + currentService, {method: 'POST', body: cmd})
-                .then(response => response.json())
-                .then(this.SuccessServiceResponse)
-                .catch(this.FailServiceResponse);
+               if(formError.length === 0){
+                cmd.append('cmd', JSON.stringify(cmdQuery));
+
+                alertify.set('notifier','position', 'top-right');
+                alertify.set('notifier','delay', 10);
+ 
+                fetch('/services/2/post?id=' + currentService, {method: 'POST', body: cmd})
+                 .then(response => response.json())
+                 .then(this.SuccessServiceResponse)
+                 .catch(this.FailServiceResponse);
+               }
             }
         });
     }
@@ -259,7 +442,11 @@ class ServiceForm extends React.Component{
                     const ufld = newField.form.map((ufd) => {
                         <label>
                             <span>{ sfd.name }</span>
-                            <input type="upload" id="upload-field" className={ ufd.fieldName } placeholer={ ufd.dExample } />
+                            <input type="upload" id="upload-field" className={ ufd.fieldName } placeholer={ ufd.dExample } multiple />
+                            <div id="upload-field-content">
+                                <button>Upload files</button>
+                                <span>Not uploaded files</span>
+                            </div>
                         </label>
                     });
 
@@ -338,6 +525,7 @@ class ServiceForm extends React.Component{
     }
     findSearchData(query,done){
         var sf = new FormData();
+        sf.append(this.className, query);
 
         fetch($(this).data('dSource'), {method: $(this).data('dMethod') ? 'GET' : 'POST', body: sf })
             .then(response => response.json())
@@ -410,10 +598,21 @@ class ServiceForm extends React.Component{
         return formVisibile;
     }
     SuccessServiceResponse(data){
+        $('header#formUI > .formStep').html('<div class="finish-message success">Your request is in the queue for its consideration!</div>');
+        $('main#formUI > .formStep').html('<div class="finish-message success"><img src="/images/icons/services-status/success.svg" /><p>After 10 seconds, you will be automatically redirected to the information page about the service from which you came to this page. During this time, you will see a block on the upper right corner with a notification about the successful sending of the request.</p></div>');
+        $('footer#formUI > .formStep').remove();
 
+        alertify.success(get_cookie('portalId') ? data.sendFinish.forAuth : data.sendFinish.forVisitor);
+        window.setTimeout(function(){ window.location.assign('/services/' + currentService); }, 10000);
     }
-    FailServiceResponse(data){
+    FailServiceResponse(error){
+        $('header#formUI > .formStep').html('<div class="finish-message error">An error occurred in sending the request</div>');
+        $('main#formUI > .formStep').html('<div class="finish-message error"><img src="/images/icons/services-status/error.svg" /><p>Within 10 seconds, you will see a window with the essence of the error in the upper right corner. Check your Internet connection and if the connection is stable, then disable the VPN if it is available on your network or device. With a stable connection, these are temporary problems in the infrastructure of the portal and its services, which are instantly eliminated. Try to enter and send the data again after a while by clicking on the button under this message that you are reading!</p></div>');
+        $('footer#formUI > .formStep').html('<div class="finish-message error"><button>Input and query again</button></div>');
 
+        alertify.error('Service send error:\n' + error + '\n Retry proccess again!');
+
+        $('footer#formUI > .formStep .finish-message button').click(function(){ window.reload(true); });
     }
 }
 
