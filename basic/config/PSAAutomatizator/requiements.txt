@@ -1,1 +1,10 @@
-openpyxl=
+xlrd=^2.0
+pandas=^1.4
+smsru-api=*
+smtplib=*
+aioviberbot=*
+fbmessenger=6.0.0
+pywhatkit=*
+telegram-send=*
+mysql-connector-python=*
+
