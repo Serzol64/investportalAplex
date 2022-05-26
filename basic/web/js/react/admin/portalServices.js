@@ -21,7 +21,7 @@ class Services extends React.Component{
 		this.state = { list: [] };
 	}
 	componentDidMount(){
-		fetch('/admin/api/dataServices/filters/portalServicesCategory/show', { method: 'GET'})
+		fetch('/admin/api/dataServices/filters/portalServices/show', { method: 'GET'})
 			.then(response => response.json())
 			.then(this.generateSmartResponse)
 			.catch(error => {
@@ -64,7 +64,7 @@ class List extends React.Component{
 		this.state = { list: [], cQuery: { catId: 1 } };
 	}
 	componentDidMount(){
-		fetch('/admin/api/dataServices/filters/portalServices/send', { method: 'GET'})
+		fetch('/admin/api/dataServices/filters/portalServicesCategory/show', { method: 'GET'})
 			.then(response => response.json())
 			.then(data => this.setState({ list: data }))
 			.catch(error => {
