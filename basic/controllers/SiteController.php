@@ -65,13 +65,13 @@ class SiteController extends Controller{
 		
 		];
 		
-		return $this->render('services', ['categories' => $sf[0], 'feed' => $sf[1]);
+		return $this->render('services', ['categories' => $sf[0], 'feed' => $sf[1]]);
 	}
 	public function actionServicePage($id){
 
 		$currentServiceQuery = [
 			PortalServices::findOne(['id' => $id]),
-			PortalServices::findOne(['id' => $id])->select('meta');
+			PortalServices::findOne(['id' => $id])->select('meta')
 		];
 
 		$serviceMetaData = JSON::decode($currentServiceQuery[1]->meta, true);

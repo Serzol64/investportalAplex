@@ -71,10 +71,14 @@ function serviceEditorUpdater(q){
 class Add extends React.Component{
 	constructor(props){
 		super(props);
-		this.state = { currentType: params['contentStatus'] };
+		this.state = { currentType: Boolean(params['contentStatus']) };
 	}
 	componentDidMount(){
 		if(this.state.currentType){
+			CKEDITOR.replace('description', { width: $('.wf > .editor-component').css('width') });
+			CKEDITOR.replace('terms', { width: $('.wf > .editor-component').css('width') });
+			CKEDITOR.replace('answer', { width: $('.add-questions > header div *').css('width'), height: $('.add-questions > header div *').css('height') });
+			
 			$('#service-editor > button#send').click(function(){
 				let validErrorAdd = '';
 				let queryReadyData = {
@@ -124,7 +128,7 @@ class Add extends React.Component{
 
 					fetch('/admin/api/dataServices/filters/portalServices/send',{method: 'POST', body: serviceEditorQuery()})
 					.then((response) => {
-						if (response.status === 200) { window.location.assign('/admin?svc=adminUsers&subSVC=portalServices'); } 
+						if (response.status === 200) { window.location.assign('/admin?svc=dataManagment&subSVC=portalServices'); } 
 						else { alert('Service content adding failed!'); }
 					})
 					.catch(error => {
@@ -159,7 +163,7 @@ class Add extends React.Component{
 					.then((response) => {
 						if (response.status === 200) { 
 							sessionStorage.removeItem('blobReady');
-							window.location.assign('/admin?svc=adminUsers&subSVC=portalServices'); 
+							window.location.assign('/admin?svc=dataManagment&subSVC=portalServices'); 
 						} 
 						else { alert('Service category adding failed!'); }
 					})
@@ -171,149 +175,150 @@ class Add extends React.Component{
 		}
 	}
 	render(){
-		return (
-			<React.Fragment>{ this.renderDynamicForm(this.state.currentType) }</React.Fragment>
-		);
+		return this.renderDynamicForm(this.state.currentType);
 	}
 	renderDynamicForm(q){
-		let dr = null; 
 		
-		if(q){
-			dr = (
-				<><input type="hidden" id="ready-query" name="ready-query" value="" /><section id="service-editor">
-					<header data-block="name">
-						<input type="text" id="title" placeholder="Input service name" />
-					</header>
-					<main data-block="content">
-						<h3>Service meta data</h3>
-						<ul data-group="meta">
-							<li>
-								{"<!--SEO Data-->"}
-								<nav>
-									<div className="wf">
-										<h4>Select the category</h4>
-										<select id="categorySelector">
-											<option value="any">Any category</option>
-										</select>
-									</div>
-									<div className="wf">
-										<h4>Input service description</h4>
-										<textarea className="editor-component" id="description" name="description"></textarea>
-									</div>
-								</nav>
-							</li>
-							<li>
-								{"<!--Security-->"}
-								<nav>
-									<div className="wf">
-										<h4>Select one access level:</h4>
-										<ul className="level">
-											<li>
-												<input type="radio" id="accessLevel" value="private" />
-												<span>For registred users</span>
-											</li>
-											<li>
-												<input type="radio" id="accessLevel" value="public" />
-												<span>For all users and visitors</span>
-											</li>
-										</ul>
-									</div>
-								</nav>
-							</li>
-						</ul>
+		if(q === true){
+			return (
+				<React.Fragment>
+					<input type="hidden" id="ready-query" name="ready-query" value="" />
+					<section id="service-editor">
+						<header data-block="name">
+							<input type="text" id="title" placeholder="Input service name" />
+						</header>
+						<main data-block="content">
+							<h3>Service meta data</h3>
+							<ul data-group="meta">
+								<li>
+									{/*SEO Data*/}
+									<nav>
+										<div className="wf">
+											<h4>Select the category</h4>
+											<select id="categorySelector">
+												<option value="any">Any category</option>
+											</select>
+										</div>
+										<div className="wf">
+											<h4>Input service description</h4>
+											<textarea className="editor-component" id="description" name="description"></textarea>
+										</div>
+									</nav>
+								</li>
+								<li>
+									{/*Security*/}
+									<nav>
+										<div className="wf">
+											<h4>Select one access level:</h4>
+											<ul className="level">
+												<li>
+													<input type="radio" id="accessLevel" value="private" />
+													<span>For registred users</span>
+												</li>
+												<li>
+													<input type="radio" id="accessLevel" value="public" />
+													<span>For all users and visitors</span>
+												</li>
+											</ul>
+										</div>
+									</nav>
+								</li>
+							</ul>
 
-						<h3>Service page content</h3>
-						<ul data-group="content">
-							<li>
-								{"<!--Text Data-->"}
-								<nav>
-									<div className="wf">
-										<h4>Input service term:</h4>
-										<textarea className="editor-component" id="terms" name="terms"></textarea>
-									</div>
-									<div className="wf">
-										<h4>Adding service questions:</h4>
-										<div className="add-questions">
-											<header>
-												<div>
-													<input type="text" id="question" value="Input service FAQ question" />
-													<textarea className="editor-component" id="answer" name="answer"></textarea>
-												</div>
-											</header>
-											<main><button>Add question</button></main>
+							<h3>Service page content</h3>
+							<ul data-group="content">
+								<li>
+									{/*Text Data*/}
+									<nav>
+										<div className="wf">
+											<h4>Input service term:</h4>
+											<textarea className="editor-component" id="terms" name="terms"></textarea>
 										</div>
-									</div>
-								</nav>
-							</li>
-							<li>
-								{"<!--Form Data-->"}
-								<nav>
-									<div className="wf">
-										<h4>Adding form elements</h4>
-										<div className="add-formElements">
-											<header>
-												<div>
-													<input type="text" name="field" id="field" placeholder="Enter the field name" />
-													<select name="fieldType" id="fieldType">
-														<option>Select form field type</option>
-														<option value="default">Text form</option>
-														<option value="list">List form</option>
-														<option value="upload">Files upload form</option>
-														<option value="search">Search form</option>
-													</select>
-												</div>
-											</header>
-											<main><button>Add element</button></main>
+										<div className="wf">
+											<h4>Adding service questions:</h4>
+											<div className="add-questions">
+												<header>
+													<div>
+														<input type="text" id="question" value="Input service FAQ question" />
+														<textarea className="editor-component" id="answer" name="answer"></textarea>
+													</div>
+												</header>
+												<main><button>Add question</button></main>
+											</div>
 										</div>
-									</div>
-								</nav>
-							</li>
-						</ul>
-					</main>
-					<footer data-block="automatization">
-						<ul>
-							<li>
-								<h4>Sender command:</h4>
-								<input type="text" name="senderCmd" id="senderCmd" />
-							</li>
-							<li>
-								<h4>Push command:</h4>
-								<input type="text" name="pushCmd" id="pushCmd" />
-							</li>
-							<li>
-								<h4>Realtime command:</h4>
-								<input type="text" name="realtimeCmd" id="realtimeCmd" />
-							</li>
-							<li>
-								<h4>Control command:</h4>
-								<input type="text" name="controlCmd" id="controlCmd" />
-							</li>
-						</ul>
-					</footer>
-					<button id="send">Send service to portal</button>
-				</section></>
+									</nav>
+								</li>
+								<li>
+									{/*Form Data*/}
+									<nav>
+										<div className="wf">
+											<h4>Adding form elements</h4>
+											<div className="add-formElements">
+												<header>
+													<div>
+														<input type="text" name="field" id="field" placeholder="Enter the field name" />
+														<select name="fieldType" id="fieldType">
+															<option>Select form field type</option>
+															<option value="default">Text form</option>
+															<option value="list">List form</option>
+															<option value="upload">Files upload form</option>
+															<option value="search">Search form</option>
+														</select>
+													</div>
+												</header>
+												<main><button>Add element</button></main>
+											</div>
+										</div>
+									</nav>
+								</li>
+							</ul>
+						</main>
+						<footer data-block="automatization">
+							<ul>
+								<li>
+									<h4>Sender command:</h4>
+									<input type="text" name="senderCmd" id="senderCmd" />
+								</li>
+								<li>
+									<h4>Push command:</h4>
+									<input type="text" name="pushCmd" id="pushCmd" />
+								</li>
+								<li>
+									<h4>Realtime command:</h4>
+									<input type="text" name="realtimeCmd" id="realtimeCmd" />
+								</li>
+								<li>
+									<h4>Control command:</h4>
+									<input type="text" name="controlCmd" id="controlCmd" />
+								</li>
+							</ul>
+						</footer>
+						<button id="send">Send service to portal</button>
+					</section>
+				</React.Fragment>
 			);
 		}
 		else{
-			dr = (
-				<><input type="hidden" id="ready-query" name="ready-query" value="" /><div id="add-category">
-					<div>
-						<h2>Please, input services category(only English)</h2>
-						<input type="text" id="theme" />
-					</div>
-					<div>
-						<h2>Upload category icon</h2>
-						<section data-block="titleImage">
-							<label htmlFor="titleImageU"><input type="file" name="titleImageU" id="titleImageU" accept="image/*" />Upload icon</label>
-							<img src="" id="uploaded" />
-						</section>
-					</div>
-					<button>Insert category</button>
-				</div></>
+			return (
+				<React.Fragment>
+					<input type="hidden" id="ready-query" name="ready-query" value="" />
+					<div id="add-category">
+						<div>
+							<h2>Please, input services category(only English)</h2>
+							<input type="text" id="theme" />
+						</div>
+						<div>
+							<h2>Upload category icon</h2>
+							<section data-block="titleImage">
+								<label htmlFor="titleImageU"><input type="file" name="titleImageU" id="titleImageU" accept="image/*" />Upload icon</label>
+								<img src="" id="uploaded" />
+							</section>
+						</div>
+						<button>Insert category</button>
+				</div>
+			</React.Fragment>
 			);
 		}
-		
-		return dr;
 	}
 }
 
@@ -321,13 +326,16 @@ class Edit extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = { 
-			currentType: params['contentStatus'],
+			currentType: Boolean(params['contentStatus']),
 			currentQuery: []
 		};
 	}
 	componentDidMount(){
 		if(this.state.currentType){
-
+			CKEDITOR.replace('description', { width: $('.wf > .editor-component').css('width') });
+			CKEDITOR.replace('terms', { width: $('.wf > .editor-component').css('width') });
+			CKEDITOR.replace('answer', { width: $('.add-questions > header div *').css('width'), height: $('.add-questions > header div *').css('height') });
+			
 			let validErrorEdit = '';
 			queryReadyData = {
 					title: '',
@@ -375,7 +383,7 @@ class Edit extends React.Component{
 				$('#service-editor > button#send').click(function(){
 					fetch('/admin/api/dataServices/filters/portalServices/update',{method: 'POST', body: serviceEditorQuery()})
 						.then((response) => {
-							if (response.status === 200) { window.location.assign('/admin?svc=adminUsers&subSVC=portalServices'); } 
+							if (response.status === 200) { window.location.assign('/admin?svc=dataManagment&subSVC=portalServices'); } 
 							else { alert('Service content update failed!'); }
 						})
 						.catch(error => {
@@ -412,7 +420,7 @@ class Edit extends React.Component{
 							sessionStorage.removeItem('blobReady');
 							sessionStorage.removeItem('currentCategoryUpdate');
 
-							window.location.assign('/admin?svc=adminUsers&subSVC=portalServices'); 
+							window.location.assign('/admin?svc=dataManagment&subSVC=portalServices'); 
 						} 
 						else { alert('Service category update failed!'); }
 					})
@@ -424,159 +432,161 @@ class Edit extends React.Component{
 		}
 	}
 	render(){
-		return (
-			<React.Fragment>{ this.renderDynamicForm(this.state.currentType, this.state.currentQuery) }</React.Fragment>
-		);
+		return this.renderDynamicForm(this.state.currentType, this.state.currentQuery);
 	}
 	renderDynamicForm(q, i){
-		let dr = null; 
 		
-		if(q){
-			dr = (
-				<><input type="hidden" id="ready-query" name="ready-query" value="" /><section id="service-editor">
-					<header data-block="name">
-						<input type="text" id="title" placeholder="Input service name" />
-					</header>
-					<main data-block="content">
-						<h3>Service meta data</h3>
-						<ul data-group="meta">
-							<li>
-								{"<!--SEO Data-->"}
-								<nav>
-									<div className="wf">
-										<h4>Select the category</h4>
-										<select id="categorySelector">
-											<option value="any">Any category</option>
-										</select>
-									</div>
-									<div className="wf">
-										<h4>Input service description</h4>
-										<textarea className="editor-component" id="description" name="description"></textarea>
-									</div>
-								</nav>
-							</li>
-							<li>
-								{"<!--Security-->"}
-								<nav>
-									<div className="wf">
-										<h4>Select one access level:</h4>
-										<ul className="level">
-											<li>
-												<input type="radio" id="accessLevel" value="private" />
-												<span>For registred users</span>
-											</li>
-											<li>
-												<input type="radio" id="accessLevel" value="public" />
-												<span>For all users and visitors</span>
-											</li>
-										</ul>
-									</div>
-								</nav>
-							</li>
-						</ul>
+		if(q === true){
+			return (
+				<React.Fragment>
+				    <input type="hidden" id="ready-query" name="ready-query" value="" />
+				    <section id="service-editor">
+						<header data-block="name">
+							<input type="text" id="title" placeholder="Input service name" />
+						</header>
+						<main data-block="content">
+							<h3>Service meta data</h3>
+							<ul data-group="meta">
+								<li>
+									{/*SEO Data*/}
+									<nav>
+										<div className="wf">
+											<h4>Select the category</h4>
+											<select id="categorySelector">
+												<option value="any">Any category</option>
+											</select>
+										</div>
+										<div className="wf">
+											<h4>Input service description</h4>
+											<textarea className="editor-component" id="description" name="description"></textarea>
+										</div>
+									</nav>
+								</li>
+								<li>
+									{/*Security*/}
+									<nav>
+										<div className="wf">
+											<h4>Select one access level:</h4>
+											<ul className="level">
+												<li>
+													<input type="radio" id="accessLevel" value="private" />
+													<span>For registred users</span>
+												</li>
+												<li>
+													<input type="radio" id="accessLevel" value="public" />
+													<span>For all users and visitors</span>
+												</li>
+											</ul>
+										</div>
+									</nav>
+								</li>
+							</ul>
 
-						<h3>Service page content</h3>
-						<ul data-group="content">
-							<li>
-								{"<!--Text Data-->"}
-								<nav>
-									<div className="wf">
-										<h4>Input service term:</h4>
-										<textarea className="editor-component" id="terms" name="terms"></textarea>
-									</div>
-									<div className="wf">
-										<h4>Adding service questions:</h4>
-										<div className="add-questions">
-											<header>
-												<div>
-													<input type="text" id="question" value="Input service FAQ question" />
-													<textarea className="editor-component" id="answer" name="answer"></textarea>
-												</div>
-											</header>
-											<main><button>Add question</button></main>
+							<h3>Service page content</h3>
+							<ul data-group="content">
+								<li>
+									{/*Text Data*/}
+									<nav>
+										<div className="wf">
+											<h4>Input service term:</h4>
+											<textarea className="editor-component" id="terms" name="terms"></textarea>
 										</div>
-									</div>
-								</nav>
-							</li>
-							<li>
-								{"<!--Form Data-->"}
-								<nav>
-									<div className="wf">
-										<h4>Adding form elements</h4>
-										<div className="add-formElements">
-											<header>
-												<div>
-													<input type="text" name="field" id="field" placeholder="Enter the field name" />
-													<select name="fieldType" id="fieldType">
-														<option>Select form field type</option>
-														<option value="default">Text form</option>
-														<option value="list">List form</option>
-														<option value="upload">Files upload form</option>
-														<option value="search">Search form</option>
-													</select>
-												</div>
-											</header>
-											<main><button>Add element</button></main>
+										<div className="wf">
+											<h4>Adding service questions:</h4>
+											<div className="add-questions">
+												<header>
+													<div>
+														<input type="text" id="question" value="Input service FAQ question" />
+														<textarea className="editor-component" id="answer" name="answer"></textarea>
+													</div>
+												</header>
+												<main><button>Add question</button></main>
+											</div>
 										</div>
-									</div>
-								</nav>
-							</li>
-						</ul>
-					</main>
-					<footer data-block="automatization">
-						<ul>
-							<li>
-								<h4>Sender command:</h4>
-								<input type="text" name="senderCmd" id="senderCmd" />
-							</li>
-							<li>
-								<h4>Push command:</h4>
-								<input type="text" name="pushCmd" id="pushCmd" />
-							</li>
-							<li>
-								<h4>Realtime command:</h4>
-								<input type="text" name="realtimeCmd" id="realtimeCmd" />
-							</li>
-							<li>
-								<h4>Control command:</h4>
-								<input type="text" name="controlCmd" id="controlCmd" />
-							</li>
-						</ul>
-					</footer>
-					<button id="send">Update current service in portal</button>
-					<button id="delete">Delete current service in portal</button>
-				</section></>
+									</nav>
+								</li>
+								<li>
+									{/*Form Data*/}
+									<nav>
+										<div className="wf">
+											<h4>Adding form elements</h4>
+											<div className="add-formElements">
+												<header>
+													<div>
+														<input type="text" name="field" id="field" placeholder="Enter the field name" />
+														<select name="fieldType" id="fieldType">
+															<option>Select form field type</option>
+															<option value="default">Text form</option>
+															<option value="list">List form</option>
+															<option value="upload">Files upload form</option>
+															<option value="search">Search form</option>
+														</select>
+													</div>
+												</header>
+												<main><button>Add element</button></main>
+											</div>
+										</div>
+									</nav>
+								</li>
+							</ul>
+						</main>
+						<footer data-block="automatization">
+							<ul>
+								<li>
+									<h4>Sender command:</h4>
+									<input type="text" name="senderCmd" id="senderCmd" />
+								</li>
+								<li>
+									<h4>Push command:</h4>
+									<input type="text" name="pushCmd" id="pushCmd" />
+								</li>
+								<li>
+									<h4>Realtime command:</h4>
+									<input type="text" name="realtimeCmd" id="realtimeCmd" />
+								</li>
+								<li>
+									<h4>Control command:</h4>
+									<input type="text" name="controlCmd" id="controlCmd" />
+								</li>
+							</ul>
+						</footer>
+						<button id="send">Update current service in portal</button>
+						<button id="delete">Delete current service in portal</button>
+					</section>
+				</React.Fragment>
 			);
 		}
 		else{
-			dr = (
-				<><input type="hidden" id="ready-query" name="ready-query" value="" /><div id="add-category">
-					<div>
-						<h2>Please, input services category(only English)</h2>
-						<input type="text" id="theme" />
-					</div>
-					<div>
-						<h2>Upload category icon</h2>
-						<section data-block="titleImage">
-							<label htmlFor="titleImageU"><input type="file" name="titleImageU" id="titleImageU" accept="image/*" />Upload icon</label>
-							<img src="" id="uploaded" />
-						</section>
-					</div>
-					<button>Update category</button>
-					<button id="delete">Delete category</button>
-				</div></>
+			return (
+				<React.Fragment>
+				    <input type="hidden" id="ready-query" name="ready-query" value="" />
+				    <div id="add-category">
+						<div>
+							<h2>Please, input services category(only English)</h2>
+							<input type="text" id="theme" />
+						</div>
+						<div>
+							<h2>Upload category icon</h2>
+							<section data-block="titleImage">
+								<label htmlFor="titleImageU"><input type="file" name="titleImageU" id="titleImageU" accept="image/*" />Upload icon</label>
+								<img src="" id="uploaded" />
+							</section>
+						</div>
+						<button>Update category</button>
+						<button id="delete">Delete category</button>
+				    </div>
+			  </React.Fragment>
 			);
 		}
 		
-		return dr;
 	}
 }
 
 const HeaderRender = (hash) => {
   let render = "";
   switch(hash){
-    case "#add": render = '<a href="/admin?svc=adminUsers&subSVC=portalServices">Back to list</a>'; break;
-    case "#edit": render = '<a href="/admin?svc=adminUsers&subSVC=portalServices">Back to list</a>'; break;
+    case "#add": render = '<a href="/admin?svc=dataManagment&subSVC=portalServices">Back to list</a>'; break;
+    case "#edit": render = '<a href="/admin?svc=dataManagment&subSVC=portalServices">Back to list</a>'; break;
   }
   
   $('.data-page > header nav').html(render);

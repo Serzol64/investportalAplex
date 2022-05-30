@@ -45,7 +45,10 @@ class AdminController extends Controller{
 							case "analytics": $service='newsCMS/analytics'; break;
 							case "events": $service='newsCMS/events'; break;
 							case "portalServices":
-								if(isset($_GET['page'])){ $this->view->registerJsFile("/js/react/portalServices/managment.js"); }
+								if(isset($_GET['page'])){ 
+									$this->view->registerJsFile("/js/ckeditor/ckeditor.js", ['position' => View::POS_HEAD]); 
+									$this->view->registerJsFile("/js/react/admin/portalServices/managment.js", ['type' => 'text/babel']); 
+								}
 								$service = 'portalServices';
 							break;
 							default: $service = 'dataAttributes'; break;
@@ -372,6 +375,7 @@ class AdminController extends Controller{
 							Yii::$app->response->statusCode = 502;
 							$serviceResponse[] = 'Services gateway!';
 						}
+					}
 				}
 				else if($svc == "adminPortalUsers"){
 					$currentLogin = $q['login'];
@@ -394,9 +398,7 @@ class AdminController extends Controller{
 					else{
 						Yii::$app->response->statusCode = 502;
 						$serviceResponse[] = 'Services gateway!';
-					}
-					
-					
+					}		
 				}
 				else{
 					Yii::$app->response->statusCode = 404;
@@ -555,22 +557,20 @@ class AdminController extends Controller{
 						Yii::$app->response->statusCode = 503;
 						$serviceResponse[] = 'DBA Service Error!';
 					}
-					
-					
-				}
-				else if($svc == "portalServices" || $svc == "portalServicesCategory"){
-					$SConnector = [
-						'c' => [new PortalServices, PortalServices::find()],
-						's' => [new PortalServicesCategory, PortalServicesCategory::find()]
-					];
-					
-					if($svc == "portalServicesCategory"){ $serviceResponse = $SConnector['s'][1]->all(); }
-					else if($svc == "portalServicesCategory"){ $serviceResponse = $SConnector['c'][1]->all(); }
 				}
 				else{
 						Yii::$app->response->statusCode = 404;
 						$serviceResponse[] = "Not command found!";	
 				}
+		}
+		else if($svc == "portalServices" || $svc == "portalServicesCategory"){
+			$SConnector = [
+				'c' => [new PortalServices, PortalServices::find()],
+				's' => [new PortalServicesCategory, PortalServicesCategory::find()]
+			];
+					
+			if($svc == "portalServicesCategory"){ $serviceResponse = $SConnector['s'][1]->all(); }
+			else if($svc == "portalServicesCategory"){ $serviceResponse = $SConnector['c'][1]->all(); }
 		}
 		else if($svc == "Attributes"){
 				$tables = [];

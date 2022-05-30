@@ -2,6 +2,29 @@
 
 #services-public{ padding-bottom: 15%; }
 
+.data-page > header{
+  width: 100%;
+  height: calc(99px / 2);
+  background-color: #eff3f4;
+}
+.data-page > header h2{
+  font-size: 120%;
+  margin-left: 2%;
+  display: inline-block;
+}
+.data-page > header nav{
+  float: right;
+  margin-top: 1%;
+  margin-right: 2%;
+}
+.data-page > header nav a{
+  display: inline-table;
+  font-size: 100%;
+  color: #0079bf;
+  font-weight: bold;
+  text-decoration: none;
+}
+
 h2#title {
     margin-left: 12%;
 }

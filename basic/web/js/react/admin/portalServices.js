@@ -41,7 +41,7 @@ class Services extends React.Component{
 
 		this.setState({ list: sr });
 	}
-	linkGenerator(q){ return '/admin?svc=adminUsers&subSVC=portalServices&contentStatus=true&id=' + q + '#edit'; }
+	linkGenerator(q){ return '/admin?svc=dataManagment&subSVC=portalServices&contentStatus=true&id=' + q + '#edit'; }
 	render(){
 		const renderList = this.state.list.map((query) => {
 			(
@@ -111,8 +111,8 @@ class List extends React.Component{
 }
 
 const HeaderRender = () => {
-  let render = '<a href="/admin?svc=adminUsers&subSVC=portalServices&page=managment&contentStatus=false#add">Add services category</a>';
-  render += '<a href="/admin?svc=adminUsers&subSVC=portalServices&page=managment&contentStatus=true#add">Add new service</a>';
+  let render = '<a href="/admin?svc=dataManagment&subSVC=portalServices&page=managment&contentStatus=false#add">Add services category</a>';
+  render += '<a href="/admin?svc=dataManagment&subSVC=portalServices&page=managment&contentStatus=true#add">Add new service</a>';
   
   $('.data-page > header nav').html(render);
 }

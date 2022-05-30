@@ -8,8 +8,6 @@ use yii\httpclient\Client;
 /* @var $this yii\web\View */
 /* @var $content string */
 
-AppAsset::register($this);
-
 $this->beginPage();
 ?>
 <!DOCTYPE html>
@@ -19,9 +17,10 @@ $this->beginPage();
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
 		<title><?= Html::encode($this->title) ?></title>
 		<?= Html::csrfMetaTags() ?>
+		<script src="js/lib/autocomplete/jquery.easy-autocomplete.min.js"></script>
+		<link rel="stylesheet" href="js/lib/autocomplete/easy-autocomplete.min.css">
+		<link rel="stylesheet" href="js/lib/autocomplete/easy-autocomplete.themes.min.css">
 		<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-		<script src="/js/lib/magicsuggest/magicsuggest.js"></script>
 		<script src="https://kit.fontawesome.com/97c3285af2.js" crossorigin="anonymous"></script>
 <?php if(Yii::$app->controller->id == 'Objects' && Yii::$app->controller->action->id == 'Object'){ ?>	
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous"></script>
@@ -29,6 +28,7 @@ $this->beginPage();
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css" integrity="sha512-okE4owXD0kfXzgVXBzCDIiSSlpXn3tJbNodngsTnIYPJWjuYhtJ+qMoc0+WUwLHeOwns0wm57Ka903FqQKM1sA==" crossorigin="anonymous" />
 <?php } ?>
 		<?php $this->head() ?>
+		<link rel="stylesheet" href="/css/app.css" />
 	</head>
 	<?php $this->beginBody() ?>
 	<body>
@@ -385,6 +385,7 @@ $this->beginPage();
 				else if($_SERVER['REQUEST_URI'] == "/passport/services" || $_SERVER['REQUEST_URI'] == "/passport/cart" || $_SERVER['REQUEST_URI'] == "/passport/profile"){ echo PassportModals::widget(['query' => 'default']); }
 		}
 		?>
+	<script src="/js/app.js"></script>
 	</body>
 	<?php $this->endBody() ?>
 </html>
