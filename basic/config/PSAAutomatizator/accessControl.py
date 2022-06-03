@@ -1,3 +1,6 @@
+import time
+import hashlib
+import userID_decryptor
 import mysql.connector
 import socket
 
@@ -13,21 +16,25 @@ cnlx = mysql.connector.connect(
     password=dbConnect[2]
 ).cursor()
 
-class Authorizing():
-    def __init__(login):
-        self.userLogin = login
-    def __control():
-
-    def _verifycation():
-
-    def start():
-        return proccessResponse
-class Visitor():
-    def __init__(visitor):
-        self.visitorData = visitor
-    def __control():
-
-    def _verifycation():
-
-    def start():
-        return proccessResponse
+def generateCryptoUser(login):
+	currentTime = time.time()
+	currentUser = login
+	
+	contactQuery = ('SELECT firstname, country, phone FROM users WHERE login=%s')
+	contactQ = cnlx.execute(contactQuery, (contactQuery))
+	
+	for (firstname, country, phone) in cnlx:
+		currentName = firstname
+		currentRegion = country
+		currentPhone = phone
+		
+	idResponse = hashlib.md5(currentUser + '/' + currentTime + '/' + currentPhone + '/' + currentRegion + '/' + currentName).hexdigest()
+	return idResponse
+	
+def decryptUserID(hashQuery):
+	decryptResponse = decryptMD5(hashQuery)
+	getResponse = decryptResponse.split('/')
+	
+	return { 'login': getResponse[0], 'phone': getResponse[2], 'region': getResponse[3] }
+	
+	
