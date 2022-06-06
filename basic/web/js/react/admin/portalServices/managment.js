@@ -71,38 +71,41 @@ function serviceEditorUpdater(q){
 class Add extends React.Component{
 	constructor(props){
 		super(props);
-		this.state = { currentType: Boolean(params['contentStatus']) };
+		this.state = { currentType: params['contentStatus'] };
 	}
 	componentDidMount(){
-		if(this.state.currentType){
+		if(this.state.currentType === 'true'){
 			CKEDITOR.replace('description', { width: $('.wf > .editor-component').css('width') });
 			CKEDITOR.replace('terms', { width: $('.wf > .editor-component').css('width') });
-			CKEDITOR.replace('answer', { width: $('.add-questions > header div *').css('width'), height: $('.add-questions > header div *').css('height') });
+			
+			$('.add-questions > main button').click(addQuestionFields);
+			$('.add-formElements > main button').click(addFormStepFields);
 			
 			$('#service-editor > button#send').click(function(){
-				let validErrorAdd = '';
-				let queryReadyData = {
-					title: '',
-					meta: {
-						seoData: {
-							categoryId: 0,
-							description: '',
-							term: '',
-							faqService: {}
+				let validErrorAdd = '',
+					faqQuery = [],
+					stepQuery = [],
+					queryReadyData = {
+						title: '',
+						meta: {
+							seoData: {
+								categoryId: 0,
+								description: '',
+								term: '',
+								faqService: {}
+							},
+							accessRole: 'private',
 						},
-						accessRole: 'private',
-					},
-					content: {
-						form: {},
-						validator: {}
-					},
-					proc: {
-						send: '',
-						push: '',
-						realtime: '',
-						control: ''
-					}
-				};
+						content: {
+							form: {}
+						},
+						proc: {
+							send: '',
+							push: '',
+							realtime: '',
+							control: ''
+						}
+					};
 
 				if($('#service-editor > *[data-block=\'name\'] input#title').val() !== ''){ queryReadyData.title = $('#service-editor > *[data-block=\'name\'] input#title').val(); }
 				else{ validErrorAdd += 'Service title is required\n'; }
@@ -114,6 +117,15 @@ class Add extends React.Component{
 				
 				if(CKEDITOR.instances.terms.getData() !== ''){ queryReadyData.meta.seoData.term = CKEDITOR.instances.terms.getData(); }
 				if(CKEDITOR.instances.description.getData() !== ''){ queryReadyData.meta.seoData.description = CKEDITOR.instances.description.getData(); }
+				
+				for(let i = 0; i < localStorage.length; i++){
+					let currentKey = localStorage.key(i);
+					if(currentKey === 'faq'){ faqQuery.append(JSON.parse(localStorage.getItem(currentKey))); }
+					else if(currentKey === 'fields'){ stepQuery.append(JSON.parse(localStorage.getItem(currentKey))); }
+				}
+				
+				queryReadyData.meta.seoData.faqService = faqQuery;
+				queryReadyData.content.form = stepQuery;
 				
 				if($('#service-editor > *[data-block=\'automatization\'] ul li input').eq(3).val() !== ''){ queryReadyData.proc.control = $('#service-editor > *[data-block=\'automatization\'] ul li input').eq(3).val(); }
 				if($('#service-editor > *[data-block=\'automatization\'] ul li input').eq(2).val() !== ''){ queryReadyData.proc.realtime = $('#service-editor > *[data-block=\'automatization\'] ul li input').eq(2).val(); }
@@ -179,7 +191,7 @@ class Add extends React.Component{
 	}
 	renderDynamicForm(q){
 		
-		if(q === true){
+		if(q === 'true'){
 			return (
 				<React.Fragment>
 					<input type="hidden" id="ready-query" name="ready-query" value="" />
@@ -239,8 +251,8 @@ class Add extends React.Component{
 											<div className="add-questions">
 												<header>
 													<div>
-														<input type="text" id="question" value="Input service FAQ question" />
-														<textarea className="editor-component" id="answer" name="answer"></textarea>
+														<input type="text" id="question" placeholder="Input service FAQ question" />
+														<textarea className="editor-component" placeholder="Input service answer for FAQ question" id="answer" name="answer"></textarea>
 													</div>
 												</header>
 												<main><button>Add question</button></main>
@@ -311,7 +323,7 @@ class Add extends React.Component{
 							<h2>Upload category icon</h2>
 							<section data-block="titleImage">
 								<label htmlFor="titleImageU"><input type="file" name="titleImageU" id="titleImageU" accept="image/*" />Upload icon</label>
-								<img src="" id="uploaded" />
+								<img src="https://img.icons8.com/ios/50/undefined/not-applicable.png" id="uploaded" />
 							</section>
 						</div>
 						<button>Insert category</button>
@@ -326,15 +338,14 @@ class Edit extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = { 
-			currentType: Boolean(params['contentStatus']),
+			currentType: params['contentStatus'],
 			currentQuery: []
 		};
 	}
 	componentDidMount(){
-		if(this.state.currentType){
+		if(this.state.currentType === 'true'){
 			CKEDITOR.replace('description', { width: $('.wf > .editor-component').css('width') });
 			CKEDITOR.replace('terms', { width: $('.wf > .editor-component').css('width') });
-			CKEDITOR.replace('answer', { width: $('.add-questions > header div *').css('width'), height: $('.add-questions > header div *').css('height') });
 			
 			let validErrorEdit = '';
 			queryReadyData = {
@@ -349,8 +360,7 @@ class Edit extends React.Component{
 						accessRole: 'private',
 					},
 					content: {
-						form: {},
-						validator: {}
+						form: {}
 					},
 					proc: {
 						send: '',
@@ -436,7 +446,7 @@ class Edit extends React.Component{
 	}
 	renderDynamicForm(q, i){
 		
-		if(q === true){
+		if(q === 'true'){
 			return (
 				<React.Fragment>
 				    <input type="hidden" id="ready-query" name="ready-query" value="" />
@@ -603,6 +613,64 @@ const UXRender = (hash) => {
     case "#edit": ReactDOM.render(<Edit />, document.querySelector('.data-page > main')); break;
   }
 }
+
+const resetForm = (f) => {
+	$(f + ' > header div input').val('');
+	$(f + ' > header div select option:selected').remove();
+	$(f + ' > header div textarea').val('');
+}
+
+
+const addQuestionFields = (e,t) => {
+	let questionQuery = null,
+		answerQuery = null;
+		
+	if($('.add-questions > header div #question').val() !== null){ questionQuery = $('.add-questions > header div #question').val(); }
+	else{ alert('Question is required!'); }
+	
+	if($('.add-questions > header div #answer').val() !== null){ answerQuery = $('.add-questions > header div #answer').val(); }
+	else{ alert('Answer is required!'); }
+		
+	if(questionQuery && answerQuery){
+		
+		let qaq = {
+			question: questionQuery,
+			answer: answerQuery
+		};
+			
+		localStorage.setItem('faq', JSON.stringify(qaq));
+		resetForm('.add-questions');
+	}
+}
+const addFormStepFields = (e,t) => {
+	let fnQuery = null,
+		ftQuery = null;
+		
+		
+	if($('.add-formElements > header div #field').val() !== null){ fnQuery = $('.add-formElements > header div #field').val(); }
+	else{ alert('Field name is required!'); }
+	
+	if($('.add-formElements > header div #fieldType').val() !== null){ ftQuery = $('.add-formElements > header div #fieldType').val(); }
+	else{ alert('Field type is required!'); }
+		
+	if(fnQuery && ftQuery){
+		
+		let fq = {
+			field: fnQuery,
+			type: ftQuery
+		};
+			
+		localStorage.setItem('fields', JSON.stringify(fq));
+		resetForm('.add-formElements');
+	}
+}
+const updateQuestionFields = (e,t) => {
+	
+}
+const updateFormStepFields = (e,t) => {
+	
+}
+
 
 
 $('.data-page > header h2').html(document.title);

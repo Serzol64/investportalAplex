@@ -172,6 +172,9 @@ class EMail(PortalUserNotificator):
     
         return proccessResponse    
     def _messageGenerator(message):
+		
+		
+		
         return {
             'theme': stateMessage,
             'startmessage': message[0],

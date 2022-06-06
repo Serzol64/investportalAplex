@@ -152,14 +152,17 @@
 }
 .add-questions > header div *{
     float: right;
-    margin-right: 1%;
-    width: 39%;
-    height: 132px;
+    margin-right: 4%;
+    width: 49%;
+    height: 180px;
+    font-size: 150%;
+    text-indent: 2%;
+    resize: none;
 }
 .add-questions > header div #question{
     float: left;
-    width: 55%;
-    font-size: 168%;
+    width: 40%;
+    font-size: 150%;
     height: 66px;
     text-indent: 2%;
     color: #0079bf;
@@ -229,6 +232,21 @@
 }
 
 *[data-block='titleImage']{}
-*[data-block='titleImage'] > label{}
-*[data-block='titleImage'] > img{}
-*[data-block='titleImage'] > label input{}
+*[data-block='titleImage'] > label{
+    text-align: center;
+    color: white;
+    background-color: #0079bf;
+    border: none;
+    font-size: 100%;
+    padding: 10px;
+}
+*[data-block='titleImage'] > img{
+    display: inline-block;
+    width: 5%;
+    object-fit: cover;
+    vertical-align: middle;
+    margin-left: 2%;
+}
+*[data-block='titleImage'] > label input{
+    display: none;
+}
