@@ -3,6 +3,7 @@ pandas
 smsru-api
 aioviberbot
 pywhatkit
+yattag
 mysql-connector-python
 openpyxl
 

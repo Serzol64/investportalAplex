@@ -4,6 +4,8 @@ import pywhatkit
 import mysql.connector
 import socket
 
+from yattag import Doc
+
 from aiohttp import web
 
 from aioviberbot import Api
@@ -53,7 +55,10 @@ def isUserPhone(q):
 	cnlx.close()
 	
 	return isFound
-   
+
+def getSmartMailMessage(typeQ, dataQ):
+	
+	
 async def viber_bot_sendtext(bot_data, bot_config, bot_message) -> web.Response:
 	request_data = await bot_config.read()
     signature = bot_config.headers.get('X-Viber-Content-Signature')
@@ -112,11 +117,15 @@ class SMS(PortalUserNotificator):
         sdr = message[2]
         qdr = message[1]
 
+		serviceDescription = 'in portal service \"' + sdr.title + '\"!'
+		
+		if qdr.accessLevel: queryDescription = 'This request was processed with secure verified access.'
+		else: queryDescription = 'This request was processed with visit verified access.'
 
-        return message[0] + ' ' + serviceDescription + '' + queryDescription
+        return message[0] + ' ' + serviceDescription + '\n' + queryDescription
 
     def _findContact():
-
+		
 
 class Messenger(PortalUserNotificator):
     def send():
@@ -128,7 +137,7 @@ class Messenger(PortalUserNotificator):
         elif self.queryData.state == 'started' and self.serviceData.mode == 'realtime': statusInfo = 'Starting your query consideration'
         
         currentContact = self._findContact()
-        messengerMessage = self._messageGenerator([statusInfo, self.queryData.meta, self.serviceData.meta])
+        messengerMessage = self._messageGenerator([statusInfo, self.queryData.meta, self.serviceData.meta], currentContact)
 
         if currentContact.isWhatsApp:
 			sendWAMessage = pywhatkit.sendwhatmsg('', messengerMessage, currentTime[0], currentTime[1])
@@ -150,12 +159,20 @@ class Messenger(PortalUserNotificator):
 			proccessResponse = sendTGMessage
 		
         return proccessResponse
-    def _messageGenerator(message):
+    def _messageGenerator(message, contact):
         sdr = message[2]
         qdr = message[1]
+        
+        serviceDescription = 'in portal service *\"' + sdr.title + '\"*!'
+		
+		if qdr.accessLevel: queryDescription = 'This request was processed with secure verified access.'
+		else: queryDescription = 'This request was processed with visit verified access.'
+		
+		if contact.isTG or contact.isViber: mesRes = '**' + message[0] + ' ' + serviceDescription + '**\n' + queryDescription + ''
+		else: mesRes = message[0] + ' ' + serviceDescription + '\n' + queryDescription
 
-
-        return message[0] + ' ' + serviceDescription + '' + queryDescription
+        return mesRes
+        
     def _findContact():
 
 class EMail(PortalUserNotificator):
@@ -173,11 +190,41 @@ class EMail(PortalUserNotificator):
         return proccessResponse    
     def _messageGenerator(message):
 		
+		doc, tag, text = Doc().tagtext()
+		docD, tagD, textD = Doc().tagtext()
+		docDD, tagDD, textDD = Doc().tagtext()
+		
+		stateMessage = message[0]
+		serviceResponse = getSmartMailMessage(0, message[2])
+		queryResponse = getSmartMailMessage(1, message[1])
+		
+		doc.asis('<!DOCTYPE html>')
+		with tag('html', lang='eu-US')
+			with tag('head')
+				with tag('title')
+					text(stateMessage)
+				with tag('meta', charset='UTF-8')
+			
+		helloMessage = doc.getvalue()
+		
+		docD.asis('<body><p>')
+		with tag('strong')
+			text('Dear ' + self.contactData.visitor ? self.contactData.visitor.name : self.contactData.name)
+		with tag('br')
+		with('span')
+			text(serviceResponse)
+		serviceDescription = docD.getvalue()
+		
+		docDD.asis('</p>')
+		with tagDD('p')
+			textDD(queryResponse)
+		docDD.asis('</body>')
+		queryDescription = docDD.getvalue()
 		
 		
         return {
             'theme': stateMessage,
-            'startmessage': message[0],
+            'startmessage': helloMessage,
             'svc': serviceDescription,
             'q': queryDescription
         }
