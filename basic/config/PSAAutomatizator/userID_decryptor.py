@@ -2,6 +2,7 @@ import hashlib
 import sys
 import time
 
+
 def timing(f):
     def wrap(*args):
         time1 = time.time()

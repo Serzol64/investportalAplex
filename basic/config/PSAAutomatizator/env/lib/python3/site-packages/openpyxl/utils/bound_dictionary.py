@@ -18,7 +18,6 @@ class BoundDictionary(defaultdict):
         self.reference = reference
         super(BoundDictionary, self).__init__(*args, **kw)
 
-
     def __getitem__(self, key):
         value = super(BoundDictionary, self).__getitem__(key)
         if self.reference is not None:
