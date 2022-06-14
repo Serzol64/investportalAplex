@@ -19,7 +19,7 @@ function serviceEditorQuery(){
 	return fqd;
 }
 function serviceEditorBuilder(q){
-	if(params['contentStatus']){
+	if(params['contentStatus'] === 'true'){
 		let newService = {
 			query: {
 				title: q.title,
@@ -160,23 +160,20 @@ class Add extends React.Component{
 					sessionStorage.setItem('blobReady', reader.result);
 					$('#uploaded').attr('src', reader.result);
 				};
-				reader.readAsText(file);
+				reader.readAsDataURL(file);
 			});
 
 			$('#add-category > button').click(function(){
 				let crq = {
 					title: $('#add-category > div input#theme').val(),
-					icon: sessionStorage.getItem('blobReady')
+					icon: $('#uploaded').attr('src')
 				};
 
 				serviceEditorBuilder(crq);
 
 				fetch('/admin/api/dataServices/filters/portalServicesCategory/send',{method: 'POST', body: serviceEditorQuery()})
 					.then((response) => {
-						if (response.status === 200) { 
-							sessionStorage.removeItem('blobReady');
-							window.location.assign('/admin?svc=dataManagment&subSVC=portalServices'); 
-						} 
+						if (response.status === 200) { window.location.assign('/admin?svc=dataManagment&subSVC=portalServices'); } 
 						else { alert('Service category adding failed!'); }
 					})
 					.catch(error => {

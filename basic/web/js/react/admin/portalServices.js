@@ -21,7 +21,7 @@ class Services extends React.Component{
 		this.state = { list: [] };
 	}
 	componentDidMount(){
-		fetch('/admin/api/dataServices/filters/portalServices/show', { method: 'GET'})
+		fetch('/admin/api/dataServices/filters/portalServices/show', { method: 'GET' })
 			.then(response => response.json())
 			.then(this.generateSmartResponse)
 			.catch(error => {
@@ -82,18 +82,13 @@ class List extends React.Component{
 
 		$('#services-list > #list .categories a').eq(0).addClass('active-category');
 	}
-	blobToImage(q){
-		const reader = new FileReader();
-		reader.onloadend = () => { return reader.result; };
-		reader.readAsText(q);
-	}
 	render(){
 
 		const catsList = this.state.list.map((query) => {
 			(
 				<a data-cat={ query.id }>
-					<img src={ this.blobToImage(query.icon) } />
-					<strong>{ query.title }</strong>
+					<img src={ query.icon } />
+					<strong>{ query.name }</strong>
 				</a>
 			)
 		});
@@ -111,12 +106,12 @@ class List extends React.Component{
 }
 
 const HeaderRender = () => {
-  let render = '<a href="/admin?svc=dataManagment&subSVC=portalServices&page=managment&contentStatus=false#add">Add services category</a>';
+  let render = '<a href="/admin?svc=dataManagment&subSVC=portalServices&page=managment&contentStatus=false#add" style="position:relative; left: -4%;">Add services category</a>';
   render += '<a href="/admin?svc=dataManagment&subSVC=portalServices&page=managment&contentStatus=true#add">Add new service</a>';
   
   $('.data-page > header nav').html(render);
 }
-const UXRender = () => { ReactDOM.render(<List />, document.getElementById('cms-service')); }
+const UXRender = () => { ReactDOM.render(<List />, document.querySelector('.data-page > main')); }
 
 $(document).ready(function(){
 	HeaderRender();

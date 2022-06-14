@@ -210,7 +210,7 @@ class AdminController extends Controller{
 							else{ $newId = 1; }
 							
 							$SConnector['s'][0]->id = $newId;
-							$SConnector['s'][0]->title = $q['query']['title'];
+							$SConnector['s'][0]->name = $q['query']['title'];
 							$SConnector['s'][0]->icon = $q['query']['iconBlob'];
 							
 							if($SConnector['s'][0]->save()){ $serviceResponse[] = 'New service category added!'; }
@@ -340,7 +340,7 @@ class AdminController extends Controller{
 							$sq = $SConnector['s'][1]->where(['id' => $q['query']['id']])->one();
 						
 							
-							$sq->title = $q['query']['title'];
+							$sq->name = $q['query']['title'];
 							if($q['query']['iconBlob']){ $sq->icon = $q['query']['iconBlob']; }
 							
 							if($sq->save()){ $serviceResponse[] = 'Service category updated!'; }
@@ -569,8 +569,8 @@ class AdminController extends Controller{
 				's' => [new PortalServicesCategory, PortalServicesCategory::find()]
 			];
 					
-			if($svc == "portalServicesCategory"){ $serviceResponse = $SConnector['s'][1]->all(); }
-			else if($svc == "portalServicesCategory"){ $serviceResponse = $SConnector['c'][1]->all(); }
+			if($svc == "portalServicesCategory"){ $serviceResponse[] = $SConnector['s'][1]->all(); }
+			else if($svc == "portalServicesCategory"){ $serviceResponse[] = $SConnector['c'][1]->all(); }
 		}
 		else if($svc == "Attributes"){
 				$tables = [];
