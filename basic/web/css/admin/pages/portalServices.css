@@ -15,7 +15,7 @@
 .data-page > header nav{
   float: right;
   margin-top: 1%;
-  margin-right: 2%;
+  margin-right: 3%;
 }
 .data-page > header nav a{
   display: inline-table;
@@ -31,7 +31,7 @@ h2#title {
 #services-list{
   display: flex;
   width: 89%;
-  margin-left: 10%;
+  margin-left: 0%;
 }
 #services-list > header#search, #services-list > main#list{
   margin: 5px;
@@ -39,8 +39,9 @@ h2#title {
   flex: 1 1 auto;
   padding-top: 2%;
   padding-bottom: 2%;
-  width: 50%;
+  width: 15%;
   height: 400px;
+  overflow-y: scroll;
 }
 header#search > input{
   width: 80%;
@@ -77,9 +78,8 @@ header#search > .last-example{
   border: solid 2px gray;
   text-decoration: none;
   color: black;
-  font-size: 110%;
+  font-size: 114%;
 }
-
 .categories > a.active-category{
   background-color: lightgray;
 }

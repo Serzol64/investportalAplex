@@ -91,6 +91,10 @@ class ComposerStaticInit6bdaf22a967160d4a621a49df4f9409d
         array (
             'JamesGordo\\CSV\\' => 15,
         ),
+        'H' => 
+        array (
+            'HouseOfApis\\CurrencyApi\\' => 24,
+        ),
         'G' => 
         array (
             'GuzzleHttp\\Psr7\\' => 16,
@@ -269,6 +273,10 @@ class ComposerStaticInit6bdaf22a967160d4a621a49df4f9409d
         'JamesGordo\\CSV\\' => 
         array (
             0 => __DIR__ . '/..' . '/jamesgordo/php-csv-parser/src',
+        ),
+        'HouseOfApis\\CurrencyApi\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/houseofapis/currencyapi/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (

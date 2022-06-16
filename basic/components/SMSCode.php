@@ -45,7 +45,7 @@ class SMSCode extends Component{
 		
 		
 		$smsQuery = [
-			'api_id' => '7FFF14D0-E44B-DA7B-7ABD-EB36D169FE29',
+			'api_id' => getenv('SMSRu_Investportal'),
 			'to' => $to,
 			'msg' => $content
 		];

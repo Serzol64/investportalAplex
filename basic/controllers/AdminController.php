@@ -569,8 +569,10 @@ class AdminController extends Controller{
 				's' => [new PortalServicesCategory, PortalServicesCategory::find()]
 			];
 					
-			if($svc == "portalServicesCategory"){ $serviceResponse[] = $SConnector['s'][1]->all(); }
-			else if($svc == "portalServicesCategory"){ $serviceResponse[] = $SConnector['c'][1]->all(); }
+			if($svc == "portalServicesCategory"){ $svcl = $SConnector['s'][1]->all(); }
+			else if($svc == "portalServices"){ $svcl = $SConnector['c'][1]->all(); }
+			
+			$serviceResponse = $svcl;
 		}
 		else if($svc == "Attributes"){
 				$tables = [];

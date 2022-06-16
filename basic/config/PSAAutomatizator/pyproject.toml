@@ -1,0 +1,14 @@
+[build-system]
+requires = [
+    "setuptools",
+    "xlrd",
+    "pandas",
+    "smsru-api",
+    "aioviberbot",
+    "pywhatkit",
+    "yattag",
+    "mysql-connector-python",
+    "openpyxl",
+    "autopep8"
+]
+build-backend = "setuptools.build_meta"

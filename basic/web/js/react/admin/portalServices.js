@@ -25,7 +25,6 @@ class Services extends React.Component{
 			.then(response => response.json())
 			.then(this.generateSmartResponse)
 			.catch(error => {
-				alert('Response error!');
 				console.log(error);
 			});
 	}
@@ -71,27 +70,40 @@ class List extends React.Component{
 				alert('Response error!');
 				console.log(error);
 			});
-
-		
-		$('#services-list > #list .categories a').click(function (e,t) { 
+			
+		$('.categories > a').click((e,t) => {
 			e.preventDefault();
 			
-			let currentCat = $('#services-list > #list .categories a').eq($(this).index()).data('cat');
+			$(".categories > a").removeClass('active-category');
+			$(".categories > a").eq($(this).index()).addClass('active-category');
+				
+			let currentCat = $('.categories > a').eq($(this).index()).data('cat');
 			this.setState({ cQuery: { catId: currentCat } });
 		});
-
-		$('#services-list > #list .categories a').eq(0).addClass('active-category');
 	}
 	render(){
 
-		const catsList = this.state.list.map((query) => {
-			(
-				<a data-cat={ query.id }>
-					<img src={ query.icon } />
-					<strong>{ query.name }</strong>
-				</a>
-			)
+		const catsList = this.state.list.map((query, index) => {
+			
+			if(index > 0){
+				return (
+					<a data-cat={ query.id } href="#">
+						<ImageWorkTag srcQuery={ query.icon } />
+						<strong>{ query.name }</strong>
+					</a>
+				);
+			}
+			else{
+				return (
+					<a data-cat={ query.id } href="#" className="active-category">
+						<ImageWorkTag srcQuery={ query.icon } />
+						<strong>{ query.name }</strong>
+					</a>
+				);
+			}
 		});
+		
+		
 		return (
 			<React.Fragment>
 				<div id="services-list">
@@ -104,6 +116,8 @@ class List extends React.Component{
 		);
 	}
 }
+
+const ImageWorkTag = (props) => { return <img src={ props.srcQuery } /> }
 
 const HeaderRender = () => {
   let render = '<a href="/admin?svc=dataManagment&subSVC=portalServices&page=managment&contentStatus=false#add" style="position:relative; left: -4%;">Add services category</a>';

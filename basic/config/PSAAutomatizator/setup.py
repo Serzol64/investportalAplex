@@ -1,9 +1,9 @@
-from setuptools import setup, find_packages
-from os.path import join, dirname
+import setuptools
 
-setup(
-    name='PSAAutomatizator',
-    version='0.1',
-    packages=find_packages(),
-    long_description=open(join(dirname(__file__), 'README.rst')).read(),
+setuptools.setup(
+    name="PSAAutomatizator",
+    version="0.2",
+    package_dir={"": "src"},
+    packages=setuptools.find_packages(where="src"),
+    python_requires=">=3.6",
 )

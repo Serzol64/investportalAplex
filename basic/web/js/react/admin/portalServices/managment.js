@@ -12,6 +12,34 @@ var params = window
         {}
     );
 
+class CategoryList extends React.Component{
+	constructor(props){
+		super(props);
+		this.state = {
+		  category: []
+	    };
+	}
+	componentDidMount(){
+		fetch('/admin/api/dataServices/filters/portalServicesCategory/show', { method: 'GET' })
+        .then(response => response.json())
+		.then(data => this.setState({ category: data }))
+		.catch(error => {
+			alert('Response error!');
+			console.log(error);
+		});
+	}
+	render(){
+		const myStates = this.state.category.map((myState) =>
+			<option value={myState.id}>{ myState.name }</option>
+		);
+		return (
+			<React.Fragment>
+			  {myStates}
+			</React.Fragment>
+		);
+	}
+}
+
 function serviceEditorQuery(){
 	var fqd = new FormData();
 	fqd.append('svcQuery', $('#ready-query').val());
@@ -206,6 +234,7 @@ class Add extends React.Component{
 											<h4>Select the category</h4>
 											<select id="categorySelector">
 												<option value="any">Any category</option>
+												<CategoryList />
 											</select>
 										</div>
 										<div className="wf">

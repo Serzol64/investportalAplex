@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'c70fd60debd98615de354988289776614d6b4d38',
+        'reference' => '6575ae497615d29a7bcb0552781c8af1c2ab699d',
         'name' => 'yiisoft/yii2-app-basic',
         'dev' => true,
     ),
@@ -207,6 +207,15 @@
             'aliases' => array(),
             'reference' => 'c94a94f120803a18554c1805ef2e539f8285f9a2',
             'dev_requirement' => true,
+        ),
+        'houseofapis/currencyapi' => array(
+            'pretty_version' => 'v1.0.1',
+            'version' => '1.0.1.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../houseofapis/currencyapi',
+            'aliases' => array(),
+            'reference' => 'ac707f232fbc8f922f9ac5a5c62a928e4677c726',
+            'dev_requirement' => false,
         ),
         'jamesgordo/php-csv-parser' => array(
             'pretty_version' => '1.0.0',
@@ -784,7 +793,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'c70fd60debd98615de354988289776614d6b4d38',
+            'reference' => '6575ae497615d29a7bcb0552781c8af1c2ab699d',
             'dev_requirement' => false,
         ),
         'yiisoft/yii2-bootstrap4' => array(
