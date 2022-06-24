@@ -17,34 +17,41 @@ function capitalizeFirstLetter(string) {
 }
 
 class List extends React.Component{
+	constructor(props){
+		super(props);
+		this.state = { newsList: [] };
+	}
+	getNewsLink(id){ return '/admin?svc=dataManagment&subSVC=analytics&id=' + id + '#edit'; }
+	componentDidMount(){
+		var lfd = new FormData();
+		
+		let listNewsQuery = { svc: 'list' };
+		
+		lfd.append('svcQuery', JSON.stringify(listNewsQuery));
+		
+		fetch('admin/api/dataServices/newsService/Analytics/show', { method: 'POST', body: lfd })
+			.then((response) => { if(response.ok){ return response.json(); } })
+			.then((data) => this.setState({ newsList: data }))
+			.catch( error => { console.error( error ); } );
+	}
 	render(){
+		
 		return (
 			<React.Fragment>
-				<section id="analytics-list">
+				<section id="news-list">
 				  <header data-block="search">
 					<input type="search" placeholder="Find matherials"/>
 				  </header>
 				  <main data-block="list">
-					<div id="news">
-					  <header data-news="">Analytic example</header>
-					  <main>01-01-2022 10:00:00</main>
-					  <footer>Edit</footer>
-					</div>
-					<div id="news">
-					  <header data-news="">Analytic example</header>
-					  <main>01-01-2022 10:00:00</main>
-					  <footer>Edit</footer>
-					</div>
-					<div id="news">
-					  <header data-news="">Analytic example</header>
-					  <main>01-01-2022 10:00:00</main>
-					  <footer>Edit</footer>
-					</div>
-					<div id="news">
-					  <header data-news="">Analytic example</header>
-					  <main>01-01-2022 10:00:00</main>
-					  <footer>Edit</footer>
-					</div>
+				    { this.state.newsList ? 
+					  this.state.newsList.map((myState) => (
+						  <div id="news">
+							  <header data-news={ myState.id }>{ myState.title }</header>
+							  <main>{ myState.created }</main>
+							  <a href={ this.getNewsLink(myState.id) }>Edit</a>
+						  </div>
+					  )) : 'Not analytic articles'
+					}
 				  </main>
 				</section>
 			</React.Fragment>
@@ -53,8 +60,53 @@ class List extends React.Component{
 }
 class Add extends React.Component{
 	componentDidMount(){
-		ClassicEditor.create( document.querySelector( '#analyticEditor' ), this.dataParam() )
-                     .catch( error => { console.error( error ); } );
+		CKEDITOR.replace('analyticEditor', { stylesSet: 'analyticEditorStyles' });
+		
+		$('button#send').click(function(e,t){
+			let serviceQuery = {
+				content: {
+					svc: 'content',
+					parameters: {
+						operation: 'send',
+						query: {
+							title: $('input#title').val(),
+							image: get_cookie('titleImage'),
+							content: this.generateEventData(CKEDITOR.instances.eventEditor.getData())
+						}
+					}
+				},
+				meta: {
+					svc: 'titleImage',
+					parameters: {
+						operation: 'send',
+						isTitlePhoto: true,
+						photoData: {
+							isSVC: {
+								send: true,
+								update: false
+							},
+							ext: sessionStorage.getItem('ext'),
+							data: $('#uploaded').attr('src')
+						}
+						
+					}
+				}
+			};
+			
+			titleImageSend(serviceQuery.meta);
+			sendEvent(serviceQuery.content);
+		});
+                     
+        $('#titleImageU').change(function(e){
+			const file = e.target.files[0];
+
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				$('#uploaded').attr('src', reader.result);
+			};
+			reader.readAsDataURL(file);
+			sessionStorage.setItem('ext', getExtension(file));
+		});
 	}
 	render(){
 		return (
@@ -63,64 +115,292 @@ class Add extends React.Component{
 				  <header data-block="name">
 					<input type="text" placeholder="Input matherial title..."/>
 				  </header>
+				  <section data-block="titleImage">
+				    <label htmlFor="titleImageU"><input type="file" name="titleImageU" id="titleImageU" accept="image/*" />Upload title image</label>
+					<img src="https://storage.yandexcloud.net/printio/assets/realistic_views/canvas30x30/detailed/74c7d27d11c90643e74e99cf7e8c85a4f8d0dd88.png?1534453806" id="uploaded" />
+				  </section>
 				  <main data-block="form">
-					<div id="news"><textarea id="analyticEditor"></textarea></div>
+					<div id="news"><textarea id="analyticEditor" name="analyticEditor"></textarea></div>
 				  </main>
+				  <button id="send">Send article</button>
 				</section>
 			</React.Fragment>
 		);
 	}
-	dataParam(){
-		return {
-			placeholder: 'Adding analytic matherial content...',
-			heading: {
-				options: [
-					{model: 'paragraph', title: 'Analytic paragraph'},
-					{model: 'paragraph', title: 'Analytic bookmark', class: 'bookmark'},
-					{model: 'paragraph', title: 'Analytic sub bookmark', class: 'subBookmark'}
-				]
-			}
-		};
+	generateEventData(content){
+		let contentParse = DOMParse.parseFromString(content, 'text/html'),
+			readyQuery = {
+				content: [],
+				article: {}
+			};
+			
+		var partList = contentParse.getElementById('part'),
+			contentData = contentParse.getElementById('matherial');
+		
+		for(let i = 0; i < partList.length; i++){ readyQuery.content.append([partList[i].innerHTML,  encodeURIComponent(partList[i].innerHTML)]); }
+		for(let i = 0; i < contentData.length; i++){ 
+			readyQuery.article.append({
+				partMeta: readyQuery.content[i],
+				partContent: contentData[i].innerText
+			});
+		}
+		
+		
+		return JSON.stringify(readyQuery);
 	}
 }
+
 class Edit extends React.Component{
+	constructor(props){
+		super(props);
+		this.state = { 
+			currentNews: [] 
+		};
+	}
 	componentDidMount(){
-		ClassicEditor.create( document.querySelector( '#analyticEditor' ), this.dataParam() )
-                     .catch( error => { console.error( error ); } );
+		
+		let eq = {
+			svc: 'content',
+			parameters: {
+				operation: 'show',
+				query: { id: params['id'] }
+			}
+		};
+		
+		var fdes = new FormData();
+		fdes.append('svcQuery', JSON.stringify(eq));
+		
+		fetch('/admin/api/dataServices/newsService/News/show',{ method: 'POST', body: fdes })
+			.then((response) => {
+				if(response.status === 200){ return response.json(); }
+				else{ window.location.assign('/admin?svc=dataManagment&subSVC=analytics#list'); }
+			})
+			.then(data => this.setState({ currentNews: data[0] }));
+			
+		CKEDITOR.replace('analyticEditor', { stylesSet: 'analyticEditorStyles' });
+        
+		$('button#send').click(function(e,t){
+			let updateQuery = {
+				content: {
+					svc: 'content',
+					parameters: {
+						operation: 'update',
+						query: {
+							id: params['id'],
+							title: $('input#title').val() || get_cookie('title'),
+							image: get_cookie('titleImage_update'),
+							content: this.generateEventData(CKEDITOR.instances.newsEditor.getData())
+						}
+					}
+				},
+				meta: {
+					svc: 'titleImage',
+					parameters: {
+						operation: 'update',
+						isTitlePhoto: true,
+						photoData: {
+							isSVC: {
+								send: false,
+								update: true
+							},
+							ext: sessionStorage.getItem('ext'),
+							data: $('#uploaded').attr('src')
+						}
+						
+					}
+				}
+			};
+			
+			updateEvent(updateQuery);
+		});
+		$('button#delete').click(function(e,t){
+			let deleteQuery = {
+				content: {
+					svc: 'content',
+					parameters: {
+						operation: 'delete',
+						query: {
+							id: params['id']
+						}
+					}
+				},
+				meta: {
+					svc: 'titleImage',
+					parameters: {
+						operation: 'delete',
+						data: this.getCurrentImage(params['id'])
+					}
+				}
+			};
+			
+			deleteEvent(deleteQuery);
+		});
+		
+		
+		$('#titleImageU').change(function(e){
+			const file = e.target.files[0];
+
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				$('#uploaded').attr('src', reader.result);
+			};
+			reader.readAsDataURL(file);
+			sessionStorage.setItem('ext', getExtension(file));
+		});
+		
+		window.setTimeout(function(){ CKEDITOR.instances.newsEditor.setData($('#analytics-list > #contentData').val()) }, 3000); 
 	}
 	render(){
+		
+		set_cookie('title', this.state.currentNews.title, strtotime('+ 1 minute', Date.now()), '/');
+		set_cookie('titleImage_update', this.state.currentNews.titleImage, strtotime('+ 2 minutes', Date.now()), '/');
+		
 		return (
 			<React.Fragment>
-				<section id="event-list">
+				<section id="analytics-list">
+				  <input type="hidden" name="contentData" id="contentData" value={ this.dataReverse(this.state.currentNews.content) } />
 				  <header data-block="name">
-					<input type="text" placeholder="Update matherial title..." value="Test UI example..."/>
+					<input type="text" placeholder="Update article title..." value={ this.state.currentNews.title }/>
 				  </header>
+				  <section data-block="titleImage">
+				    <label htmlFor="titleImageU"><input type="file" name="titleImageU" id="titleImageU" accept="image/*" />Upload title image</label>
+					<img src={ this.state.currentNews.titleImage } id="uploaded" />
+				  </section>
 				  <main data-block="form">
-					<div id="news"><textarea id="analyticEditor"></textarea></div>
+					<div id="news"><textarea id="analyticEditor" name="analyticEditor"></textarea></div>
 				  </main>
+				  <button id="send">Update news</button>
+				  <button id="delete" style={{ backgroundColor: 'red' }}>Delete news</button>
 				</section>
 			</React.Fragment>
 		);
 	}
-	dataParam(){
-		return {
-			placeholder: 'Update analytic matherial content...',
-			heading: {
-				options: [
-					{model: 'paragraph', title: 'Analytic paragraph'},
-					{model: 'paragraph', title: 'Analytic bookmark', class: 'bookmark'},
-					{model: 'paragraph', title: 'Analytic sub bookmark', class: 'subBookmark'}
-				]
-			}
-		};
+	generateEventData(content){
+		let contentParse = DOMParse.parseFromString(content, 'text/html'),
+			readyQuery = {
+				content: [],
+				article: {}
+			};
+			
+		var partList = contentParse.getElementById('part'),
+			contentData = contentParse.getElementById('matherial');
+		
+		for(let i = 0; i < partList.length; i++){ readyQuery.content.append([partList[i].innerHTML,  encodeURIComponent(partList[i].innerHTML)]); }
+		for(let i = 0; i < contentData.length; i++){ 
+			readyQuery.article.append({
+				partMeta: readyQuery.content[i],
+				partContent: contentData[i].innerText
+			});
+		}
+		
+		
+		return JSON.stringify(readyQuery);
 	}
+	dataReverse(content){
+		let generatingResponse = null;
+		var contentEditor = [new HTMLBuilder(), new HTMLBuilder()];
+	}
+}
+
+function sendEvent(q){
+		var querySendData = new FormData();
+		
+		querySendData.append('svcQuery', JSON.stringify(q));
+		
+		fetch('admin/api/dataServices/newsService/Analytics/send', { method: 'POST', body: querySendData })
+		.then((response) => {
+			if(response.status === 200){ 
+				console.log('Content success upload!'); 
+				window.location.assign('/admin?svc=dataManagment&subSVC=analytics#list');
+			}
+			else{ alert('Content failed upload!'); }
+		})
+		.catch(error => {
+			alert('Response error!');
+			console.log(error);
+		});
+}
+function titleImageSend(q){
+		var querySendMedia = new FormData();
+		
+		querySendMedia.append('svcQuery', JSON.stringify(q));
+		
+		fetch('admin/api/dataServices/newsService/Analytics/send', { method: 'POST', body: querySendMedia })
+		.then((response) => {
+			if(response.status === 200){ console.log('Title image success upload!'); }
+			else{ alert('Title image failed upload!'); }
+		})
+		.catch(error => {
+			alert('Response error!');
+			console.log(error);
+		});
+		
+}
+
+function updateEvent(q){
+		var fdu = [new FormData(), new FormData()];
+		
+		fdu[0].append('svcQuery', JSON.stringify(q.meta));
+		fdu[1].append('svcQuery', JSON.stringify(q.content));
+		
+		fetch('admin/api/dataServices/newsService/Analytics/update', { method: 'POST', body: fdu[0] })
+		.then((response) => {
+			if(response.status === 200){ console.log('Title image success update!'); }
+			else{ alert('Title image failed update!'); }
+		})
+		.catch(error => {
+			alert('Response error!');
+			console.log(error);
+		});
+		
+		fetch('admin/api/dataServices/newsService/Analytics/update', { method: 'POST', body: fdu[1] })
+		.then((response) => {
+			if(response.status === 200){ 
+				console.log('Content success update!'); 
+				window.location.assign('/admin?svc=dataManagment&subSVC=analytics#list');
+			}
+			else{ alert('Content failed update!'); }
+		})
+		.catch(error => {
+			alert('Response error!');
+			console.log(error);
+		});
+}
+function deleteEvent(q){
+		var fdd = [new FormData(), new FormData()];
+		
+		fdd[0].append('svcQuery', JSON.stringify(q.meta));
+		fdd[1].append('svcQuery', JSON.stringify(q.content));
+		
+		fetch('admin/api/dataServices/newsService/Analytics/delete', { method: 'POST', body: fdd[1] })
+		.then((response) => {
+			if(response.status === 200){ console.log('Content success delete!'); }
+			else{ alert('Content failed delete!'); }
+		})
+		.catch(error => {
+			alert('Response error!');
+			console.log(error);
+		});
+		
+		fetch('admin/api/dataServices/newsService/Analytics/delete', { method: 'POST', body: fdd[0] })
+		.then((response) => {
+			if(response.status === 200){ 
+				console.log('Title image success delete!'); 
+				window.location.assign('/admin?svc=dataManagment&subSVC=analytics#list');
+			}
+			else{ alert('Title image failed delete!'); }
+		})
+		.catch(error => {
+			alert('Response error!');
+			console.log(error);
+		});
 }
 
 const HeaderRender = (hash) => {
   let render = '';
   switch(hash){
-    case "#add": render = '<a href="/admin?svc=dataManagment&subSVC=news#list">Back to list</a>'; break;
-	case "#edit": render = '<a href="/admin?svc=dataManagment&subSVC=news#list">Back to list</a>'; break;
+    case "#add": render = '<a href="/admin?svc=dataManagment&subSVC=analytics#list">Back to list</a>'; break;
+	case "#edit": render = '<a href="/admin?svc=dataManagment&subSVC=analytics#list">Back to list</a>'; break;
 	default: render = '<a href="#add">New matherial</a>'; break;
   }
   

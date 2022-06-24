@@ -90,6 +90,7 @@ $config = [
 		'portalPass' => ['class' => 'app\components\Forgot'],
         'smsCoder' => ['class' => 'app\components\SMSCode'],
         'regionDB' => ['class' => 'app\components\CountriesList'],
+        'currencyDB' => ['class' => 'app\components\CurrencyDB'],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [

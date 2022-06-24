@@ -16,10 +16,12 @@ $this->title = 'Investors';
 			<div id="investors-list">
 				<div class="header">
 					<h2 class="inv-title">Region</h2>
-					<ul class="inv"></ul>
+					<ul class="inv">
+						<li>All regions</li>
+					</ul>
 				</div>
 				<div class="body">
-					<?php foreach($adList as $ads){ ?>
+					<?php foreach($ads as $adList){ ?>
 						<aside>
 							<div><?php echo $adList->title; ?></div>
 							<div><?php echo $adList->description; ?></div>

@@ -6,6 +6,9 @@ use yii\web\Controller;
 use yii\web\View;
 
 use app\models\ObjectAttribute;
+use app\models\Investors;
+use app\models\InvestorsCategory;
+
 
 class ObjectsController extends Controller{
 	public function actionIndex(){
@@ -44,7 +47,9 @@ class ObjectsController extends Controller{
 		$this->view->registerCssFile("/css/investors.css");
 		$this->view->registerJsFile("/js/investors.js", ['position' => View::POS_END]);
 		
-		return $this->render('investors');
+		$adverstments = Investors::find()->all();
+		
+		return $this->render('investors', ['ads' => $adverstments]);
 	}
 	public function actionExperts(){
 		$this->view->registerCssFile("/css/experts.css");

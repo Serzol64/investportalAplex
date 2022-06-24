@@ -70,7 +70,7 @@ class List extends React.Component{
 }
 class Add extends React.Component{
 	componentDidMount(){
-        CKEDITOR.replace('newsEditor');
+        CKEDITOR.replace('newsEditor', { stylesSet: 'newsEditorStyles' });
         
         $('button#send').click(function(e,t){
 			let serviceQuery = {
@@ -165,7 +165,7 @@ class Edit extends React.Component{
 			})
 			.then(data => this.setState({ currentNews: data[0] }));
 			
-		CKEDITOR.replace('newsEditor');
+		CKEDITOR.replace('newsEditor', { stylesSet: 'newsEditorStyles' });
         
 		$('button#send').click(function(e,t){
 			let updateQuery = {

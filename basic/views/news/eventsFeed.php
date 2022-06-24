@@ -53,11 +53,5 @@ $this->title = 'News';
 					<main></main>
 				</section>
 			</div>
-			<div id="events-footer">
-				<section class="events-feed" data-time="exited">
-					<header id="title">Exited events</header>
-					<main></main>
-				</section>
-			</div>
     </section>      
 </main>

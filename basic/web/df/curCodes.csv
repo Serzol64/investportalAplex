@@ -1,4 +1,4 @@
-Entity,Currency,AlphabeticCode,NumericCode,MinorUnit,WithdrawalDate
+entity,currency,alphabeticcode,numericcode,minorunit,withdrawaldate
 AFGHANISTAN,Afghani,AFN,971,2,
 ÅLAND ISLANDS,Euro,EUR,978,2,
 ALBANIA,Lek,ALL,008,2,
@@ -7,7 +7,6 @@ AMERICAN SAMOA,US Dollar,USD,840,2,
 ANDORRA,Euro,EUR,978,2,
 ANGOLA,Kwanza,AOA,973,2,
 ANGUILLA,East Caribbean Dollar,XCD,951,2,
-ANTARCTICA,No universal currency,,,,
 ANTIGUA AND BARBUDA,East Caribbean Dollar,XCD,951,2,
 ARGENTINA,Argentine Peso,ARS,032,2,
 ARMENIA,Armenian Dram,AMD,051,2,

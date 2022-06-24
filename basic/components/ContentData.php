@@ -83,11 +83,64 @@ class ContentData extends Component{
 				}
 			break;
 			case 'analytics':
-				if($q['operation'] == 'send'){}
-				else if($q['operation'] == 'show'){}
-				else if($q['operation'] == 'update'){}
+				$acm = new Analytic;
+				$acc = Analytic::find();
+				
+				if($q['operation'] == 'send'){
+					if($q['query']['image']){
+						$lastId = $acc->orderBy('id desc')->limit(1)->all();
+						
+						if($lastId){
+							foreach($lastId as $code){ $newId = $code->id + 1; }
+						}
+						else{ $newId = 1; }
+						
+						$acm->id = $newId;
+						$acm->title = $q['query']['title'];
+						$acm->created = date('Y-m-d h:i:s');
+						$acm->titleImage = $q['query']['image'];
+						$acm->content = $q['query']['content'];
+						
+						if(!$acm->save()){
+							$response[1] = 500;
+							$response[0] = 'Operation failed';
+						}
+					}
+					else{
+						$response[1] = 400;
+						$response[0] = 'Not required title photo!';
+					}
+				}
+				else if($q['operation'] == 'show'){
+					$getNews = $acc->where(['id' => $q['query']['id']])->all();
+					
+					if($getNews){ $response[0] = $getNews; }
+					else{
+						$response[1] = 400;
+						$response[0] = 'Not required title photo!';
+					}
+				}
+				else if($q['operation'] == 'update'){
+					$currentNews = Analytic::findOne(['id' => $q['query']['id']]);
+					
+					if($q['query']['image']){
+						$currentNews->title = $q['query']['title'];
+						$currentNews->created = date('Y-m-d h:i:s');
+						$currentNews->titleImage = $q['query']['image'];
+						$currentNews->content = $q['query']['content'];
+						
+						if(!$currentNews->save()){
+							$response[1] = 500;
+							$response[0] = 'Operation failed';
+						}
+					}
+					else{
+						$response[1] = 400;
+						$response[0] = 'Not required title photo!';
+					}
+				}
 				else if($q['operation'] == 'delete'){
-					$currentA = Analytic::findOne($q['query']['id']);
+					$currentA = Analytic::findOne(['id' => $q['query']['id']]);
 					
 					if(!$currentA->delete()){
 							$response[1] = 500;
@@ -96,11 +149,66 @@ class ContentData extends Component{
 				}
 			break;
 			case 'events':
-				if($q['operation'] == 'send'){}
-				else if($q['operation'] == 'show'){}
-				else if($q['operation'] == 'update'){}
+				$ecm = new Event;
+				$ecc = Event::find();
+				
+				if($q['operation'] == 'send'){
+					if($q['query']['image']){
+						$lastId = $ecc->orderBy('id desc')->limit(1)->all();
+						
+						if($lastId){
+							foreach($lastId as $code){ $newId = $code->id + 1; }
+						}
+						else{ $newId = 1; }
+						
+						$ecm->id = $newId;
+						$ecm->title = $q['query']['title'];
+						$ecm->titleImage = $q['query']['image'];
+						$ecm->dateFrom = $q['query']['period'][0];
+						$ecm->dateTo = $q['query']['period'][1];
+						$ecm->content = $q['query']['content'];
+						
+						if(!$ecm->save()){
+							$response[1] = 500;
+							$response[0] = 'Operation failed';
+						}
+					}
+					else{
+						$response[1] = 400;
+						$response[0] = 'Not required title photo!';
+					}
+				}
+				else if($q['operation'] == 'show'){
+					$getNews = $ecc->where(['id' => $q['query']['id']])->all();
+					
+					if($getNews){ $response[0] = $getNews; }
+					else{
+						$response[1] = 400;
+						$response[0] = 'Not required title photo!';
+					}
+				}
+				else if($q['operation'] == 'update'){
+					$currentNews = Event::findOne(['id' => $q['query']['id']]);
+					
+					if($q['query']['image']){
+						$currentNews->title = $q['query']['title'];
+						$currentNews->titleImage = $q['query']['image'];
+						$ecm->dateFrom = $q['query']['period'][0];
+						$ecm->dateTo = $q['query']['period'][1];
+						$currentNews->content = $q['query']['content'];
+						
+						if(!$currentNews->save()){
+							$response[1] = 500;
+							$response[0] = 'Operation failed';
+						}
+					}
+					else{
+						$response[1] = 400;
+						$response[0] = 'Not required title photo!';
+					}
+				}
 				else if($q['operation'] == 'delete'){
-					$currentE = Event::findOne($q['query']['id']);
+					$currentE = Event::findOne(['id' => $q['query']['id']]);
 					
 					if(!$currentE->delete()){
 							$response[1] = 500;

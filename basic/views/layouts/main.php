@@ -62,8 +62,15 @@ $this->beginPage();
 								<header>
 									   <div class="exchange-selector">
 										 <select name="regexchange" id="regexchange" style="color: #0079bf;">
-										   <option value="usd">USD</option>
-										   <option value="eur">EUR</option>
+										   <?php
+											$listQuery = ['type' => 'list'];
+											$currencyList = Yii::$app->currencyDB->execute($listQuery);
+											
+											foreach($currencyList as $dataCurrency){
+												if($dataCurrency->selected == FALSE){ echo '<option value="' . $dataCurrency->name . '">' . $dataCurrency->currency . '</option>'; }
+												else{ echo '<option value="' . $dataCurrency->name . '" selected>' . $dataCurrency->currency . '</option>'; }
+											}
+										   ?>
 										</select>
 									   </div>
 								</header>

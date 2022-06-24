@@ -46,6 +46,7 @@ class AdminController extends Controller{
 							case "events": $service='newsCMS/events'; break;
 							case "portalServices":
 								if(isset($_GET['page'])){ 
+									$this->view->registerJsFile("/js/lib/htmlbuilder.min.js", ['position' => View::POS_HEAD]); 
 									$this->view->registerJsFile("/js/ckeditor/ckeditor.js", ['position' => View::POS_HEAD]); 
 									$this->view->registerJsFile("/js/react/admin/portalServices/managment.js", ['type' => 'text/babel']); 
 								}
@@ -57,6 +58,7 @@ class AdminController extends Controller{
 						 if($_GET['subSVC'] == "news" || $_GET['subSVC'] == "analytics" || $_GET['subSVC'] == "events"){  
 							 $this->view->registerJsFile("/js/ckeditor/ckeditor.js", ['position' => View::POS_HEAD]); 
 							 $this->view->registerJsFile("/js/addons/strtotime.js"); 
+							 $this->view->registerJsFile("/js/react/admin/CKEditorConfig.js");
 						 }
 					 }
 				}
@@ -647,11 +649,49 @@ class AdminController extends Controller{
 					
 				}
 				else if($svc == "Analytics"){
-					
+					if(isset($q['svc'])){
+						switch($q['svc']){
+							case 'titleImage': 
+								$ir = $dataCluster['n'][0]->send('news', $pm);
+								
+								Yii::$app->response->statusCode = $ir[1];
+								$serviceResponse = $ir[0];
+							break;
+							case 'content': 
+								$cr = $dataCluster['n'][1]->send('news', $pm);
+								
+								Yii::$app->response->statusCode = $cr[1];
+								$serviceResponse = $cr[0];
+							break;
+							default: 
+								Yii::$app->response->statusCode = 403;
+								$serviceResponse = "Not service found!";
+							break;
+						}
+					}
 										
 				}
 				else if($svc == "Events"){
-					
+					if(isset($q['svc'])){
+						switch($q['svc']){
+							case 'titleImage': 
+								$ir = $dataCluster['n'][0]->send('news', $pm);
+								
+								Yii::$app->response->statusCode = $ir[1];
+								$serviceResponse = $ir[0];
+							break;
+							case 'content': 
+								$cr = $dataCluster['n'][1]->send('news', $pm);
+								
+								Yii::$app->response->statusCode = $cr[1];
+								$serviceResponse = $cr[0];
+							break;
+							default: 
+								Yii::$app->response->statusCode = 403;
+								$serviceResponse = "Not service found!";
+							break;
+						}
+					}
 										
 				}
 				else{
@@ -708,11 +748,49 @@ class AdminController extends Controller{
 					}
 				}
 				else if($svc == "Analytics"){
-					
+					if(isset($q['svc'])){
+						switch($q['svc']){
+							case 'titleImage': 
+								$ir = $dataCluster['n'][0]->send('news', $pm);
+								
+								Yii::$app->response->statusCode = $ir[1];
+								$serviceResponse = $ir[0];
+							break;
+							case 'content': 
+								$cr = $dataCluster['n'][1]->send('news', $pm);
+								
+								Yii::$app->response->statusCode = $cr[1];
+								$serviceResponse = $cr[0];
+							break;
+							default: 
+								Yii::$app->response->statusCode = 403;
+								$serviceResponse = "Not service found!";
+							break;
+						}
+					}
 										
 				}
 				else if($svc == "Events"){
-					
+					if(isset($q['svc'])){
+						switch($q['svc']){
+							case 'titleImage': 
+								$ir = $dataCluster['n'][0]->send('news', $pm);
+								
+								Yii::$app->response->statusCode = $ir[1];
+								$serviceResponse = $ir[0];
+							break;
+							case 'content': 
+								$cr = $dataCluster['n'][1]->send('news', $pm);
+								
+								Yii::$app->response->statusCode = $cr[1];
+								$serviceResponse = $cr[0];
+							break;
+							default: 
+								Yii::$app->response->statusCode = 403;
+								$serviceResponse = "Not service found!";
+							break;
+						}
+					}
 										
 				}
 				else{
@@ -768,12 +846,48 @@ class AdminController extends Controller{
 					}
 				}
 				else if($svc == "Analytics"){
-					
-										
+					if(isset($q['svc'])){
+						switch($q['svc']){
+							case 'titleImage': 
+								$ir = $dataCluster['n'][0]->send('news', $pm);
+								
+								Yii::$app->response->statusCode = $ir[1];
+								$serviceResponse = $ir[0];
+							break;
+							case 'content': 
+								$cr = $dataCluster['n'][1]->send('news', $pm);
+								
+								Yii::$app->response->statusCode = $cr[1];
+								$serviceResponse = $cr[0];
+							break;
+							default: 
+								Yii::$app->response->statusCode = 403;
+								$serviceResponse = "Not service found!";
+							break;
+						}
+					}				
 				}
 				else if($svc == "Events"){
-					
-										
+					if(isset($q['svc'])){
+						switch($q['svc']){
+							case 'titleImage': 
+								$ir = $dataCluster['n'][0]->send('news', $pm);
+								
+								Yii::$app->response->statusCode = $ir[1];
+								$serviceResponse = $ir[0];
+							break;
+							case 'content': 
+								$cr = $dataCluster['n'][1]->send('news', $pm);
+								
+								Yii::$app->response->statusCode = $cr[1];
+								$serviceResponse = $cr[0];
+							break;
+							default: 
+								Yii::$app->response->statusCode = 403;
+								$serviceResponse = "Not service found!";
+							break;
+						}
+					}					
 				}
 				else{
 					Yii::$app->response->statusCode = 404;
@@ -847,11 +961,87 @@ class AdminController extends Controller{
 					}
 				}
 				else if($svc == "Analytics"){
-					
+					if(isset($q['svc'])){
+						switch($q['svc']){
+							case 'titleImage': 
+								$ir = $dataCluster['n'][0]->send('news', $pm);
+								
+								Yii::$app->response->statusCode = $ir[1];
+								$serviceResponse = $ir[0];
+							break;
+							case 'content': 
+								$cr = $dataCluster['n'][1]->send('news', $pm);
+								
+								Yii::$app->response->statusCode = $cr[1];
+								$serviceResponse = $cr[0];
+							break;
+							case 'meta': 
+								$ir = $dataCluster['n'][0]->send('news', $pm);
+								
+								Yii::$app->response->statusCode = $ir[1];
+								$serviceResponse = $ir[0];
+							break;
+							case 'list': 
+								$queryList = $news[1]->select('id,title,created')->all();
+								
+								if($queryList){
+									$newsData = [];
+									foreach($queryList as $n){ $newsData[] = $n; }
+									$serviceResponse = $newsData;
+								}
+								else{ 
+									Yii::$app->response->statusCode = 402;
+									$serviceResponse = "Not matherials!"; 
+								}
+							break;
+							default: 
+								Yii::$app->response->statusCode = 403;
+								$serviceResponse = "Not service found!";
+							break;
+						}
+					}
 										
 				}
 				else if($svc == "Events"){
-					
+					if(isset($q['svc'])){
+						switch($q['svc']){
+							case 'titleImage': 
+								$ir = $dataCluster['n'][0]->send('news', $pm);
+								
+								Yii::$app->response->statusCode = $ir[1];
+								$serviceResponse = $ir[0];
+							break;
+							case 'content': 
+								$cr = $dataCluster['n'][1]->send('news', $pm);
+								
+								Yii::$app->response->statusCode = $cr[1];
+								$serviceResponse = $cr[0];
+							break;
+							case 'meta': 
+								$ir = $dataCluster['n'][0]->send('news', $pm);
+								
+								Yii::$app->response->statusCode = $ir[1];
+								$serviceResponse = $ir[0];
+							break;
+							case 'list': 
+								$queryList = $news[1]->select('id,title,created')->all();
+								
+								if($queryList){
+									$newsData = [];
+									foreach($queryList as $n){ $newsData[] = $n; }
+									$serviceResponse = $newsData;
+								}
+								else{ 
+									Yii::$app->response->statusCode = 402;
+									$serviceResponse = "Not matherials!"; 
+								}
+							break;
+							default: 
+								Yii::$app->response->statusCode = 403;
+								$serviceResponse = "Not service found!";
+							break;
+						}
+					}
 										
 				}
 				else{
