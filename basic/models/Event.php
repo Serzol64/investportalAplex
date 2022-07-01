@@ -8,7 +8,7 @@ class Event extends ActiveRecord{
 	
 	public function rules(){
 		return [
-			[['id','titleImage','title','content'],'required']
+			[['id','titleImage','title','content', 'location'],'required']
 		];
 	}
 	public static function tableName(){ return 'newsData_events'; }

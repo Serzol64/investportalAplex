@@ -58,7 +58,7 @@ class SiteController extends Controller{
 		$this->view->registerJsFile("/js/services.js", ['position' => View::POS_END]);
 		
 		$sf = [
-			[PortalServicesCategory::find()->all(), PortalServices::find()->select('id, title, JSON_EXTRACT(meta, \'$.seoData.categoryId\') as category')->where(['category' => 1])->orderBy('id desc')->all()],
+			[PortalServicesCategory::find()->all(), PortalServices::find()->select('id, title, meta')->where(['category' => 1])->orderBy('id desc')->all()],
 			[
 				'new' => PortalServices::find()->select('id,title')->orderBy('id desc')->limit(4)->all()
 			]
@@ -107,6 +107,10 @@ class SiteController extends Controller{
 					if(isset($_POST['country'])){
 						\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 						return Yii::$app->regionDB->listRegion(strtoupper($_POST['country']));
+					}
+					else if(isset($_POST['countryCities'])){
+						\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+						return Yii::$app->regionDB->listCitiesOfCountry($_POST['countryCities']);
 					}
 					else{
 						Yii::$app->response->statusCode = 403;
@@ -203,6 +207,17 @@ class SiteController extends Controller{
 
 					\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 					return $vuData;
+				}
+				else{
+					Yii::$app->response->statusCode = 402;
+					\Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
+					return 'Operation not found'; 
+				}
+			break;
+			case 3:
+				if($operation == 'get'){
+					\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+					return Yii::$app->regionDB->listCities();
 				}
 				else{
 					Yii::$app->response->statusCode = 402;

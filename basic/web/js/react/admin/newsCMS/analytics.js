@@ -16,6 +16,55 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function getExtension(path) {
+  var fileData = path,
+	  ext = "не определилось",
+	  parts = fileData.name.split('.');
+  if (parts.length > 1){ ext = parts.pop(); }
+  
+  return ext;
+  
+}
+
+function generateEventData(content){
+		var HTMLParser = new DOMParser();
+		let contentParse = HTMLParser.parseFromString(content, 'text/html'),
+			readyQuery = {
+				content: [],
+				article: {}
+			};
+			
+		var partList = contentParse.getElementById('part'),
+			contentData = contentParse.getElementById('matherial');
+		
+		for(let i = 0; i < partList.length; i++){ readyQuery.content.append([partList[i].innerHTML,  encodeURIComponent(partList[i].innerHTML)]); }
+		for(let i = 0; i < contentData.length; i++){ 
+			readyQuery.article.append({
+				partMeta: readyQuery.content[i],
+				partContent: contentData[i].innerText
+			});
+		}
+		
+		
+		return readyQuery;
+}
+
+function dataReverse(content){
+		let generatingResponse = null,
+			anchor = '',
+			contentDynamic = '';
+		var contentEditor = [new HTMLBuilder(), new HTMLBuilder()];
+		
+		content.article.map((data) => {
+			anchor += contentEditor[0].createH3(data.partMeta[0], [['id', 'part']]);
+			contentDynamic += contentEditor[1].createParagraph(data.partContent, [['id', 'matherial']]);
+		});
+		
+		
+		generatingResponse = anchor + contentDynamic;
+		return generatingResponse;
+}
+
 class List extends React.Component{
 	constructor(props){
 		super(props);
@@ -71,7 +120,7 @@ class Add extends React.Component{
 						query: {
 							title: $('input#title').val(),
 							image: get_cookie('titleImage'),
-							content: this.generateEventData(CKEDITOR.instances.eventEditor.getData())
+							content: generateEventData(CKEDITOR.instances.analyticEditor.getData())
 						}
 					}
 				},
@@ -127,27 +176,6 @@ class Add extends React.Component{
 			</React.Fragment>
 		);
 	}
-	generateEventData(content){
-		let contentParse = DOMParse.parseFromString(content, 'text/html'),
-			readyQuery = {
-				content: [],
-				article: {}
-			};
-			
-		var partList = contentParse.getElementById('part'),
-			contentData = contentParse.getElementById('matherial');
-		
-		for(let i = 0; i < partList.length; i++){ readyQuery.content.append([partList[i].innerHTML,  encodeURIComponent(partList[i].innerHTML)]); }
-		for(let i = 0; i < contentData.length; i++){ 
-			readyQuery.article.append({
-				partMeta: readyQuery.content[i],
-				partContent: contentData[i].innerText
-			});
-		}
-		
-		
-		return JSON.stringify(readyQuery);
-	}
 }
 
 class Edit extends React.Component{
@@ -189,7 +217,7 @@ class Edit extends React.Component{
 							id: params['id'],
 							title: $('input#title').val() || get_cookie('title'),
 							image: get_cookie('titleImage_update'),
-							content: this.generateEventData(CKEDITOR.instances.newsEditor.getData())
+							content: generateEventData(CKEDITOR.instances.newsEditor.getData())
 						}
 					}
 				},
@@ -210,7 +238,7 @@ class Edit extends React.Component{
 					}
 				}
 			};
-			
+
 			updateEvent(updateQuery);
 		});
 		$('button#delete').click(function(e,t){
@@ -258,7 +286,7 @@ class Edit extends React.Component{
 		return (
 			<React.Fragment>
 				<section id="analytics-list">
-				  <input type="hidden" name="contentData" id="contentData" value={ this.dataReverse(this.state.currentNews.content) } />
+				  <input type="hidden" name="contentData" id="contentData" value={ dataReverse(this.state.currentNews.content) } />
 				  <header data-block="name">
 					<input type="text" placeholder="Update article title..." value={ this.state.currentNews.title }/>
 				  </header>
@@ -274,31 +302,6 @@ class Edit extends React.Component{
 				</section>
 			</React.Fragment>
 		);
-	}
-	generateEventData(content){
-		let contentParse = DOMParse.parseFromString(content, 'text/html'),
-			readyQuery = {
-				content: [],
-				article: {}
-			};
-			
-		var partList = contentParse.getElementById('part'),
-			contentData = contentParse.getElementById('matherial');
-		
-		for(let i = 0; i < partList.length; i++){ readyQuery.content.append([partList[i].innerHTML,  encodeURIComponent(partList[i].innerHTML)]); }
-		for(let i = 0; i < contentData.length; i++){ 
-			readyQuery.article.append({
-				partMeta: readyQuery.content[i],
-				partContent: contentData[i].innerText
-			});
-		}
-		
-		
-		return JSON.stringify(readyQuery);
-	}
-	dataReverse(content){
-		let generatingResponse = null;
-		var contentEditor = [new HTMLBuilder(), new HTMLBuilder()];
 	}
 }
 
@@ -422,6 +425,8 @@ const UXRender = (hash) => {
   }
 }
 
+function set_cookie(b,g,i,f,h,j,e,a){var d=b+"="+escape(g);if(i){var c=new Date(i,f,h);d+="; expires="+c.toGMTString()}if(j){d+="; path="+escape(j)}if(e){d+="; domain="+escape(e)}if(a){d+="; secure"}document.cookie=d}
+function get_cookie(b){var a=document.cookie.match("(^|;) ?"+b+"=([^;]*)(;|$)");if(a){return(unescape(a[2]))}else{return null}}
 
 $('.data-page > header h2').html(document.title);
 

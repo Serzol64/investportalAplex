@@ -19,7 +19,7 @@ class ContentTitle extends Component{
 			case 'news':
 				if($q['operation'] == 'send'){
 					if($q['isTitlePhoto']){
-						$uploadProccess = $this->uploadPhoto($q['photoData'], 'news');
+						$uploadProccess = $this->uploadPhoto($q['photoData']);
 						
 						if($uploadProccess == 'Upload fail'){ 
 							$response[1] = 500;
@@ -35,7 +35,7 @@ class ContentTitle extends Component{
 				}
 				else if($q['operation'] == 'update'){
 					if($q['isTitlePhoto']){
-						$uploadProccess = $this->uploadPhoto($q['photoData'], 'news');
+						$uploadProccess = $this->uploadPhoto($q['photoData']);
 						
 						if($uploadProccess == 'Upload fail'){ 
 							$response[1] = 500;
@@ -57,7 +57,7 @@ class ContentTitle extends Component{
 			case 'analytics':
 				if($q['operation'] == 'send'){
 					if($q['isTitlePhoto']){
-						$uploadProccess = $this->uploadPhoto($q['photoData'], 'analytics');
+						$uploadProccess = $this->uploadPhoto($q['photoData']);
 						
 						if($uploadProccess == 'Upload fail'){ 
 							$response[1] = 500;
@@ -73,7 +73,7 @@ class ContentTitle extends Component{
 				}
 				else if($q['operation'] == 'update'){
 					if($q['isTitlePhoto']){
-						$uploadProccess = $this->uploadPhoto($q['photoData'], 'analytics');
+						$uploadProccess = $this->uploadPhoto($q['photoData']);
 						
 						if($uploadProccess == 'Upload fail'){ 
 							$response[1] = 500;
@@ -95,7 +95,7 @@ class ContentTitle extends Component{
 			case 'events':
 				if($q['operation'] == 'send'){
 					if($q['isTitlePhoto']){
-						$uploadProccess = $this->uploadPhoto($q['photoData'], 'events');
+						$uploadProccess = $this->uploadPhoto($q['photoData']);
 						
 						if($uploadProccess == 'Upload fail'){ 
 							$response[1] = 500;
@@ -111,7 +111,7 @@ class ContentTitle extends Component{
 				}
 				else if($q['operation'] == 'update'){
 					if($q['isTitlePhoto']){
-						$uploadProccess = $this->uploadPhoto($q['photoData'], 'events');
+						$uploadProccess = $this->uploadPhoto($q['photoData']);
 						
 						if($uploadProccess == 'Upload fail'){ 
 							$response[1] = 500;
@@ -134,60 +134,25 @@ class ContentTitle extends Component{
 		
 		return $response;
 	}
-	public function uploadPhoto($q, $service){
+	public function uploadPhoto($q){
+		
 		$state = 'Upload success';
-		
-		
-		if($service == 'news'){
-			$output = '/images/content/' . date('m-d-Y_H:i:s') . '.' . $q['ext'];
-			$ifp = '../web' . $output;
 			
-			list($dataType, $imageData) = explode(';', $q['data']);
-			list(, $encodedImageData) = explode(',', $imageData);
-			$decodedImageData = base64_decode($encodedImageData);
+		$output = '/images/content/' . date('m-d-Y_H:i:s') . '.' . $q['ext'];
+		$ifp = '../web' . $output;
+			
+		list($dataType, $imageData) = explode(';', $q['data']);
+		list(, $encodedImageData) = explode(',', $imageData);
+		$decodedImageData = base64_decode($encodedImageData);
 
-			file_put_contents($ifp, $decodedImageData);
+		file_put_contents($ifp, $decodedImageData);
 			
-			if($q['isSVC']['send']){ $img = setcookie('titleImage', $output, strtotime("+2 minutes"), "/"); }
-			else if($q['isSVC']['update']){
-				$img = setcookie('titleImage_update', $output, strtotime("+1 minute"), "/");
-			}
-		}
-		else if($service == 'analytics'){
-			$output = '/images/content/' . date('m-d-Y_H:i:s') . '-analytics.' . $q['ext'];
-			$ifp = '../web' . $output;
-			
-			list($dataType, $imageData) = explode(';', $q['data']);
-			list(, $encodedImageData) = explode(',', $imageData);
-			$decodedImageData = base64_decode($encodedImageData);
-
-			file_put_contents($ifp, $decodedImageData);
-			
-			if($q['isSVC']['send']){ $img = setcookie('titleImageAnalytics', $output, strtotime("+2 minutes"), "/"); }
-			else if($q['isSVC']['update']){
-				$img = setcookie('titleImageAnalytics_update', $output, strtotime("+1 minute"), "/");
-			}
-		}
-		else if($service == 'events'){
-			$output = '/images/content/' . date('m-d-Y_H:i:s') . '-events.' . $q['ext'];
-			$ifp = '../web' . $output;
-			
-			list($dataType, $imageData) = explode(';', $q['data']);
-			list(, $encodedImageData) = explode(',', $imageData);
-			$decodedImageData = base64_decode($encodedImageData);
-
-			file_put_contents($ifp, $decodedImageData);
-			
-			if($q['isSVC']['send']){ $img = setcookie('titleImageEvents', $output, strtotime("+2 minutes"), "/"); }
-			else if($q['isSVC']['update']){
-				$img = setcookie('titleImageEvents_update', $output, strtotime("+1 minute"), "/");
-			}
-		}
-		
+		if($q['isSVC']['send']){ $img = setcookie('titleImage', $output, strtotime("+2 minutes"), "/"); }
+		else if($q['isSVC']['update']){ $img = setcookie('titleImage_update', $output, strtotime("+1 minute"), "/"); }
+						
 		if(!$img){ $state = 'Upload fail'; }
-		
-		
 		return $state;
+		
 	}
 	public function MetaSend($q){
 		$dataResult = [];

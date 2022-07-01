@@ -32,7 +32,6 @@ use yii\helpers\Url;
 			  <a href="/admin?dashboardSvc=news">News and Events</a>
 			  <a href="/admin?dashboardSvc=data">Data Services and Filters</a>
 			  <a href="/admin?dashboardSvc=user">Users</a>
-			  <a href="/admin?dashboardSvc=portal">Portal Managment</a>
 			</nav>
 			<footer>
 			  <ul>

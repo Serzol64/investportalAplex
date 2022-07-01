@@ -64,11 +64,12 @@ $this->beginPage();
 										 <select name="regexchange" id="regexchange" style="color: #0079bf;">
 										   <?php
 											$listQuery = ['type' => 'list'];
-											$currencyList = Yii::$app->currencyDB->execute($listQuery);
+											$dataCurrency = Yii::$app->currencyDB->execute($listQuery);
 											
-											foreach($currencyList as $dataCurrency){
-												if($dataCurrency->selected == FALSE){ echo '<option value="' . $dataCurrency->name . '">' . $dataCurrency->currency . '</option>'; }
-												else{ echo '<option value="' . $dataCurrency->name . '" selected>' . $dataCurrency->currency . '</option>'; }
+											
+											for($i = 0; $i < count($dataCurrency); $i++){
+												if($dataCurrency[$i]['selected'] != 'Yes'){ echo '<option value="' . $dataCurrency[$i]['name'] . '">' . $dataCurrency[$i]['currency'] . '</option>'; }
+												else{ echo '<option value="' . $dataCurrency[$i]['name'] . '" selected>' . $dataCurrency[$i]['currency'] . '</option>'; }
 											}
 										   ?>
 										</select>
@@ -136,8 +137,16 @@ $this->beginPage();
 								</div>
 								<div class="exchange-selector">
 									<select name="regexchange" id="regexchange" style="color: #0079bf;">
-									  <option value="usd">USD</option>
-									  <option value="eur">EUR</option>
+									  	   <?php
+											$listQuery = ['type' => 'list'];
+											$dataCurrency = Yii::$app->currencyDB->execute($listQuery);
+											
+											
+											for($i = 0; $i < count($dataCurrency); $i++){
+												if($dataCurrency[$i]['selected'] != 'Yes'){ echo '<option value="' . $dataCurrency[$i]['name'] . '">' . $dataCurrency[$i]['currency'] . '</option>'; }
+												else{ echo '<option value="' . $dataCurrency[$i]['name'] . '" selected>' . $dataCurrency[$i]['currency'] . '</option>'; }
+											}
+										   ?>
 								   </select>
 								</div>
 							</header>
@@ -183,49 +192,25 @@ $this->beginPage();
 				<div id="category_menu">
 					<a href="#" class="catname">Low</a>
 					<ul>
-						<li><a href="">Commercial Law</a></li>
-						<li><a href="">Civil and Family Law</a></li>
-						<li><a href="">Administrative Law</a></li>
-						<li><a href="">Employment Law</a></li>
-						<li><a href="">Criminal Law</a></li>
-						<li><a href="">Immigration Law</a></li>
-						<li><a href="">Accounting Services</a></li>
+						
 					</ul>
 				</div>
 				<div id="category_menu">
 					<a href="#" class="catname">Search for Investors</a>
 					<ul>
-						<li><a href="">Commercial Law</a></li>
-						<li><a href="">Civil and Family Law</a></li>
-						<li><a href="">Administrative Law</a></li>
-						<li><a href="">Employment Law</a></li>
-						<li><a href="">Criminal Law</a></li>
-						<li><a href="">Immigration Law</a></li>
-						<li><a href="">Accounting Services</a></li>
+						
 					</ul>
 				</div>
 				<div id="category_menu">
 					<a href="#" class="catname">Analytics</a>
 					<ul>
-						<li><a href="">Commercial Law</a></li>
-						<li><a href="">Civil and Family Law</a></li>
-						<li><a href="">Administrative Law</a></li>
-						<li><a href="">Employment Law</a></li>
-						<li><a href="">Criminal Law</a></li>
-						<li><a href="">Immigration Law</a></li>
-						<li><a href="">Accounting Services</a></li>
+						
 					</ul>
 				</div>
 				<div id="category_menu">
 					<a href="#" class="catname">Evaluation and Audit</a>
 					<ul>
-						<li><a href="">Commercial Law</a></li>
-						<li><a href="">Civil and Family Law</a></li>
-						<li><a href="">Administrative Law</a></li>
-						<li><a href="">Employment Law</a></li>
-						<li><a href="">Criminal Law</a></li>
-						<li><a href="">Immigration Law</a></li>
-						<li><a href="">Accounting Services</a></li>
+						
 					</ul>
 				</div>
 			</main>

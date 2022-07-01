@@ -24,7 +24,7 @@ $this->title = $curEvent->title . ":: Events";
                         <h2>April abstracts. Commercial real estate</h2>
                         <section class="public-date">
                             <img src="https://img.icons8.com/fluent-systems-regular/24/0079bf/clock--v1.png" alt="Дата публикации" id="clock" />
-                            <i><?php echo <?php echo date('d/m/Y', strtotime($curEvent->sprint)); ?>, <?php echo $curEvent->location; ?></i>
+                            <i><?php echo <?php echo $curEvent->dateTo ? date('d/m/Y', strtotime($curEvent->dateFrom)) . ' - ' . date('d/m/Y', strtotime($curEvent->dateTo)) : date('d/m/Y', strtotime($curEvent->dateFrom)); ?>, <?php echo $curEvent->location; ?></i>
                         </section>
                     </header>
                     <main>
@@ -33,8 +33,7 @@ $this->title = $curEvent->title . ":: Events";
 							<?php 
 							echo Html::decode($curEvent->content); 
 							echo EventProgram::widget(['id' => $contentId]);
-							
-							foreach($curEvent->modals as $progf){ echo EventProgramModal::widget(['id' => $contentId, 'programField' => $progf->programResponse]); }
+							echo EventProgramModal::widget(['id' => $contentId]);
 							?>
 						</section>
                     </main>
@@ -50,11 +49,7 @@ $this->title = $curEvent->title . ":: Events";
                         </section>
                         <section class="realted">
                             <strong>Realted events</strong>
-                            <ul>
-                                <li><a href="">Re: Location - offices, co-working spaces, flexible offices</a></li>
-                                <li><a href="">Redevelopment: a new story</a></li>
-                                <li><a href="">Moscow International Property Show 2022 - international exhibition of foreign real estate</a></li>
-                            </ul>
+                            <ul></ul>
                         </section>
                     </footer>
                 </div>

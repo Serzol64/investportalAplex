@@ -652,13 +652,13 @@ class AdminController extends Controller{
 					if(isset($q['svc'])){
 						switch($q['svc']){
 							case 'titleImage': 
-								$ir = $dataCluster['n'][0]->send('news', $pm);
+								$ir = $dataCluster['a'][0]->send('analytics', $pm);
 								
 								Yii::$app->response->statusCode = $ir[1];
 								$serviceResponse = $ir[0];
 							break;
 							case 'content': 
-								$cr = $dataCluster['n'][1]->send('news', $pm);
+								$cr = $dataCluster['a'][1]->send('analytics', $pm);
 								
 								Yii::$app->response->statusCode = $cr[1];
 								$serviceResponse = $cr[0];
@@ -675,13 +675,13 @@ class AdminController extends Controller{
 					if(isset($q['svc'])){
 						switch($q['svc']){
 							case 'titleImage': 
-								$ir = $dataCluster['n'][0]->send('news', $pm);
+								$ir = $dataCluster['e'][0]->send('events', $pm);
 								
 								Yii::$app->response->statusCode = $ir[1];
 								$serviceResponse = $ir[0];
 							break;
 							case 'content': 
-								$cr = $dataCluster['n'][1]->send('news', $pm);
+								$cr = $dataCluster['e'][1]->send('events', $pm);
 								
 								Yii::$app->response->statusCode = $cr[1];
 								$serviceResponse = $cr[0];
@@ -751,13 +751,13 @@ class AdminController extends Controller{
 					if(isset($q['svc'])){
 						switch($q['svc']){
 							case 'titleImage': 
-								$ir = $dataCluster['n'][0]->send('news', $pm);
+								$ir = $dataCluster['a'][0]->send('analytics', $pm);
 								
 								Yii::$app->response->statusCode = $ir[1];
 								$serviceResponse = $ir[0];
 							break;
 							case 'content': 
-								$cr = $dataCluster['n'][1]->send('news', $pm);
+								$cr = $dataCluster['a'][1]->send('analytics', $pm);
 								
 								Yii::$app->response->statusCode = $cr[1];
 								$serviceResponse = $cr[0];
@@ -774,13 +774,13 @@ class AdminController extends Controller{
 					if(isset($q['svc'])){
 						switch($q['svc']){
 							case 'titleImage': 
-								$ir = $dataCluster['n'][0]->send('news', $pm);
+								$ir = $dataCluster['e'][0]->send('events', $pm);
 								
 								Yii::$app->response->statusCode = $ir[1];
 								$serviceResponse = $ir[0];
 							break;
 							case 'content': 
-								$cr = $dataCluster['n'][1]->send('news', $pm);
+								$cr = $dataCluster['e'][1]->send('events', $pm);
 								
 								Yii::$app->response->statusCode = $cr[1];
 								$serviceResponse = $cr[0];
@@ -849,13 +849,13 @@ class AdminController extends Controller{
 					if(isset($q['svc'])){
 						switch($q['svc']){
 							case 'titleImage': 
-								$ir = $dataCluster['n'][0]->send('news', $pm);
+								$ir = $dataCluster['a'][0]->send('analytics', $pm);
 								
 								Yii::$app->response->statusCode = $ir[1];
 								$serviceResponse = $ir[0];
 							break;
 							case 'content': 
-								$cr = $dataCluster['n'][1]->send('news', $pm);
+								$cr = $dataCluster['a'][1]->send('analytics', $pm);
 								
 								Yii::$app->response->statusCode = $cr[1];
 								$serviceResponse = $cr[0];
@@ -871,13 +871,13 @@ class AdminController extends Controller{
 					if(isset($q['svc'])){
 						switch($q['svc']){
 							case 'titleImage': 
-								$ir = $dataCluster['n'][0]->send('news', $pm);
+								$ir = $dataCluster['e'][0]->send('events', $pm);
 								
 								Yii::$app->response->statusCode = $ir[1];
 								$serviceResponse = $ir[0];
 							break;
 							case 'content': 
-								$cr = $dataCluster['n'][1]->send('news', $pm);
+								$cr = $dataCluster['e'][1]->send('events', $pm);
 								
 								Yii::$app->response->statusCode = $cr[1];
 								$serviceResponse = $cr[0];
@@ -964,25 +964,25 @@ class AdminController extends Controller{
 					if(isset($q['svc'])){
 						switch($q['svc']){
 							case 'titleImage': 
-								$ir = $dataCluster['n'][0]->send('news', $pm);
+								$ir = $dataCluster['a'][0]->send('analytics', $pm);
 								
 								Yii::$app->response->statusCode = $ir[1];
 								$serviceResponse = $ir[0];
 							break;
 							case 'content': 
-								$cr = $dataCluster['n'][1]->send('news', $pm);
+								$cr = $dataCluster['a'][1]->send('analytics', $pm);
 								
 								Yii::$app->response->statusCode = $cr[1];
 								$serviceResponse = $cr[0];
 							break;
 							case 'meta': 
-								$ir = $dataCluster['n'][0]->send('news', $pm);
+								$ir = $dataCluster['a'][0]->send('analytics', $pm);
 								
 								Yii::$app->response->statusCode = $ir[1];
 								$serviceResponse = $ir[0];
 							break;
 							case 'list': 
-								$queryList = $news[1]->select('id,title,created')->all();
+								$queryList = $analytics[1]->select('id,title,created')->all();
 								
 								if($queryList){
 									$newsData = [];
@@ -1006,25 +1006,25 @@ class AdminController extends Controller{
 					if(isset($q['svc'])){
 						switch($q['svc']){
 							case 'titleImage': 
-								$ir = $dataCluster['n'][0]->send('news', $pm);
+								$ir = $dataCluster['e'][0]->send('events', $pm);
 								
 								Yii::$app->response->statusCode = $ir[1];
 								$serviceResponse = $ir[0];
 							break;
 							case 'content': 
-								$cr = $dataCluster['n'][1]->send('news', $pm);
+								$cr = $dataCluster['e'][1]->send('events', $pm);
 								
 								Yii::$app->response->statusCode = $cr[1];
 								$serviceResponse = $cr[0];
 							break;
 							case 'meta': 
-								$ir = $dataCluster['n'][0]->send('news', $pm);
+								$ir = $dataCluster['e'][0]->send('events', $pm);
 								
 								Yii::$app->response->statusCode = $ir[1];
 								$serviceResponse = $ir[0];
 							break;
 							case 'list': 
-								$queryList = $news[1]->select('id,title,created')->all();
+								$queryList = $events[1]->select('id,title,created')->all();
 								
 								if($queryList){
 									$newsData = [];

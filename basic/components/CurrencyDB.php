@@ -16,22 +16,19 @@ class CurrencyDB extends Component{
 	public function init(){
 		parent::init();
 
-		$this->codesDB = new Parser('../web/df/countries.csv');
+		$this->codesDB = new Parser('../web/df/curCodes.csv');
 		$this->currency = new CurrencyApi(getenv('CurrencyAPI_Investportal'));
-		
-		if($_SERVER['REMOTE_ADDR'] != '127.0.0.1'){ $this->geoIp = (new Client)->createRequest()->setMethod('GET')->setUrl('http://ip-api.com/json/' . $_SERVER['REMOTE_ADDR'])->send(); }
-		else{ $this->geoIp = 'RUB'; }
+		$this->geoIp = (new Client)->createRequest()->setMethod('GET')->setData(['fields' => 'currency'])->setUrl('http://ip-api.com/json/' . $_SERVER['REMOTE_ADDR'])->send();
 	}
 	public function execute($query){
-		if($query['type'] == 'list'){ $response = $this->_list(); }
-		else if($query['type'] == 'currency'){ $response = $this->_covert($query['response']); }
+		if($query['type'] == 'list'){ $response = $this->listCurrency(); }
+		else if($query['type'] == 'currency'){ $response = $this->covert($query['response']); }
 		else{ $response = NULL; }
 		
 		return $response;
 	}
-	private function _list(){
-		if($_SERVER['REMOTE_ADDR'] != '127.0.0.1'){ $clientCurrency = $this->geoIp->data['currency']; }
-		else{ $clientCurrency = $this->geoIp; }
+	private function listCurrency(){
+		$clientCurrency = $this->geoIp->data['currency'];
 		
 		$response = [];
 		
@@ -39,13 +36,13 @@ class CurrencyDB extends Component{
 			$response[] = [
 				'name' => $data->currency,
 				'currency' => $data->alphabeticcode,
-				'selected' => $clientCurrency == $data->alphabeticcode ? TRUE : FALSE
+				'selected' => $clientCurrency == $data->alphabeticcode ? 'Yes' : 'No'
 			];
 		}
 		
 		return $response;
 	}
-	private function _convert($query){
+	private function convert($query){
 		return $this->currency->latest([
 			'base_currency' => 'USD',
 			'currencies' => $query['myCur'],

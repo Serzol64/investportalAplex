@@ -3,6 +3,7 @@ namespace app\components;
 
 use Yii;
 use yii\base\Component;
+use yii\helpers\Json;
 
 use app\models\News;
 use app\models\Event;
@@ -99,7 +100,7 @@ class ContentData extends Component{
 						$acm->title = $q['query']['title'];
 						$acm->created = date('Y-m-d h:i:s');
 						$acm->titleImage = $q['query']['image'];
-						$acm->content = $q['query']['content'];
+						$acm->content = Json::decode($q['query']['content']);
 						
 						if(!$acm->save()){
 							$response[1] = 500;
@@ -127,7 +128,7 @@ class ContentData extends Component{
 						$currentNews->title = $q['query']['title'];
 						$currentNews->created = date('Y-m-d h:i:s');
 						$currentNews->titleImage = $q['query']['image'];
-						$currentNews->content = $q['query']['content'];
+						$currentNews->content = Json::decode($q['query']['content']);
 						
 						if(!$currentNews->save()){
 							$response[1] = 500;
@@ -166,7 +167,8 @@ class ContentData extends Component{
 						$ecm->titleImage = $q['query']['image'];
 						$ecm->dateFrom = $q['query']['period'][0];
 						$ecm->dateTo = $q['query']['period'][1];
-						$ecm->content = $q['query']['content'];
+						$ecm->location = $q['query']['location'];
+						$ecm->content = Json::decode($q['query']['content']);
 						
 						if(!$ecm->save()){
 							$response[1] = 500;
@@ -193,9 +195,10 @@ class ContentData extends Component{
 					if($q['query']['image']){
 						$currentNews->title = $q['query']['title'];
 						$currentNews->titleImage = $q['query']['image'];
-						$ecm->dateFrom = $q['query']['period'][0];
-						$ecm->dateTo = $q['query']['period'][1];
-						$currentNews->content = $q['query']['content'];
+						$currentNews->dateFrom = $q['query']['period'][0];
+						$currentNews->dateTo = $q['query']['period'][1];
+						$currentNews->location = $q['query']['location'];
+						$currentNews->content = Json::decode($q['query']['content']);
 						
 						if(!$currentNews->save()){
 							$response[1] = 500;

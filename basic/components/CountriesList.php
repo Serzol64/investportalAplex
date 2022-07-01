@@ -14,7 +14,8 @@ class CountriesList extends Component{
 
 		$this->countryDF = [
 			new Parser('../web/df/countries.csv'),
-			file_get_contents('../web/df/regions.json')
+			file_get_contents('../web/df/regions.json'),
+			new Parser('../web/df/world-cities.csv')
 		];
 	}
 	public function getFullDataFrame(){
@@ -39,6 +40,40 @@ class CountriesList extends Component{
 				$response[] = [
 					'id' => $regId,
 					'region' => $cities[$i]['region']
+				];
+				$regId++;
+			}
+		}
+		
+		return $response;
+	}
+	public function listCities(){
+		$response = [];
+		$regId = 0;
+		
+		foreach($this->countryDF[2]->all() as $cities){
+				$response[] = [
+					'id' => $regId,
+					'country' => $cities->country,
+					'region' => $cities->subcountry,
+					'city' => $cities->name
+				];
+				$regId++;
+		}
+		
+		return $response;
+	}
+	public function listCitiesOfCountry($q){
+		$response = [];
+		$regId = 0;
+		
+		foreach($this->countryDF[2]->all() as $cities){
+			if($q == $cities->country){
+				$response[] = [
+					'id' => $regId,
+					'country' => $cities->country,
+					'region' => $cities->subcountry,
+					'city' => $cities->name
 				];
 				$regId++;
 			}
