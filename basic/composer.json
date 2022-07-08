@@ -22,7 +22,8 @@
         "jamesgordo/php-csv-parser": "1.0.0",
         "linslin/yii2-curl": "*",
         "vova07/yii2-console-runner-extension": "*",
-        "houseofapis/currencyapi": "^1.0"
+        "houseofapis/currencyapi": "^1.0",
+        "paquettg/php-html-parser": "^1.7"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

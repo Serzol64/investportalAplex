@@ -5,6 +5,8 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
+use PHPHtmlParser\Dom;
+
 $this->title = 'News';
 ?>
 
@@ -30,13 +32,21 @@ $this->title = 'News';
 					</section>
 					<section class="content">
 						<select id="require" name="eventRegion">
-							<option>Region</option>
+							<option>Location</option>
+							<?php
+							?>
 						</select>
 						<select id="require" name="eventType">
 							<option>Type</option>
+							<?php
+							
+							?>
 						</select>
 						<select id="require" name="eventCategory">
 							<option>Tematic</option>
+							<?php
+							
+							?>
 						</select>
 					</section>
 					<section class="footer">
@@ -50,7 +60,57 @@ $this->title = 'News';
 			<div id="events-body">
 				<section class="events-feed" data-time="coming">
 					<header id="title">Coming events</header>
-					<main></main>
+					<main>
+						<ul class="slider">
+						<?php foreach($eventsList[0] as $events){ ?>
+							<li>
+							  <span id="date"><?php echo $events->date_to ? date('d/m/Y', strtotime($events->date_from)) . ' - ' . date('d/m/Y', strtotime($events->date_to)) : date('d/m/Y', strtotime($events->date_from)); ?></span>
+							  <img src="<?php echo $events->titleImage; ?>" alt="<?php echo $events->title; ?>" />
+							  <span id="title"><?php echo $events->title; ?></span>
+							  <p>
+								<?php if($events->location != ''){ ?><span data-type="location"><?php echo $events->location; ?></span><?php } ?>
+								<span data-type="description">
+									<?php
+										$contentQuery = (new Dom)->loadStr($events->content);
+										$description = (mb_strlen($contentQuery->find('p')[0]->text) > 45)? mb_substr($contentQuery->find('p')[0]->text, 0, (mb_strlen($contentQuery->find('p')[0]->text) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->text, 0, 45), ' ') : 45).' ...' : mb_substr($contentQuery->find('p')[0]->text, 0, (mb_strlen($contentQuery->find('p')[0]->text) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->text, 0, 45), ' ') : 45);
+										
+										echo $description;
+									?>
+								</span>
+							  </p>
+							  <?php echo Html::a('Learn more', ['news/event', 'contentId' => $events->id]);
+							</li>
+						<?php } ?>
+						  </ul>
+					</main>
+				</section>
+			</div>
+			<div id="events-footer">
+				<section class="events-feed" data-time="exited">
+					<header id="title">Exited events</header>
+					<main>
+						  <ul class="slider">
+						<?php foreach($eventsList[1] as $events){ ?>
+							<li>
+							  <span id="date"><?php echo $events->date_to ? date('d/m/Y', strtotime($events->date_from)) . ' - ' . date('d/m/Y', strtotime($events->date_to)) : date('d/m/Y', strtotime($events->date_from)); ?></span>
+							  <img src="<?php echo $events->titleImage; ?>" alt="<?php echo $events->title; ?>" />
+							  <span id="title"><?php echo $events->title; ?></span>
+							  <p>
+								<?php if($events->location != ''){ ?><span data-type="location"><?php echo $events->location; ?></span><?php } ?>
+								<span data-type="description">
+									<?php
+										$contentQuery = (new Dom)->loadStr($events->content);
+										$description = (mb_strlen($contentQuery->find('p')[0]->text) > 45)? mb_substr($contentQuery->find('p')[0]->text, 0, (mb_strlen($contentQuery->find('p')[0]->text) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->text, 0, 45), ' ') : 45).' ...' : mb_substr($contentQuery->find('p')[0]->text, 0, (mb_strlen($contentQuery->find('p')[0]->text) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->text, 0, 45), ' ') : 45);
+										
+										echo $description;
+									?>
+								</span>
+							  </p>
+							  <?php echo Html::a('Learn more', ['news/event', 'contentId' => $events->id]);
+							</li>
+						<?php } ?>
+						  </ul>
+					</main>
 				</section>
 			</div>
     </section>      

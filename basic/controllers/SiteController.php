@@ -9,6 +9,8 @@ use linslin\yii2\curl\Curl;
 use yii\httpclient\Client;
 use yii\web\NotFoundHttpException;
 
+use app\models\Analytic;
+
 use app\models\User;
 use app\models\ObjectAttribute;
 use app\models\Investments;
@@ -43,7 +45,15 @@ class SiteController extends Controller{
 			[ObjectAttribute::find()->count(), Offers::find()->count()]
 		];
 		
-		return $this->render('index', ['staticCount' => $sc[0], 'staticMeta' => $sc[1]]);
+		$interactive = [
+			'analytic' => [
+				'last' => Analytic::find()->select('id,titleImage,title')->orderBy('created DESC')->limit(3)->asArray()->all(),
+				'prelast' => Analytic::find()->select('id,titleImage,title')->orderBy('created DESC')->limit(6)->offset(3)->asArray()->all(),
+				'old' => Analytic::find()->select('id,titleImage,title')->orderBy('created DESC')->limit(9)->offset(6)->asArray()->all()
+			]
+		];
+		
+		return $this->render('index', ['staticCount' => $sc[0], 'staticMeta' => $sc[1], 'interactiveFeed' => $interactive]);
 	}
 	public function actionAbout(){
 		$this->view->registerCssFile("/css/about.css");

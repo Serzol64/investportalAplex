@@ -37,20 +37,27 @@ class NewsController extends Controller{
 		$this->view->registerCssFile("/css/inpage_codes/news/2.css");
 		
 		$curNews = News::findOne(['id' => $contentId]);
+		$curRealted = Yii::$app->realtedDB->topList('news', $contentId);
 		
 		if(!$curNews){
 			Yii::$app->response->statusCode = 404;
 			return $this->redirect(['site/index']);
 		}
 		
-		return $this->render('newsView', ['curNews' => $curNews]);
+		return $this->render('newsView', ['curNews' => $curNews, 'realted' => $curRealted]);
 	}
 	public function actionEventsFeed(){
 		$this->view->registerCssFile("/css/news.css");
 		$this->view->registerJsFile("/js/events.js", ['position' => View::POS_END]);
 		$this->view->registerCssFile("/css/events.css");
 		
-		return $this->render('eventsFeed');
+		$currentPeriod = date('Y-m-d');
+		$list = [
+			Event::find()->where(['and', 'date_from <=' . $cuurentPeriod, 'date_to >=' . $cuurentPeriod])->all(),
+			Event::find()->where(['and', 'date_from >=' . $cuurentPeriod, 'date_to <=' . $cuurentPeriod])->all()
+		];
+		
+		return $this->render('eventsFeed', ['eventsList' => $list]);
 	}
 	public function actionEvent($contentId){
 		$this->view->registerCssFile("/css/news/view.css");
@@ -61,20 +68,31 @@ class NewsController extends Controller{
 		$this->view->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js", ['position' => View::POS_BEGIN]);
 		
 		$curEvent = Event::findOne(['id' => $contentId]);
+		$curRealted = Yii::$app->realtedDB->topList('events', $contentId);
+		
+		var_dump($curRealted);
 		
 		if(!$curEvent){
 			Yii::$app->response->statusCode = 404;
 			return $this->redirect(['site/index']);
 		}
 		
-		return $this->render('eventsView', ['curEvent' => $curEvent]);
+		return $this->render('eventsView', ['curEvent' => $curEvent, 'realted' => $curRealted]);
 	}
 	public function actionAnalyticsFeed(){
 		$this->view->registerCssFile("/css/news.css");
 		$this->view->registerJsFile("/js/analytics.js", ['position' => View::POS_END]);
 		$this->view->registerCssFile("/css/analytics.css");
 		
-		return $this->render('analytics');
+		$af = Analytic::find();
+		
+		$parts = [
+			'last' => $af->orderBy('created DESC')->limit(3)->all(),
+			'preLast' => $af->orderBy('created DESC')->limit(6)->offset(3)->all(),
+			'old' => $af->orderBy('created DESC')->limit(9)->offset(6)->all()
+		];
+		
+		return $this->render('analytics', ['afp' => $parts]);
 	}
 	public function actionAnalyticsView($contentId){
 		$this->view->registerCssFile("/css/news/view.css");

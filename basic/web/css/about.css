@@ -27,17 +27,6 @@
 #about-header > span{
   font-size: 120%;
 }
-#about-header > a{
-  color: #669;
-  font-size: 100%;
-  text-decoration: none;
-  background-color: white;
-  width: 99px;
-  padding-left: 16px;
-  padding-right: 8px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
 
 #about-content{
   padding-top: 2%;
@@ -65,16 +54,29 @@
   font-style: italic;
   color: gray;
 }
-#about-q > li *[data-block='foot']{
-  display: block;
-  margin-top: 8%;
-  float: right;
-  margin-right: 4%;
-  font-size: 140%;
-  text-decoration: none;
-  text-transform: uppercase;
-  color: #0079bf;
-  font-weight: bold;
+#about-q > li *[data-block='body'] ul{
+    list-style-type: none;
+    margin-left: -10%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+#about-q > li *[data-block='body'] ul li {
+    margin-top: 4%;
+height: 90px;}
+#about-q > li *[data-block='body'] ul li img{
+    width: 16%;
+    vertical-align: middle;
+}
+#about-q > li *[data-block='body'] ul li p{
+    display: inline-table;
+    margin-right: 1%;
+    width: 80%;
+    float: right;
+    margin-top: 1%;
+	font-size: 80%;
+	color: black;
+	font-style: normal;
 }
 
 #about-footer{
@@ -350,5 +352,5 @@
 	#about {height: calc(1440px * 2);}
 }
 @media all and (min-width: 1440px) and (max-width: 1536px){
-	#about {height: calc(1398px * 2);}
+	#about {height: calc((1398px / 2) * 2);}
 }

@@ -49,9 +49,6 @@ class List extends React.Component{
 		return (
 			<React.Fragment>
 				<section id="news-list">
-				  <header data-block="search">
-					<input type="search" placeholder="Find matherials"/>
-				  </header>
 				  <main data-block="list">
 				    { this.state.newsList ? 
 					  this.state.newsList.map((myState) => (
@@ -80,7 +77,6 @@ class Add extends React.Component{
 						operation: 'send',
 						query: {
 							title: $('input#title').val(),
-							image: get_cookie('titleImage'),
 							content: CKEDITOR.instances.newsEditor.getData()
 						}
 					}
@@ -123,7 +119,7 @@ class Add extends React.Component{
 			<React.Fragment>
 				<section id="news-list">
 				  <header data-block="name">
-					<input type="text" id="title" placeholder="Input news title..."/>
+					<input type="text" id="title" placeholder="Input news title..." id="title"/>
 				  </header>
 				  <section data-block="titleImage">
 				    <label htmlFor="titleImageU"><input type="file" name="titleImageU" id="titleImageU" accept="image/*" />Upload title image</label>
@@ -176,7 +172,6 @@ class Edit extends React.Component{
 						query: {
 							id: params['id'],
 							title: $('input#title').val() || get_cookie('title'),
-							image: get_cookie('titleImage_update'),
 							content: CKEDITOR.instances.newsEditor.getData()
 						}
 					}
@@ -247,7 +242,7 @@ class Edit extends React.Component{
 				<section id="news-list">
 				  <input type="hidden" name="contentData" id="contentData" value={ this.state.currentNews.content } />
 				  <header data-block="name">
-					<input type="text" placeholder="Update news title..." value={ this.state.currentNews.title }/>
+					<input type="text" placeholder="Update news title..." value={ this.state.currentNews.title }  id="title"/>
 				  </header>
 				  <section data-block="titleImage">
 				    <label htmlFor="titleImageU"><input type="file" name="titleImageU" id="titleImageU" accept="image/*" />Upload title image</label>
@@ -271,10 +266,7 @@ function sendEvent(q){
 		
 		fetch('admin/api/dataServices/newsService/News/send', { method: 'POST', body: querySendData })
 		.then((response) => {
-			if(response.status === 200){ 
-				console.log('Content success upload!'); 
-				window.location.assign('/admin?svc=dataManagment&subSVC=news#list');
-			}
+			if(response.status === 200){ alert('Content success upload!'); }
 			else{ alert('Content failed upload!'); }
 		})
 		.catch(error => {
@@ -317,10 +309,7 @@ function updateEvent(q){
 		
 		fetch('admin/api/dataServices/newsService/News/update', { method: 'POST', body: fdu[1] })
 		.then((response) => {
-			if(response.status === 200){ 
-				console.log('Content success update!'); 
-				window.location.assign('/admin?svc=dataManagment&subSVC=news#list');
-			}
+			if(response.status === 200){ alert('Content success update!'); }
 			else{ alert('Content failed update!'); }
 		})
 		.catch(error => {
@@ -336,7 +325,9 @@ function deleteEvent(q){
 		
 		fetch('admin/api/dataServices/newsService/News/delete', { method: 'POST', body: fdd[1] })
 		.then((response) => {
-			if(response.status === 200){ console.log('Content success delete!'); }
+			if(response.status === 200){ 
+				alert('Content success delete!'); 
+			}
 			else{ alert('Content failed delete!'); }
 		})
 		.catch(error => {
@@ -347,7 +338,7 @@ function deleteEvent(q){
 		fetch('admin/api/dataServices/newsService/News/delete', { method: 'POST', body: fdd[0] })
 		.then((response) => {
 			if(response.status === 200){ 
-				console.log('Title image success delete!'); 
+				alert('Title image success delete!'); 
 				window.location.assign('/admin?svc=dataManagment&subSVC=news#list');
 			}
 			else{ alert('Title image failed delete!'); }

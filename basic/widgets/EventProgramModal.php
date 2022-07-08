@@ -19,14 +19,7 @@ class EventProgramModal extends Widget{
     public function run(){
 		$readyDatasheet = [];
 		
-		$responseData = Json::decode($this->id->content, true);
 		
-		for($i = 0; $i < count($responseData['primeTimeMeta']); $i++){
-			$readyDatasheet[] = [
-				'id' => $responseData['primeTimeMeta'][$i]['id'],
-				'content' => $responseData['primeTimeMeta'][$i]['content']
-			];
-		}
 		
 		return $this->render('eventPage/data', ['eventData' => $readyDatasheet]);
 	}

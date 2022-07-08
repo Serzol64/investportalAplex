@@ -155,11 +155,12 @@ h4.title, p.descr{
 }
 .main{
     width: 100%;
-    height: auto;
+    min-height: 100%;
 }
+
 .main > .section{
     width: 100%;
-    min-height: 800px;
+    
     display: block;
     padding-bottom: 8%;
     padding-top: 4%;
@@ -192,7 +193,7 @@ h4.title, p.descr{
 }
 
 #promo{min-height: 420px;}
-#news{min-height: 200px;padding-top: 3%;}
+#news{padding-top: 3%;}
 #investsearch{min-height: 481px;padding-top: 3%;}
 #eventcalendar{min-height: 590px;padding-top: 4%;}
 #services{min-height: 206px;padding-top: calc(1vw - 15px);}

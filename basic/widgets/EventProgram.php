@@ -19,18 +19,6 @@ class EventProgram extends Widget{
     public function run(){
 		$readyDatasheet = [];
 		
-		$responseData = Json::decode($this->id->content, true);
-		$k = 0;
-		for($i = 0; $i < count($responseData['primeTime']); $i++){
-			$readyDatasheet[] = [
-				'date' => $responseData['primeTime'][$i]['date'],
-				'time' => $responseData['primeTime'][$i]['time'],
-				'title' => $responseData['primeTime'][$i]['title'],
-				'moreInfo' => $isMoreInfo ? 'ev'. $k : FALSE
-			];
-			
-			$k++;
-		}
 		
 		
 		

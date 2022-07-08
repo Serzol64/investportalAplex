@@ -170,9 +170,15 @@ const AdaptiveButtonEventer = () => {
     });
 }
 
-
 $(document).ready(function () {
     AdaptiveButtonEventer();
+
+    $('.main').matchHeight({
+		byRow: true,
+		property: 'height',
+		target: null,
+		remove: false
+	});
 });
 
 const AuthLightBoxModuleOpen = () => {

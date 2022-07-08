@@ -22,15 +22,9 @@ $this->title = "Analytics";
 					<div class="news-feed">
 						<footer>
 							<div id="down-feed">
-								<div class="down-feed-cont">
-									<div id="cont-content"></div>
-								</div>
-								<div class="down-feed-cont">
-									<div id="cont-content"></div>
-								</div>
-								<div class="down-feed-cont">
-									<div id="cont-content"></div>
-								</div>
+								<div class="down-feed-cont"><div id="cont-content"><ul><?php foreach($afp['last'] as $feed){ ?><li><img src="<?php echo $feed->titleImage; ?>" /><?php echo Html::a($feed->title, ['news/analytics-view', 'contentId' => $feed->id]); ?></li><?php } ?></ul></div></div>
+								<div class="down-feed-cont"><div id="cont-content"><ul><?php foreach($afp['preLast'] as $feed){ ?><li><img src="<?php echo $feed->titleImage; ?>" /><?php echo Html::a($feed->title, ['news/analytics-view', 'contentId' => $feed->id]); ?></li><?php } ?></ul></div></div>
+								<div class="down-feed-cont"><div id="cont-content"><ul><?php foreach($afp['old'] as $feed){ ?><li><img src="<?php echo $feed->titleImage; ?>" /><?php echo Html::a($feed->title, ['news/analytics-view', 'contentId' => $feed->id]); ?></li><?php } ?></ul></div></div>
 							</div>
 						</footer>
 					</div>

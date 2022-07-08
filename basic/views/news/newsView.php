@@ -5,6 +5,8 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
+use app\models\News;
+
 $this->title = $curNews->title . " :: News";
 ?>
 
@@ -30,21 +32,28 @@ $this->title = $curNews->title . " :: News";
 						 <section class="share">
                             <strong>Share this story</strong>
                             <ul>
-                                <li data-channel="facebook"><i class="fab fa-facebook-f" style="color: gray;"></i></li>
-                                <li data-channel="youtube"><i class="fab fa-youtube" style="color: gray;"></i></li>
-                                <li data-channel="instagram"><i class="fab fa-instagram" style="color: gray;"></i></li>
-                                <li data-channel="telegram"><i class="fab fa-telegram" style="color: gray;"></i></li>
+                                <li data-channel="facebook" onClick='window.open("https://www.facebook.com/sharer.php?u=<?php echo ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>","sharer","status=0,toolbar=0,width=650,height=500");'><i class="fab fa-facebook-f" style="color: gray;"></i></li>
+                                <li data-channel="telegram" style="margin-left: 40%;" onClick='window.open("https://telegram.me/share/url?url=А<?php echo ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>","sharer","status=0,toolbar=0,width=650,height=500");'><i class="fab fa-telegram" style="color: gray;"></i></li>
                             </ul>
                         </section>
-                        <section class="realted">
-                            <strong>Realted news</strong>
-                            <ul></ul>
-                        </section>
+                        <section class="realted"><strong>Realted news</strong><ul><?php foreach($realted as $key => $value){ echo Html::tag('li', Html::a($value[2], ['news/view', 'contentId' => $value[1]])); } ?></ul></ul></section>
                     </footer>
                  </div>
                  <div id="right-content">
-                    <div class="realted-news"></div>
-                 </div>
+					 <div class="realted-news">
+						 <?php 
+								foreach($realted as $key => $value){ 
+									$currentMatherial = News::findOne(['id' => $value[1]]);
+									preg_match_all('#<p[^>]*>(\X*?)</p>#', $currentMatherial->content, $matches);
+									
+									echo Html::tag('div',
+										Html::img($currentMatherial->titleImage, ['alt' => $currentMatherial->title, 'id' => 'header']) .
+										Html::a($currentMatherial->title, ['news/view', 'contentId' => $value[1]], ['id' => 'content']) .
+										Html::tag('span', $matches[0], ['id' => 'footer']) . Html::tag('span', date('d/m/Y', strtotime($currentMatherial->created)), ['id' => 'date']), ['class' => 'realted']);
+								} 
+						?>
+					</div>
+				</div>
              </div>
         </section>
 </main>

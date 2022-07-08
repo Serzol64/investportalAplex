@@ -5,6 +5,8 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
+use PHPHtmlParser\Dom;
+
 use app\models\News;
 
 
@@ -162,6 +164,23 @@ $this->title = 'Welcome to Investportal!';
                 <h2>Upcoming Events</h2>
 			</header>
             <main>
+			<?php foreach($lastUpcoming as $events){ ?>
+				<div class="calendar">
+                      <header><span class="date"><?php echo $events->date_from || $events->date_to; ?></span></header>
+                      <main><img src="<?php echo $events->titleImage; ?>" alt="Event"></main>
+                      <footer>
+                        <?php
+							$contentQuery = (new Dom)->loadStr($events->content);
+							$description = (mb_strlen($contentQuery->find('p')[0]->text) > 45)? mb_substr($contentQuery->find('p')[0]->text, 0, (mb_strlen($contentQuery->find('p')[0]->text) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->text, 0, 45), ' ') : 45).' ...' : mb_substr($contentQuery->find('p')[0]->text, 0, (mb_strlen($contentQuery->find('p')[0]->text) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->text, 0, 45), ' ') : 45);
+							
+							if($events->location != ''){ echo Html::tag('span', $events->location, ['class' => 'event-location']); }
+							
+							echo Html::a($events->title, ['news/event', 'contentId' => $events->id]);
+							echo Html::tag('p', $description, ['class' => 'descr']);
+                        ?>
+                      </footer>
+                </div>
+             <?php } ?>
 			</main>
 	</section>
 	<section id="services" data-text="Service" class="section">
@@ -191,8 +210,121 @@ $this->title = 'Welcome to Investportal!';
          <main>
 				<header id="slider-controller-adaptive"><img src="/images/icons/slider-contorls/back.png" alt="Назад"></header>
 				<header id="slider-controller"><img src="/images/icons/slider-contorls/back.png" alt="Назад"></header>
-				<main id="slider-view-adaptive"></main>
-				<main id="slider-view"></main>
+				<main id="slider-view-adaptive">
+					<?php
+						for($i = 0; $i < count($interactiveFeed['analytic']['last']); $i++){ 
+							switch($i){
+								case 1:
+									echo Html::tag('div', 
+													Html::img($interactiveFeed['analytic']['last'][$i]['titleImage'], ['alt' => $interactiveFeed['analytic']['last'][$i]['title']]) .
+													Html::tag('h2', $interactiveFeed['analytic']['last'][$i]['title']) .
+													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['last'][$i]['id']]),['class' => 'analytic hide', 'id' => 'with-title-image']);
+								break;
+								case 0:
+									echo Html::tag('div', 
+													Html::tag('h2', $interactiveFeed['analytic']['last'][$i]['title']) .
+													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['last'][$i]['id']]),['class' => 'analytic']);
+								break;
+								default:
+									echo Html::tag('div', 
+													Html::tag('h2', $interactiveFeed['analytic']['last'][$i]['title']) .
+													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['last'][$i]['id']]),['class' => 'analytic hide']);
+								break;
+							}
+						}
+						
+						for($i = 0; $i < count($interactiveFeed['analytic']['prelast']); $i++){ 
+							switch($i){
+								case 1:
+									echo Html::tag('div', 
+													Html::img($interactiveFeed['analytic']['prelast'][$i]['titleImage'], ['alt' => $interactiveFeed['analytic']['prelast'][$i]['title']]) .
+													Html::tag('h2', $interactiveFeed['analytic']['prelast'][$i]['title']) .
+													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['prelast'][$i]['id']]),['class' => 'analytic hide', 'id' => 'with-title-image']);
+								break;
+								default:
+									echo Html::tag('div', 
+													Html::tag('h2', $interactiveFeed['analytic']['prelast'][$i]['title']) .
+													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['prelast'][$i]['id']]),['class' => 'analytic hide']);
+								break;
+							}
+						}
+						
+						for($i = 0; $i < count($interactiveFeed['analytic']['old']); $i++){ 
+							switch($i){
+								case 1:
+									echo Html::tag('div', 
+													Html::img($interactiveFeed['analytic']['old'][$i]['titleImage'], ['alt' => $interactiveFeed['analytic']['old'][$i]['title']]) .
+													Html::tag('h2', $interactiveFeed['analytic']['old'][$i]['title']) .
+													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['old'][$i]['id']]),['class' => 'analytic hide', 'id' => 'with-title-image']);
+								break;
+								default:
+									echo Html::tag('div', 
+													Html::tag('h2', $interactiveFeed['analytic']['old'][$i]['title']) .
+													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['old'][$i]['id']]),['class' => 'analytic hide']);
+								break;
+							}
+						}
+					?>
+				</main>
+				<main id="slider-view">
+					<div class="analytic-feed">
+						<?php
+							for($i = 0; $i < count($interactiveFeed['analytic']['last']); $i++){ 
+							switch($i){
+								case 1:
+									echo Html::tag('div', 
+													Html::img($interactiveFeed['analytic']['last'][$i]['titleImage'], ['alt' => $interactiveFeed['analytic']['last'][$i]['title']]) .
+													Html::tag('h2', $interactiveFeed['analytic']['last'][$i]['title']) .
+													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['last'][$i]['id']]),['class' => 'analytic', 'id' => 'with-title-image']);
+								break;
+								default:
+									echo Html::tag('div', 
+													Html::tag('h2', $interactiveFeed['analytic']['last'][$i]['title']) .
+													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['last'][$i]['id']]),['class' => 'analytic']);
+								break;
+							}
+						}
+						?>
+					</div>
+					<div class="analytic-feed" id="hide">
+						<?php
+							for($i = 0; $i < count($interactiveFeed['analytic']['prelast']); $i++){ 
+							switch($i){
+								case 1:
+									echo Html::tag('div', 
+													Html::img($interactiveFeed['analytic']['prelast'][$i]['titleImage'], ['alt' => $interactiveFeed['analytic']['prelast'][$i]['title']]) .
+													Html::tag('h2', $interactiveFeed['analytic']['prelast'][$i]['title']) .
+													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['prelast'][$i]['id']]),['class' => 'analytic', 'id' => 'with-title-image']);
+								break;
+								default:
+									echo Html::tag('div', 
+													Html::tag('h2', $interactiveFeed['analytic']['prelast'][$i]['title']) .
+													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['prelast'][$i]['id']]),['class' => 'analytic']);
+								break;
+							}
+						}
+						?>
+					</div>
+					<div class="analytic-feed" id="hide">
+						<?php
+							for($i = 0; $i < count($interactiveFeed['analytic']['old']); $i++){ 
+							switch($i){
+								case 1:
+									echo Html::tag('div', 
+													Html::img($interactiveFeed['analytic']['old'][$i]['titleImage'], ['alt' => $interactiveFeed['analytic']['old'][$i]['title']]) .
+													Html::tag('h2', $interactiveFeed['analytic']['old'][$i]['title']) .
+													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['old'][$i]['id']]),['class' => 'analytic', 'id' => 'with-title-image']);
+								break;
+								default:
+									echo Html::tag('div', 
+													Html::tag('h2', $interactiveFeed['analytic']['old'][$i]['title']) .
+													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['old'][$i]['id']]),['class' => 'analytic']);
+								break;
+							}
+						}
+						?>
+					</div>
+				</main>
 				<footer id="slider-controller-adaptive"><img src="/images/icons/slider-contorls/go.png" alt="Вперёд"></footer>
 				<footer id="slider-controller"><img src="/images/icons/slider-contorls/go.png" alt="Вперёд"></footer> 
          </main>

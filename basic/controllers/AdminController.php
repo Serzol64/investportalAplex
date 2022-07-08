@@ -36,15 +36,42 @@ class AdminController extends Controller{
 
 				if($service == "dataManagment"){
 					if(isset($_GET['subSVC'])){
+						 if(Yii::$app->session->get('adminUser')){ $getAdminData = Admin::findOne(['login' => Yii::$app->session->get('adminUser')]); }
 						 switch($_GET['subSVC']){
 							case "filters": 
+								if($getAdminData->role != 'admin' || $getAdminData->role != 'dev'){
+									Yii::$app->response->statusCode = 401;
+									header('Location: '. Url::to(['admin/index']));
+								}
 								$service = 'dataFilters'; 
 								$this->view->registerJsFile("/js/react/admin/addons/validParams.js", ['position' => View::POS_END]);
 							break;
-							case "news": $service='newsCMS/main'; break;
-							case "analytics": $service='newsCMS/analytics'; break;
-							case "events": $service='newsCMS/events'; break;
+							case "news": 
+								if($getAdminData->role != 'admin' || $getAdminData->role != 'dev'){
+									Yii::$app->response->statusCode = 401;
+									header('Location: '. Url::to(['admin/index']));
+								}
+								$service='newsCMS/main'; 
+							break;
+							case "analytics": 
+								if($getAdminData->role != 'admin' || $getAdminData->role != 'dev'){
+									Yii::$app->response->statusCode = 401;
+									header('Location: '. Url::to(['admin/index']));
+								}
+								$service='newsCMS/analytics'; 
+							break;
+							case "events": 
+								if($getAdminData->role != 'admin' || $getAdminData->role != 'dev'){
+									Yii::$app->response->statusCode = 401;
+									header('Location: '. Url::to(['admin/index']));
+								}
+								$service='newsCMS/events'; 
+							break;
 							case "portalServices":
+								if($getAdminData->role != 'admin' || $getAdminData->role != 'moderator' || $getAdminData->role != 'dev'){
+									Yii::$app->response->statusCode = 401;
+									header('Location: '. Url::to(['admin/index']));
+								}
 								if(isset($_GET['page'])){ 
 									$this->view->registerJsFile("/js/lib/htmlbuilder.min.js", ['position' => View::POS_HEAD]); 
 									$this->view->registerJsFile("/js/ckeditor/ckeditor.js", ['position' => View::POS_HEAD]); 
@@ -52,7 +79,13 @@ class AdminController extends Controller{
 								}
 								$service = 'portalServices';
 							break;
-							default: $service = 'dataAttributes'; break;
+							default: 
+								if($getAdminData->role != 'admin' || $getAdminData->role != 'moderator' || $getAdminData->role != 'dev'){
+									Yii::$app->response->statusCode = 401;
+									header('Location: '. Url::to(['admin/index']));
+								}
+								$service = 'dataAttributes'; 
+							break;
 						 }
 						 
 						 if($_GET['subSVC'] == "news" || $_GET['subSVC'] == "analytics" || $_GET['subSVC'] == "events"){  
@@ -63,6 +96,10 @@ class AdminController extends Controller{
 					 }
 				}
 				else if($service == "adminUsers"){
+					if($getAdminData->role != 'admin' || $getAdminData->role != 'dev'){
+						Yii::$app->response->statusCode = 401;
+						header('Location: '. Url::to(['admin/index']));
+					}
 					$service = 'adminUsers';
 				}
 
@@ -71,10 +108,27 @@ class AdminController extends Controller{
 			else{ 
 				if(isset($_GET['dashboardSvc'])){
 					switch($_GET['dashboardSvc']){
-						case "portal": $pgUI = 'dashboards/portal'; break;
-						case "data": $pgUI = 'dashboards/data'; break;
-						case "news": $pgUI = 'dashboards/news'; break;
-						case "user": $pgUI = 'dashboards/user'; break;
+						case "data": 
+							if($getAdminData->role != 'admin' || $getAdminData->role != 'moderator' || $getAdminData->role != 'dev'){
+								Yii::$app->response->statusCode = 401;
+								header('Location: '. Url::to(['admin/index']));
+							}
+							$pgUI = 'dashboards/data'; 
+						break;
+						case "news": 
+							if($getAdminData->role != 'admin' || $getAdminData->role != 'dev'){
+								Yii::$app->response->statusCode = 401;
+								header('Location: '. Url::to(['admin/index']));
+							}
+							$pgUI = 'dashboards/news'; 
+						break;
+						case "user": 
+							if($getAdminData->role != 'admin' || $getAdminData->role != 'moderator' || $getAdminData->role != 'dev'){
+								Yii::$app->response->statusCode = 401;
+								header('Location: '. Url::to(['admin/index']));
+							}
+							$pgUI = 'dashboards/user'; 
+						break;
 					}
 				}
 				else{ $pgUI = 'dashboard'; } 
@@ -635,10 +689,13 @@ class AdminController extends Controller{
 								$serviceResponse = $ir[0];
 							break;
 							case 'content': 
-								$cr = $dataCluster['n'][1]->send('news', $pm);
+								if(isset($_COOKIE['titleImage'])){
+									$pm['query']['image'] = $_COOKIE['titleImage'];
+									$cr = $dataCluster['n'][1]->send('news', $pm);
 								
-								Yii::$app->response->statusCode = $cr[1];
-								$serviceResponse = $cr[0];
+									Yii::$app->response->statusCode = $cr[1];
+									$serviceResponse = $cr[0];
+								}
 							break;
 							default: 
 								Yii::$app->response->statusCode = 403;
@@ -658,10 +715,13 @@ class AdminController extends Controller{
 								$serviceResponse = $ir[0];
 							break;
 							case 'content': 
-								$cr = $dataCluster['a'][1]->send('analytics', $pm);
+								if(isset($_COOKIE['titleImage'])){
+									$pm['query']['image'] = $_COOKIE['titleImage'];
+									$cr = $dataCluster['a'][1]->send('analytics', $pm);
 								
-								Yii::$app->response->statusCode = $cr[1];
-								$serviceResponse = $cr[0];
+									Yii::$app->response->statusCode = $cr[1];
+									$serviceResponse = $cr[0];
+								}
 							break;
 							default: 
 								Yii::$app->response->statusCode = 403;
@@ -681,10 +741,13 @@ class AdminController extends Controller{
 								$serviceResponse = $ir[0];
 							break;
 							case 'content': 
-								$cr = $dataCluster['e'][1]->send('events', $pm);
+								if(isset($_COOKIE['titleImage'])){
+									$pm['query']['image'] = $_COOKIE['titleImage'];
+									$cr = $dataCluster['e'][1]->send('events', $pm);
 								
-								Yii::$app->response->statusCode = $cr[1];
-								$serviceResponse = $cr[0];
+									Yii::$app->response->statusCode = $cr[1];
+									$serviceResponse = $cr[0];
+								}
 							break;
 							default: 
 								Yii::$app->response->statusCode = 403;
@@ -735,10 +798,13 @@ class AdminController extends Controller{
 								$serviceResponse = $ir[0];
 							break;
 							case 'content': 
-								$cr = $dataCluster['n'][1]->send('news', $pm);
+								if(isset($_COOKIE['titleImage_update'])){
+									$pm['query']['image'] = $_COOKIE['titleImage_update'];
+									$cr = $dataCluster['n'][1]->send('news', $pm);
 								
-								Yii::$app->response->statusCode = $cr[1];
-								$serviceResponse = $cr[0];
+									Yii::$app->response->statusCode = $cr[1];
+									$serviceResponse = $cr[0];
+								}
 							break;
 							default: 
 								Yii::$app->response->statusCode = 403;
@@ -757,10 +823,13 @@ class AdminController extends Controller{
 								$serviceResponse = $ir[0];
 							break;
 							case 'content': 
-								$cr = $dataCluster['a'][1]->send('analytics', $pm);
+								if(isset($_COOKIE['titleImage_update'])){
+									$pm['query']['image'] = $_COOKIE['titleImage_update'];
+									$cr = $dataCluster['a'][1]->send('analytics', $pm);
 								
-								Yii::$app->response->statusCode = $cr[1];
-								$serviceResponse = $cr[0];
+									Yii::$app->response->statusCode = $cr[1];
+									$serviceResponse = $cr[0];
+								}
 							break;
 							default: 
 								Yii::$app->response->statusCode = 403;
@@ -780,10 +849,13 @@ class AdminController extends Controller{
 								$serviceResponse = $ir[0];
 							break;
 							case 'content': 
-								$cr = $dataCluster['e'][1]->send('events', $pm);
+								if(isset($_COOKIE['titleImage_update'])){
+									$pm['query']['image'] = $_COOKIE['titleImage_update'];
+									$cr = $dataCluster['e'][1]->send('events', $pm);
 								
-								Yii::$app->response->statusCode = $cr[1];
-								$serviceResponse = $cr[0];
+									Yii::$app->response->statusCode = $cr[1];
+									$serviceResponse = $cr[0];
+								}
 							break;
 							default: 
 								Yii::$app->response->statusCode = 403;
@@ -1024,7 +1096,7 @@ class AdminController extends Controller{
 								$serviceResponse = $ir[0];
 							break;
 							case 'list': 
-								$queryList = $events[1]->select('id,title,created')->all();
+								$queryList = $events[1]->select('id,title, date_from, date_to')->all();
 								
 								if($queryList){
 									$newsData = [];

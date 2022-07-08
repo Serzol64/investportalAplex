@@ -78,6 +78,7 @@ $config = [
         'view' => [
             'class' => 'yii\web\View'
         ],
+        'realtedDB' => ['class' => 'app\components\RealtedContent'],
         'adminCMSData' => ['class' => 'app\components\ContentData'],
         'adminCMSHeader' => ['class' => 'app\components\ContentTitle'],
         'portalReg' => ['class' => 'app\components\SignUp'],

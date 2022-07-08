@@ -100,7 +100,7 @@ class ContentData extends Component{
 						$acm->title = $q['query']['title'];
 						$acm->created = date('Y-m-d h:i:s');
 						$acm->titleImage = $q['query']['image'];
-						$acm->content = Json::decode($q['query']['content']);
+						$acm->content = $q['query']['content'];
 						
 						if(!$acm->save()){
 							$response[1] = 500;
@@ -128,7 +128,7 @@ class ContentData extends Component{
 						$currentNews->title = $q['query']['title'];
 						$currentNews->created = date('Y-m-d h:i:s');
 						$currentNews->titleImage = $q['query']['image'];
-						$currentNews->content = Json::decode($q['query']['content']);
+						$currentNews->content = $q['query']['content'];
 						
 						if(!$currentNews->save()){
 							$response[1] = 500;
@@ -165,10 +165,10 @@ class ContentData extends Component{
 						$ecm->id = $newId;
 						$ecm->title = $q['query']['title'];
 						$ecm->titleImage = $q['query']['image'];
-						$ecm->dateFrom = $q['query']['period'][0];
-						$ecm->dateTo = $q['query']['period'][1];
+						$ecm->date_from = $q['query']['period']['from'];
+						$ecm->date_to = $q['query']['period']['to'];
 						$ecm->location = $q['query']['location'];
-						$ecm->content = Json::decode($q['query']['content']);
+						$ecm->content = $q['query']['content'];
 						
 						if(!$ecm->save()){
 							$response[1] = 500;
@@ -195,10 +195,10 @@ class ContentData extends Component{
 					if($q['query']['image']){
 						$currentNews->title = $q['query']['title'];
 						$currentNews->titleImage = $q['query']['image'];
-						$currentNews->dateFrom = $q['query']['period'][0];
-						$currentNews->dateTo = $q['query']['period'][1];
+						$currentNews->date_from = $q['query']['period']['from'];
+						$currentNews->date_to = $q['query']['period']['to'];
 						$currentNews->location = $q['query']['location'];
-						$currentNews->content = Json::decode($q['query']['content']);
+						$currentNews->content = $q['query']['content'];
 						
 						if(!$currentNews->save()){
 							$response[1] = 500;

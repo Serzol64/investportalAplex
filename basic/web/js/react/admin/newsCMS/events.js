@@ -26,117 +26,33 @@ function getExtension(path) {
   
 }
 
-function generateEventData(content){
-		var HTMLParser = new DOMParser();
-		let contentParse = HTMLParser.parseFromString(content, 'text/html'),
-			readyQuery = {
-				program: {
-					primeTime: {},
-					primeTimeMeta: {}
-				},
-				organizatorWebSite: ''
-			};
-		
-		var programTable = contentParse.getElementById('program'),
-			primeTimeAll = contentParse.querySelectorAll('#primetime li');
-			
-		let sessionDate = [],
-			sessionTime = [],
-			sessionTitle = [];
-			
-		for(let i = 0; i < programTable.rows.length; i++){
-			
-			if(i === 0){
-				let eventDates = programTable.rows.item(i).cells;
-				
-				for(let j = 0; i < eventDates.length; i++){ sessionDate.append(eventDates.item(i).innerHTML); }
-			}
-			else if(i === 1){
-				let eventTimes = programTable.rows.item(i).cells;
-				
-				for(let j = 0; i < eventTimes.length; i++){ sessionTime.append(eventTimes.item(i).innerHTML); }
-			}
-			else if(i === 2){
-				let eventTitles = programTable.rows.item(i).cells;
-				
-				for(let j = 0; i < eventTitles.length; i++){ sessionTitle.append(eventTitles.item(i).innerHTML); }
-			}
-		}
-		
-		for(let i = 0; i < primeTimeAll.length; i++){
-			let metaData = {
-				id: i,
-				date: sessionDate[i],
-				time: sessionTime[i],
-				content: primeTimeAll[i].innerText
-			};
-			
-			readyQuery.primeTimeMeta.append(metaData);
-		}
-		
-		for(let i = 0; i < sessionTitle.length; i++){
-			readyQuery.primeTime.append({
-				id: i,
-				date: sessionDate[i],
-				time: sessionTime[i],
-				title: sessionTitle[i]
-			});
-		}
-		
-		readyQuery.organizatorWebSite = content.getElementById('organizatorContact').getAttribute('href');
-		
-		return readyQuery;
-}
-
-function dataReverse(content){
-		let generatingResponse = null,
-			datasheet = [],
-			datalist = [],
-			linkContent = '',
-			attrData = {
-				dataset: {
-					sheet: [],
-					list: []
-				},
-				link: []
-			};
-		var contentEditor = [new HTMLBuilder(), new HTMLBuilder(), new HTMLBuilder()];
-		
-		let tableData = [
-			['tbody'],
-			[]
-		],
-			listDataset = [];
-		
-		content.program.primeTime.map((list) => {
-			tableData[1].append([
-				[
-					[list.date], [list.time], [list.title]
-				]
-			]);
+class ListCities extends React.Component{
+	constructor(props){
+		super(props);
+		this.state = {
+		  region: []
+	    };
+	}
+	componentDidMount(){
+		fetch('/services/3/get', { method: 'GET' })
+        .then(response => response.json())
+		.then(data => this.setState({ region: data }))
+		.catch(error => {
+			alert('Response error!');
+			console.log(error);
 		});
-		
-		content.program.primeTimeMeta.map((list) => {
-			let partMetaContent = [new HTMLBuilder(), new HTMLBuilder()];
-			
-			partMetaContent[0].createParagraph('<strong>' + list.date + '</strong>, <i>' + list.time + '</i>');
-			partMetaContent[1].createParagraph(list.content);
-			listDataset.append([partMetaContent[0] + partMetaContent[1]]);
-		});
-		
-		if(datasheet.append(tableData)){ attrData.dataset.sheet.append(['id', 'program']); }
-		if(datalist.append(listDataset)){ attrData.dataset.list.append(['id', 'primetime']); }
-		
-		linkContent = content.organizatorWebSite;
-		attrData.link.append(['href', content.organizatorWebSite]);
-		attrData.link.append(['id', 'organizatorContact']);
-		
-		
-		
-		generatingResponse = contentEditor[0].createTable(datasheet, attrData.dataset.sheet) + contentEditor[1].createUnorderedList(datalist, attrData.dataset.list) + contentEditor[2].createAnchor(linkContent, attrData.link);
-		return generatingResponse;
+	}
+	render(){
+		const myStates = this.state.region.map((myState) =>
+			<option label={myState.city + '/' + myState.region + '/' + myState.country} value={myState.city} />
+		);
+		return (
+			<React.Fragment>
+			  {myStates}
+			</React.Fragment>
+		);
+	}
 }
-
 class List extends React.Component{
 	constructor(props){
 		super(props);
@@ -160,9 +76,6 @@ class List extends React.Component{
 		return (
 			<React.Fragment>
 				<section id="news-list">
-				  <header data-block="search">
-					<input type="search" placeholder="Find matherials"/>
-				  </header>
 				  <main data-block="list">
 				    { this.state.newsList ? 
 					  this.state.newsList.map((myState) => (
@@ -181,7 +94,7 @@ class List extends React.Component{
 
 class Add extends React.Component{
 	componentDidMount(){
-		CKEDITOR.replace('eventEditor', { stylesSet: 'eventEditorStyles' });
+		CKEDITOR.replace('eventEditor');
 		
 		$('button#send').click(function(e,t){
 			let serviceQuery = {
@@ -191,10 +104,9 @@ class Add extends React.Component{
 						operation: 'send',
 						query: {
 							title: $('input#title').val(),
-							image: get_cookie('titleImage'),
-							location: $('#event-location').val(),
-							period: [$('.period > ul li #from').val(), $('.period > ul li #to').val()],
-							content: generateEventData(CKEDITOR.instances.eventEditor.getData()),
+							location: $('#event-location').val() !== '' ? $('#event-location').val() : null,
+							period: { from: $('.period > ul li #from').val() !== '' ? $('.period > ul li #from').val() : null, to: $('.period > ul li #to').val() !== '' ? $('.period > ul li #to').val() : null },
+							content: CKEDITOR.instances.eventEditor.getData()
 						}
 					}
 				},
@@ -236,14 +148,14 @@ class Add extends React.Component{
 			<React.Fragment>
 				<section id="events-list">
 				  <header data-block="name">
-					<input type="text" placeholder="Input event title..."/>
+					<input type="text" placeholder="Input event title..."  id="title" />
 				  </header>
 				  <section data-block="titleImage">
 					<div className="period">
 						<span>Expire of the event:</span>
 						<ul>
-							<li><input type="datetime-local" id="from" /></li>
-							<li><input type="datetime-local" id="to" /></li>
+							<li><input type="date" id="from" /></li>
+							<li><input type="date" id="to" /></li>
 						</ul>
 					</div>
 					<input type="text" id="event-location" list="regions" placeholder="Input and select event location" />
@@ -257,7 +169,7 @@ class Add extends React.Component{
 				</section>
 				<datalist id="regions">
 					<option label="Online" value="Online" />
-					
+					<ListCities />
 				</datalist>
 			</React.Fragment>
 		);
@@ -290,7 +202,7 @@ class Edit extends React.Component{
 			})
 			.then(data => this.setState({ currentEvent: data[0] }));
 			
-		CKEDITOR.replace('eventEditor', { stylesSet: 'eventEditorStyles' });
+		CKEDITOR.replace('eventEditor');
         
 		$('button#send').click(function(e,t){
 			let updateQuery = {
@@ -301,10 +213,9 @@ class Edit extends React.Component{
 						query: {
 							id: params['id'],
 							title: $('input#title').val() || get_cookie('title'),
-							location: $('#event-location').val(),
-							image: get_cookie('titleImage_update'),
-							period: [$('.period > ul li #from').val(), $('.period > ul li #to').val()],
-							content: generateEventData(CKEDITOR.instances.eventEditor.getData())
+							location: $('#event-location').val() !== '' ? $('#event-location').val() : null,
+							period: { from: $('.period > ul li #from').val() !== '' ? $('.period > ul li #from').val() : null, to: $('.period > ul li #to').val() !== '' ? $('.period > ul li #to').val() : null },
+							content: CKEDITOR.instances.eventEditor.getData()
 						}
 					}
 				},
@@ -372,16 +283,16 @@ class Edit extends React.Component{
 		return (
 			<React.Fragment>
 				<section id="events-list">
-				  <input type="hidden" name="contentData" id="contentData" value={ dataReverse(this.state.currentEvent.content) } />
+				  <input type="hidden" name="contentData" id="contentData" value={ this.state.currentEvent.content } />
 				  <header data-block="name">
-					<input type="text" placeholder="Update event title..." value={ this.state.currentEvent.title }/>
+					<input type="text" placeholder="Update event title..." value={ this.state.currentEvent.title }  id="title"/>
 				  </header>
 				  <section data-block="titleImage">
 					<div className="period">
 						<span>Expire of the event:</span>
 						<ul>
-							<li><input type="datetime-local" id="from" value={ this.state.currentEvent.dateFrom } /></li>
-							<li><input type="datetime-local" id="to" value={ this.state.currentEvent.dateTo } /></li>
+							<li><input type="date" id="from" value={ this.state.currentEvent.dateFrom } /></li>
+							<li><input type="date" id="to" value={ this.state.currentEvent.dateTo } /></li>
 						</ul>
 					</div>
 					<input type="text" id="event-location" list="regions" value={ this.state.currentEvent.location } placeholder="Input and select event location" />
@@ -396,6 +307,7 @@ class Edit extends React.Component{
 				</section>
 				<datalist id="regions">
 					<option label="Online" value="Online" />
+					<ListCities />
 				</datalist>
 			</React.Fragment>
 		);
@@ -409,10 +321,7 @@ function sendEvent(q){
 		
 		fetch('admin/api/dataServices/newsService/Events/send', { method: 'POST', body: querySendData })
 		.then((response) => {
-			if(response.status === 200){ 
-				console.log('Content success upload!'); 
-				window.location.assign('/admin?svc=dataManagment&subSVC=events#list');
-			}
+			if(response.status === 200){ alert('Content success upload!'); }
 			else{ alert('Content failed upload!'); }
 		})
 		.catch(error => {
@@ -455,10 +364,7 @@ function updateEvent(q){
 		
 		fetch('admin/api/dataServices/newsService/Events/update', { method: 'POST', body: fdu[1] })
 		.then((response) => {
-			if(response.status === 200){ 
-				console.log('Content success update!'); 
-				window.location.assign('/admin?svc=dataManagment&subSVC=events#list');
-			}
+			if(response.status === 200){ alert('Content success update!'); }
 			else{ alert('Content failed update!'); }
 		})
 		.catch(error => {
@@ -474,7 +380,7 @@ function deleteEvent(q){
 		
 		fetch('admin/api/dataServices/newsService/Events/delete', { method: 'POST', body: fdd[1] })
 		.then((response) => {
-			if(response.status === 200){ console.log('Content success delete!'); }
+			if(response.status === 200){ alert('Content success delete!'); }
 			else{ alert('Content failed delete!'); }
 		})
 		.catch(error => {
@@ -485,7 +391,7 @@ function deleteEvent(q){
 		fetch('admin/api/dataServices/newsService/Events/delete', { method: 'POST', body: fdd[0] })
 		.then((response) => {
 			if(response.status === 200){ 
-				console.log('Title image success delete!'); 
+				alert('Title image success delete!'); 
 				window.location.assign('/admin?svc=dataManagment&subSVC=events#list');
 			}
 			else{ alert('Title image failed delete!'); }

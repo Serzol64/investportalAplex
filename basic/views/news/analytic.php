@@ -4,6 +4,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use PHPHtmlParser\Dom;
 
 $this->title = $curA->title . " :: Analytics";
 ?>
@@ -24,19 +25,32 @@ $this->title = $curA->title . " :: Analytics";
                     </header>
                     <main>
 					    <section class="title-image"><img src="<?php echo $curA->titleImage; ?>" alt="Title Image"></section>
-                        <section class="news-content"><?php echo Html::decode($curA->content); ?></section>
+                        <section class="news-content">
+						<?php
+							
+							$contentQuery = (new Dom)->loadStr($curA->content);
+							
+							$part = $contentQuery->find('#part');
+							$content = $contentQuery->find('div#matherial');
+						?>
+                            <p class="bookmark">Content</p>
+                            <p></p>
+                            <ul id="content-list"><?php for($i = 0; $i < count($part); $i++){ echo Html::tag('li', Html::a($part[$i]->text, '#' . urlencode(strtolower($part[$i]->text)))); } ?></ul>
+                            <p></p>
+                            <hr>
+                        <?php for($i = 0; $i < count($content); $i++){ ?>
+                            <p class="bookmark" name="<?php echo urlencode(strtolower($part[$i]->text)); ?>"><?php echo $part[$i]->text; ?></p>
+                            <?php echo Html::decode($content[$i]->outerHtml); ?>
+                         <?php } ?>
+                        </section>
                     </main>
                     <footer>
                         <section class="share">
                             <strong>Share this article</strong>
-                            <ul>
-                                <li data-channel="facebook"><i class="fab fa-facebook-f" style="color: gray;"></i></li>
-                                <li data-channel="youtube"><i class="fab fa-youtube" style="color: gray;"></i></li>
-                                <li data-channel="instagram"><i class="fab fa-instagram" style="color: gray;"></i></li>
-                                <li data-channel="telegram"><i class="fab fa-telegram" style="color: gray;"></i></li>
+							<ul>
+                                <li data-channel="facebook" onClick='window.open("https://www.facebook.com/sharer.php?u=<?php echo ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>","sharer","status=0,toolbar=0,width=650,height=500");'><i class="fab fa-facebook-f" style="color: gray;"></i></li>
+                                <li data-channel="telegram" style="margin-left: 40%;" style="margin-left: 40%;" onClick='window.open("https://telegram.me/share/url?url=А<?php echo ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>","sharer","status=0,toolbar=0,width=650,height=500");'><i class="fab fa-telegram" style="color: gray;"></i></li>
                             </ul>
-                        </section>
-                        <section class="realted">
                         </section>
                     </footer>
                 </div>

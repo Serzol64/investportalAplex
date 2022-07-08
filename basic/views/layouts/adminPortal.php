@@ -2,8 +2,12 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
+use app\models\Admin;
+
 /* @var $this yii\web\View */
 /* @var $content string */
+
+if(Yii::$app->session->get('adminUser')){ $getAdminData = Admin::findOne(['login' => Yii::$app->session->get('adminUser')]); }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,14 +32,14 @@ use yii\helpers\Url;
 		<div class="admin-portal-page">
 		  <header>
 			<nav>
-			  <a href="/admin">Dashboard</a>
-			  <a href="/admin?dashboardSvc=news">News and Events</a>
-			  <a href="/admin?dashboardSvc=data">Data Services and Filters</a>
-			  <a href="/admin?dashboardSvc=user">Users</a>
+			  <?php if($getAdminData->role == 'admin' || $getAdminData->role == 'moderator' || $getAdminData->role == 'dev'){ ?><a href="/admin">Dashboard</a><?php } ?>
+			  <?php if($getAdminData->role == 'admin' || $getAdminData->role == 'dev'){ ?><a href="/admin?dashboardSvc=news">News and Events</a><?php } ?>
+			  <?php if($getAdminData->role == 'admin' || $getAdminData->role == 'moderator' || $getAdminData->role == 'dev'){ ?><a href="/admin?dashboardSvc=data">Data Services and Filters</a><?php } ?>
+			  <?php if($getAdminData->role == 'moderator' || $getAdminData->role == 'dev'){ ?><a href="/admin?dashboardSvc=user">Users</a><?php } ?>
 			</nav>
 			<footer>
 			  <ul>
-				<li onclick="isExit(false)"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAABIUlEQVRIie3UPUoDURTF8ReVkM5aMJ0ktVmDdRrTx1W4AAtJ4xqsUhgCEqwEXUQalxARVEhE0gg/i7zAMGY+SKb0wCvmvjPn/5h734TwryqEJsZYxHWPdpXhH/7qE80qAOMN4WuNqgAscgDzovf3duVXAXjO2Xssf5YMoR0bmtY7jncGREgTI8zjuqss/F+Zwj7OMMATXvCFb9ykvJ1E8ztFwQ1cYpZxud5wGL1dtDBJ7E/i5HU3hR9hmnNz4Sp6ewU+6KUBDyVeOo3eYaI2Qz+u10R9mAYsSwDWn6ee8PcTGRextkQ9/ato5DZopZ+C/Vry4aBEYFonIYRpCOE2caABajH8OtYa0bOdlGvy+daACOlajWR6TFs2jekOoMyL9gutWUn2RJl12AAAAABJRU5ErkJggg=="></li>
+				<?php if($getAdminData->role == 'admin' || $getAdminData->role == 'dev'){ ?><li onclick="isExit(false)"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAABIUlEQVRIie3UPUoDURTF8ReVkM5aMJ0ktVmDdRrTx1W4AAtJ4xqsUhgCEqwEXUQalxARVEhE0gg/i7zAMGY+SKb0wCvmvjPn/5h734TwryqEJsZYxHWPdpXhH/7qE80qAOMN4WuNqgAscgDzovf3duVXAXjO2Xssf5YMoR0bmtY7jncGREgTI8zjuqss/F+Zwj7OMMATXvCFb9ykvJ1E8ztFwQ1cYpZxud5wGL1dtDBJ7E/i5HU3hR9hmnNz4Sp6ewU+6KUBDyVeOo3eYaI2Qz+u10R9mAYsSwDWn6ee8PcTGRextkQ9/ato5DZopZ+C/Vry4aBEYFonIYRpCOE2caABajH8OtYa0bOdlGvy+daACOlajWR6TFs2jekOoMyL9gutWUn2RJl12AAAAABJRU5ErkJggg=="></li><?php } ?>
 				<li onclick="isExit(true)"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAn0lEQVRIid2Uuw0CMRBER4jsWqAFCoEqLnJdJ5oix9RA+ohOOp0W2PUnMBNZq5kd78eW/g7AFcjEkYGLx6Ak+YqHxwCAgspN3SGaKIqhDBYXKzoDYLbOLQ0AbsAUEUQNAO7AucrA8Q5eQNpqum/Rx1tG+U1a9IXfdch913SjW1y6CgNTN9RfZOJoxJ6STiVtkpT3AauCZBGdydNP1nB4A5tWVezafhVfAAAAAElFTkSuQmCC"></li>
 			  </ul>
 			</footer>
