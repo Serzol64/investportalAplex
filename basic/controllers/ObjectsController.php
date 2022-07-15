@@ -4,8 +4,10 @@ namespace app\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\web\View;
+use yii\helpers\Json;
 
 use app\models\ObjectAttribute;
+use app\models\Expert;
 use app\models\Investors;
 use app\models\InvestorsCategory;
 
@@ -55,13 +57,34 @@ class ObjectsController extends Controller{
 		$this->view->registerCssFile("/css/experts.css");
 		$this->view->registerJsFile("/js/experts.js", ['position' => View::POS_END]);
 		
-		return $this->render('experts');
+		$basicResponse = [
+			'list' => Expert::find()->orderBy('created DESC')->all(),
+			'expertsCount' => Expert::find()->count()
+		];
+		
+		return $this->render('experts', ['response' => $basicResponse]);
 	}
-	public function actionExpertsView($objectId){
+	public function actionExpertsView($expertId){
 		$this->view->registerCssFile("/css/experts/view.css");
 		$this->view->registerJsFile("/js/experts/view.js", ['position' => View::POS_END]);
 		
-		return $this->render('expert');
+		$queryPage = Expert::findOne(['id' => $expertId]);
+		
+		if(!$queryPage){
+			Yii::$app->response->statusCode = 404;
+			return $this->redirect(['objects/experts']);
+		}
+		
+		$contentStructure = [
+			'person' => Json::decode($queryPage->person, true),
+			'info' => [
+				Json::decode($queryPage->content, true),
+				Json::decode($queryPage->inform, true),
+				Json::decode($queryPage->contact, true)
+			]
+		];
+		
+		return $this->render('expert', ['structureResponse' => $contentStructure]);
 	}
 	
 	public function actionObjectservice($type){

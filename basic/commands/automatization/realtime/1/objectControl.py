@@ -28,3 +28,4 @@ def realtimeProccess(q):
 
     else:
 
+if __name__ == "__main__":

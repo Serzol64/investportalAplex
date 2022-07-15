@@ -9,6 +9,7 @@ use linslin\yii2\curl\Curl;
 use yii\httpclient\Client;
 use yii\web\NotFoundHttpException;
 
+use app\models\Event;
 use app\models\Analytic;
 
 use app\models\User;
@@ -45,6 +46,10 @@ class SiteController extends Controller{
 			[ObjectAttribute::find()->count(), Offers::find()->count()]
 		];
 		
+		
+		$eventComing = Event::find()->orderBy('date_from DESC')->limit(5)->all();
+
+		
 		$interactive = [
 			'analytic' => [
 				'last' => Analytic::find()->select('id,titleImage,title')->orderBy('created DESC')->limit(3)->asArray()->all(),
@@ -53,7 +58,7 @@ class SiteController extends Controller{
 			]
 		];
 		
-		return $this->render('index', ['staticCount' => $sc[0], 'staticMeta' => $sc[1], 'interactiveFeed' => $interactive]);
+		return $this->render('index', ['staticCount' => $sc[0], 'staticMeta' => $sc[1], 'interactiveFeed' => $interactive, 'lastUpcoming' => $eventComing]);
 	}
 	public function actionAbout(){
 		$this->view->registerCssFile("/css/about.css");
@@ -68,14 +73,11 @@ class SiteController extends Controller{
 		$this->view->registerJsFile("/js/services.js", ['position' => View::POS_END]);
 		
 		$sf = [
-			[PortalServicesCategory::find()->all(), PortalServices::find()->select('id, title, meta')->where(['category' => 1])->orderBy('id desc')->all()],
-			[
-				'new' => PortalServices::find()->select('id,title')->orderBy('id desc')->limit(4)->all()
-			]
-		
+			PortalServicesCategory::find()->all(),
+			PortalServices::find()->all()
 		];
 		
-		return $this->render('services', ['categories' => $sf[0], 'feed' => $sf[1]]);
+		return $this->render('services', ['categories' => $sf[0], 'services' => $sf[1]]);
 	}
 	public function actionServicePage($id){
 
@@ -228,6 +230,51 @@ class SiteController extends Controller{
 				if($operation == 'get'){
 					\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 					return Yii::$app->regionDB->listCities();
+				}
+				else{
+					Yii::$app->response->statusCode = 402;
+					\Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
+					return 'Operation not found'; 
+				}
+			break;
+			case 4:
+				if($operation == 'post'){
+					if(isset($_POST['categoryId'])){
+						$listResponse = [];
+						$listSet = PortalServices::find()->all();
+						$cat = $_POST['categoryId'];
+						$regexIs = 0;
+						
+						foreach($listSet as $lds){
+							$metaData = Json::deocde($lds->meta, true);
+							
+							if($metaData['categoryId'] == $cat){
+								$listResponse[] = [
+									'id' => $lds->id,
+									'title' => $lds->title,
+									'meta' => $lds->meta,
+									'content' => $lds->content,
+									'proc' => $lds->proc
+								];
+								
+								$regexIs++;
+							}
+						}
+						
+						if($regexIs == 0){
+							Yii::$app->response->statusCode = 404;
+							\Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
+							return 'Services not found'; 
+						}
+						
+						\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+						return $listResponse;
+					}
+					else{
+						Yii::$app->response->statusCode = 402;
+						\Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
+						return 'Operation not found'; 
+					}
 				}
 				else{
 					Yii::$app->response->statusCode = 402;

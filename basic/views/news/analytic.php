@@ -4,7 +4,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use PHPHtmlParser\Dom;
+use simplehtmldom\HtmlWeb;
 
 $this->title = $curA->title . " :: Analytics";
 ?>
@@ -28,18 +28,18 @@ $this->title = $curA->title . " :: Analytics";
                         <section class="news-content">
 						<?php
 							
-							$contentQuery = (new Dom)->loadStr($curA->content);
+							$contentQuery = (new HtmlWeb)->load($curA->content);
 							
 							$part = $contentQuery->find('#part');
 							$content = $contentQuery->find('div#matherial');
 						?>
                             <p class="bookmark">Content</p>
                             <p></p>
-                            <ul id="content-list"><?php for($i = 0; $i < count($part); $i++){ echo Html::tag('li', Html::a($part[$i]->text, '#' . urlencode(strtolower($part[$i]->text)))); } ?></ul>
+                            <ul id="content-list"><?php for($i = 0; $i < count($part); $i++){ echo Html::tag('li', Html::a($part[$i]->outertext, '#' . urlencode(strtolower($part[$i]->outertext)))); } ?></ul>
                             <p></p>
                             <hr>
                         <?php for($i = 0; $i < count($content); $i++){ ?>
-                            <p class="bookmark" name="<?php echo urlencode(strtolower($part[$i]->text)); ?>"><?php echo $part[$i]->text; ?></p>
+                            <p class="bookmark" name="<?php echo urlencode(strtolower($part[$i]->outertext)); ?>"><?php echo $part[$i]->outertext; ?></p>
                             <?php echo Html::decode($content[$i]->outerHtml); ?>
                          <?php } ?>
                         </section>

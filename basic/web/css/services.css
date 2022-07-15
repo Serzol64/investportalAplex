@@ -2,6 +2,8 @@
 
 #services-public{ padding-bottom: 15%; }
 
+.list-smart-close{ visibility: hidden; }
+
 h2#title {
     margin-left: 12%;
 }
@@ -66,6 +68,27 @@ header#search > .last-example{
 .categories > a strong{
   margin-left: 2%;
 }
+
+.load-screen-services{
+  background: rgba(250, 249, 248, 0.5);
+  width: 100%;
+  height: 404px;
+position: relative;top: -404px;margin-left: -23%;}
+.load-screen-services > center *{
+  display: block;
+  padding: 2%;
+}
+.load-screen-services img{
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+}
+.load-screen-services span{
+  font-size: 150%;
+  font-weight: bold;
+  color: #0079bf;
+}
+
 main#list > ul{
   list-style-type: none;
   overflow: auto;
@@ -88,6 +111,33 @@ main#list > ul li a{
   text-indent: 4%;
   text-decoration: none;
 }
+
+.not-found-data{
+  overflow: auto;
+  width: 100%;
+  height: 404px;
+  font-size: 120%;
+  margin-left: -23%;
+  margin-top: -1%;
+}
+.not-found-data > img{
+  padding: 2%;
+  margin-top: 2%;
+  width: calc(32px * 4);
+  height: calc(32px * 4);
+  object-fit: cover;
+}
+.not-found-data > h3{
+  padding: 2%;
+  margin-top: 2%;
+  font-size: calc(100% * 2);
+}
+.not-found-data > span{
+  padding: 2%;
+  margin-top: 2%;
+  text-align: justify;
+  font-size: 100%;
+width: 88%;display: block;}
 
 @media all and (max-width: 414px){
 	#services-public { height: calc(800px * 3); }

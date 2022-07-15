@@ -5,9 +5,9 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-use PHPHtmlParser\Dom;
+use simplehtmldom\HtmlWeb;
 
-$this->title = 'News';
+$this->title = 'Events';
 ?>
 
 <main class="main" style="background-color: #eff3f4;">
@@ -71,14 +71,14 @@ $this->title = 'News';
 								<?php if($events->location != ''){ ?><span data-type="location"><?php echo $events->location; ?></span><?php } ?>
 								<span data-type="description">
 									<?php
-										$contentQuery = (new Dom)->loadStr($events->content);
-										$description = (mb_strlen($contentQuery->find('p')[0]->text) > 45)? mb_substr($contentQuery->find('p')[0]->text, 0, (mb_strlen($contentQuery->find('p')[0]->text) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->text, 0, 45), ' ') : 45).' ...' : mb_substr($contentQuery->find('p')[0]->text, 0, (mb_strlen($contentQuery->find('p')[0]->text) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->text, 0, 45), ' ') : 45);
+										$contentQuery = (new HtmlWeb)->load($events->content);
+										$description = (mb_strlen($contentQuery->find('p', 0)->outertext) > 45)? mb_substr($contentQuery->find('p', 0)->outertext, 0, (mb_strlen($contentQuery->find('p', 0)->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p', 0)->outertext, 0, 45), ' ') : 45).' ...' : mb_substr($contentQuery->find('p', 0)->outertext, 0, (mb_strlen($contentQuery->find('p', 0)->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p', 0)->outertext, 0, 45), ' ') : 45);
 										
 										echo $description;
 									?>
 								</span>
 							  </p>
-							  <?php echo Html::a('Learn more', ['news/event', 'contentId' => $events->id]);
+							  <?php echo Html::a('Learn more', ['news/event', 'contentId' => $events->id]); ?>
 							</li>
 						<?php } ?>
 						  </ul>
@@ -99,14 +99,14 @@ $this->title = 'News';
 								<?php if($events->location != ''){ ?><span data-type="location"><?php echo $events->location; ?></span><?php } ?>
 								<span data-type="description">
 									<?php
-										$contentQuery = (new Dom)->loadStr($events->content);
-										$description = (mb_strlen($contentQuery->find('p')[0]->text) > 45)? mb_substr($contentQuery->find('p')[0]->text, 0, (mb_strlen($contentQuery->find('p')[0]->text) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->text, 0, 45), ' ') : 45).' ...' : mb_substr($contentQuery->find('p')[0]->text, 0, (mb_strlen($contentQuery->find('p')[0]->text) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->text, 0, 45), ' ') : 45);
+										$contentQuery = (new HtmlWeb)->load($events->content);
+										$description = (mb_strlen($contentQuery->find('p', 0)->outertext) > 45)? mb_substr($contentQuery->find('p', 0)->outertext, 0, (mb_strlen($contentQuery->find('p', 0)->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p', 0)->outertext, 0, 45), ' ') : 45).' ...' : mb_substr($contentQuery->find('p', 0)->outertext, 0, (mb_strlen($contentQuery->find('p', 0)->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p', 0)->outertext, 0, 45), ' ') : 45);
 										
 										echo $description;
 									?>
 								</span>
 							  </p>
-							  <?php echo Html::a('Learn more', ['news/event', 'contentId' => $events->id]);
+							  <?php echo Html::a('Learn more', ['news/event', 'contentId' => $events->id]); ?>
 							</li>
 						<?php } ?>
 						  </ul>

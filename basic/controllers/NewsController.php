@@ -51,10 +51,9 @@ class NewsController extends Controller{
 		$this->view->registerJsFile("/js/events.js", ['position' => View::POS_END]);
 		$this->view->registerCssFile("/css/events.css");
 		
-		$currentPeriod = date('Y-m-d');
 		$list = [
-			Event::find()->where(['and', 'date_from <=' . $cuurentPeriod, 'date_to >=' . $cuurentPeriod])->all(),
-			Event::find()->where(['and', 'date_from >=' . $cuurentPeriod, 'date_to <=' . $cuurentPeriod])->all()
+			Event::find()->where(['<=', 'date_from', date('Y-m-d')])->orderBy('date_from DESC')->all(),
+			Event::find()->where(['<=', 'date_to', date('Y-m-d')])->orderBy('date_from ASC')->all()
 		];
 		
 		return $this->render('eventsFeed', ['eventsList' => $list]);
@@ -69,8 +68,6 @@ class NewsController extends Controller{
 		
 		$curEvent = Event::findOne(['id' => $contentId]);
 		$curRealted = Yii::$app->realtedDB->topList('events', $contentId);
-		
-		var_dump($curRealted);
 		
 		if(!$curEvent){
 			Yii::$app->response->statusCode = 404;

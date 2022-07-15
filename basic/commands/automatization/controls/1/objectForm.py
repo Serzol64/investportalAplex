@@ -1,3 +1,4 @@
+import sys
 from asyncio.windows_events import NULL
 import mysql.connector
 from decimal import Decimal
@@ -67,3 +68,4 @@ def formValid(q):
         cnlx.close()
     return validResponse
 
+if __name__ == "__main__":

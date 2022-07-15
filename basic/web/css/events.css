@@ -3,7 +3,7 @@
 	height: calc(800px * 2);
 }
 
-#events-header, #events-body{
+#events-header, #events-body, #events-footer{
 	display: block;
 	margin-left: 10%;
 	width: 78%;

@@ -5,7 +5,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-use PHPHtmlParser\Dom;
+use simplehtmldom\HtmlWeb;
 
 use app\models\News;
 
@@ -170,8 +170,8 @@ $this->title = 'Welcome to Investportal!';
                       <main><img src="<?php echo $events->titleImage; ?>" alt="Event"></main>
                       <footer>
                         <?php
-							$contentQuery = (new Dom)->loadStr($events->content);
-							$description = (mb_strlen($contentQuery->find('p')[0]->text) > 45)? mb_substr($contentQuery->find('p')[0]->text, 0, (mb_strlen($contentQuery->find('p')[0]->text) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->text, 0, 45), ' ') : 45).' ...' : mb_substr($contentQuery->find('p')[0]->text, 0, (mb_strlen($contentQuery->find('p')[0]->text) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->text, 0, 45), ' ') : 45);
+							$contentQuery = (new HtmlWeb)->load($events->content);
+							$description = (mb_strlen($contentQuery->find('p', 0)->outertext) > 45)? mb_substr($contentQuery->find('p', 0)->outertext, 0, (mb_strlen($contentQuery->find('p', 0)->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p', 0)->outertext, 0, 45), ' ') : 45).' ...' : mb_substr($contentQuery->find('p', 0)->outertext, 0, (mb_strlen($contentQuery->find('p', 0)->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p', 0)->outertext, 0, 45), ' ') : 45);
 							
 							if($events->location != ''){ echo Html::tag('span', $events->location, ['class' => 'event-location']); }
 							

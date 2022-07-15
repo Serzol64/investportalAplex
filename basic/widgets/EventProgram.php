@@ -6,23 +6,23 @@ use yii\base\Widget;
 use yii\web\View;
 use yii\helpers\Json;
 
+use simplehtmldom\HtmlWeb;
+
 use app\models\Event;
 
 class EventProgram extends Widget{
     public $id;
+    public $connector;
 
     public function init() {
 		parent::init();
 		
-		$this->id = Event::findOne(['id' => $this->id]);
+		$this->connector = Event::findOne(['id' => $this->id]);
 	}
     public function run(){
-		$readyDatasheet = [];
+		$queryContent = (new HtmlWeb)->load($this->connector->content);
 		
-		
-		
-		
-		return $this->render('eventPage/list', ['eventTable' => $readyDatasheet, 'currentEvent' => $this->id]);
+		return $this->render('eventPage/list', ['eventTable' => $queryContent, 'eventId' => $this->id]);
 	}
 }
 ?>

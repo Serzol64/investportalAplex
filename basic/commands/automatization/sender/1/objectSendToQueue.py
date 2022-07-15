@@ -1,3 +1,4 @@
+import sys
 from PSAAutomatizator.serviceQueues import QueresDB
 from PSAAutomatizator.serviceOperators import Send
 
@@ -10,3 +11,4 @@ def registerQueue(q):
     else:
         return False
     
+if __name__ == "__main__":
