@@ -418,7 +418,7 @@ class ServiceForm extends React.Component{
                     </section>
                 </main>
                 <footer id="formUI">
-                <section className="formStep">
+					<section className="formStep">
                         { this.isVisitor(1) }
                         {
                             this.state.formStep.footer.map((fBut) => {
@@ -442,7 +442,7 @@ class ServiceForm extends React.Component{
                     const ufld = newField.form.map((ufd) => {
                         <label>
                             <span>{ sfd.name }</span>
-                            <input type="upload" id="upload-field" className={ ufd.fieldName } placeholer={ ufd.dExample } multiple />
+                            <input type="file" id="upload-field" className={ ufd.fieldName } placeholer={ ufd.dExample } multiple />
                             <div id="upload-field-content">
                                 <button>Upload files</button>
                                 <span>Not uploaded files</span>

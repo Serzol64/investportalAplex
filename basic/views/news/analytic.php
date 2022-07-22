@@ -4,6 +4,8 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+
+use voku\helper\HtmlMin;
 use simplehtmldom\HtmlWeb;
 
 $this->title = $curA->title . " :: Analytics";
@@ -28,7 +30,7 @@ $this->title = $curA->title . " :: Analytics";
                         <section class="news-content">
 						<?php
 							
-							$contentQuery = (new HtmlWeb)->load($curA->content);
+							$contentQuery = (new HtmlWeb)->load('<html><body>' . (new HtmlMin)->minify($curA->content) . '</body></html>');
 							
 							$part = $contentQuery->find('#part');
 							$content = $contentQuery->find('div#matherial');

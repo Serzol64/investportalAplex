@@ -18,35 +18,18 @@ $this->title = 'Events';
             <div id="events-header">
 				<form id="events-search" href="#">
 					<h2>Events filter search</h2>
-					<section class="header">
-						<ul id="noRequire">
-							<li>
-								<input type="checkbox" name="noRequire_Free" value="true" />
-								<span for="noRequire_Free">Free event</span>
-							</li>
-							<li>
-								<input type="checkbox" name="noRequire_Online" value="true" />
-								<span for="noRequire_Online">Event remote format</span>
-							</li>
-						</ul>
-					</section>
 					<section class="content">
 						<select id="require" name="eventRegion">
 							<option>Location</option>
-							<?php
-							?>
+							<?php foreach($ep as $df){ echo Html::tag('option', $df->location, ['value' => $df->location]); } ?>
 						</select>
 						<select id="require" name="eventType">
 							<option>Type</option>
-							<?php
-							
-							?>
+							<?php foreach($ep as $df){ echo Html::tag('option', $df->type, ['value' => $df->type]); } ?>
 						</select>
 						<select id="require" name="eventCategory">
 							<option>Tematic</option>
-							<?php
-							
-							?>
+							<?php foreach($ep as $df){ echo Html::tag('option', $df->tematic, ['value' => $df->tematic]); } ?>
 						</select>
 					</section>
 					<section class="footer">
@@ -72,7 +55,7 @@ $this->title = 'Events';
 								<span data-type="description">
 									<?php
 										$contentQuery = (new HtmlWeb)->load($events->content);
-										$description = (mb_strlen($contentQuery->find('p', 0)->outertext) > 45)? mb_substr($contentQuery->find('p', 0)->outertext, 0, (mb_strlen($contentQuery->find('p', 0)->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p', 0)->outertext, 0, 45), ' ') : 45).' ...' : mb_substr($contentQuery->find('p', 0)->outertext, 0, (mb_strlen($contentQuery->find('p', 0)->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p', 0)->outertext, 0, 45), ' ') : 45);
+										$description = (mb_strlen($contentQuery->find('p')[0]->outertext) > 45)? mb_substr($contentQuery->find('p')[0]->outertext, 0, (mb_strlen($contentQuery->find('p')[0]->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->outertext, 0, 45), ' ') : 45).' ...' : mb_substr($contentQuery->find('p')[0]->outertext, 0, (mb_strlen($contentQuery->find('p')[0]->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->outertext, 0, 45), ' ') : 45);
 										
 										echo $description;
 									?>
@@ -100,7 +83,7 @@ $this->title = 'Events';
 								<span data-type="description">
 									<?php
 										$contentQuery = (new HtmlWeb)->load($events->content);
-										$description = (mb_strlen($contentQuery->find('p', 0)->outertext) > 45)? mb_substr($contentQuery->find('p', 0)->outertext, 0, (mb_strlen($contentQuery->find('p', 0)->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p', 0)->outertext, 0, 45), ' ') : 45).' ...' : mb_substr($contentQuery->find('p', 0)->outertext, 0, (mb_strlen($contentQuery->find('p', 0)->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p', 0)->outertext, 0, 45), ' ') : 45);
+										$description = (mb_strlen($contentQuery->find('p')[0]->outertext) > 45)? mb_substr($contentQuery->find('p')[0]->outertext, 0, (mb_strlen($contentQuery->find('p')[0]->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->outertext, 0, 45), ' ') : 45).' ...' : mb_substr($contentQuery->find('p')[0]->outertext, 0, (mb_strlen($contentQuery->find('p')[0]->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->outertext, 0, 45), ' ') : 45);
 										
 										echo $description;
 									?>

@@ -11,7 +11,7 @@ class PortalServicePushController extends Controller{
         
         $currentServiceCmd = PortalServices::findAll(['id' => $serviceId])->select('JSON_EXTRACTS(proc, \'$.push\') as command')->one();
         $proccessCMD = `python` . __DIR__ . `/automatization/push/` . $serviceId . `/` . $currentServiceCmd->command;
-        if($userAuthType){ $operationCMD = $proccessCMD .  `--fastMode`; }
+        if($userAuthType){ $operationCMD = $proccessCMD .  ` --fastMode`; }
         else{ $operationCMD = $proccessCMD; }
         
         echo $operationCMD;

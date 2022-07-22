@@ -2,9 +2,11 @@
 
 /* @var $this yii\web\View */
 
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 
+use voku\helper\HtmlMin;
 use simplehtmldom\HtmlWeb;
 
 use app\models\News;
@@ -166,17 +168,20 @@ $this->title = 'Welcome to Investportal!';
             <main>
 			<?php foreach($lastUpcoming as $events){ ?>
 				<div class="calendar">
-                      <header><span class="date"><?php echo $events->date_from || $events->date_to; ?></span></header>
+                      <header><span class="date"><?php echo $events->date_to ? date('d/m', strtotime($events->date_from)) . ' - ' . date('d/m', strtotime($events->date_to)) : date('d/m', strtotime($events->date_from)); ?></span></header>
                       <main><img src="<?php echo $events->titleImage; ?>" alt="Event"></main>
                       <footer>
                         <?php
-							$contentQuery = (new HtmlWeb)->load($events->content);
-							$description = (mb_strlen($contentQuery->find('p', 0)->outertext) > 45)? mb_substr($contentQuery->find('p', 0)->outertext, 0, (mb_strlen($contentQuery->find('p', 0)->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p', 0)->outertext, 0, 45), ' ') : 45).' ...' : mb_substr($contentQuery->find('p', 0)->outertext, 0, (mb_strlen($contentQuery->find('p', 0)->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p', 0)->outertext, 0, 45), ' ') : 45);
+							$contentQuery = (new HtmlWeb)->load('<html><body>' . (new HtmlMin)->minify($events->content) . '</body></html>');
+							
+							var_dump($contentQuery);
+							
+							//$description = (mb_strlen($contentQuery->find('p')[0]->outertext) > 45)? mb_substr($contentQuery->find('p')[0]->outertext, 0, (mb_strlen($contentQuery->find('p')[0]->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->outertext, 0, 45), ' ') : 45).' ...' : mb_substr($contentQuery->find('p')[0]->outertext, 0, (mb_strlen($contentQuery->find('p')[0]->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->outertext, 0, 45), ' ') : 45);
 							
 							if($events->location != ''){ echo Html::tag('span', $events->location, ['class' => 'event-location']); }
 							
 							echo Html::a($events->title, ['news/event', 'contentId' => $events->id]);
-							echo Html::tag('p', $description, ['class' => 'descr']);
+							// echo Html::tag('p', $description, ['class' => 'descr']);
                         ?>
                       </footer>
                 </div>

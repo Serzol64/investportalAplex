@@ -16,7 +16,7 @@ $this->title = "Analytics";
 			<div id="analytics-page">
 				<header>
 					<h2 class="tematic-title">Tematics</h2>
-					<ul class="tematic"></ul>
+					<ul class="tematic"><?php foreach($afp['categories'] as $sheet){ ?><li><?php echo $sheet->category; ?></li><?php } ?></ul>
 				</header>
 				<main>
 					<div class="news-feed">

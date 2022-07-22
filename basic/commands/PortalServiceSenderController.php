@@ -10,7 +10,7 @@ class PortalServiceSenderController extends Controller{
         
         $currentServiceCmd = PortalServices::findAll(['id' => $serviceId])->select('JSON_EXTRACTS(proc, \'$.control\') as command')->one();
         $proccessCMD = `python` . __DIR__ . `/automatization/sender/` . $serviceId . `/` . $currentServiceCmd->command;
-        if($userAuthType){ $operationCMD = $proccessCMD . ` --userQuery=` . $query .  `--fastMode`; }
+        if($userAuthType){ $operationCMD = $proccessCMD . ` --userQuery=` . $query .  ` --fastMode`; }
         else{ $operationCMD = $proccessCMD . ` --userQuery=` . $query; }
         
         echo $operationCMD;

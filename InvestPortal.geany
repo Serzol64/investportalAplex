@@ -28,13 +28,14 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=1
-FILE_NAME_0=2684;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcommands%2FPortalContentCategorizator.php;0;4
-FILE_NAME_1=1391;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcomponents%2FCloudCategorizatior.php;0;4
-FILE_NAME_2=13893;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcontrollers%2FSiteController.php;0;4
+current_page=3
+FILE_NAME_0=403;Python;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcommands%2Fautomatization%2Fpush%2F1%2FobjectSendToBase.py;0;4
+FILE_NAME_1=1011;Python;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcommands%2Fautomatization%2Frealtime%2F1%2FobjectControl.py;0;4
+FILE_NAME_2=406;Python;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcommands%2Fautomatization%2Fcontrols%2F1%2FobjectForm.py;0;4
+FILE_NAME_3=582;Python;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcommands%2Fautomatization%2Fsender%2F1%2FobjectSendToQueue.py;0;4
 
 [VTE]
-last_dir=/home/sergey/Рабочий стол/Sergey/docker-compose-lamp/www/investportal
+last_dir=/home/sergey/Рабочий стол/Sergey/docker-compose-lamp/www/investportal/basic
 
 [prjorg]
 source_patterns=*.c;*.C;*.cpp;*.cxx;*.c++;*.cc;*.m;

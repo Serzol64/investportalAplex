@@ -71,4 +71,13 @@ return array (
       '@yii/debug' => $vendorDir . '/yiisoft/yii2-debug/src',
     ),
   ),
+  'ogheo/yii2-htmlcompress' => 
+  array (
+    'name' => 'ogheo/yii2-htmlcompress',
+    'version' => 'dev-master',
+    'alias' => 
+    array (
+      '@ogheo/htmlcompress' => $vendorDir . '/ogheo/yii2-htmlcompress/src',
+    ),
+  ),
 );

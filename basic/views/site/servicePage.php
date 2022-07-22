@@ -57,7 +57,7 @@ $svcSecure = $infoContent[2]['accessRole'] != 'public' ? isset($_COOKIE['portalI
                     <?php foreach($seoData['faq'] as $faqR){ ?>
                         <li>
                             <div id="question"><h4><?php echo $faqR['question']; ?></h4></div>
-                            <div id="answer"><?php echo HTML::decode($faqR['answer']); ?></div>
+                            <div id="answer" class="faq-answer-close"><?php echo HTML::decode($faqR['answer']); ?></div>
                         </li>
                     <?php } ?>
                 </ul>

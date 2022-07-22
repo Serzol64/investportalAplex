@@ -1,0 +1,113 @@
+.faq-answer-close{
+  display: none;
+}
+#service-page > .svcFooter ul li #question.faq-answer-active{
+  border-color: #0079bf;
+}
+
+#service-page{
+    width: 75%;
+    background-color: white;
+    position: relative;
+    float: left;
+    left: 12%;
+    top: -2%;
+    padding-bottom: 7%;
+    padding-right: 5px;
+}
+#service-page > .svcMeta{
+  padding: 4%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.svcMeta > *[data-group='metaData'] *[data-block='title']{
+  width: 60%;
+  display: inline-table;
+}
+
+.svcMeta > *[data-group='metaData'] *[data-block='title'] *{
+  display: block;
+  margin-top: 1%;
+  text-align: justify;
+}
+.svcMeta > *[data-group='metaData'] *[data-block='title'] h2{
+  font-size: 180%;
+}
+.svcMeta > *[data-group='metaData'] *[data-block='title'] span{
+  font-size: calc(180% / 2);
+}
+.svcMeta > *[data-group='metaData'] *[data-block='title'] i{
+  font-size: 100%;
+  padding-top: 2mm;
+  color: gray;
+}
+.svcMeta > *[data-group='metaData'] *[data-block='title'] i strong{
+  display: inline-block;
+}
+
+.svcMeta > *[data-group='metaData'] *[data-block='form']{
+  width: 30%;
+  display: inline-table;
+  padding-left: 6%;
+}
+.svcMeta > *[data-group='metaData'] *[data-block='form'] button{
+    text-align: center;
+    color: white;
+    background-color: #0079bf;
+    border: none;
+    font-size: 90%;
+    padding: 10px;
+    width: 117px;
+}
+
+#service-page > .svcContent{
+  padding: 4%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  width: 100%;
+  text-align: justify;
+}
+#service-page > .svcContent h3{
+  font-size: 200%;
+}
+#service-page > .svcContent div{
+  margin-top: 1%;
+  margin-bottom: 1%;
+  padding: 2%;
+}
+#service-page > .svcContent div *{
+  width: 90%;
+  font-size: calc(200% / 2);
+  margin-top: 1cm;
+}
+#service-page > .svcFooter{
+  padding: 4%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  text-align: justify;
+}
+#service-page > .svcFooter h3{
+  font-size: 200%;
+}
+#service-page > .svcFooter ul{
+  list-style-type: none;
+  width: 96%;
+  font-size: calc(200% / 2);
+  margin-top: 1cm;
+  margin-left: -4%;
+}
+#service-page > .svcFooter ul li{
+  margin-top: 2cm;
+  margin-bottom: 2cm;
+}
+#service-page > .svcFooter ul li #question{
+  border: solid 2px gray;
+  padding: 2%;
+  cursor: pointer;
+}
+#service-page > .svcFooter ul li #answer{
+  padding: 2%;
+  margin-top: 1cm;
+  margin-bottom: 1cm;
+}

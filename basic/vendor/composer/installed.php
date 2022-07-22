@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '45c229d02ef16eb8e31c46e7ad8d7a588538c8e4',
+        'reference' => '4836719fbce0c08a5f456b6121df4a21e8401e95',
         'name' => 'yiisoft/yii2-app-basic',
         'dev' => true,
     ),
@@ -251,6 +251,17 @@
             'install_path' => __DIR__ . '/../npm-asset/bootstrap',
             'aliases' => array(),
             'reference' => NULL,
+            'dev_requirement' => false,
+        ),
+        'ogheo/yii2-htmlcompress' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'type' => 'yii2-extension',
+            'install_path' => __DIR__ . '/../ogheo/yii2-htmlcompress',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'reference' => 'e1fcbc75bf1b6146fd42d929f94f55f337c6d8e4',
             'dev_requirement' => false,
         ),
         'paragonie/random_compat' => array(
@@ -601,7 +612,7 @@
             'install_path' => __DIR__ . '/../symfony/css-selector',
             'aliases' => array(),
             'reference' => 'b0a190285cd95cb019237851205b8140ef6e368e',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'symfony/deprecation-contracts' => array(
             'pretty_version' => 'v2.5.2',
@@ -733,7 +744,7 @@
             'install_path' => __DIR__ . '/../symfony/polyfill-php80',
             'aliases' => array(),
             'reference' => 'cfa0ae98841b9e461207c13ab093d76b0fa7bace',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'symfony/service-contracts' => array(
             'pretty_version' => 'v1.1.2',
@@ -771,6 +782,26 @@
             'reference' => '34a41e998c2183e22995f158c581e7b5e755ab9e',
             'dev_requirement' => true,
         ),
+        'voku/html-min' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../voku/html-min',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'reference' => 'ebbbcf91393a057eccf1a1a152c18352696e4c1c',
+            'dev_requirement' => false,
+        ),
+        'voku/simple_html_dom' => array(
+            'pretty_version' => '4.8.6',
+            'version' => '4.8.6.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../voku/simple_html_dom',
+            'aliases' => array(),
+            'reference' => '1df7e9844eddbe190450c87f281e87bbd8d7f645',
+            'dev_requirement' => false,
+        ),
         'vova07/yii2-console-runner-extension' => array(
             'pretty_version' => '0.1.2',
             'version' => '0.1.2.0',
@@ -804,7 +835,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '45c229d02ef16eb8e31c46e7ad8d7a588538c8e4',
+            'reference' => '4836719fbce0c08a5f456b6121df4a21e8401e95',
             'dev_requirement' => false,
         ),
         'yiisoft/yii2-bootstrap4' => array(

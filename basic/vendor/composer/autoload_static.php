@@ -41,10 +41,16 @@ class ComposerStaticInit6bdaf22a967160d4a621a49df4f9409d
         'v' => 
         array (
             'vova07\\console\\' => 15,
+            'voku\\helper\\' => 12,
+            'voku\\' => 5,
         ),
         'p' => 
         array (
             'phpDocumentor\\Reflection\\' => 25,
+        ),
+        'o' => 
+        array (
+            'ogheo\\htmlcompress\\' => 19,
         ),
         'l' => 
         array (
@@ -159,11 +165,23 @@ class ComposerStaticInit6bdaf22a967160d4a621a49df4f9409d
             0 => __DIR__ . '/..' . '/vova07/yii2-console-runner-extension/src',
             1 => __DIR__ . '/..' . '/vova07/yii2-console-runner-extension/tests',
         ),
+        'voku\\helper\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/voku/simple_html_dom/src/voku/helper',
+        ),
+        'voku\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/voku/html-min/src/voku',
+        ),
         'phpDocumentor\\Reflection\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
             1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+        ),
+        'ogheo\\htmlcompress\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ogheo/yii2-htmlcompress/src',
         ),
         'linslin\\yii2\\curl\\' => 
         array (

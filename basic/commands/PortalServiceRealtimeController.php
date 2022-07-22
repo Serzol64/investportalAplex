@@ -12,7 +12,7 @@ class PortalServiceRealtimeController extends Controller{
         
         $currentServiceCmd = PortalServices::findAll(['id' => $serviceId])->select('JSON_EXTRACTS(proc, \'$.realtime\') as command')->one();
         $proccessCMD = `python` . __DIR__ . `/automatization/realtime/` . $serviceId . `/` . $currentServiceCmd->command;
-        if($userAuthType){ $operationCMD = $proccessCMD .  `--fastMode`; }
+        if($userAuthType){ $operationCMD = $proccessCMD .  ` --fastMode`; }
         else{ $operationCMD = $proccessCMD; }
         
         echo $operationCMD;

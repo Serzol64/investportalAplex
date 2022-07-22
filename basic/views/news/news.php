@@ -55,40 +55,25 @@ $this->title = 'News';
                </header>
                <main>
                     <div id="light-feed">
+				<?php foreach($feed['cat'] as $sheet){ ?>
                         <div class="light-feed-cont">
                             <div id="cont-header">
                                 <hr color="gray"  class="feed-header"/>
-                                <span id="cont-title">Realty</span>
+                                <span id="cont-title"><?php echo $sheet->category; ?></span>
                             </div>
                             <div id="cont-content">
                                 <ul>
-                                    <li>
-                                        <a href="">The United States is 'looking at' banning TikTok and other Chinese social media</a>
-                                        <span>
-                                            Pompeo suggested the possible move during an interview with Fox News...
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <a href="">Black Friday as we know it is finally dead</a>
-                                        <span>
-                                            Thousands of shoppers gather sometimes as early as 5 pm Thanksgiving Day...
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <a href="">The United States is 'looking at' banning TikTok and other Chinese social media</a>
-                                        <span>
-                                            Pompeo suggested the possible move during an interview with Fox News...
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <a href="">Black Friday as we know it is finally dead</a>
-                                        <span>
-                                            Thousands of shoppers gather sometimes as early as 5 pm Thanksgiving Day...
-                                        </span>
-                                    </li>
+								<?php 
+								$catList = News::findAll(['category' => $sheet->category])->orderBy('created DESC')->limit(4);
+								foreach($catList as $findSheet){
+									preg_match_all('#<p[^>]*>(\X*?)</p>#', $findSheet->content, $matches);
+								?>
+                                    <li><a href="<?php echo Url::to(['news/view', ['contentId' => $findSheet->id]]); ?>"><?php echo $findSheet->title; ?></a><span><?php echo $matches[0]; ?></span></li>
+                                <?php } ?>
                                 </ul>
                             </div>
                         </div>
+                 <?php } ?>
                    </div>
                </main>
                <footer>

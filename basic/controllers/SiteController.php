@@ -68,7 +68,6 @@ class SiteController extends Controller{
 	}
 	
 	public function actionServices(){
-		$this->view->registerCssFile("/css/news.css");
 		$this->view->registerCssFile("/css/services.css");
 		$this->view->registerJsFile("/js/services.js", ['position' => View::POS_END]);
 		
@@ -80,7 +79,9 @@ class SiteController extends Controller{
 		return $this->render('services', ['categories' => $sf[0], 'services' => $sf[1]]);
 	}
 	public function actionServicePage($id){
-
+		$this->view->registerCssFile("/css/services/portalServices/page.css");
+		$this->view->registerJsFile("/js/services/page.js", ['position' => View::POS_END]);
+		
 		$currentServiceQuery = [
 			PortalServices::findOne(['id' => $id]),
 			PortalServices::findOne(['id' => $id])->select('meta')

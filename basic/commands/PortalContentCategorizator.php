@@ -17,10 +17,11 @@ class PortalServiceControlController extends Controller{
 			$currentTitle = $dataset->title;
 			
 			$readyContent = preg_replace("/<img[^>]+\>/i", "", $dataset->content);
+			$readyContent = preg_replace('/\t+/', '', $readyContent);
 			$readyContent = strip_tags($readyContent);
 			
 			$currentContent = $readyContent;
-			$readyResponse = Yii::$app->cloudCategorizator('news', [$currentTitle, $readyContent]);
+			$readyResponse = Yii::$app->cloudCategorizator->execute('news', [$currentTitle, $readyContent]);
 			
 			$currentMatherial = News::findOne(['id' => $dataset->id]);
 			$currentMatherial->category = $readyResponse;
@@ -41,10 +42,11 @@ class PortalServiceControlController extends Controller{
 			$currentTitle = $dataset->title;
 			
 			$readyContent = preg_replace("/<img[^>]+\>/i", "", $dataset->content);
+			$readyContent = preg_replace('/\t+/', '', $readyContent);
 			$readyContent = strip_tags($readyContent); 
 			
 			$currentContent = $readyContent;
-			$readyResponse = Yii::$app->cloudCategorizator('analytic', [$currentTitle, $readyContent]);
+			$readyResponse = Yii::$app->cloudCategorizator->execute('analytic', [$currentTitle, $readyContent]);
 			
 			$currentMatherial = Analytic::findOne(['id' => $dataset->id]);
 			$currentMatherial->category = $readyResponse;
@@ -65,10 +67,11 @@ class PortalServiceControlController extends Controller{
 			$currentTitle = $dataset->title;
 			
 			$readyContent = preg_replace("/<img[^>]+\>/i", "", $dataset->content);
+			$readyContent = preg_replace('/\t+/', '', $readyContent);
 			$readyContent = strip_tags($readyContent); 
 			
 			$currentContent = $readyContent;
-			$readyResponse = Yii::$app->cloudCategorizator('event', [$currentTitle, $readyContent]);
+			$readyResponse = Yii::$app->cloudCategorizator->execute('event', [$currentTitle, $readyContent]);
 			
 			$currentMatherial = Event::findOne(['id' => $dataset->id]);
 			$currentMatherial->tematic = $readyResponse[0];

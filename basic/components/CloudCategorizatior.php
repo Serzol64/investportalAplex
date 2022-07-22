@@ -85,7 +85,56 @@ class CloudCategorizator extends Component{
 				$highAccuracy = $highCategory;
 			break;
 			case 'event': 
-				$accuracySet = [];
+				$accuracySet = [
+					'title' => [array_column($brq[0], 'confidence'), array_column($brq[0], 'heading')],
+					'content' => [array_column($brq[1], 'confidence'), array_column($brq[1], 'heading')]
+				];
+				
+				$maxLevel = [
+					[max($accuracySet['title'][0]), max($accuracySet['content'][0])],
+					[max($accuracySet['title'][1]), max($accuracySet['content'][1])]
+				];
+				
+				$activityOne = [
+					['', ''],
+					['', '']
+				];
+				
+				for($i = 0; $i < count($accuracySet['title'][0]); $i){ 
+					
+					if($maxLevel[0][0] == $accuracySet['title'][0][$i]){ $activityOne[0][0] = $accuracySet['title'][1][$i]; } 
+					
+					if($maxLevel[1][0] == $accuracySet['title'][0][$i]){ 
+						
+						if($accuracySet['title'][0][$i] == 1 || ($accuracySet['title'][0][$i] == 0.9 || $accuracySet['title'][0][$i] >= 0.9)){ $type = 'Conference'; }
+						else if($accuracySet['title'][0][$i] == 0.45 || ($accuracySet['title'][0][$i] == 0.44 || $accuracySet['title'][0][$i] >= 0.44)){ $type = 'Awards / Ceremonies'; }
+						else if($accuracySet['title'][0][$i] == 0.23 || ($accuracySet['title'][0][$i] == 0.22 || $accuracySet['title'][0][$i] >= 0.22)){ $type = 'Lection / Webinar'; }
+						else{ $type = 'Meeting'; }
+						
+						$activityOne[1][0] = $type;
+					}
+				}
+				for($i = 0; $i < count($accuracySet['content'][0]); $i){ 
+					
+					if($maxLevel[0][1] == $accuracySet['content'][0][$i]){ $activityOne[0][1] = $accuracySet['content'][1][$i]; } 
+					
+					if($maxLevel[1][1] == $accuracySet['content'][0][$i]){ 
+						
+						if($accuracySet['content'][0][$i] == 1 || ($accuracySet['content'][0][$i] == 0.9 || $accuracySet['content'][0][$i] >= 0.9)){ $type = 'Conference'; }
+						else if($accuracySet['content'][0][$i] == 0.45 || ($accuracySet['content'][0][$i] == 0.44 || $accuracySet['content'][0][$i] >= 0.44)){ $type = 'Awards / Ceremonies'; }
+						else if($accuracySet['content'][0][$i] == 0.23 || ($accuracySet['content'][0][$i] == 0.22 || $accuracySet['content'][0][$i] >= 0.22)){ $type = 'Lection / Webinar'; }
+						else{ $type = 'Meeting'; }
+						
+						$activityOne[1][1] = $type;
+					}
+				}
+				
+				$highClassificator = [
+					$activityOne[0][0] == $activityOne[0][1] ? $activityOne[0][1] : $activityOne[0][0],
+					$activityOne[1][0] == $activityOne[1][1] ? $activityOne[1][1] : $activityOne[1][0]
+				];
+				
+				$highAccuracy = $highClassificator;
 			break;
 		}
 		
