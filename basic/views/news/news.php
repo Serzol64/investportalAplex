@@ -56,6 +56,7 @@ $this->title = 'News';
                <main>
                     <div id="light-feed">
 				<?php foreach($feed['cat'] as $sheet){ ?>
+						<?php if($sheet->category){ ?>
                         <div class="light-feed-cont">
                             <div id="cont-header">
                                 <hr color="gray"  class="feed-header"/>
@@ -73,7 +74,7 @@ $this->title = 'News';
                                 </ul>
                             </div>
                         </div>
-                 <?php } ?>
+                 <?php } } ?>
                    </div>
                </main>
                <footer>

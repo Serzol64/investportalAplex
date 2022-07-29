@@ -20,7 +20,7 @@ class NewsController extends Controller{
 		$feed = [
 			'firstLastNews' => $nl->select('id, title, titleImage, content, created')->orderBy('created DESC')->limit(1)->one(),
 			'rightLastNews' => $nl->select('id, title, titleImage, content, created')->orderBy('created DESC')->limit(4)->offset(1)->all(),
-			'cat' => $nl->select('category, created')->orderBy('created')->distinct()->all(),
+			'cat' => $nl->select('category')->orderBy('category ASC')->limit(3)->distinct()->all(),
 			'footerNews' => [
 				$nl->select('id, title, titleImage, content, created')->orderBy('created DESC')->limit(4)->offset(5)->all(),
 				$nl->select('id, title, titleImage, content, created')->orderBy('created DESC')->limit(4)->offset(9)->all()
