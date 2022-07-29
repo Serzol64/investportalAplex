@@ -10,13 +10,13 @@ $this->title = "Analytics";
 
 <main class="main" style="background-color:   #eff3f4;">
         <section class="section" id="link-switcher">
-            <a href="<?php echo Url::to(['site/index']); ?>">Main</a> <span id="delimeter"> / </span> <a href="<?php echo Url::to(['news/analytics-feed']); ?>">About</a>
+            <a href="<?php echo Url::to(['site/index']); ?>">Main</a> <span id="delimeter"> / </span> <a href="<?php echo Url::to(['news/analytics-feed']); ?>">Analytics</a>
         </section>
         <section class="section" id="analytics">
 			<div id="analytics-page">
 				<header>
 					<h2 class="tematic-title">Tematics</h2>
-					<ul class="tematic"><?php foreach($afp['categories'] as $sheet){ ?><li><?php echo $sheet->category; ?></li><?php } ?></ul>
+					<ul class="tematic"><?php foreach($afp['categories'] as $sheet){ if($sheet->category) { ?><li><?php echo $sheet->category; ?></li><?php } } ?></ul>
 				</header>
 				<main>
 					<div class="news-feed">

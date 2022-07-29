@@ -487,6 +487,21 @@ class ServiceForm extends React.Component{
                         </>
                     );
                 }
+                else if(newField.type === 'queryContent'){
+                    const sfld = newField.form.map((sfd) => {
+                        <label>
+                            <span>{ sfd.name }</span>
+                            <input type="search" id="search-field" className={ sfd.fieldName } data-dSource={ sfd.dSource } data-dMethod={ sfd.dMethod } placeholer={ sfd.dExample } />
+                        </label>
+                    });
+
+                    formContent = (
+                        <>
+                            <div id="header">{ newField.stepD }</div>
+                            <div id="body">{ sfld }</div>
+                        </>
+                    );
+                }
                 else if(newField.type === 'list'){
                     const df = newField.optionData.map((ods) => {
                         <option value={ ods.lfQuery }>{ ods.lfContent }</option>

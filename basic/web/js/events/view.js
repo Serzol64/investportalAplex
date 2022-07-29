@@ -7,6 +7,6 @@ $(document).ready(function(){
     window.open(getLink, "_blank");
   });
   
-  $(window).resize(function(){ $('.main').height($('.main').height() + $('#news > .news-viewer #left-content').height()); });
+  $(window).resize(function(){ $('#news').height($('.main').height() - ($('#news > .news-viewer #left-content').height() / 6)); });
   $(window).resize();
 });

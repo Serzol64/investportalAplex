@@ -18,12 +18,12 @@ class NewsController extends Controller{
 		$nl = News::find();
 		
 		$feed = [
-			'firstLastNews' => $nl->orderBy('created DESC')->limit(1)->one(),
-			'rightLastNews' => $nl->orderBy('created DESC')->limit(4)->offset(1)->all(),
-			'cat' => $nl->select('category')->distinct()->all(),
+			'firstLastNews' => $nl->select('id, title, titleImage, content, created')->orderBy('created DESC')->limit(1)->one(),
+			'rightLastNews' => $nl->select('id, title, titleImage, content, created')->orderBy('created DESC')->limit(4)->offset(1)->all(),
+			'cat' => $nl->select('category, created')->orderBy('created')->distinct()->all(),
 			'footerNews' => [
-				$nl->orderBy('created DESC')->limit(4)->offset(5)->all(),
-				$nl->orderBy('created DESC')->limit(4)->offset(9)->all()
+				$nl->select('id, title, titleImage, content, created')->orderBy('created DESC')->limit(4)->offset(5)->all(),
+				$nl->select('id, title, titleImage, content, created')->orderBy('created DESC')->limit(4)->offset(9)->all()
 			]
 		];
 		
@@ -53,8 +53,8 @@ class NewsController extends Controller{
 		$this->view->registerCssFile("/css/events.css");
 		
 		$list = [
-			Event::find()->where(['<=', 'date_from', date('Y-m-d')])->orderBy('date_from DESC')->all(),
-			Event::find()->where(['<=', 'date_to', date('Y-m-d')])->orderBy('date_from ASC')->all()
+			Event::find()->orderBy('date_from DESC')->all(),
+			Event::find()->orderBy('date_to DESC')->all()
 		];
 		
 		$eventParameters = Event::find()->select('location, tematic, type')->distinct()->all();
@@ -86,10 +86,10 @@ class NewsController extends Controller{
 		$af = Analytic::find();
 		
 		$parts = [
-			'categories' => $af->select('category')->distinct()->orderBy('created DESC')->limit(5),
-			'last' => $af->orderBy('created DESC')->limit(3)->all(),
-			'preLast' => $af->orderBy('created DESC')->limit(6)->offset(3)->all(),
-			'old' => $af->orderBy('created DESC')->limit(9)->offset(6)->all()
+			'categories' => $af->select('category')->orderBy('category DESC')->limit(5)->distinct()->all(),
+			'last' => $af->select('id, titleImage, title, created')->orderBy('created DESC')->limit(3)->all(),
+			'preLast' => $af->select('id, titleImage, title, created')->orderBy('created DESC')->limit(6)->offset(3)->all(),
+			'old' => $af->select('id, titleImage, title, created')->orderBy('created DESC')->limit(9)->offset(6)->all()
 		];
 		
 		return $this->render('analytics', ['afp' => $parts]);
@@ -180,9 +180,9 @@ class NewsController extends Controller{
 				switch($cq['service']){
 					case 'categoryLastNews':
 						$acng = [
-							'last' => $asd->where(['category' => $cqContent['name'])->orderBy('created DESC')->limit(3)->all(),
-							'preLast' => $asd->where(['category' => $cqContent['name'])->orderBy('created DESC')->limit(6)->offset(3)->all(),
-							'old' => $asd->where(['category' => $cqContent['name'])->orderBy('created DESC')->limit(9)->offset(6)->all()
+							'last' => $asd->where(['category' => $cqContent['name']])->orderBy('created DESC')->limit(3)->all(),
+							'preLast' => $asd->where(['category' => $cqContent['name']])->orderBy('created DESC')->limit(6)->offset(3)->all(),
+							'old' => $asd->where(['category' => $cqContent['name']])->orderBy('created DESC')->limit(9)->offset(6)->all()
 						];
 						
 						$serviceResponse = [ 'l' => $acng['last'], 'pl' => $acng['preLast'], 'o' => $acng['old'] ];
@@ -191,6 +191,7 @@ class NewsController extends Controller{
 						Yii::$app->response->statusCode = 404;
 					    $serviceResponse = "Service not found!";
 					break;
+				}
 			}
 			else{
 				Yii::$app->response->statusCode = 405;

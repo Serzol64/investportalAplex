@@ -15,8 +15,6 @@ return array(
     'yii\\bootstrap4\\' => array($vendorDir . '/yiisoft/yii2-bootstrap4/src'),
     'yii\\' => array($vendorDir . '/yiisoft/yii2'),
     'vova07\\console\\' => array($vendorDir . '/vova07/yii2-console-runner-extension/src', $vendorDir . '/vova07/yii2-console-runner-extension/tests'),
-    'voku\\helper\\' => array($vendorDir . '/voku/simple_html_dom/src/voku/helper'),
-    'voku\\' => array($vendorDir . '/voku/html-min/src/voku'),
     'phpDocumentor\\Reflection\\' => array($vendorDir . '/phpdocumentor/reflection-common/src', $vendorDir . '/phpdocumentor/reflection-docblock/src', $vendorDir . '/phpdocumentor/type-resolver/src'),
     'ogheo\\htmlcompress\\' => array($vendorDir . '/ogheo/yii2-htmlcompress/src'),
     'linslin\\yii2\\curl\\' => array($vendorDir . '/linslin/yii2-curl'),

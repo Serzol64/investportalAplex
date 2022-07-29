@@ -8,7 +8,7 @@ use app\models\News;
 use app\models\Analytic;
 use app\models\Event;
 
-class PortalServiceControlController extends Controller{
+class PortalContentCategorizatorController extends Controller{
     public function actionNews(){
 		$withoutMatherialCategories = News::find()->where(['category' => NULL])->all();
 		$statusFinish = [[0,0],1];

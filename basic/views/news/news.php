@@ -64,7 +64,7 @@ $this->title = 'News';
                             <div id="cont-content">
                                 <ul>
 								<?php 
-								$catList = News::findAll(['category' => $sheet->category])->orderBy('created DESC')->limit(4);
+								$catList = News::find()->select('id, title, content, created')->where(['category' => $sheet->category])->orderBy('created DESC')->limit(4)->all();
 								foreach($catList as $findSheet){
 									preg_match_all('#<p[^>]*>(\X*?)</p>#', $findSheet->content, $matches);
 								?>

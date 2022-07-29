@@ -1,4 +1,5 @@
 import sys
+import json
 from asyncio.windows_events import NULL
 import mysql.connector
 from decimal import Decimal
@@ -17,66 +18,162 @@ cnlx = mysql.connector.connect(
     password=dbConnect[2]
 ).cursor()
 
-def formGenerator(q):
-    
+def formGenerator(t):
+    if t == 'header':
+		readyForm = {
+			{
+				'stepN': 1,
+				'stepT': 'Entering personal data about the object'
+			},
+			{
+				'stepN': 2,
+				'stepT': 'Selecting an object attribute'
+			},
+			{
+				'stepN': 3,
+				'stepT': 'Enter the country where this object is located'
+			},
+			{
+				'stepN': 4,
+				'stepT': 'Upload photos and video presentation of this object'
+			},
+			{
+				'stepN': 5,
+				'stepT': 'Enter brief information about your investment object and its parameters'
+			}
+		}
+	elif t == 'body':
+		readyForm = {
+			{
+				'type': 'default',
+				'stepD': 'Enter the name of the object and its value in dollars. If you are only interested in the currency of your region, it will be important for us that many investors are interested in your object. Depending on the currency that the user has chosen in the portal services, it automatically converts dollars into any currency, thanks to the technology of daily conversion. You can transfer the amount of any currency to the dollar <a href="http://bit.do/converter_to_USD" target="_blank">here</a>.',
+				'form': {
+					{
+						'name': 'Object title',
+						'fieldName': 'objectTitle',
+						'dExample': 'Hotel Reddison',
+						'dSource': None,
+						'dMethod': None,
+						'optionData': None
+					},
+					{
+						'name': 'Object cost(in USD)',
+						'fieldName': 'objectCost',
+						'dExample': '10 000',
+						'dSource': None,
+						'dMethod': None,
+						'optionData': None
+					}
+					
+				}
+			},
+			{
+				'type': 'list',
+				'stepD': 'Choose the attribute that your object is most likely to relate to!',
+				'form': {
+					{
+						'listTitle': 'Object attribute',
+						'listName': 'objectAttribute',
+						'dExample': None,
+						'dSource': None,
+						'dMethod': None,
+						'optionData': {}
+					}
+					
+				}
+			},
+			{
+				'type': 'search',
+				'stepD': 'Enter the first letters and the autofill technology will give you an accurate list of countries on request, where you can quickly select the country of the world you need, for which information about the object is placed',
+				'form': {
+					{
+						'name': 'Object country',
+						'fieldName': 'objectRegion',
+						'dExample': 'Spain',
+						'dSource': '',
+						'dMethod': 'GET',
+						'optionData': None
+					}
+					
+				}
+			},
+			{
+				'type': 'upload',
+				'stepD': 'Upload more than one photo and one video presentation that will help investors uncover more opportunities when making deals with your object',
+				'form': {
+					{
+						'name': 'Photogallery',
+						'fieldName': 'photogallery',
+						'dExample': 'Upload photos',
+						'dSource': None,
+						'dMethod': None,
+						'optionData': None
+					},
+					{
+						'name': 'Video presentation',
+						'fieldName': 'presentation',
+						'dExample': 'Upload video presentation',
+						'dSource': None,
+						'dMethod': None,
+						'optionData': None
+					},
+					
+				}
+			},
+			{
+				'type': 'queryContent',
+				'stepD': 'Describe your object and its features. Then specify the filters and parameters of your object in the "filter - value" format in accordance with the data filtering standards set in the selected attribute',
+				'form': {
+					{
+						'name': 'Object description',
+						'fieldName': 'description',
+						'dExample': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sodales neque sodales ut etiam sit amet nisl. At lectus urna duis convallis convallis tellus. Risus pretium quam vulputate dignissim suspendisse. Neque laoreet suspendisse interdum consectetur libero. Odio pellentesque diam volutpat commodo sed. Sed pulvinar proin gravida hendrerit lectus. Volutpat lacus laoreet non curabitur. Arcu dui vivamus arcu felis bibendum ut tristique et egestas. Eu facilisis sed odio morbi quis. Malesuada fames ac turpis egestas.',
+						'dSource': None,
+						'dMethod': None,
+						'optionData': None
+					},
+					{
+						'name': 'Object parameters',
+						'fieldName': 'content',
+						'dExample': '',
+						'dSource': None,
+						'dMethod': None,
+						'optionData': None
+					},
+					
+				}
+			}
+		}
+	elif t == 'footer':
+		readyForm = {
+			{ 'isLast': False },
+			{ 'isLast': False },
+			{ 'isLast': False },
+			{ 'isLast': False },
+			{ 'isLast': True }
+		}
+		
+	return { 'fieldGen': readyForm }
 
 def formValid(q):
+	
+	
 
-    queryPattern = [
-        q.fieldFormName.find('objectMedia'),
-        q.fieldFormName.find('objectMeta')
-    ]
-
-
-    if queryPattern[1]:
-        findMeta = {}
-        cnlx.execute('', findMeta)
-
-        for (field, type) in cnlx:
-            if q.fieldFormName.find(field):
-                if type == 'country' or type == 'region':
-
-                elif type == 'cost':
-                    if Decimal(q.fieldFormQuery) % 1 == 0: validMetaMessage = 'Success'
-                    else: validMetaMessage = 'The entered data should correspond to this format: 1000000,00'
-                elif type == 'precentable':
-                    if len(q.fieldFormQuery) < 3 or len(q.fieldFormQuery) == 3: validMetaMessage = 'Success'
-                    else: validMetaMessage = 'The maximum number of characters in a number is 3'
-                elif type == 'int':
-                    if len(q.fieldFormQuery) < 6 or len(q.fieldFormQuery) == 6: validMetaMessage = 'Success'
-                    else: validMetaMessage = 'The maximum number of characters in a number is 6'
-            
-        cnlx.close()
-        validResponse = {'message': validMetaMessage}
-    elif queryPattern[0]:
-        findMedia = {}
-        cnlx.execute('', findMedia)
-        for (field, type) in cnlx:
-            if q.fieldFormName.find(field):
-                if type == 'photogallery':
-                    
-        cnlx.close()
-    else:
-        findOther = {}
-        cnlx.execute('', findOther)
-        for (field, type) in cnlx:
-            if q.fieldFormName.find(field):
-                if type == 'default':
-
-                elif type == 'selecting':
-                    
-        cnlx.close()
     return validResponse
 
 if __name__ == "__main__":
 	
 	if "--userQuery" in sys.argv[0]:
 		readyQuery = sys.args[0].strip("--userQuery=")
+		readyQuery = json.loads(readyQuery)
 		
-		if registerQueue(readyQuery):
+		if readyQuery.service == 'getForm':
+			readyResponse = {
+				'steps': {
+					'header': formGenerator('header'),
+					'content': formGenerator('body'),
+					'footer': formGenerator('footer'),
+				}
+			}
 			
-			if "--fastMode" in sys.argv[1]:
-				
-			else:
-				
-		else:
+			print(json.dumps(readyResponse))

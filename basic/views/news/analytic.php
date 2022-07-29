@@ -5,15 +5,14 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-use voku\helper\HtmlMin;
-use simplehtmldom\HtmlWeb;
+
 
 $this->title = $curA->title . " :: Analytics";
 ?>
 
 <main class="main" style="background-color:   #eff3f4;">
         <section class="section" id="link-switcher">
-            <a href="<?php echo Url::to(['site/index']); ?>">Main</a> <span id="delimeter"> / </span> <a href="<?php echo Url::to(['news/analytics-feed']); ?>">About</a> <span id="delimeter"> / </span> <a href="<?php echo Url::to(['news/analytics-view', ['contentId' => $contentId]]); ?>"><?php echo $curA->title; ?></a>
+            <a href="<?php echo Url::to(['site/index']); ?>">Main</a> <span id="delimeter"> / </span> <a href="<?php echo Url::to(['news/analytics-feed']); ?>">Analytics</a> <span id="delimeter"> / </span> <a href="<?php echo Url::to(['news/analytics-view', ['contentId' => $contentId]]); ?>"><?php echo $curA->title; ?></a>
         </section>
         <section class="section" id="news">
             <div class="news-viewer">
@@ -30,19 +29,17 @@ $this->title = $curA->title . " :: Analytics";
                         <section class="news-content">
 						<?php
 							
-							$contentQuery = (new HtmlWeb)->load('<html><body>' . (new HtmlMin)->minify($curA->content) . '</body></html>');
-							
-							$part = $contentQuery->find('#part');
-							$content = $contentQuery->find('div#matherial');
+							preg_match_all('#<h3[^>]*>(\X*?)</h3>#', $curA->content, $part);
+							preg_match_all('#<div[^>]*>(\X*?)</div>#', $curA->content, $content);
 						?>
                             <p class="bookmark">Content</p>
                             <p></p>
-                            <ul id="content-list"><?php for($i = 0; $i < count($part); $i++){ echo Html::tag('li', Html::a($part[$i]->outertext, '#' . urlencode(strtolower($part[$i]->outertext)))); } ?></ul>
+                            <ul id="content-list"><?php for($i = 0; $i < count($part); $i++){ echo Html::tag('li', Html::a($part[$i], '#' . $part[$i])); } ?></ul>
                             <p></p>
                             <hr>
                         <?php for($i = 0; $i < count($content); $i++){ ?>
-                            <p class="bookmark" name="<?php echo urlencode(strtolower($part[$i]->outertext)); ?>"><?php echo $part[$i]->outertext; ?></p>
-                            <?php echo Html::decode($content[$i]->outerHtml); ?>
+                            <p class="bookmark" name="<?php echo $part[$i]; ?>"><?php echo $part[$i]; ?></p>
+                            <?php echo $content[$i]; ?>
                          <?php } ?>
                         </section>
                     </main>
@@ -51,7 +48,7 @@ $this->title = $curA->title . " :: Analytics";
                             <strong>Share this article</strong>
 							<ul>
                                 <li data-channel="facebook" onClick='window.open("https://www.facebook.com/sharer.php?u=<?php echo ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>","sharer","status=0,toolbar=0,width=650,height=500");'><i class="fab fa-facebook-f" style="color: gray;"></i></li>
-                                <li data-channel="telegram" style="margin-left: 40%;" style="margin-left: 40%;" onClick='window.open("https://telegram.me/share/url?url=А<?php echo ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>","sharer","status=0,toolbar=0,width=650,height=500");'><i class="fab fa-telegram" style="color: gray;"></i></li>
+                                <li data-channel="telegram" style="margin-left: 40%;" style="margin-left: 40%;" onClick='window.open("https://telegram.me/share/url?url=<?php echo ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>","sharer","status=0,toolbar=0,width=650,height=500");'><i class="fab fa-telegram" style="color: gray;"></i></li>
                             </ul>
                         </section>
                     </footer>

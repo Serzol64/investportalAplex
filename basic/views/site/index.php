@@ -6,8 +6,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-use voku\helper\HtmlMin;
-use simplehtmldom\HtmlWeb;
+
 
 use app\models\News;
 
@@ -172,16 +171,12 @@ $this->title = 'Welcome to Investportal!';
                       <main><img src="<?php echo $events->titleImage; ?>" alt="Event"></main>
                       <footer>
                         <?php
-							$contentQuery = (new HtmlWeb)->load('<html><body>' . (new HtmlMin)->minify($events->content) . '</body></html>');
-							
-							var_dump($contentQuery);
-							
-							//$description = (mb_strlen($contentQuery->find('p')[0]->outertext) > 45)? mb_substr($contentQuery->find('p')[0]->outertext, 0, (mb_strlen($contentQuery->find('p')[0]->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->outertext, 0, 45), ' ') : 45).' ...' : mb_substr($contentQuery->find('p')[0]->outertext, 0, (mb_strlen($contentQuery->find('p')[0]->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->outertext, 0, 45), ' ') : 45);
+							preg_match_all('#<p[^>]*>(\X*?)</p>#', $events->content, $description);
 							
 							if($events->location != ''){ echo Html::tag('span', $events->location, ['class' => 'event-location']); }
 							
 							echo Html::a($events->title, ['news/event', 'contentId' => $events->id]);
-							// echo Html::tag('p', $description, ['class' => 'descr']);
+							echo Html::tag('p', $description[0], ['class' => 'descr']);
                         ?>
                       </footer>
                 </div>
@@ -210,7 +205,7 @@ $this->title = 'Welcome to Investportal!';
 		 <header>
                 <hr color="#0079bf" size="4" width="37px" align="left"/>
                 <h2>Analytics</h2>
-                <a href="<?php echo Url::to(['news/analytics-feed']); ?>">All news</a>
+                <a href="<?php echo Url::to(['news/analytics-feed']); ?>">All matherial</a>
          </header>
          <main>
 				<header id="slider-controller-adaptive"><img src="/images/icons/slider-contorls/back.png" alt="Назад"></header>
@@ -218,53 +213,69 @@ $this->title = 'Welcome to Investportal!';
 				<main id="slider-view-adaptive">
 					<?php
 						for($i = 0; $i < count($interactiveFeed['analytic']['last']); $i++){ 
+							preg_match_all('#<p[^>]*>(\X*?)</p>#', $interactiveFeed['analytic']['last'][$i]['content'], $content);
+							$descriptionMatherial = $content[0];
+							
 							switch($i){
 								case 1:
 									echo Html::tag('div', 
 													Html::img($interactiveFeed['analytic']['last'][$i]['titleImage'], ['alt' => $interactiveFeed['analytic']['last'][$i]['title']]) .
 													Html::tag('h2', $interactiveFeed['analytic']['last'][$i]['title']) .
+													Html::tag('p', $descriptionMatherial, ['class' => 'descr']) .
 													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['last'][$i]['id']]),['class' => 'analytic hide', 'id' => 'with-title-image']);
 								break;
 								case 0:
 									echo Html::tag('div', 
 													Html::tag('h2', $interactiveFeed['analytic']['last'][$i]['title']) .
+													Html::tag('p', $descriptionMatherial, ['class' => 'descr']) .
 													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['last'][$i]['id']]),['class' => 'analytic']);
 								break;
 								default:
 									echo Html::tag('div', 
 													Html::tag('h2', $interactiveFeed['analytic']['last'][$i]['title']) .
+													Html::tag('p', $descriptionMatherial, ['class' => 'descr']) .
 													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['last'][$i]['id']]),['class' => 'analytic hide']);
 								break;
 							}
 						}
 						
 						for($i = 0; $i < count($interactiveFeed['analytic']['prelast']); $i++){ 
+							preg_match_all('#<p[^>]*>(\X*?)</p>#', $interactiveFeed['analytic']['prelast'][$i]['content'], $content);
+							$descriptionMatherial = $content[0];
+							
 							switch($i){
 								case 1:
 									echo Html::tag('div', 
 													Html::img($interactiveFeed['analytic']['prelast'][$i]['titleImage'], ['alt' => $interactiveFeed['analytic']['prelast'][$i]['title']]) .
 													Html::tag('h2', $interactiveFeed['analytic']['prelast'][$i]['title']) .
+													Html::tag('p', $descriptionMatherial, ['class' => 'descr']) .
 													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['prelast'][$i]['id']]),['class' => 'analytic hide', 'id' => 'with-title-image']);
 								break;
 								default:
 									echo Html::tag('div', 
 													Html::tag('h2', $interactiveFeed['analytic']['prelast'][$i]['title']) .
+													Html::tag('p', $descriptionMatherial, ['class' => 'descr']) .
 													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['prelast'][$i]['id']]),['class' => 'analytic hide']);
 								break;
 							}
 						}
 						
 						for($i = 0; $i < count($interactiveFeed['analytic']['old']); $i++){ 
+							preg_match_all('#<p[^>]*>(\X*?)</p>#', $interactiveFeed['analytic']['old'][$i]['content'], $content);
+							$descriptionMatherial = $content[0];
+							
 							switch($i){
 								case 1:
 									echo Html::tag('div', 
 													Html::img($interactiveFeed['analytic']['old'][$i]['titleImage'], ['alt' => $interactiveFeed['analytic']['old'][$i]['title']]) .
 													Html::tag('h2', $interactiveFeed['analytic']['old'][$i]['title']) .
+													Html::tag('p', $descriptionMatherial, ['class' => 'descr']) .
 													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['old'][$i]['id']]),['class' => 'analytic hide', 'id' => 'with-title-image']);
 								break;
 								default:
 									echo Html::tag('div', 
 													Html::tag('h2', $interactiveFeed['analytic']['old'][$i]['title']) .
+													Html::tag('p', $descriptionMatherial, ['class' => 'descr']) .
 													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['old'][$i]['id']]),['class' => 'analytic hide']);
 								break;
 							}
@@ -275,16 +286,21 @@ $this->title = 'Welcome to Investportal!';
 					<div class="analytic-feed">
 						<?php
 							for($i = 0; $i < count($interactiveFeed['analytic']['last']); $i++){ 
+								preg_match_all('#<p[^>]*>(\X*?)</p>#', $interactiveFeed['analytic']['last'][$i]['content'], $content);
+								$descriptionMatherial = $content[0];
+							
 							switch($i){
 								case 1:
 									echo Html::tag('div', 
 													Html::img($interactiveFeed['analytic']['last'][$i]['titleImage'], ['alt' => $interactiveFeed['analytic']['last'][$i]['title']]) .
 													Html::tag('h2', $interactiveFeed['analytic']['last'][$i]['title']) .
+													Html::tag('p', $descriptionMatherial, ['class' => 'descr']) .
 													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['last'][$i]['id']]),['class' => 'analytic', 'id' => 'with-title-image']);
 								break;
 								default:
 									echo Html::tag('div', 
 													Html::tag('h2', $interactiveFeed['analytic']['last'][$i]['title']) .
+													Html::tag('p', $descriptionMatherial, ['class' => 'descr']) .
 													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['last'][$i]['id']]),['class' => 'analytic']);
 								break;
 							}
@@ -294,16 +310,21 @@ $this->title = 'Welcome to Investportal!';
 					<div class="analytic-feed" id="hide">
 						<?php
 							for($i = 0; $i < count($interactiveFeed['analytic']['prelast']); $i++){ 
+								preg_match_all('#<p[^>]*>(\X*?)</p>#', $interactiveFeed['analytic']['prelast'][$i]['content'], $content);
+								$descriptionMatherial = $content[0];
+							
 							switch($i){
 								case 1:
 									echo Html::tag('div', 
 													Html::img($interactiveFeed['analytic']['prelast'][$i]['titleImage'], ['alt' => $interactiveFeed['analytic']['prelast'][$i]['title']]) .
 													Html::tag('h2', $interactiveFeed['analytic']['prelast'][$i]['title']) .
+													Html::tag('p', $descriptionMatherial, ['class' => 'descr']) .
 													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['prelast'][$i]['id']]),['class' => 'analytic', 'id' => 'with-title-image']);
 								break;
 								default:
 									echo Html::tag('div', 
 													Html::tag('h2', $interactiveFeed['analytic']['prelast'][$i]['title']) .
+													Html::tag('p', $descriptionMatherial, ['class' => 'descr']) .
 													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['prelast'][$i]['id']]),['class' => 'analytic']);
 								break;
 							}
@@ -313,16 +334,21 @@ $this->title = 'Welcome to Investportal!';
 					<div class="analytic-feed" id="hide">
 						<?php
 							for($i = 0; $i < count($interactiveFeed['analytic']['old']); $i++){ 
+								preg_match_all('#<p[^>]*>(\X*?)</p>#', $interactiveFeed['analytic']['old'][$i]['content'], $content);
+								$descriptionMatherial = $content[0];
+							
 							switch($i){
 								case 1:
 									echo Html::tag('div', 
 													Html::img($interactiveFeed['analytic']['old'][$i]['titleImage'], ['alt' => $interactiveFeed['analytic']['old'][$i]['title']]) .
 													Html::tag('h2', $interactiveFeed['analytic']['old'][$i]['title']) .
+													Html::tag('p', $descriptionMatherial, ['class' => 'descr']) .
 													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['old'][$i]['id']]),['class' => 'analytic', 'id' => 'with-title-image']);
 								break;
 								default:
 									echo Html::tag('div', 
 													Html::tag('h2', $interactiveFeed['analytic']['old'][$i]['title']) .
+													Html::tag('p', $descriptionMatherial, ['class' => 'descr']) .
 													Html::a('More', ['news/analytics-view', 'contentId' => $interactiveFeed['analytic']['old'][$i]['id']]),['class' => 'analytic']);
 								break;
 							}

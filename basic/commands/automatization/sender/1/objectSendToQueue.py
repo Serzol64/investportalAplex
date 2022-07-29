@@ -15,14 +15,16 @@ def registerQueue(q):
 if __name__ == "__main__":
 	
 	if "--userQuery" in sys.argv[0]:
+		responseQuery = {}
 		readyQuery = sys.args[0].strip("--userQuery=")
 		
-		if registerQueue(readyQuery):
-			
-			if "--fastMode" in sys.argv[1]:
-				
-			else:
-				
-		else:
+		if "--fastMode" in sys.argv[1]: responseQuery = {}
+		else: responseQuery = {}
+		
+		if registerQueue(responseQuery): queueMessage = 'Queue success'
+		else: queueMessage = 'Queue failed'
+		
+		return queueMessage
+	else: return 'Queue error'
 			
 		

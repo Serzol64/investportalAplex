@@ -2,8 +2,6 @@
 
 /* @var $this yii\web\View */
 use yii\helpers\Html;
-
-$program = $eventTable->find('table')->rows;
 $mid = 1;
 
 for($i = 0; $i < count($program); $i++){

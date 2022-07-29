@@ -23,9 +23,7 @@
         "linslin/yii2-curl": "*",
         "vova07/yii2-console-runner-extension": "*",
         "houseofapis/currencyapi": "^1.0",
-        "simplehtmldom/simplehtmldom": "dev-master",
-        "ogheo/yii2-htmlcompress": "*",
-        "voku/html-min": "dev-master"
+        "ogheo/yii2-htmlcompress": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

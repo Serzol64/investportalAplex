@@ -42,7 +42,7 @@ $this->title = $curEvent->title . ":: Events";
                             <strong>Share this event</strong>
                             <ul>
                                 <li data-channel="facebook" onClick='window.open("https://www.facebook.com/sharer.php?u=<?php echo ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>","sharer","status=0,toolbar=0,width=650,height=500");'><i class="fab fa-facebook-f" style="color: gray;"></i></li>
-                                <li data-channel="telegram" style="margin-left: 40%;" onClick='window.open("https://telegram.me/share/url?url=А<?php echo ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>","sharer","status=0,toolbar=0,width=650,height=500");'><i class="fab fa-telegram" style="color: gray;"></i></li>
+                                <li data-channel="telegram" style="margin-left: 40%;" onClick='window.open("https://telegram.me/share/url?url=<?php echo ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>","sharer","status=0,toolbar=0,width=650,height=500");'><i class="fab fa-telegram" style="color: gray;"></i></li>
                             </ul>
                         </section>
                        <section class="realted"><strong>Realted events</strong><ul><?php foreach($realted as $key => $value){ echo Html::tag('li', Html::a($value[2], ['news/event', 'contentId' => $value[1]])); } ?></ul></ul></section>

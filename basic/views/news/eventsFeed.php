@@ -5,8 +5,6 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-use simplehtmldom\HtmlWeb;
-
 $this->title = 'Events';
 ?>
 
@@ -54,10 +52,8 @@ $this->title = 'Events';
 								<?php if($events->location != ''){ ?><span data-type="location"><?php echo $events->location; ?></span><?php } ?>
 								<span data-type="description">
 									<?php
-										$contentQuery = (new HtmlWeb)->load($events->content);
-										$description = (mb_strlen($contentQuery->find('p')[0]->outertext) > 45)? mb_substr($contentQuery->find('p')[0]->outertext, 0, (mb_strlen($contentQuery->find('p')[0]->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->outertext, 0, 45), ' ') : 45).' ...' : mb_substr($contentQuery->find('p')[0]->outertext, 0, (mb_strlen($contentQuery->find('p')[0]->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->outertext, 0, 45), ' ') : 45);
-										
-										echo $description;
+										preg_match_all('#<p[^>]*>(\X*?)</p>#', $events->content, $description);
+										echo $description[0];
 									?>
 								</span>
 							  </p>
@@ -82,10 +78,8 @@ $this->title = 'Events';
 								<?php if($events->location != ''){ ?><span data-type="location"><?php echo $events->location; ?></span><?php } ?>
 								<span data-type="description">
 									<?php
-										$contentQuery = (new HtmlWeb)->load($events->content);
-										$description = (mb_strlen($contentQuery->find('p')[0]->outertext) > 45)? mb_substr($contentQuery->find('p')[0]->outertext, 0, (mb_strlen($contentQuery->find('p')[0]->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->outertext, 0, 45), ' ') : 45).' ...' : mb_substr($contentQuery->find('p')[0]->outertext, 0, (mb_strlen($contentQuery->find('p')[0]->outertext) > 45)? mb_strripos(mb_substr($contentQuery->find('p')[0]->outertext, 0, 45), ' ') : 45);
-										
-										echo $description;
+										preg_match_all('#<p[^>]*>(\X*?)</p>#', $events->content, $description);
+										echo $description[0];
 									?>
 								</span>
 							  </p>

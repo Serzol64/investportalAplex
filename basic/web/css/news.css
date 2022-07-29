@@ -213,9 +213,6 @@
   width: 100%;
 }
 @media all and (max-width: 414px){
-  #news {
-    min-height: 5500px;
-  }
   .news-feed > header #top-feed .left-content {
     margin-left: -10vw;
     width: 113%;
@@ -291,9 +288,6 @@
   }
 }
 @media all and (min-width: 600px)  and (max-width: 768px){
-  #news {
-    min-height: 3400px;
-  }
   .news-feed > header #top-feed .left-content header img {
     height: 144px;
   }
@@ -329,9 +323,6 @@
 
 }
 @media all and (min-width: 768px)  and (max-width: 800px){
-  #news {
-    min-height: 3170px;
-  }
   .news-feed > header #top-feed .left-content header img {
     height: calc(340px / 2);
   }
@@ -363,9 +354,6 @@
   }
 }
 @media all and (min-width: 800px)  and (max-width: 960px){
-  #news {
-    min-height: 2300px;
-  }
   .news-feed > header #top-feed .left-content header img {
     height: calc(340px / 2);
   }
@@ -391,9 +379,6 @@
 
 }
 @media all and (min-width: 960px) and (max-width: 1024px){
-  #news {
-    min-height: 2100px;
-  }
   .news-feed > header #top-feed .left-content header img {
     height: calc(360px / 2);
   }
@@ -431,9 +416,6 @@
   
 }
 @media all and (min-width: 1024px) and (max-width: 1280px){
-  #news {
-    min-height: 1960px;
-  }
   .news-feed > header #top-feed .left-content header img {
     height: calc(380px / 2);
   }
@@ -444,10 +426,3 @@
     height: calc(212px / 2);
   }
 }
-@media all and (max-width: 1366px){}
-@media all and (max-width: 1440px){}
-@media all and (max-width: 1536px){}
-@media all and (max-width: 1600px){}
-@media all and (max-width: 1920px){}
-@media all and (min-width: 1920px){}
-

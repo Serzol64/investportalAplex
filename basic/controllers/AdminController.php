@@ -6,7 +6,6 @@ use yii\web\Controller;
 use yii\web\View;
 use yii\web\Url;
 use yii\helpers\Json;
-use org\apache\hadoop\WebHDFS;
 
 use app\models\ObjectAttribute;
 use app\models\ObjectReadyAttribute;
