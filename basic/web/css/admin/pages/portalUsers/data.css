@@ -1,0 +1,33 @@
+@import url('/css/admin/pages/portalUsers/addons/basicDashboard.css');
+
+.user-page[data-type='basic'] > header#user-page{
+  grid-area: user-page;
+  width: 100%;
+}
+.user-page[data-type='basic'] > main#user-page{
+  grid-area: user-page-main;
+  width: 50%;
+}
+.user-page[data-type='basic'] > footer#user-page{
+  grid-area: user-page-footer;
+  width: 50%;
+}
+
+.user-page[data-type='basic'] > footer#user-page div{
+  font-size: 120%;
+}
+.user-page[data-type='basic'] > footer#user-page div div{
+  margin-top: 2%;
+}
+.user-page[data-type='basic'] > footer#user-page div div a{
+  color: black;
+}
+
+.user-page[data-type='data'] > header#user-page, .user-page[data-type='content'] > header#user-page{
+  display: block;
+  margin: 2%;
+}
+.user-page[data-type='data'] > main#user-page, .user-page[data-type='content'] > main#user-page{
+  display: block;
+  margin: 2%;
+}

@@ -7,6 +7,7 @@ use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
 
+use app\models\User;
 use app\models\Admin;
 
 $this->title = 'Admin Services portal';
@@ -33,7 +34,7 @@ $this->title = 'Admin Services portal';
 				  echo "<section class=\"data-page\"><header><h2>Add new user</h2><nav></nav></header><main id=\"cms-service\"></main></section>"; 
 				 break;
 				 case "delete": 
-				  echo "<section class=\"data-page\"><header><h2>Delete Admin User</h2><nav></nav></header><main id=\"cms-service\"></main></section>"; 
+				  echo "<section class=\"data-page\"><header><h2>Delete Admin User</h2><nav></nav></header><main id=\"cms-service\"></main></section>";
 				 break;
 				 case "edit": 
 				  echo "<section class=\"data-page\"><header><h2>Edit Admin User</h2><nav></nav></header><main id=\"cms-service\"></main></section>"; break;
@@ -81,9 +82,60 @@ $this->title = 'Admin Services portal';
 				  echo "<section class=\"data-page\"><header><h2>Admin Portal Users</h2><nav></nav></header><main>". $usersList ."</main></section>"; 
 				 break;
 			 }
-		 } }
+		 } } else if($_GET['svc'] == "portalUsers"){
+			 if($_GET['subSVC']){
+				 switch($_GET['subSVC']){
+					 case "add": 
+					  echo "<section class=\"data-page\"><header><h2>Add new user</h2><nav></nav></header><main id=\"cms-service\"></main></section>"; 
+					 break;
+					 case "delete": 
+					  echo "<section class=\"data-page\"><header><h2>Delete Admin User</h2><nav></nav></header><main id=\"cms-service\"></main></section>";
+					 break;
+					 case "edit": 
+					  echo "<section class=\"data-page\"><header><h2>Edit Admin User</h2><nav></nav></header><main id=\"cms-service\"></main></section>"; break;
+					 case 'list':
 		?>
-<?php } else{?>
+			<section class="data-page">
+				<header><h2>Admin Portal Users</h2><nav></nav></header>
+				<main>
+					<?php
+						echo GridView::widget([
+						'dataProvider' => new ActiveDataProvider([
+							'query' => User::find(),
+							'pagination' => [
+								'pageSize' => 9
+							]
+						]),
+						'columns' => [
+							[ 'class' => \yii\grid\SerialColumn::class ],
+							'login',
+							'email',
+							[
+								'attribute' => 'username',
+								'value' => function ($model){ return $model->firstname . ' ' . $model->surname; }
+							],
+							[
+								'attribute' => 'country',
+								'value' => function ($model){
+									$rdf = Yii::$app->regionDB->getFullDataFrame();
+									for($i = 0; $i < count($rdf); $i++){
+										if($model->country == $rdf[$i]['code']){
+											$rg = $rdf[$i]['title'];
+										}
+									}
+									return $rg;
+								}
+							],
+							'phone'
+						],
+						'tableOptions' => [
+							'class' => 'admin-list-table'
+						]
+				  ]);
+					?>
+				</main>
+			</section>
+	<?php break; } } } } else{?>
 	<section class="admin-dashboard">
 	  <h1>Dashboard</h1>
 	  <header>

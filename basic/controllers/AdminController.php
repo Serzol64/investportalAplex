@@ -4,9 +4,10 @@ namespace app\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\web\View;
-use yii\web\Url;
+use yii\helpers\Url;
 use yii\helpers\Json;
 
+use app\models\User;
 use app\models\ObjectAttribute;
 use app\models\ObjectReadyAttribute;
 use app\models\ObjectFilter;
@@ -100,6 +101,13 @@ class AdminController extends Controller{
 						header('Location: '. Url::to(['admin/index']));
 					}
 					$service = 'adminUsers';
+				}
+				else if($service == "portalUsers"){
+					if($getAdminData->role != 'admin' || $getAdminData->role != 'dev'){
+						Yii::$app->response->statusCode = 401;
+						header('Location: '. Url::to(['admin/index']));
+					}
+					$service = 'portalUsers';
 				}
 
 				$pgUI = $service;
@@ -319,6 +327,23 @@ class AdminController extends Controller{
 						$serviceResponse = 'Services gateway!';
 					}
 				}
+				else if($svc == "servicesPortalUsers"){
+					$adminDB = new User;
+					
+					$adminDB->login = $pm['login'];
+					$adminDB->firstname = $pm['fn'];
+					$adminDB->surname = $pm['sn'];
+					$adminDB->phone = $pm['phone'];
+					$adminDB->email = $pm['mail'];
+					$adminDB->password = sha1($pm['pwd']);
+					$adminDB->country = $pm['region'];
+					
+					if($adminDB->save()){ $serviceResponse = 'New portal user success!'; }
+					else{
+						Yii::$app->response->statusCode = 502;
+						$serviceResponse = 'Services gateway!';
+					}
+				}
 				else{
 					Yii::$app->response->statusCode = 404;
 					$serviceResponse = "Not command found!";
@@ -455,6 +480,29 @@ class AdminController extends Controller{
 						$serviceResponse[] = 'Services gateway!';
 					}		
 				}
+				else if($svc == "servicesPortalUsers"){
+					$currentLogin = $q['login'];
+					
+					$adminDB = new User;
+					
+					$updateQuery = [
+						'login' => $pm['login'],
+						'firstname' => $pm['fn'],
+						'surname' => $pm['sn'],
+						'phone' => $pm['phone'],
+						'email' => $pm['mail'],
+						'password' => sha1($pm['pwd']),
+						'country' => $pm['region']
+					];
+					
+					$updateData =  $adminDB::updateAll($updateQuery,['login' => $currentLogin]);
+					
+					if($updateData){ $serviceResponse[] = 'Update current portal user success!'; }
+					else{
+						Yii::$app->response->statusCode = 502;
+						$serviceResponse[] = 'Services gateway!';
+					}		
+				}
 				else{
 					Yii::$app->response->statusCode = 404;
 					$serviceResponse = "Not command found!";
@@ -539,6 +587,18 @@ class AdminController extends Controller{
 						$serviceResponse[] = 'Services gateway!';
 					}
 				}
+				else if($svc == "servicesPortalUsers"){
+					$currentLogin = $q['login'];
+					$adminDB = new User;
+					
+					$deleteQuery = $adminDB::deleteAll('login = :l', [':l' => $currentLogin]);
+					
+					if($deleteQuery){ $serviceResponse[] = 'Delete current portal user success!'; }
+					else{
+						Yii::$app->response->statusCode = 502;
+						$serviceResponse[] = 'Services gateway!';
+					}
+				}
 				else{
 					Yii::$app->response->statusCode = 404;
 					$serviceResponse = "Not command found!";
@@ -600,6 +660,33 @@ class AdminController extends Controller{
 							'fn' => $row->firstname,
 							'sn' => $row->surname,
 							'rl' => $row->role,
+							'region' => $row->country,
+							'login' => $row->login,
+							'mail' => $row->email
+						];
+					}
+
+					$serviceResponse = $filters;
+										
+					if(!$result){
+						Yii::$app->response->statusCode = 503;
+						$serviceResponse[] = 'DBA Service Error!';
+					}
+				}
+				else if($svc == "servicesPortalUsers"){
+					$currentLogin = $q['login'];
+					$adminDB = User::find();
+					$query = ['login' => $currentLogin];
+					
+					$filters = [];
+
+					$result = $adminDB->where($query)->all();
+
+					foreach( $result as $row ) { 
+						$filters = [
+							'fn' => $row->firstname,
+							'sn' => $row->surname,
+							'phone' => $row->phone,
 							'region' => $row->country,
 							'login' => $row->login,
 							'mail' => $row->email

@@ -1,0 +1,36 @@
+.user-page[data-type='basic']{
+  padding: 1%;
+  display: grid; 
+  grid-auto-flow: row dense; 
+  grid-template-columns: 1fr 1fr 1fr 1fr; 
+  grid-template-rows: 1fr 1fr 1fr 1fr; 
+  gap: 1% 2%; 
+  grid-template-areas: 
+    "user-page user-page user-page user-page"
+    "user-page-main user-page-main user-page-footer user-page-footer"
+    "user-page-main user-page-main user-page-footer user-page-footer"
+    "user-page-main user-page-main user-page-footer user-page-footer"; 
+  width: 100%; 
+}
+
+.user-page[data-type='data'], .user-page[data-type='content']{
+  padding: 1%;
+  width: 100%; 
+}
+
+.user-page > #user-page h2{
+  font-size: 160%;
+  color: #0079bf;
+}
+.user-page > #user-page h3{
+  font-size: 140%;
+  color: #0079bf;
+}
+
+span#development{ font-size: 120%; color: red; font-weight: bold; animation: blinker 10s linear infinite; }
+
+@keyframes blinker {
+  25% {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,141 @@
+@import url('/css/admin/pages/portalUsers/data.css');
+
+.data-page > header{
+  width: 100%;
+  height: calc(99px / 2);
+  background-color: #eff3f4;
+}
+.data-page > header h2{
+  font-size: 120%;
+  margin-left: 2%;
+  display: inline-block;
+  float: left;
+  margin-top: 2%;
+}
+.data-page > header nav{
+  float: right;
+  margin-top: 2%;
+  margin-right: 5%;
+  display: inline-block;
+}
+.data-page > header nav a{
+  display: inline-table;
+  font-size: 100%;
+  color: #0079bf;
+  font-weight: bold;
+  text-decoration: none;
+  padding-left: 20px;
+}
+
+.grid-view{
+	margin-top: 3%;
+	margin-left: 2%;
+}
+.admin-list-table {
+    width: 96%;
+    text-align: center;
+    margin-top: 3%;
+    background-color: white;
+    border: solid 2px gray;
+}
+.admin-list-table th {
+    background: #0079bf;
+    color: white;
+    padding: 0.5em;
+    border: solid 1px white;
+}
+.admin-list-table th a{ color: white; }
+.admin-list-table td { padding: 0.5em; }
+.admin-list-table tbody tr:hover { 
+	background-color: lightblue;
+	cursor: pointer;
+}
+
+.add-portal-user{
+  width: 96%;
+  margin-top: 3%;
+  margin-left: 2%;
+  padding-bottom: 5%;
+}
+.add-portal-user > div{
+  padding: 1%;
+  display: block;
+}
+.add-portal-user > div h3, .add-portal-user > div[data-cont='content'] ul li#son h4, .add-portal-user > div[data-cont='footer'] label{
+  font-size: 160%;
+}
+.add-portal-user > div ul{
+  list-style-type: none;
+  margin-left: -3%;
+}
+.add-portal-user > div ul li{
+  display: inline-table;
+  width: 49%;
+}
+.add-portal-user > div ul li *:focus, .add-portal-user > div[data-cont='footer'] *:focus{
+  border: solid 4px #0079bf;
+}
+.add-portal-user > div ul li select{
+  width: 84%;
+}
+.add-portal-user > div ul li input, .add-portal-user > div ul li select, .add-portal-user > div[data-cont='footer'] select{
+  font-size: 130%;
+  padding: 3%;
+  text-indent: 3mm;
+  width: 78%;
+}
+.add-portal-user > div[data-cont='content'] ul li#son{
+  width: 100%;
+}
+.add-portal-user > div[data-cont='footer'] *{
+  display: block;
+  margin-top: 5mm;
+}
+.add-portal-user > div[data-cont='footer'] select{
+  width: 42%;
+  padding: 1%;
+}
+.add-portal-user > div[data-cont='footer'] .add-but{
+  text-align: center;
+  color:white;
+  background-color:#0079bf;
+  border: none;
+  font-size: 100%;
+  padding: 10px;
+  float: right;
+  margin-right: 4%;
+}
+
+.delete-query{
+  margin-top: 3%;
+  width: 96%;
+  margin-left: 2%;
+}
+.delete-query > h2{
+  font-size: 180%;
+  color: red;
+}
+.delete-query > span{
+  font-size: 100%;
+  font-style: italic;
+}
+.delete-query > div{
+  float: right;
+  display: block;
+  margin-top: 10mm;
+  margin-right: 4%;
+}
+.delete-query > div button{
+  text-align: center;
+  color:white;
+  background-color:#0079bf;
+  border: none;
+  font-size: 100%;
+  padding: 10px;
+  display:inline-table;
+}
+.delete-query > div button:first-child{
+  position: relative;
+  left: -7%;
+}
+
