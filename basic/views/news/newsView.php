@@ -49,7 +49,7 @@ $this->title = $curNews->title . " :: News";
 									echo Html::tag('div',
 										Html::img($currentMatherial->titleImage, ['alt' => $currentMatherial->title, 'id' => 'header']) .
 										Html::a($currentMatherial->title, ['news/view', 'contentId' => $value[1]], ['id' => 'content']) .
-										Html::tag('span', $matches[0], ['id' => 'footer']) . Html::tag('span', date('d/m/Y', strtotime($currentMatherial->created)), ['id' => 'date']), ['class' => 'realted']);
+										Html::tag('span', strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0])), ['id' => 'footer']) . Html::tag('span', date('d/m/Y', strtotime($currentMatherial->created)), ['id' => 'date']), ['class' => 'realted']);
 								} 
 						?>
 					</div>

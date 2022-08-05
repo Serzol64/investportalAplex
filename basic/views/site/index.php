@@ -70,7 +70,7 @@ $this->title = 'Welcome to Investportal!';
 								<?php 
 									preg_match_all('#<p[^>]*>(\X*?)</p>#', $firstM->content, $matches);
 									
-									echo $matches[0];
+									echo strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0])) ;
 								?>
 								</p>
 								<span class="date"><?php echo date('d/m/Y', strtotime($firstM->created)); ?></span>
@@ -82,7 +82,7 @@ $this->title = 'Welcome to Investportal!';
 								<?php 
 									preg_match_all('#<p[^>]*>(\X*?)</p>#', $allM->content, $matches);
 									
-									echo $matches[0];
+									echo strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0]));
 								?>
 								</p>
 								<span class="date"><?php echo date('d/m/Y', strtotime($allM->created)); ?></span>
@@ -98,7 +98,7 @@ $this->title = 'Welcome to Investportal!';
 								<?php 
 									preg_match_all('#<p[^>]*>(\X*?)</p>#', $first->content, $matches);
 									
-									echo $matches[0];
+									echo strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0]));
 								?>
 								</p>
 								<span class="date"><?php echo date('d/m/Y', strtotime($first->created)); ?></span>
@@ -113,7 +113,7 @@ $this->title = 'Welcome to Investportal!';
 								<?php 
 									preg_match_all('#<p[^>]*>(\X*?)</p>#', $two->content, $matches);
 									
-									echo $matches[0];
+									echo strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0]));
 								?>
 								</p>
 								<span class="date"><?php echo date('d/m/Y', strtotime($two->created)); ?></span>
@@ -128,7 +128,7 @@ $this->title = 'Welcome to Investportal!';
 								<?php 
 									preg_match_all('#<p[^>]*>(\X*?)</p>#', $three->content, $matches);
 									
-									echo $matches[0];
+									echo strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0]));
 								?>
 								</p>
 								<span class="date"><?php echo date('d/m/Y', strtotime($three->created)); ?></span>
@@ -171,12 +171,12 @@ $this->title = 'Welcome to Investportal!';
                       <main><img src="<?php echo $events->titleImage; ?>" alt="Event"></main>
                       <footer>
                         <?php
-							preg_match_all('#<p[^>]*>(\X*?)</p>#', $events->content, $description);
+							preg_match_all('#<p[^>]*>(\X*?)</p>#', $events->content, $matches);
 							
 							if($events->location != ''){ echo Html::tag('span', $events->location, ['class' => 'event-location']); }
 							
 							echo Html::a($events->title, ['news/event', 'contentId' => $events->id]);
-							echo Html::tag('p', $description[0], ['class' => 'descr']);
+							echo Html::tag('p', strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0])), ['class' => 'descr']);
                         ?>
                       </footer>
                 </div>
@@ -213,8 +213,8 @@ $this->title = 'Welcome to Investportal!';
 				<main id="slider-view-adaptive">
 					<?php
 						for($i = 0; $i < count($interactiveFeed['analytic']['last']); $i++){ 
-							preg_match_all('#<p[^>]*>(\X*?)</p>#', $interactiveFeed['analytic']['last'][$i]['content'], $content);
-							$descriptionMatherial = $content[0];
+							preg_match_all('#<p[^>]*>(\X*?)</p>#', $interactiveFeed['analytic']['last'][$i]['content'], $matches);
+							$descriptionMatherial = strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0]));
 							
 							switch($i){
 								case 1:
@@ -240,8 +240,8 @@ $this->title = 'Welcome to Investportal!';
 						}
 						
 						for($i = 0; $i < count($interactiveFeed['analytic']['prelast']); $i++){ 
-							preg_match_all('#<p[^>]*>(\X*?)</p>#', $interactiveFeed['analytic']['prelast'][$i]['content'], $content);
-							$descriptionMatherial = $content[0];
+							preg_match_all('#<p[^>]*>(\X*?)</p>#', $interactiveFeed['analytic']['prelast'][$i]['content'], $matches);
+							$descriptionMatherial = strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0]));
 							
 							switch($i){
 								case 1:
@@ -261,8 +261,8 @@ $this->title = 'Welcome to Investportal!';
 						}
 						
 						for($i = 0; $i < count($interactiveFeed['analytic']['old']); $i++){ 
-							preg_match_all('#<p[^>]*>(\X*?)</p>#', $interactiveFeed['analytic']['old'][$i]['content'], $content);
-							$descriptionMatherial = $content[0];
+							preg_match_all('#<p[^>]*>(\X*?)</p>#', $interactiveFeed['analytic']['old'][$i]['content'], $matches);
+							$descriptionMatherial = strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0]));
 							
 							switch($i){
 								case 1:
@@ -286,8 +286,8 @@ $this->title = 'Welcome to Investportal!';
 					<div class="analytic-feed">
 						<?php
 							for($i = 0; $i < count($interactiveFeed['analytic']['last']); $i++){ 
-								preg_match_all('#<p[^>]*>(\X*?)</p>#', $interactiveFeed['analytic']['last'][$i]['content'], $content);
-								$descriptionMatherial = $content[0];
+								preg_match_all('#<p[^>]*>(\X*?)</p>#', $interactiveFeed['analytic']['last'][$i]['content'], $matches);
+								$descriptionMatherial = strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0]));
 							
 							switch($i){
 								case 1:
@@ -310,8 +310,8 @@ $this->title = 'Welcome to Investportal!';
 					<div class="analytic-feed" id="hide">
 						<?php
 							for($i = 0; $i < count($interactiveFeed['analytic']['prelast']); $i++){ 
-								preg_match_all('#<p[^>]*>(\X*?)</p>#', $interactiveFeed['analytic']['prelast'][$i]['content'], $content);
-								$descriptionMatherial = $content[0];
+								preg_match_all('#<p[^>]*>(\X*?)</p>#', $interactiveFeed['analytic']['prelast'][$i]['content'], $matches);
+								$descriptionMatherial = strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0]));
 							
 							switch($i){
 								case 1:
@@ -334,8 +334,8 @@ $this->title = 'Welcome to Investportal!';
 					<div class="analytic-feed" id="hide">
 						<?php
 							for($i = 0; $i < count($interactiveFeed['analytic']['old']); $i++){ 
-								preg_match_all('#<p[^>]*>(\X*?)</p>#', $interactiveFeed['analytic']['old'][$i]['content'], $content);
-								$descriptionMatherial = $content[0];
+								preg_match_all('#<p[^>]*>(\X*?)</p>#', $interactiveFeed['analytic']['old'][$i]['content'], $matches);
+								$descriptionMatherial = strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0]));
 							
 							switch($i){
 								case 1:

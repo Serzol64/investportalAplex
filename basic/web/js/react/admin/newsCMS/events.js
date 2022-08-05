@@ -291,8 +291,8 @@ class Edit extends React.Component{
 					<div className="period">
 						<span>Expire of the event:</span>
 						<ul>
-							<li><input type="date" id="from" value={ this.state.currentEvent.dateFrom } /></li>
-							<li><input type="date" id="to" value={ this.state.currentEvent.dateTo } /></li>
+							<li><input type="date" id="from" value={ this.state.currentEvent.date_from } /></li>
+							<li><input type="date" id="to" value={ this.state.currentEvent.date_to } /></li>
 						</ul>
 					</div>
 					<input type="text" id="event-location" list="regions" value={ this.state.currentEvent.location } placeholder="Input and select event location" />

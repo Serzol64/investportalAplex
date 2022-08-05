@@ -19,15 +19,15 @@ $this->title = 'Events';
 					<section class="content">
 						<select id="require" name="eventRegion">
 							<option>Location</option>
-							<?php foreach($ep as $df){ echo Html::tag('option', $df->location, ['value' => $df->location]); } ?>
+							<?php foreach($ep as $df){ if($df->location){ echo Html::tag('option', $df->location, ['value' => $df->location]); } } ?>
 						</select>
 						<select id="require" name="eventType">
 							<option>Type</option>
-							<?php foreach($ep as $df){ echo Html::tag('option', $df->type, ['value' => $df->type]); } ?>
+							<?php foreach($ep as $df){ if($df->type){ echo Html::tag('option', $df->type, ['value' => $df->type]); } } ?>
 						</select>
 						<select id="require" name="eventCategory">
 							<option>Tematic</option>
-							<?php foreach($ep as $df){ echo Html::tag('option', $df->tematic, ['value' => $df->tematic]); } ?>
+							<?php foreach($ep as $df){ if($df->tematic){ echo Html::tag('option', $df->tematic, ['value' => $df->tematic]); } } ?>
 						</select>
 					</section>
 					<section class="footer">
@@ -39,11 +39,10 @@ $this->title = 'Events';
 				</form>
 			</div>
 			<div id="events-body">
-				<section class="events-feed" data-time="coming">
-					<header id="title">Coming events</header>
+				<section class="events-feed">
 					<main>
 						<ul class="slider">
-						<?php foreach($eventsList[0] as $events){ ?>
+						<?php foreach($eventsList as $events){ ?>
 							<li>
 							  <span id="date"><?php echo $events->date_to ? date('d/m/Y', strtotime($events->date_from)) . ' - ' . date('d/m/Y', strtotime($events->date_to)) : date('d/m/Y', strtotime($events->date_from)); ?></span>
 							  <img src="<?php echo $events->titleImage; ?>" alt="<?php echo $events->title; ?>" />
@@ -53,33 +52,7 @@ $this->title = 'Events';
 								<span data-type="description">
 									<?php
 										preg_match_all('#<p[^>]*>(\X*?)</p>#', $events->content, $description);
-										echo $description[0];
-									?>
-								</span>
-							  </p>
-							  <?php echo Html::a('Learn more', ['news/event', 'contentId' => $events->id]); ?>
-							</li>
-						<?php } ?>
-						  </ul>
-					</main>
-				</section>
-			</div>
-			<div id="events-footer">
-				<section class="events-feed" data-time="exited">
-					<header id="title">Exited events</header>
-					<main>
-						  <ul class="slider">
-						<?php foreach($eventsList[1] as $events){ ?>
-							<li>
-							  <span id="date"><?php echo $events->date_to ? date('d/m/Y', strtotime($events->date_from)) . ' - ' . date('d/m/Y', strtotime($events->date_to)) : date('d/m/Y', strtotime($events->date_from)); ?></span>
-							  <img src="<?php echo $events->titleImage; ?>" alt="<?php echo $events->title; ?>" />
-							  <span id="title"><?php echo $events->title; ?></span>
-							  <p>
-								<?php if($events->location != ''){ ?><span data-type="location"><?php echo $events->location; ?></span><?php } ?>
-								<span data-type="description">
-									<?php
-										preg_match_all('#<p[^>]*>(\X*?)</p>#', $events->content, $description);
-										echo $description[0];
+										echo strlen(strip_tags(htmlspecialchars_decode($description[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($description[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($description[1][0]));
 									?>
 								</span>
 							  </p>

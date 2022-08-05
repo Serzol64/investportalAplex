@@ -2,6 +2,14 @@
 
 .ck.ck-editor__editable_inline{ height: 50vh; }
 
+
+#event-location {
+    display: inline-table;
+    padding: 1%;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
 .period {
     padding: 2%;
     margin-top: 1%;
@@ -83,7 +91,7 @@
   padding-bottom: 5px;
   margin-left: 0.45em;
   font-weight: bold;
-  font-size: 15mm;
+  font-size: 11mm;
 }
 *[data-block='list'] > #news main{
   padding-top: 2.5em;
@@ -95,11 +103,11 @@
   padding-top: 1.2em;
   padding-bottom: 1.2em;
   float: right;
-  margin-right: 6mm;
-  margin-top: -3em;
-  font-size: 30px;
+  margin-right: 3mm;
+  margin-top: -1em;
+  font-size: 35px;
   color: gray;
   font-style: italic;
   cursor: pointer;
   text-decoration: none;
-}
+display: block;}

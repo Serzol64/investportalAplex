@@ -26,7 +26,7 @@ $this->title = 'News';
 									preg_match_all('#<p[^>]*>(\X*?)</p>#', $feed['firstLastNews']->content, $matches);
 									
 									echo Html::a($feed['firstLastNews']->title, ['news/view', 'contentId' => $feed['firstLastNews']->id], ['id' => 'title']); 
-									echo Html::tag('span', $matches[0],  ['id' => 'descript']);
+									echo Html::tag('span', strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0])) ,  ['id' => 'descript']);
 								?>
                             </main>
                             <footer><?php echo Html::a('Show more', ['news/view', 'contentId' => $feed['firstLastNews']->id], ['id' => 'more']); ?></footer>
@@ -43,7 +43,7 @@ $this->title = 'News';
 													
 													echo Html::img($rnf->titleImage, ['alt' => $rnf->title]);
 													echo Html::a($rnf->title, ['news/view', 'contentId' => $rnf->id]); 
-													echo Html::tag('span', $matches[0]);
+													echo Html::tag('span', strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0])) );
 												?>
 											</li>
 										<?php } ?>
@@ -69,7 +69,7 @@ $this->title = 'News';
 								foreach($catList as $findSheet){
 									preg_match_all('#<p[^>]*>(\X*?)</p>#', $findSheet->content, $matches);
 								?>
-                                    <li><a href="<?php echo Url::to(['news/view', ['contentId' => $findSheet->id]]); ?>"><?php echo $findSheet->title; ?></a><span><?php echo $matches[0]; ?></span></li>
+                                    <li><a href="<?php echo Url::toRoute(['news/view', 'contentId' => $findSheet->id]); ?>"><?php echo $findSheet->title; ?></a><span><?php echo strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0])) ; ?></span></li>
                                 <?php } ?>
                                 </ul>
                             </div>
@@ -90,7 +90,7 @@ $this->title = 'News';
 													
 													echo Html::img($bnf->titleImage, ['alt' => $bnf->title]);
 													echo Html::a($bnf->title, ['news/view', 'contentId' => $bnf->id]); 
-													echo Html::tag('span', $matches[0]);
+													echo Html::tag('span', strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0])) );
 												?>
 											</li>
 										<?php } ?>

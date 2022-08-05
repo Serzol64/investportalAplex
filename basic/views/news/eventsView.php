@@ -25,7 +25,7 @@ $this->title = $curEvent->title . ":: Events";
                         <h2>April abstracts. Commercial real estate</h2>
                         <section class="public-date">
                             <img src="https://img.icons8.com/fluent-systems-regular/24/0079bf/clock--v1.png" alt="Дата публикации" id="clock" />
-                            <i><?php echo $curEvent->date_to ? date('d/m/Y', strtotime($curEvent->date_from)) . ' - ' . date('d/m/Y', strtotime($curEvent->date_to)) : date('d/m/Y', strtotime($curEvent->date_from)) . $curEvent->location != '' ? ', ' . $curEvent->location : ''; ?></i>
+                            <i><?php echo $curEvent->date_to ? date('d/m/Y', strtotime($curEvent->date_from)) . ' - ' . date('d/m/Y', strtotime($curEvent->date_to)) : date('d/m/Y', strtotime($curEvent->date_from)); ?>, <?php echo $curEvent->location; ?></i>
                         </section>
                     </header>
                     <main>

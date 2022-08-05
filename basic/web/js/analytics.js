@@ -17,7 +17,7 @@ $(document).ready(function(){
     
     $('.news-feed > footer #down-feed .down-feed-cont #cont-content').html('<div class="load-screen-services"> <img src="/images/icons/loading.gif" /> <span>Please wait... <br />The process of processing the search query is underway</span></div>');
     
-    fetch('/analytics/api/get', { method: 'POST', body: uid })
+    fetch('/analytics/api/get', { method: 'GET', body: uid })
 		.then(response => response.json())
 		.then((data) => {
 			let l = '',

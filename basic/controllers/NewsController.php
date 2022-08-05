@@ -52,10 +52,7 @@ class NewsController extends Controller{
 		$this->view->registerJsFile("/js/events.js", ['position' => View::POS_END]);
 		$this->view->registerCssFile("/css/events.css");
 		
-		$list = [
-			Event::find()->orderBy('date_from DESC')->all(),
-			Event::find()->orderBy('date_to DESC')->all()
-		];
+		$list = Event::find()->orderBy('date_from DESC')->all();
 		
 		$eventParameters = Event::find()->select('location, tematic, type')->distinct()->all();
 		return $this->render('eventsFeed', ['eventsList' => $list, 'ep' => $eventParameters]);
@@ -92,7 +89,8 @@ class NewsController extends Controller{
 			'old' => $af->select('id, titleImage, title, created')->orderBy('created DESC')->limit(9)->offset(6)->all()
 		];
 		
-		return $this->render('analytics', ['afp' => $parts]);
+		$curRealted = Yii::$app->realtedDB->topList('analytics', $contentId);
+		return $this->render('analytics', ['afp' => $parts, 'realted' => $curRealted]);
 	}
 	public function actionAnalyticsView($contentId){
 		$this->view->registerCssFile("/css/news/view.css");
@@ -153,7 +151,35 @@ class NewsController extends Controller{
 		}
 		else if($type == 'post'){
 			if(isset($_POST['svcQuery'])){
+				$cq = Json::decode($_POST['svcQuery'], true);
+				$cqContent = $cq['query'];
 				
+				if($cq['service'] == 'currentEventOrganizator'){
+					$currentContent = $esd->select('content')->where(['id' => $cqContent['eventId']])->one();
+					$dataResponse = 200;
+					$readyLink = 'about:blank';
+					
+					$isOrganizator = strrpos($currentContent->content, '<p>Organizator web site:');
+					
+					if($isOrganizator){
+						$readyQuery = explode('<p>Organizator web site:', $currentContent->content);
+						$readyQuery .= explode('</p>', $readyQuery[0]);
+						
+						if(!strrpos($readyQuery[0], '&nbsp;')){ $readyLink = $readyQuery[0]; }
+						else{
+							$readyQuery .= explode('&nbsp;', $readyQuery[0]);
+							$readyLink = $readyQuery[0];
+						}
+					}
+					else{ $dataResponse = 404; }
+					
+					Yii::$app->response->statusCode = $dataResponse;
+					$serviceResponse = ['url' => $readyLink];
+				}
+				else{
+					Yii::$app->response->statusCode = 404;
+					$serviceResponse = "Service not found!";
+				}
 			}
 			else{
 				Yii::$app->response->statusCode = 405;
@@ -177,30 +203,19 @@ class NewsController extends Controller{
 				$cq = Json::decode($_GET['svcQuery'], true);
 				$cqContent = $cq['query'];
 				
-				switch($cq['service']){
-					case 'categoryLastNews':
-						$acng = [
-							'last' => $asd->where(['category' => $cqContent['name']])->orderBy('created DESC')->limit(3)->all(),
-							'preLast' => $asd->where(['category' => $cqContent['name']])->orderBy('created DESC')->limit(6)->offset(3)->all(),
-							'old' => $asd->where(['category' => $cqContent['name']])->orderBy('created DESC')->limit(9)->offset(6)->all()
-						];
+				if($cq['service'] == 'categoryLastNews'){
+					$acng = [
+						'last' => $asd->where(['category' => $cqContent['name']])->orderBy('created DESC')->limit(3)->all(),
+						'preLast' => $asd->where(['category' => $cqContent['name']])->orderBy('created DESC')->limit(6)->offset(3)->all(),
+						'old' => $asd->where(['category' => $cqContent['name']])->orderBy('created DESC')->limit(9)->offset(6)->all()
+					];
 						
-						$serviceResponse = [ 'l' => $acng['last'], 'pl' => $acng['preLast'], 'o' => $acng['old'] ];
-					break;
-					default:
-						Yii::$app->response->statusCode = 404;
-					    $serviceResponse = "Service not found!";
-					break;
+					$serviceResponse = [ 'l' => $acng['last'], 'pl' => $acng['preLast'], 'o' => $acng['old'] ];
 				}
-			}
-			else{
-				Yii::$app->response->statusCode = 405;
-				$serviceResponse = "Query not found!";
-			}
-		}
-		else if($type == 'post'){
-			if(isset($_POST['svcQuery'])){
-				
+				else{
+					Yii::$app->response->statusCode = 404;
+					$serviceResponse = "Service not found!";
+				}
 			}
 			else{
 				Yii::$app->response->statusCode = 405;

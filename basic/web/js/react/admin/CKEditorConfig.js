@@ -22,3 +22,11 @@ CKEDITOR.stylesSet.add('analyticEditorStyles', [
 		attributes: { 'id': 'matherial' }
 	}
 ]);
+
+CKEDITOR.stylesSet.add('eventEditorStyles', [
+	{
+		name: 'Event description',
+		element: 'div',
+		attributes: { 'id': 'matherial' }
+	}
+]);

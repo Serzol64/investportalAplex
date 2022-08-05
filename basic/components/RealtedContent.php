@@ -6,10 +6,9 @@ use yii\base\Component;
 use yii\helpers\Html;
 use yii\helpers\Json;
 
-use PHPHtmlParser\Dom;
-
 use app\models\News;
 use app\models\Event;
+use app\models\Analytic;
 
 
 class RealtedContent extends Component{
@@ -22,7 +21,8 @@ class RealtedContent extends Component{
 		$this->stopwordDB = file_get_contents('../web/df/stop_words.json');
 		$this->connector = [
 			News::find(),
-			Event::find()
+			Event::find(),
+			Analytic::find()
 		];
 	}
 	public function topList($svc, $q){
@@ -37,6 +37,11 @@ class RealtedContent extends Component{
 			$sth = Event::findOne(['id' => $q]);
 			$text = $this->get_minification_array($sth->title . ' ' . $sth->content);
 			$sth = $this->connector[1]->all();
+		}
+		else if($svc == 'analytics'){
+			$sth = Analytic::findOne(['id' => $q]);
+			$text = $this->get_minification_array($sth->title . ' ' . $sth->content);
+			$sth = $this->connector[2]->all();
 		}
 		
 		$count = count($text);
