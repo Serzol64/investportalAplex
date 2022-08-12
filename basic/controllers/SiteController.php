@@ -55,6 +55,14 @@ class SiteController extends Controller{
 				'last' => Analytic::find()->select('id,titleImage,title')->orderBy('created DESC')->limit(3)->asArray()->all(),
 				'prelast' => Analytic::find()->select('id,titleImage,title')->orderBy('created DESC')->limit(6)->offset(3)->asArray()->all(),
 				'old' => Analytic::find()->select('id,titleImage,title')->orderBy('created DESC')->limit(9)->offset(6)->asArray()->all()
+			],
+			'services' => [
+				'desktop' => [
+					'last' => Yii::$app->db->createCommand('SELECT id, title, JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.description")) as "description", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.categoryId")) as "cat", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.country")) as "country", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.region")) as "region" FROM serviceList ORDER BY id LIMIT 3')->queryAll(),
+					'prelast' => Yii::$app->db->createCommand('SELECT id, title, JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.description")) as "description", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.categoryId")) as "cat", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.country")) as "country", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.region")) as "region" FROM serviceList ORDER BY id LIMIT 6 OFFSET 3')->queryAll(),
+					'old' => Yii::$app->db->createCommand('SELECT id, title, JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.description")) as "description", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.categoryId")) as "cat", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.country")) as "country", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.region")) as "region" FROM serviceList ORDER BY id LIMIT 9 OFFSET 6')->queryAll()
+				],
+				'mobile' => Yii::$app->db->createCommand('SELECT id, title, JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.description")) as "description", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.categoryId")) as "cat", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.country")) as "country", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.region")) as "region" FROM serviceList ORDER BY id LIMIT 8')->queryAll()
 			]
 		];
 		
@@ -73,24 +81,28 @@ class SiteController extends Controller{
 		
 		$sf = [
 			PortalServicesCategory::find()->all(),
-			PortalServices::find()->all()
+			PortalServices::find(['meta->seoData->categoryId' => '1'])->all()
 		];
 		
 		return $this->render('services', ['categories' => $sf[0], 'services' => $sf[1]]);
 	}
 	public function actionServicePage($id){
+		$this->view->registerCssFile("https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css");
+		$this->view->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js", ['position' => View::POS_HEAD]);
+		
+		
 		$this->view->registerCssFile("/css/services/portalServices/page.css");
 		$this->view->registerJsFile("/js/services/page.js", ['position' => View::POS_END]);
 		
+		$serviceDataQuery = [':service' => $id];
 		$currentServiceQuery = [
-			PortalServices::findOne(['id' => $id]),
-			PortalServices::findOne(['id' => $id])->select('meta')
+			Yii::$app->db->createCommand('SELECT id, title FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
+			Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.country")) as "country", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.region")) as "region", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.description")) as "description",  JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.term")) as "term", JSON_EXTRACT(meta, "$.accessRole") as "private" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
+			Yii::$app->db->createCommand('SELECT JSON_EXTRACT(proc, "$.send") as "send",  JSON_EXTRACT(proc, "$.push") as "push",  JSON_EXTRACT(proc, "$.realtime") as "realtime",  JSON_EXTRACT(proc, "$.control") as "control" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
+			Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.faqService[*].question")) as "question",  JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.faqService[*].answer")) as "answer" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryAll(),
 		];
 
-		$serviceMetaData = JSON::decode($currentServiceQuery[1]->meta, true);
-
-
-		return $this->render('servicePage', ['servicePage' => $currentServiceQuery[0]]);
+		return $this->render('servicePage', ['servicePage' => $currentServiceQuery]);
 	}
 	public function actionServicePageForm($id, $pageType){
 

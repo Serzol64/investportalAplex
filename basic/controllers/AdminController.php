@@ -712,7 +712,42 @@ class AdminController extends Controller{
 			];
 					
 			if($svc == "portalServicesCategory"){ $svcl = $SConnector['s'][1]->all(); }
-			else if($svc == "portalServices"){ $svcl = $SConnector['c'][1]->all(); }
+			else if($svc == "portalServices"){ 
+				if(!isset($_GET['id'])){ $svcl = $SConnector['c'][1]->all(); }
+				else{
+					$currentResponse = [];
+					$multiResponse = [[], []];
+					$serviceDataQuery = [':service' => $_GET['id']];
+					$currentQuery = [
+						Yii::$app->db->createCommand('SELECT id, title, JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.categoryId")) as "cat" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
+						Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.description")) as "description",  JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.term")) as "term", JSON_EXTRACT(meta, "$.accessRole") as "private" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
+						Yii::$app->db->createCommand('SELECT JSON_EXTRACT(proc, "$.send") as "send",  JSON_EXTRACT(proc, "$.push") as "push",  JSON_EXTRACT(proc, "$.realtime") as "realtime",  JSON_EXTRACT(proc, "$.control") as "control" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
+						Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.faqService[*].question")) as "question",  JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.faqService[*].answer")) as "answer" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryAll(),
+						Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content, "$.form[*].field")) as "name",  JSON_UNQUOTE(JSON_EXTRACT(content, "$.form[*].type")) as "field" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryAll()
+					];
+					
+					for($i = 0; $i < count($currentQuery[3]); $i++){ $multiResponse[0][] = $currentQuery[3][$i]; }
+					for($i = 0; $i < count($currentQuery[4]); $i++)){ $multiResponse[1][] = $currentQuery[4][$i]; }
+					
+					$currentResponse = [
+						'title' => $currentQuery[0]['title'],
+						'category' => $currentQuery[0]['cat'],
+						'accessLevel' => $currentQuery[1]['private'],
+						'description' => $currentQuery[1]['description'],
+						'terms' => $currentQuery[1]['term'],
+						'proc' => [
+							'send' => $currentQuery[2]['send'],
+							'push' => $currentQuery[2]['push'],
+							'realtime' => $currentQuery[2]['realtime'],
+							'control' => $currentQuery[2]['push']
+						],
+						'field' => $multiResponse[0],
+						'faq' => $multiResponse[1]
+					];
+					
+					$svcl = $currentResponse;
+				}
+			}
 			
 			$serviceResponse = $svcl;
 		}

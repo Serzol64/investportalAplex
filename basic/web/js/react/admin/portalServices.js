@@ -28,18 +28,7 @@ class Services extends React.Component{
 				console.log(error);
 			});
 	}
-	generateSmartResponse(data){
-		let sr = [];
-
-		data.forEach((el) => {
-			let metaData = JSON.parse(el.meta),
-				query = this.query;
-
-			if(metaData.seoData.categoryId === query){ sr.push({ id: el.id, title: el.title}); }
-		});
-
-		this.setState({ list: sr });
-	}
+	generateSmartResponse(data){ this.setState({ list: data }); }
 	linkGenerator(q){ return '/admin?svc=dataManagment&subSVC=portalServices&contentStatus=true&id=' + q + '#edit'; }
 	render(){
 		const renderList = this.state.list.map((query) => {

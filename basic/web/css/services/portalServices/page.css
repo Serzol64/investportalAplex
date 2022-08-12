@@ -8,10 +8,8 @@
 #service-page{
     width: 75%;
     background-color: white;
-    position: relative;
-    float: left;
-    left: 12%;
-    top: -2%;
+    margin-left: 12%;
+    margin-top: 2%;
     padding-bottom: 7%;
     padding-right: 5px;
 }
@@ -22,7 +20,7 @@
 }
 
 .svcMeta > *[data-group='metaData'] *[data-block='title']{
-  width: 60%;
+  width: 50%;
   display: inline-table;
 }
 
@@ -32,13 +30,13 @@
   text-align: justify;
 }
 .svcMeta > *[data-group='metaData'] *[data-block='title'] h2{
-  font-size: 180%;
+  font-size: 110%;
 }
 .svcMeta > *[data-group='metaData'] *[data-block='title'] span{
-  font-size: calc(180% / 2);
-}
+  font-size: calc(120% / 2);
+font-style: italic;}
 .svcMeta > *[data-group='metaData'] *[data-block='title'] i{
-  font-size: 100%;
+  font-size: 80%;
   padding-top: 2mm;
   color: gray;
 }
@@ -47,19 +45,19 @@
 }
 
 .svcMeta > *[data-group='metaData'] *[data-block='form']{
-  width: 30%;
+  width: 40%;
   display: inline-table;
-  padding-left: 6%;
+  
 }
 .svcMeta > *[data-group='metaData'] *[data-block='form'] button{
     text-align: center;
     color: white;
     background-color: #0079bf;
     border: none;
-    font-size: 90%;
+    font-size: 70%;
     padding: 10px;
-    width: 117px;
-}
+    width: 66%;
+margin-left: 30%;}
 
 #service-page > .svcContent{
   padding: 4%;
@@ -111,3 +109,53 @@
   margin-top: 1cm;
   margin-bottom: 1cm;
 }
+
+@media all and (max-width: 414px){
+	.svcMeta > *[data-group='metaData'] *[data-block='title'], .svcMeta > *[data-group='metaData'] *[data-block='form'] { width: 99%; }
+	.svcMeta > *[data-group='metaData'] *[data-block='form'] button {
+		font-size: 65%;
+		width: 91%;
+		margin-left: -1%;
+		margin-top: 10%;
+	}
+	#service-page > .svcFooter ul { margin-left: -14%; }
+}
+@media all and (min-width: 414px) and (max-width: 768px){
+	.svcMeta > *[data-group='metaData'] *[data-block='title'], .svcMeta > *[data-group='metaData'] *[data-block='form'] { width: 99%; }
+	.svcMeta > *[data-group='metaData'] *[data-block='form'] button {
+		font-size: 65%;
+		width: 91%;
+		margin-left: -1%;
+		margin-top: 10%;
+	}
+	#service-page > .svcFooter ul { margin-left: -14%; }
+}
+@media all and (min-width: 600px) and (max-width: 768px){
+	#service-page > .svcMeta {
+		margin-left: 2%;
+	}
+	#service-page > .svcFooter ul {
+		margin-left: -7%;
+	}
+}
+@media all and (min-width: 768px) and (max-width: 800px){
+	.svcMeta > *[data-group='metaData'] *[data-block='form'] button {
+		font-size: 68%;
+		width: 92%;
+		margin-left: 20%;
+	}
+	#service-page > .svcFooter ul {
+		margin-left: -7%;
+	}
+}
+@media all and (min-width: 800px) and (max-width: 1024px){
+	.svcMeta > *[data-group='metaData'] *[data-block='form'] button {
+		font-size: 68%;
+		width: 92%;
+		margin-left: 20%;
+	}
+	#service-page > .svcFooter ul {
+		margin-left: -7%;
+	}
+}
+

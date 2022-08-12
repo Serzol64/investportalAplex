@@ -69,8 +69,15 @@ $this->beginPage();
 											
 											
 											for($i = 0; $i < count($dataCurrency); $i++){
-												if($dataCurrency[$i]['selected'] != 'Yes'){ echo '<option value="' . $dataCurrency[$i]['name'] . '">' . $dataCurrency[$i]['currency'] . '</option>'; }
-												else{ echo '<option value="' . $dataCurrency[$i]['name'] . '" selected>' . $dataCurrency[$i]['currency'] . '</option>'; }
+												if(isset($_COOKIE['servicesCurrency'])){
+													if($_COOKIE['servicesCurrency'] == $dataCurrency[$i]['currency']){ echo '<option value="' . $dataCurrency[$i]['currency'] . '" selected>' . $dataCurrency[$i]['currency'] . '</option>'; }
+													else{ echo '<option value="' . $dataCurrency[$i]['currency'] . '">' . $dataCurrency[$i]['currency'] . '</option>';  }
+												}
+												else if($dataCurrency[$i]['selected'] != 'Yes'){ echo '<option value="' . $dataCurrency[$i]['currency'] . '">' . $dataCurrency[$i]['currency'] . '</option>'; }
+												else{ 
+													if(!isset($_COOKIE['servicesCurrency'])){ setcookie('servicesCurrency', $dataCurrency[$i]['currency'], time() + (10 * 365 * 24 * 60 * 60), "/"); }
+													echo '<option value="' . $dataCurrency[$i]['currency'] . '" selected>' . $dataCurrency[$i]['currency'] . '</option>'; 
+												}
 											}
 										   ?>
 										</select>
@@ -144,8 +151,15 @@ $this->beginPage();
 											
 											
 											for($i = 0; $i < count($dataCurrency); $i++){
-												if($dataCurrency[$i]['selected'] != 'Yes'){ echo '<option value="' . $dataCurrency[$i]['name'] . '">' . $dataCurrency[$i]['currency'] . '</option>'; }
-												else{ echo '<option value="' . $dataCurrency[$i]['name'] . '" selected>' . $dataCurrency[$i]['currency'] . '</option>'; }
+												if(isset($_COOKIE['servicesCurrency'])){
+													if($_COOKIE['servicesCurrency'] == $dataCurrency[$i]['currency']){ echo '<option value="' . $dataCurrency[$i]['currency'] . '" selected>' . $dataCurrency[$i]['currency'] . '</option>'; }
+													else{ echo '<option value="' . $dataCurrency[$i]['currency'] . '">' . $dataCurrency[$i]['currency'] . '</option>';  }
+												}
+												else if($dataCurrency[$i]['selected'] != 'Yes'){ echo '<option value="' . $dataCurrency[$i]['currency'] . '">' . $dataCurrency[$i]['currency'] . '</option>'; }
+												else{ 
+													if(!isset($_COOKIE['servicesCurrency'])){ setcookie('servicesCurrency', $dataCurrency[$i]['currency'], time() + (10 * 365 * 24 * 60 * 60), "/"); }
+													echo '<option value="' . $dataCurrency[$i]['currency'] . '" selected>' . $dataCurrency[$i]['currency'] . '</option>'; 
+												}
 											}
 										   ?>
 								   </select>

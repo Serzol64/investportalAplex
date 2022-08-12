@@ -6,6 +6,11 @@ let notiaudio = [
     new Audio(host + '/audios/chat_open.mp3'),
     new Audio(host + '/audios/chat_close.mp3')
 ];
+
+const CurrencySwitcher = () => {
+	set_cookie('servicesCurrency', $('#regexchange option:selected').val(), Date.now() + (10 * 365 * 24 * 60 * 60), "/");
+	location.reload(true);
+}
 const OpenChat = () => {
     window.setTimeout(function () {
         $('#chat-lightbox').removeClass('lightbox-closed');
@@ -134,7 +139,7 @@ $(document).ready(function () {
     $(window).resize(MarketingHeadBannerAdaptive);
     $(window).resize(HomePageHorizontalAdaptiveLine);
 
-
+	$('#regexchange').change(CurrencySwitcher);
     
 
 

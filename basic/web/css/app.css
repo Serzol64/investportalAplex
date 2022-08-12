@@ -839,6 +839,11 @@ h4.title, p.descr{
 #services > main #slider-view .service-feed .service footer .title, #services > main #slider-view-adaptive .service footer .title{
     font-weight: bold;
     display: block;
+    width: 100%;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 #services > main #slider-view .service-feed .service footer .location, #services > main #slider-view-adaptive .service footer .location{
     color: darkgray;
@@ -846,12 +851,22 @@ h4.title, p.descr{
     font-size: 101%;
     display: block;
     font-family: 'Times New Roman', serif;
+     width: 100%;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 #services > main #slider-view .service-feed .service footer .descr, #services > main #slider-view-adaptive .service footer .descr{
     display: block;
     text-align: justify;
     width: 90%;
     font-size: calc(120% / 2);
+     width: 100%;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 #services > main.gecko-fix #slider-view .service-feed .service footer .descr, #services > main.gecko-fix #slider-view-adaptive .service footer .descr{
     font-size: calc(200% / 2);

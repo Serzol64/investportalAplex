@@ -7,6 +7,7 @@ use yii\web\View;
 use yii\helpers\Json;
 
 use app\models\ObjectAttribute;
+use app\models\ObjectsData;
 use app\models\Expert;
 use app\models\Investors;
 use app\models\InvestorsCategory;
@@ -23,8 +24,12 @@ class ObjectsController extends Controller{
 			ObjectAttribute::find()->limit(24)->offset(12)->all()
 		];
 		
+		$ds = [
+			'all' => ObjectsData::find()->select('id')->orderBy('id DESC')->all()
+		];
 		
-		return $this->render('objects', ['attrs' => $oads]);
+		
+		return $this->render('objects', ['attrs' => $oads, 'dataset' => $ds]);
 	}
 	public function actionObject(){
 		$this->view->registerCssFile("/css/objects.css");

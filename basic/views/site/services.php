@@ -3,6 +3,7 @@
 /* @var $this yii\web\View */
 
 use yii\helpers\Html;
+use yii\helpers\Json;
 use yii\helpers\Url;
 
 $this->title = 'Portal services';
@@ -35,12 +36,8 @@ $this->title = 'Portal services';
 					$listResponse = '';
 					$regexIs = 0;
 					foreach($services as $svc){ 
-						$metaData = Json::deocde($svc->meta, true);
-
-						if($metaData['categoryId'] == 1){	
-							$listResponse .= Html::tag('li', Html::a($svc->title, ['site/service-page', 'id' => $svc->id])); 
-							$regexIs++;
-						}
+						$listResponse .= Html::tag('li', Html::a($svc->title, ['site/service-page', 'id' => $svc->id])); 
+						$regexIs++;
 					}
 						
 					if(!$regexIs == 0){ echo Html::tag('ul', $listResponse); }

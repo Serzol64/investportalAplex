@@ -12,6 +12,93 @@ var params = window
         {}
     );
 
+class RegionList extends React.Component{
+	constructor(props){
+		super(props);
+		this.state = {
+		  country: [],
+		  region: []
+	    };
+	}
+	componentDidMount(){
+		if(this.props.type === 'region'){
+			fetch('/services/3/get', { method: 'GET' })
+			.then(response => response.json())
+			.then(data => this.setState({ region: data }))
+			.catch(error => {
+				alert('Response error!');
+				console.log(error);
+			});
+		}
+		else{
+			fetch('/services/0/get', { method: 'GET' })
+			.then(response => response.json())
+			.then(data => this.setState({ country: data }))
+			.catch(error => {
+				alert('Response error!');
+				console.log(error);
+			});
+		}
+	}
+	render(){
+		let myStates;
+		if(this.props.type === 'region'){
+			myStates = this.state.region.map((myState) =>
+				<option value={myState.city + '/' + myState.region + '/' + myState.country}>{ myState.title }</option>
+			);
+		}
+		else{
+			myStates = this.state.country.map((myState) =>
+				<option value={myState.code}>{ myState.title }</option>
+			);
+		}
+		
+		return (
+			<React.Fragment>
+			  {myStates}
+			</React.Fragment>
+		);
+	}
+}
+
+class RegionListEditor extends React.Component{
+	constructor(props){
+		super(props);
+		this.state = {
+		  country: [],
+		  region: []
+	    };
+	}
+	componentDidMount(){
+		fetch('/services/0/get', { method: 'GET' })
+        .then(response => response.json())
+		.then(data => this.setState({ region: data }))
+		.catch(error => {
+			alert('Response error!');
+			console.log(error);
+		});
+	}
+	render(){
+		let myStates;
+		if(this.props.type === 'region'){
+			myStates = this.state.region.map((myState) =>
+				<option value={myState.city + '/' + myState.region + '/' + myState.country}>{ myState.title }</option>
+			);
+		}
+		else{
+			myStates = this.state.country.map((myState) =>
+				<option value={myState.code}>{ myState.title }</option>
+			);
+		}
+		
+		return (
+			<React.Fragment>
+			  {myStates}
+			</React.Fragment>
+		);
+	}
+}
+
 class CategoryList extends React.Component{
 	constructor(props){
 		super(props);
@@ -118,6 +205,10 @@ class Add extends React.Component{
 						meta: {
 							seoData: {
 								categoryId: 0,
+								region: {
+									country: null,
+									region: null
+								},
 								description: '',
 								term: '',
 								faqService: {}
@@ -148,8 +239,8 @@ class Add extends React.Component{
 				
 				for(let i = 0; i < localStorage.length; i++){
 					let currentKey = localStorage.key(i);
-					if(currentKey === 'faq'){ faqQuery.append(JSON.parse(localStorage.getItem(currentKey))); }
-					else if(currentKey === 'fields'){ stepQuery.append(JSON.parse(localStorage.getItem(currentKey))); }
+					if(currentKey === 'faq'){ faqQuery.push(JSON.parse(localStorage.getItem(currentKey))); }
+					else if(currentKey === 'fields'){ stepQuery.push(JSON.parse(localStorage.getItem(currentKey))); }
 				}
 				
 				queryReadyData.meta.seoData.faqService = faqQuery;
@@ -157,7 +248,7 @@ class Add extends React.Component{
 				
 				if($('#service-editor > *[data-block=\'automatization\'] ul li input').eq(3).val() !== ''){ queryReadyData.proc.control = $('#service-editor > *[data-block=\'automatization\'] ul li input').eq(3).val(); }
 				if($('#service-editor > *[data-block=\'automatization\'] ul li input').eq(2).val() !== ''){ queryReadyData.proc.realtime = $('#service-editor > *[data-block=\'automatization\'] ul li input').eq(2).val(); }
-				if($('#service-editor > *[data-block=\'automatization\'] ul li input').eq(0).val() !== ''){ queryReadyData.proc.sender = $('#service-editor > *[data-block=\'automatization\'] ul li input').eq(0).val(); }
+				if($('#service-editor > *[data-block=\'automatization\'] ul li input').eq(0).val() !== ''){ queryReadyData.proc.send = $('#service-editor > *[data-block=\'automatization\'] ul li input').eq(0).val(); }
 				if($('#service-editor > *[data-block=\'automatization\'] ul li input').eq(1).val() !== ''){ queryReadyData.proc.push = $('#service-editor > *[data-block=\'automatization\'] ul li input').eq(1).val(); }
 
 				
@@ -214,6 +305,8 @@ class Add extends React.Component{
 	render(){
 		return this.renderDynamicForm(this.state.currentType);
 	}
+	inputCountryQuery(e,t){}
+	inputRegionQuery(e,t){}
 	renderDynamicForm(q){
 		
 		if(q === 'true'){
@@ -236,6 +329,19 @@ class Add extends React.Component{
 												<option value="any">Any category</option>
 												<CategoryList />
 											</select>
+										</div>
+										<div className="wf">
+											<h4>Input the region</h4>
+											<div id="regionSelector">
+												<select onChange={this.inputCountryQuery} name="country" id="country">
+													<option>Select your country</option>
+													<RegionList type="country" />
+												</select>
+												<select onChange={this.inputRegionQuery} name="region" id="region">
+													<option>Select country</option>
+													<RegionList type="region" />
+												</select>
+											</div>
 										</div>
 										<div className="wf">
 											<h4>Input service description</h4>
@@ -301,6 +407,7 @@ class Add extends React.Component{
 															<option value="list">List form</option>
 															<option value="upload">Files upload form</option>
 															<option value="search">Search form</option>
+															<option value="queryContent">Query from content</option>
 														</select>
 													</div>
 												</header>
@@ -365,11 +472,18 @@ class Edit extends React.Component{
 		super(props);
 		this.state = { 
 			currentType: params['contentStatus'],
-			currentQuery: []
+			currentQuery: [],
+			readyQuery: new FormData()
 		};
 	}
 	componentDidMount(){
 		if(this.state.currentType === 'true'){
+			this.state.readyQuery.append('id', params['id']);
+			
+			fetch('/admin/api/dataServices/filters/portalServices/show', { method: 'GET', body: this.state.readyQuery})
+				.then(response => response.json())
+				.then(data => this.setState({ currentQuery: data }));
+			
 			CKEDITOR.replace('description', { width: $('.wf > .editor-component').css('width') });
 			CKEDITOR.replace('terms', { width: $('.wf > .editor-component').css('width') });
 			
@@ -379,6 +493,10 @@ class Edit extends React.Component{
 					meta: {
 						seoData: {
 							categoryId: 0,
+							region: {
+								country: null,
+								region: null
+							},
 							description: '',
 							term: '',
 							faqService: {}
@@ -409,7 +527,7 @@ class Edit extends React.Component{
 				
 			if($('#service-editor > *[data-block=\'automatization\'] ul li input').eq(3).val() !== ''){ queryReadyData.proc.control = $('#service-editor > *[data-block=\'automatization\'] ul li input').eq(3).val(); }
 			if($('#service-editor > *[data-block=\'automatization\'] ul li input').eq(2).val() !== ''){ queryReadyData.proc.realtime = $('#service-editor > *[data-block=\'automatization\'] ul li input').eq(2).val(); }
-			if($('#service-editor > *[data-block=\'automatization\'] ul li input').eq(0).val() !== ''){ queryReadyData.proc.sender = $('#service-editor > *[data-block=\'automatization\'] ul li input').eq(0).val(); }
+			if($('#service-editor > *[data-block=\'automatization\'] ul li input').eq(0).val() !== ''){ queryReadyData.proc.send = $('#service-editor > *[data-block=\'automatization\'] ul li input').eq(0).val(); }
 			if($('#service-editor > *[data-block=\'automatization\'] ul li input').eq(1).val() !== ''){ queryReadyData.proc.push = $('#service-editor > *[data-block=\'automatization\'] ul li input').eq(1).val(); }
 
 			if(validErrorEdit !== ''){ alert(validErrorEdit); }
@@ -449,7 +567,7 @@ class Edit extends React.Component{
 	
 				serviceEditorUpdater(crq);
 
-				fetch('/admin/api/dataServices/filters/portalServicesCategory/send',{method: 'POST', body: serviceEditorQuery()})
+				fetch('/admin/api/dataServices/filters/portalServicesCategory/update',{method: 'POST', body: serviceEditorQuery()})
 					.then((response) => {
 						if (response.status === 200) { 
 							sessionStorage.removeItem('blobReadyNewVersion');
@@ -470,15 +588,45 @@ class Edit extends React.Component{
 	render(){
 		return this.renderDynamicForm(this.state.currentType, this.state.currentQuery);
 	}
+	inputCountryQuery(e,t){}
+	inputRegionQuery(e,t){}
 	renderDynamicForm(q, i){
 		
 		if(q === 'true'){
+			
+			const responseStateInfo = i.faq.map((response) => {
+				(
+					<div>
+						<input type="text" id="question" value={ response.question } />
+						<textarea className="editor-component" id="answer" name="answer">{ response.answer }</textarea>
+						<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAABmJLR0QA/wD/AP+gvaeTAAACSklEQVRoge2aTWobMRiGn6/4KM4JUt+ji4ZQMNS7uIvkMt04e6cldJN7mJ7AvkjBjrrITDDFWPqkV/KiejaBMDOvHg+jv0/Q6XQ6nU7nUpj3huvH3ScL4TtAMLv/fTd90TerXr5L+Ppxe2OBH8Bk+NfBYLFZXq09z8lFkZ8sfCJspIm0Kj9J+ExYVqgXZX5UePhmfp0JG9kbNt8sp8+xZ3qYrXa3gbBOyQ9mN7Fv+kMscOggYmEAk0BYz1a724Rrk3DIAkzGzuwcUWEnMmmn7EiIXRAVDmb3wN4RWiydKbsPZg+xi6LCwzfxBb/002y1nTvuAd46qAzZgwUWKWNy8rD0cbX9DPx0N8TReyf0xqczAl83366eUi52TTxqSreQhYypZQ3pVrKQIQxa6ZaykCkMGunWslAgDGXSr8af1rJQKAz5Y+bw13WPYupaLAzZb9pD8ZsdkQhDVWmZLAiFoYq0VBbEwiCVlstCBWGQSFeRhUrCUCRdTRb06+F3ghX8mCX3Rh9dgcwZ1DHV9sjkwgLZkSrSUmGh7IhcWiZcQXZEKi0Rrig7IpP+7xYPRcNSyYYbDTcGj8l+w4rFe4uNwX/JElbuVLSWzqgP67dlWkqX1ofTGpYwN24lragPn2+QYyHQQlpVHz7dkIxVT21pZX34mKIxs6CY1rQ+/B5cOkHYLKfPhs1xjtOXqA/LTgFkSjetD8uPPDilm9aHDxZYqM93wJt0an6r+nDVPSh1fml9uImsMr/k6GEIZg8XPHp4kfxOp9PpdDr5/AUtRwPaP+ABuAAAAABJRU5ErkJggg==" alt="Delete current question" />
+					</div>
+				)
+			});
+			
+			const responseStateData = i.form.map((response) => {
+				(
+					<div>
+						<input type="text" name="field" id="field" placeholder="Enter the field name" value={ i.name } />
+						<select name="fieldType" id="fieldType">
+							<option>Select form field type</option>
+							<option value="default" { i.field === 'default' ? 'selected' }>Text form</option>
+							<option value="list" { i.field === 'list' ? 'selected' }>List form</option>
+							<option value="upload" { i.field === 'upload' ? 'selected' }>Files upload form</option>
+							<option value="search" { i.field === 'search' ? 'selected' }>Search form</option>
+							<option value="queryContent" { i.field === 'queryContent' ? 'selected' }>Query from content</option>
+						</select>
+						<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAABmJLR0QA/wD/AP+gvaeTAAACSklEQVRoge2aTWobMRiGn6/4KM4JUt+ji4ZQMNS7uIvkMt04e6cldJN7mJ7AvkjBjrrITDDFWPqkV/KiejaBMDOvHg+jv0/Q6XQ6nU7nUpj3huvH3ScL4TtAMLv/fTd90TerXr5L+Ppxe2OBH8Bk+NfBYLFZXq09z8lFkZ8sfCJspIm0Kj9J+ExYVqgXZX5UePhmfp0JG9kbNt8sp8+xZ3qYrXa3gbBOyQ9mN7Fv+kMscOggYmEAk0BYz1a724Rrk3DIAkzGzuwcUWEnMmmn7EiIXRAVDmb3wN4RWiydKbsPZg+xi6LCwzfxBb/002y1nTvuAd46qAzZgwUWKWNy8rD0cbX9DPx0N8TReyf0xqczAl83366eUi52TTxqSreQhYypZQ3pVrKQIQxa6ZaykCkMGunWslAgDGXSr8af1rJQKAz5Y+bw13WPYupaLAzZb9pD8ZsdkQhDVWmZLAiFoYq0VBbEwiCVlstCBWGQSFeRhUrCUCRdTRb06+F3ghX8mCX3Rh9dgcwZ1DHV9sjkwgLZkSrSUmGh7IhcWiZcQXZEKi0Rrig7IpP+7xYPRcNSyYYbDTcGj8l+w4rFe4uNwX/JElbuVLSWzqgP67dlWkqX1ofTGpYwN24lragPn2+QYyHQQlpVHz7dkIxVT21pZX34mKIxs6CY1rQ+/B5cOkHYLKfPhs1xjtOXqA/LTgFkSjetD8uPPDilm9aHDxZYqM93wJt0an6r+nDVPSh1fml9uImsMr/k6GEIZg8XPHp4kfxOp9PpdDr5/AUtRwPaP+ABuAAAAABJRU5ErkJggg==" alt="Delete current field" />
+					</div>
+				)
+			});
+			
 			return (
 				<React.Fragment>
 				    <input type="hidden" id="ready-query" name="ready-query" value="" />
 				    <section id="service-editor">
 						<header data-block="name">
-							<input type="text" id="title" placeholder="Input service name" />
+							<input type="text" id="title" placeholder="Input service name" value={ i.title }/>
 						</header>
 						<main data-block="content">
 							<h3>Service meta data</h3>
@@ -490,11 +638,25 @@ class Edit extends React.Component{
 											<h4>Select the category</h4>
 											<select id="categorySelector">
 												<option value="any">Any category</option>
+												<CategoryListEditor current={ i.categoryId }/>
 											</select>
 										</div>
 										<div className="wf">
+											<h4>Input the region</h4>
+											<div id="regionSelector">
+												<select onChange={this.inputCountryQuery} name="country" id="country">
+													<option>Select your country</option>
+													<RegionListEditor type="country" current={ i.region.country }/>
+												</select>
+												<select onChange={this.inputRegionQuery} name="region" id="region">
+													<option>Select country</option>
+													<RegionListEditor type="region" current={ i.region.data }/>
+												</select>
+											</div>
+										</div>
+										<div className="wf">
 											<h4>Input service description</h4>
-											<textarea className="editor-component" id="description" name="description"></textarea>
+											<textarea className="editor-component" id="description" name="description">{ i.description }</textarea>
 										</div>
 									</nav>
 								</li>
@@ -505,11 +667,11 @@ class Edit extends React.Component{
 											<h4>Select one access level:</h4>
 											<ul className="level">
 												<li>
-													<input type="radio" id="accessLevel" value="private" />
+													<input type="radio" id="accessLevel" value="private" { i.accessLevel === 'Private' ? 'checked' }/>
 													<span>For registred users</span>
 												</li>
 												<li>
-													<input type="radio" id="accessLevel" value="public" />
+													<input type="radio" id="accessLevel" value="public" { i.accessLevel === 'Public' ? 'checked' }/>
 													<span>For all users and visitors</span>
 												</li>
 											</ul>
@@ -525,17 +687,12 @@ class Edit extends React.Component{
 									<nav>
 										<div className="wf">
 											<h4>Input service term:</h4>
-											<textarea className="editor-component" id="terms" name="terms"></textarea>
+											<textarea className="editor-component" id="terms" name="terms">{ i.terms }</textarea>
 										</div>
 										<div className="wf">
 											<h4>Adding service questions:</h4>
 											<div className="add-questions">
-												<header>
-													<div>
-														<input type="text" id="question" value="Input service FAQ question" />
-														<textarea className="editor-component" id="answer" name="answer"></textarea>
-													</div>
-												</header>
+												<header>{ responseStateInfo }</header>
 												<main><button>Add question</button></main>
 											</div>
 										</div>
@@ -547,18 +704,7 @@ class Edit extends React.Component{
 										<div className="wf">
 											<h4>Adding form elements</h4>
 											<div className="add-formElements">
-												<header>
-													<div>
-														<input type="text" name="field" id="field" placeholder="Enter the field name" />
-														<select name="fieldType" id="fieldType">
-															<option>Select form field type</option>
-															<option value="default">Text form</option>
-															<option value="list">List form</option>
-															<option value="upload">Files upload form</option>
-															<option value="search">Search form</option>
-														</select>
-													</div>
-												</header>
+												<header>{ responseStateData }</header>
 												<main><button>Add element</button></main>
 											</div>
 										</div>
@@ -570,19 +716,19 @@ class Edit extends React.Component{
 							<ul>
 								<li>
 									<h4>Sender command:</h4>
-									<input type="text" name="senderCmd" id="senderCmd" />
+									<input type="text" name="senderCmd" id="senderCmd" value={ i.proc.send }/>
 								</li>
 								<li>
 									<h4>Push command:</h4>
-									<input type="text" name="pushCmd" id="pushCmd" />
+									<input type="text" name="pushCmd" id="pushCmd" value={ i.proc.push }/>
 								</li>
 								<li>
 									<h4>Realtime command:</h4>
-									<input type="text" name="realtimeCmd" id="realtimeCmd" />
+									<input type="text" name="realtimeCmd" id="realtimeCmd" value={ i.proc.realtime }/>
 								</li>
 								<li>
 									<h4>Control command:</h4>
-									<input type="text" name="controlCmd" id="controlCmd" />
+									<input type="text" name="controlCmd" id="controlCmd" value={ i.proc.control }/>
 								</li>
 							</ul>
 						</footer>

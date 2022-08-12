@@ -6,8 +6,6 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-
-
 use app\models\News;
 
 
@@ -194,8 +192,104 @@ $this->title = 'Welcome to Investportal!';
          <main>
 				<header id="slider-controller-adaptive"><img src="/images/icons/slider-contorls/back.png" alt="Назад"></header>
 				<header id="slider-controller"><img src="/images/icons/slider-contorls/back.png" alt="Назад"></header>
-				<main id="slider-view-adaptive"></main>
-				<main id="slider-view"></main>
+				<main id="slider-view-adaptive">
+                <?php for($i = 0; $i < count($interactiveFeed['services']['mobile']); $i++){ ?>
+                        <div class="service">
+							<?php
+								$scd = new app\models\PortalServicesCategory;
+								$currentTitleImage = $scd::findOne(['id' => $interactiveFeed['services']['mobile'][$i]['cat']])->icon;
+								$currentCategory = $scd::findOne(['id' => $interactiveFeed['services']['mobile'][$i]['cat']])->name;
+								
+								$titleImage = $currentTitleImage;
+								$location = ($interactiveFeed['services']['mobile'][$i]['country'] && $interactiveFeed['services']['mobile'][$i]['region']) ? $interactiveFeed['services']['mobile'][$i]['region'] . ', ' . $interactiveFeed['services']['mobile'][$i]['country'] : ($interactiveFeed['services']['mobile'][$i]['country']) ? $interactiveFeed['services']['mobile'][$i]['country'] : 'Any location';
+								$description = strlen(strip_tags(htmlspecialchars_decode($interactiveFeed['services']['mobile'][$i]['description']))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($interactiveFeed['services']['mobile'][$i]['description'])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($interactiveFeed['services']['mobile'][$i]['description']));
+							?>
+                            <div class="service-content">
+                                <header><h3><?php echo $currentCategory; ?></h3></header>
+                                <main><img src="<?php echo $titleImage; ?>" alt="<?php echo $interactiveFeed['services']['mobile'][$i]['title']; ?>"></main>
+                                <footer>
+                                    <h4 class="title"><?php echo $interactiveFeed['services']['mobile'][$i]['title']; ?></h4>
+                                    <span class="location"><?php echo $location; ?></span>
+                                    <p class="descr"><?php echo $description; ?></p>
+                                </footer>
+                            </div>
+                        </div>
+                <?php } ?>
+                </main>
+				<main id="slider-view">
+                    <div class="service-feed">
+				<?php for($i = 0; $i < count($interactiveFeed['services']['desktop']['last']); $i++){ ?>
+                        <div class="service">
+							<?php
+								$scd = new app\models\PortalServicesCategory;
+								$currentTitleImage = $scd::findOne(['id' => $interactiveFeed['services']['desktop']['last'][$i]['cat']])->icon;
+								$currentCategory = $scd::findOne(['id' => $interactiveFeed['services']['desktop']['last'][$i]['cat']])->name;
+								
+								$titleImage = $currentTitleImage;
+								$location = ($interactiveFeed['services']['desktop']['last'][$i]['country'] && $interactiveFeed['services']['desktop']['last'][$i]['region']) ? $interactiveFeed['services']['desktop']['last'][$i]['region'] . ', ' . $interactiveFeed['services']['desktop']['last'][$i]['country'] : ($interactiveFeed['services']['desktop']['last'][$i]['country']) ? $interactiveFeed['services']['desktop']['last'][$i]['country'] : 'Any location';
+								$description = strlen(strip_tags(htmlspecialchars_decode($interactiveFeed['services']['desktop']['last'][$i]['description']))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($interactiveFeed['services']['desktop']['last'][$i]['description'])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($interactiveFeed['services']['desktop']['last'][$i]['description']));
+							?>
+                            <div class="service-content">
+                                <header><h3><?php echo $currentCategory; ?></h3></header>
+                                <main><img src="<?php echo $titleImage; ?>" alt="<?php echo $interactiveFeed['services']['desktop']['last'][$i]['title']; ?>"></main>
+                                <footer>
+                                    <h4 class="title"><?php echo $interactiveFeed['services']['desktop']['last'][$i]['title']; ?></h4>
+                                    <span class="location"><?php echo $location; ?></span>
+                                    <p class="descr"><?php echo $description; ?></p>
+                                </footer>
+                            </div>
+                        </div>
+                <?php } ?>
+                    </div>
+                    <div class="service-feed" id="hide">
+                        <?php for($i = 0; $i < count($interactiveFeed['services']['desktop']['prelast']); $i++){ ?>
+                        <div class="service">
+							<?php
+								$scd = new app\models\PortalServicesCategory;
+								$currentTitleImage = $scd::findOne(['id' => $interactiveFeed['services']['desktop']['prelast'][$i]['cat']])->icon;
+								$currentCategory = $scd::findOne(['id' => $interactiveFeed['services']['desktop']['prelast'][$i]['cat']])->name;
+								
+								$titleImage = $currentTitleImage;
+								$location = ($interactiveFeed['services']['desktop']['prelast'][$i]['country'] && $interactiveFeed['services']['desktop']['prelast'][$i]['region']) ? $interactiveFeed['services']['desktop']['prelast'][$i]['region'] . ', ' . $interactiveFeed['services']['desktop']['prelast'][$i]['country'] : ($interactiveFeed['services']['desktop']['prelast'][$i]['country']) ? $interactiveFeed['services']['desktop']['prelast'][$i]['country'] : 'Any location';
+								$description = strlen(strip_tags(htmlspecialchars_decode($interactiveFeed['services']['desktop']['prelast'][$i]['description']))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($interactiveFeed['services']['desktop']['prelast'][$i]['description'])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($interactiveFeed['services']['desktop']['prelast'][$i]['description']));
+							?>
+                            <div class="service-content">
+                                <header><h3><?php echo $currentCategory; ?></h3></header>
+                                <main><img src="<?php echo $titleImage; ?>" alt="<?php echo $interactiveFeed['services']['desktop']['prelast'][$i]['title']; ?>"></main>
+                                <footer>
+                                    <h4 class="title"><?php echo $interactiveFeed['services']['desktop']['prelast'][$i]['title']; ?></h4>
+                                    <span class="location"><?php echo $location; ?></span>
+                                    <p class="descr"><?php echo $description; ?></p>
+                                </footer>
+                            </div>
+                        </div>
+                <?php } ?>
+                    </div>
+                    <div class="service-feed" id="hide">
+                <?php for($i = 0; $i < count($interactiveFeed['services']['desktop']['old']); $i++){ ?>
+                        <div class="service">
+							<?php
+								$scd = new app\models\PortalServicesCategory;
+								$currentTitleImage = $scd::findOne(['id' => $interactiveFeed['services']['desktop']['old'][$i]['cat']])->icon;
+								$currentCategory = $scd::findOne(['id' => $interactiveFeed['services']['desktop']['old'][$i]['cat']])->name;
+								
+								$titleImage = $currentTitleImage;
+								$location = ($interactiveFeed['services']['desktop']['old'][$i]['country'] && $interactiveFeed['services']['desktop']['old'][$i]['region']) ? $interactiveFeed['services']['desktop']['old'][$i]['region'] . ', ' . $interactiveFeed['services']['desktop']['old'][$i]['country'] : ($interactiveFeed['services']['desktop']['old'][$i]['country']) ? $interactiveFeed['services']['desktop']['old'][$i]['country'] : 'Any location';
+								$description = strlen(strip_tags(htmlspecialchars_decode($interactiveFeed['services']['desktop']['old'][$i]['description']))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($interactiveFeed['services']['desktop']['old'][$i]['description'])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($interactiveFeed['services']['desktop']['old'][$i]['description']));
+							?>
+                            <div class="service-content">
+                                <header><h3><?php echo $currentCategory; ?></h3></header>
+                                <main><img src="<?php echo $titleImage; ?>" alt="<?php echo $interactiveFeed['services']['desktop']['old'][$i]['title']; ?>"></main>
+                                <footer>
+                                    <h4 class="title"><?php echo $interactiveFeed['services']['desktop']['old'][$i]['title']; ?></h4>
+                                    <span class="location"><?php echo $location; ?></span>
+                                    <p class="descr"><?php echo $description; ?></p>
+                                </footer>
+                            </div>
+                        </div>
+                <?php } ?>
+                    </div>
+                </main>
 				<footer id="slider-controller-adaptive"><img src="/images/icons/slider-contorls/go.png" alt="Вперёд"></footer>
 				<footer id="slider-controller"><img src="/images/icons/slider-contorls/go.png" alt="Вперёд"></footer> 
          </main>
