@@ -3,8 +3,32 @@
 /* @var $this yii\web\View */
 
 use yii\helpers\Html;
+use yii\helpers\Json;
 use yii\helpers\Url;
 
+$phone = trim($contactData->phone);
+ 
+$contactPhone = preg_replace(
+		array(
+			'/[\+]?([0-9])[-|\s]?\([-|\s]?(\d{3})[-|\s]?\)[-|\s]?(\d{3})[-|\s]?(\d{2})[-|\s]?(\d{2})/',
+			'/[\+]?([0-9])[-|\s]?(\d{3})[-|\s]?(\d{3})[-|\s]?(\d{2})[-|\s]?(\d{2})/',
+			'/[\+]?([0-9])[-|\s]?\([-|\s]?(\d{4})[-|\s]?\)[-|\s]?(\d{2})[-|\s]?(\d{2})[-|\s]?(\d{2})/',
+			'/[\+]?([0-9])[-|\s]?(\d{4})[-|\s]?(\d{2})[-|\s]?(\d{2})[-|\s]?(\d{2})/',	
+			'/[\+]?([0-9])[-|\s]?\([-|\s]?(\d{4})[-|\s]?\)[-|\s]?(\d{3})[-|\s]?(\d{3})/',
+			'/[\+]?([0-9])[-|\s]?(\d{4})[-|\s]?(\d{3})[-|\s]?(\d{3})/',					
+		), 
+		array(
+			'$1 ($2) $3-$4-$5', 
+			'$1 ($2) $3-$4-$5', 
+			'$1 ($2) $3-$4-$5', 
+			'$1 ($2) $3-$4-$5', 	
+			'$1 ($2) $3-$4', 
+			'$1 ($2) $3-$4', 
+		), 
+		$phone
+);
+	
+	
 $this->title = $objectDF->title . " :: Investment objects";
 ?>
 <main class="main" style="background-color:   #eff3f4;">
@@ -12,7 +36,6 @@ $this->title = $objectDF->title . " :: Investment objects";
             <a href="<?php echo Url::to(['site/index']); ?>">Main</a> <span id="delimeter"> / </span> <a href="#">Investment Objects</a> <span id="delimeter"> / </span> <a href="<?php echo Url::to(['objects/view', ['contentId' => $contentId]]); ?>" class="active"><?php echo $objectDF->title; ?></a>
 	 </section>
 	<section class="section" id="objects">
-			<?php echo Html::hiddenInput('objectData', $objectId); ?>
 			<div class="object-viewer">
                 <div class="left-content">
                     <header>
@@ -20,7 +43,7 @@ $this->title = $objectDF->title . " :: Investment objects";
                             <img src="https://img.icons8.com/windows/32/ffffff/horizontal-settings-mixer--v1.png" style="width:20%;vertical-align:middle;transform: rotate(90deg);"/>
                             Object filter
                         </button>
-                        <h2 class="view-title"><?php echo $objectDF->title; ?></h2>
+                        <h2 class="view-title"><?php echo $curObj->title; ?></h2>
                         <div id="object-meta">
                             <div class="title">
                                 <span class="view-title">Object</span>
@@ -29,14 +52,28 @@ $this->title = $objectDF->title . " :: Investment objects";
                                     <a href="" download="">Download prensetation</a>
                                 </div>
                             </div>
-                            <div class="metadata"></div>
+                            <div class="metadata">
+                                <div>COUNTRY — <span><?php echo Json::decode($metaData['meta']['region']); ?></span></div>
+                                <div>COST, USD — <span><?php echo Json::decode($metaData['meta']['cost']); ?></span></div>
+                                <div>PROFITABLENESS — <span><?php echo Json::decode($metaData['meta']['profitableness']); ?></span></div>
+                            </div>
                         </div>
-                        <div class="object-contacts"></div>
+                        <div class="object-contacts">
+                            <div class="contact">
+                                <img src="../images/icons/user.svg" alt="">
+                                <span><?php echo $contactData->firstname . ' ' . $contactData->surname; ?></span>
+                            </div>
+                            <div class="contact">
+                                <img src="../images/icons/phone.svg" alt="">
+                                <span><?php echo $contactPhone[0]; ?></span>
+                            </div>
+                            <div class="contact">
+                                <img src="../images/icons/mail.svg" alt="">
+                                <?php echo Html::a($contactData->email, 'mailto:' . $contactData->email . '&subject=Message to the InvestPortal user'); ?>
+                            </div>
+                        </div>
                    </header>
-                   <main>
-                        <span class="view-title">Specifications</span> 
-                        <table class="specifications"></table>
-                   </main>
+                   <main><span class="view-title">Specifications</span> <table class="specifications"><tbody><?php foreach($metaData['parameters'] as $result){ ?><tr><td><?php echo Json::decode($result['filter']); ?></td><td><?php echo Json::decode($result['value']); ?></td></tr><?php } ?></tbody></table></main>
                    <footer><a href="" id="more">Show more</a></footer>
                </div>
                <div class="right-content">
@@ -46,7 +83,7 @@ $this->title = $objectDF->title . " :: Investment objects";
                             <a href="">Add to Favorites</a>
                         </div>
                         <div class="description">
-							<span><?php echo $objectDF->description; ?></span>
+							<span><?php echo $metaData['meta']['description']; ?></span>
                             <a href="">Show more</a>
                         </div>
                    </header>
@@ -54,22 +91,16 @@ $this->title = $objectDF->title . " :: Investment objects";
                         <span class="view-title"><span style="vertical-align:middle;font-size:90%;padding-right:1%;display: inline-block;margin-top: -5px;">&#9632;</span>Photos</span>
                         <div id="images-slider">
                             <div class="header">
-                                <header class="switcher">
-                                    <img src="/images/icons/slider-contorls/back.png" alt="">
-                                </header>
-                                <footer class="switcher">
-                                    <img src="/images/icons/slider-contorls/go.png" alt="">
-                                </footer>
+                                <header class="switcher"><img src="/images/icons/slider-contorls/back.png" alt=""></header>
+                                <footer class="switcher"><img src="/images/icons/slider-contorls/go.png" alt=""></footer>
                             </div>
-                            <div class="content">
-                                <img src="" alt="Current Image" id="current">
-                            </div>
-                            <div class="footer"></div>
+                            <div class="content"><img src="" alt="Current Image" id="current"></div>
+                            <div class="footer"><?php foreach($metaData['meta']['photo'] as $gallery){ ?><div class="image-switcher"><img src="<?php echo Json::decode($gallery['file']); ?>" alt="Switcher image" class="image-current"></div></div>
                        </div>
                   </main>
                   <footer>
                         <span class="view-title"><span style="vertical-align:middle;font-size:90%;padding-right:1%;display: inline-block;margin-top: -5px;">&#9632;</span>Video</span>
-                        <video class="view-player" poster="<?php echo $objectDF->videoCapture; ?>" loop></video>
+                        <video class="view-player" poster="<?php echo $metaData['meta']['videoPoster']; ?>" loop><?php foreach($metaData['meta']['video'] as $support){ ?><source src="<?php echo Json::decode($support['file']); ?>" type="<?php echo mime_content_type(Json::decode($support['file'])); ?>"><?php } ?></video>
                          <div class="video-player">
                             <header class="play">
                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAD2UlEQVRYhe2WTWwbVRDHf/PsOEEipUQ9pCQRkNppFQRI2fiQG5z4aIkb9dgLqlScRCU9pG24AOaWRkK0BX8hPi5FHCqauCgIxAFuqMSmBdQKx06rqoGChApRODT2eodDTFTFXm8CiAv5X3a1b3bmN7Ozbx5s6f8u2YxxOF7sUkME0b3AQ0BXdekmynUMsz5D5uLh0OK/CjCQzHeURV4BOQT4PcwdgY9s23f80pHuG/8YoD9RGMRwFmgFSsA0KjOofal078oiQOCP5k6M6QOJAENAAFgWODg3HPr4bwNYqeKLgp4CjMA58VUmvj6853qjd8KJ+W71yRTKAcBB5Wh2JPjWpgGqmU8DinI8OxJ6o1HgGvh0cVxUTwIisN+tEqbew4FkvqNadrM+uJUqxAfeudLmBZCLBl9XkQnAKJy10ld3bhigLOY1oFXg3PrMBUbLdqBgpefHrHS2yQsC5DywTdQf2xBAOF7sAp4HSuKrTLj4bhOV06L3fdefWni2EYSKngBKIIcGkvkOTwA1RAAfMN2o4RSuAnvAmQ2nCp+G3y48Us8uFw0tCGQAvy0m4gkAWs1IM27BAVp/XnxckTHgtsJT6nDZShXiVjq/ow5tZvUiNdWqrYAQBHAqZq4RwJexJ+3ccPDNFScQFDjJ6gY0KmoKVqowETxTaF7zqZVs9TboCSDQDnBPi/1LI4C/9P3og7/NDYdeEkMf8DmwXWBye4C1/mhu5qcqygOeAP+16u3rt4DWcqVpJ7Ds5eDRxI37W6QcU0dHq/5+V5hcKnGqOLZrBeCOLR0CINQMqVoAZQGhx3EqFjDvFviJ2Bf+5fauEaEUU2gDbIUE4ryai+7+9W5b4xhLBVC55g1gmEV5pjpYPnQDWG7v/FbQ3tXE+AzDePaF0JW6xkIEQEVna8Otk8+QAWxgKJyY73YDEOgFfgCzd2449PScS/C+eDGoEAHsgONc8AS4eDi0qPA+EFCfTLnEv62iR1WWHssO7/rEDRJAfM4UEEDk3a9Gdv/oCQDglCsxYBnlgJUujt+9ppBo8pdCuWjPmVy0v9woeDhVPCbIELAktq/uLHAdx+FU4TmFGUBVZGJ1sGxc4VTxmKKTgKjoYC7aU/P9GwIA9CeLRxA9DRiQ8yp6IhcNLTR6py9eDIrPmapm7iCMZaOhuJu955GsLzm/z4h8AGwDSgIZR3QG9Js7tr0I0OL3d1Z/tf2sNlwTsKSiB90y3zAAgJXO7zCO72WVtc2mkWzQ91TsWC7ae8vL96aO5QPJfEfJmEFR3YfIw2j1WC7cROWais4GHOdCvW7f0pbc9CfcInoOOTgJHQAAAABJRU5ErkJggg==" alt="Нажмите для воспроизведения видеоролика" />
@@ -82,20 +113,206 @@ $this->title = $objectDF->title . " :: Investment objects";
                         </div>
                  </footer>
 			</div>
-			<div class="objects-list"></div>
+			<div class="objects-list">
+				<header>
+                    <h2>Similar Offer</h2>
+                </header>
+                <main>
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th>Location</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Expert Raiting</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+					<?php
+					foreach($dataset['all'] as $list){
+						$objectQuery = [':id' => $list->id];
+						$currentObject = Yii::$app->db->createCommand('SELECT title, JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.region.country")) as "country", JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.region.region")) as "region", JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.cost[0].value")) as "cost" FROM objectsData WHERE id=:id')->bindValues($objectQuery)->queryOne();
+					?>
+                            <tr class="content">
+                                <td><?php echo ($currentObject['country'] && $currentObject['region']) ? $currentObject['region'] . ', ' . $currentObject['country'] : ($currentObject['country']) ? $currentObject['country'] : 'Any location'; ?></td>
+                                <td><?php echo Html::a($currentObject['title'], ['objects/view', 'objectId' => $objectQuery[':id']]); ?></td>
+                                <td>
+									<?php
+										$listQuery = ['type' => 'list'];
+										$dataCurrency = Yii::$app->currencyDB->execute($listQuery);
+											
+											
+										for($i = 0; $i < count($dataCurrency); $i++){
+											if(isset($_COOKIE['servicesCurrency'])){
+												if($_COOKIE['servicesCurrency'] == $dataCurrency[$i]['currency']){ 
+													$convertQuery = [
+														'myCur' => $dataCurrency[$i]['currency'],
+														'amount' => $currentObject['cost']
+													];
+													
+													$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
+													
+													$amountQuery = [
+														'isSymbol' => TRUE,
+														'query' => [
+															'cur' => $dataCurrency[$i]['currency'],
+															'amount' => $convertResponse['data'][$dataCurrency[$i]['currency']]['value']
+														]
+													];
+													
+													echo Yii::$app->currencyDB->getFullAmount($amountQuery);
+												}
+											}
+											else if($dataCurrency[$i]['selected'] == 'Yes'){ 
+												$convertQuery = [
+														'myCur' => $dataCurrency[$i]['currency'],
+														'amount' => $currentObject['cost']
+													];
+													
+													$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
+													
+													$amountQuery = [
+														'isSymbol' => TRUE,
+														'query' => [
+															'cur' => $dataCurrency[$i]['currency'],
+															'amount' => $convertResponse['data'][$dataCurrency[$i]['currency']]['value']
+														]
+													];
+													
+													echo Yii::$app->currencyDB->getFullAmount($amountQuery);
+											}
+										}
+									?>
+                                </td>
+                                <td>
+                                    <div class="rating-mini">
+                                        <span class="active"></span>	
+                                        <span class="active"></span>    
+                                        <span class="active"></span> 
+                                        <span class="active"></span>	
+                                        <span class="active"></span>    
+                                        <span class="active"></span>
+                                        <span class="active"></span>    
+                                        <span class="active"></span>
+                                        <span></span>    
+                                        <span></span>
+                                    </div>
+                                </td>
+                            </tr>
+                    <?php } ?>
+                        </tbody>
+                    </table>
+                </main>
+			</div>
 			<section id="services" data-text="Service" class="section">
 				<header>
 					<hr color="#0079bf" size="4" width="37px" align="left"/>
 					<h2>Services</h2>
 					<strong>& Collaborations</strong>
 					<a href=""></a>
-					<?php if($_COOKIE['portalId']) { ?><button class="add-but">Add Object</button><?php } ?>
+					<button class="add-but">Add Object</button>
 				 </header>
 				 <main>
 						<header id="slider-controller-adaptive"><img src="/images/icons/slider-contorls/back.png" alt="Назад"></header>
 						<header id="slider-controller"><img src="/images/icons/slider-contorls/back.png" alt="Назад"></header>
-						<main id="slider-view-adaptive"></main>
-						<main id="slider-view"></main>
+						<main id="slider-view-adaptive">
+						<?php for($i = 0; $i < count($serviceList['mobile']); $i++){ ?>
+							<div class="service">
+								<?php
+									$scd = new app\models\PortalServicesCategory;
+									$currentTitleImage = $scd::findOne(['id' => $serviceList['mobile'][$i]['cat']])->icon;
+									$currentCategory = $scd::findOne(['id' => $serviceList['mobile'][$i]['cat']])->name;
+									
+									$titleImage = $currentTitleImage;
+									$location = ($serviceList['mobile'][$i]['country'] && $serviceList['mobile'][$i]['region']) ? $serviceList['mobile'][$i]['region'] . ', ' . $serviceList['mobile'][$i]['country'] : ($serviceList['mobile'][$i]['country']) ? $serviceList['mobile'][$i]['country'] : 'Any location';
+									$description = strlen(strip_tags(htmlspecialchars_decode($serviceList['mobile'][$i]['description']))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($serviceList['mobile'][$i]['description'])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($serviceList['mobile'][$i]['description']));
+								?>
+								<div class="service-content">
+									<header><h3><?php echo $currentCategory; ?></h3></header>
+									<main><img src="<?php echo $titleImage; ?>" alt="<?php echo $serviceList['mobile'][$i]['title']; ?>"></main>
+									<footer>
+										<h4 class="title"><?php echo $serviceList['mobile'][$i]['title']; ?></h4>
+										<span class="location"><?php echo $location; ?></span>
+										<p class="descr"><?php echo $description; ?></p>
+									</footer>
+								</div>
+							</div>
+						<?php } ?>
+						</main>
+						<main id="slider-view">
+							<div class="service-feed">
+							<?php for($i = 0; $i < count($serviceList['desktop']['last']); $i++){ ?>
+								<div class="service">
+									<?php
+										$scd = new app\models\PortalServicesCategory;
+										$currentTitleImage = $scd::findOne(['id' => $serviceList['desktop']['last'][$i]['cat']])->icon;
+										$currentCategory = $scd::findOne(['id' => $serviceList['desktop']['last'][$i]['cat']])->name;
+										
+										$titleImage = $currentTitleImage;
+										$location = ($serviceList['desktop']['last'][$i]['country'] && $serviceList['desktop']['last'][$i]['region']) ? $serviceList['desktop']['last'][$i]['region'] . ', ' . $serviceList['desktop']['last'][$i]['country'] : ($serviceList['desktop']['last'][$i]['country']) ? $serviceList['desktop']['last'][$i]['country'] : 'Any location';
+										$description = strlen(strip_tags(htmlspecialchars_decode($serviceList['desktop']['last'][$i]['description']))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($serviceList['desktop']['last'][$i]['description'])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($serviceList['desktop']['last'][$i]['description']));
+									?>
+									<div class="service-content">
+										<header><h3><?php echo $currentCategory; ?></h3></header>
+										<main><img src="<?php echo $titleImage; ?>" alt="<?php echo $serviceList['desktop']['last'][$i]['title']; ?>"></main>
+										<footer>
+											<h4 class="title"><?php echo $serviceList['desktop']['last'][$i]['title']; ?></h4>
+											<span class="location"><?php echo $location; ?></span>
+											<p class="descr"><?php echo $description; ?></p>
+										</footer>
+									</div>
+								</div>
+							<?php } ?>
+                    </div>
+                    <div class="service-feed" id="hide">
+                        <?php for($i = 0; $i < count($serviceList['desktop']['prelast']); $i++){ ?>
+                        <div class="service">
+							<?php
+								$scd = new app\models\PortalServicesCategory;
+								$currentTitleImage = $scd::findOne(['id' => $serviceList['desktop']['prelast'][$i]['cat']])->icon;
+								$currentCategory = $scd::findOne(['id' => $serviceList['desktop']['prelast'][$i]['cat']])->name;
+								
+								$titleImage = $currentTitleImage;
+								$location = ($serviceList['desktop']['prelast'][$i]['country'] && $serviceList['desktop']['prelast'][$i]['region']) ? $serviceList['desktop']['prelast'][$i]['region'] . ', ' . $serviceList['desktop']['prelast'][$i]['country'] : ($serviceList['desktop']['prelast'][$i]['country']) ? $serviceList['desktop']['prelast'][$i]['country'] : 'Any location';
+								$description = strlen(strip_tags(htmlspecialchars_decode($serviceList['desktop']['prelast'][$i]['description']))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($serviceList['desktop']['prelast'][$i]['description'])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($serviceList['desktop']['prelast'][$i]['description']));
+							?>
+                            <div class="service-content">
+                                <header><h3><?php echo $currentCategory; ?></h3></header>
+                                <main><img src="<?php echo $titleImage; ?>" alt="<?php echo $serviceList['desktop']['prelast'][$i]['title']; ?>"></main>
+                                <footer>
+                                    <h4 class="title"><?php echo $serviceList['desktop']['prelast'][$i]['title']; ?></h4>
+                                    <span class="location"><?php echo $location; ?></span>
+                                    <p class="descr"><?php echo $description; ?></p>
+                                </footer>
+                            </div>
+                        </div>
+						<?php } ?>
+                    </div>
+                    <div class="service-feed" id="hide">
+						<?php for($i = 0; $i < count($serviceList['desktop']['old']); $i++){ ?>
+                        <div class="service">
+							<?php
+								$scd = new app\models\PortalServicesCategory;
+								$currentTitleImage = $scd::findOne(['id' => $serviceList['desktop']['old'][$i]['cat']])->icon;
+								$currentCategory = $scd::findOne(['id' => $serviceList['desktop']['old'][$i]['cat']])->name;
+								
+								$titleImage = $currentTitleImage;
+								$location = ($serviceList['desktop']['old'][$i]['country'] && $serviceList['desktop']['old'][$i]['region']) ? $serviceList['desktop']['old'][$i]['region'] . ', ' . $serviceList['desktop']['old'][$i]['country'] : ($serviceList['desktop']['old'][$i]['country']) ? $serviceList['desktop']['old'][$i]['country'] : 'Any location';
+								$description = strlen(strip_tags(htmlspecialchars_decode($serviceList['desktop']['old'][$i]['description']))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($serviceList['desktop']['old'][$i]['description'])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($serviceList['desktop']['old'][$i]['description']));
+							?>
+                            <div class="service-content">
+                                <header><h3><?php echo $currentCategory; ?></h3></header>
+                                <main><img src="<?php echo $titleImage; ?>" alt="<?php echo $serviceList['desktop']['old'][$i]['title']; ?>"></main>
+                                <footer>
+                                    <h4 class="title"><?php echo $serviceList['desktop']['old'][$i]['title']; ?></h4>
+                                    <span class="location"><?php echo $location; ?></span>
+                                    <p class="descr"><?php echo $description; ?></p>
+                                </footer>
+                            </div>
+                        </div>
+						<?php } ?>
+                    </div>
+						</main>
 						<footer id="slider-controller-adaptive"><img src="/images/icons/slider-contorls/go.png" alt="Вперёд"></footer>
 						<footer id="slider-controller"><img src="/images/icons/slider-contorls/go.png" alt="Вперёд"></footer> 
 				 </main>

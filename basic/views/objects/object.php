@@ -25,8 +25,12 @@ $this->title = "Selection of the object";
 				 <main>
 						<header id="slider-controller-adaptive"><img src="/images/icons/slider-contorls/back.png" alt="Назад"></header>
 						<header id="slider-controller"><img src="/images/icons/slider-contorls/back.png" alt="Назад"></header>
-						<main id="slider-view-adaptive"></main>
-						<main id="slider-view"></main>
+						<main id="slider-view-adaptive">
+							
+						</main>
+						<main id="slider-view">
+							
+						</main>
 						<footer id="slider-controller-adaptive"><img src="/images/icons/slider-contorls/go.png" alt="Вперёд"></footer>
 						<footer id="slider-controller"><img src="/images/icons/slider-contorls/go.png" alt="Вперёд"></footer> 
 				 </main>

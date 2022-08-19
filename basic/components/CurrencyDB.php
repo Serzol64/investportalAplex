@@ -6,7 +6,7 @@ use yii\base\Component;
 use JamesGordo\CSV\Parser;
 use yii\helpers\Json;
 use yii\httpclient\Client;
-use HouseOfApis\CurrencyApi\CurrencyApi;
+use linslin\yii2\curl\CUrl;
 
 class CurrencyDB extends Component{
 	public $codesDB;
@@ -18,7 +18,7 @@ class CurrencyDB extends Component{
 		parent::init();
 
 		$this->codesDB = new Parser('../web/df/curCodes.csv');
-		$this->currency = new CurrencyApi(getenv('CurrencyAPI_Investportal'));
+		$this->currency = "https://api.currencyapi.com/v3/latest?apikey={ getenv('CurrencyAPI_Investportal') }";
 		$this->currencySymbols = new Parser('../web/df/currency-symbols.csv');
 		$this->geoIp = (new Client)->createRequest()->setMethod('GET')->setData(['fields' => 'currency'])->setUrl('http://ip-api.com/json/' . $_SERVER['REMOTE_ADDR'])->send();
 	}
@@ -33,8 +33,8 @@ class CurrencyDB extends Component{
 		$symbol = $query['query']['cur'];
 		$amount = $query['query']['amount'];
 		
-		if(isset($query['isSymbol'])){ foreach($this->currencySymbols->all() as $data){ if($data->_code == $symbol){ echo '';} } }
-		else{ }
+		if(isset($query['isSymbol'])){ foreach($this->currencySymbols->all() as $data){ if($data->_code == $symbol){ echo '\u{{ $data->_unicode-hex }} { $amount }'; } } }
+		else{ echo '$symbol - $amount'; }
 	}
 	private function listCurrency(){
 		$clientCurrency = $this->geoIp->data['currency'];
@@ -52,10 +52,11 @@ class CurrencyDB extends Component{
 		return $response;
 	}
 	private function convert($query){
-		return $this->currency->latest([
-			'base_currency' => 'USD',
-			'currencies' => $query['myCur'],
-		]);
+		$convertQuery = $this->currency . "&base_currency=USD&currencies=" . $query['myCur'] . "&value=" . $query['amount'];
+		$convertQuery .= (new CUrl)->get($convertQuery);
+		
+		return $convertQuery;
+		
 	}
 	
 }

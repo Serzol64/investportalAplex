@@ -28,15 +28,12 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=6
-FILE_NAME_0=22132;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fweb%2Fjs%2Freact%2Fadmin%2FportalServices%2Fmanagment.js;0;4
-FILE_NAME_1=8340;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fviews%2Flayouts%2Fmain.php;0;4
-FILE_NAME_2=3709;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fweb%2Fjs%2Fapp.js;0;4
-FILE_NAME_3=0;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fweb%2Fjs%2Faddons%2Fauthmodule%2Fservices%2Fsignup.js;0;4
-FILE_NAME_4=729;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcontrollers%2FObjectsController.php;0;4
-FILE_NAME_5=5875;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fviews%2Fobjects%2Fobjects.php;0;4
-FILE_NAME_6=1204;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcomponents%2FCurrencyDB.php;0;4
-FILE_NAME_7=0;None;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fweb%2Fdf%2Fcurrency-symbols.csv;0;4
+current_page=0
+FILE_NAME_0=1453;Python;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcommands%2Fautomatization%2Fpush%2F1%2FobjectSendToBase.py;0;4
+FILE_NAME_1=4322;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcontrollers%2FObjectsController.php;0;4
+FILE_NAME_2=0;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fweb%2Fjs%2Freact%2Fadmin%2FportalServices%2Fmanagment.js;0;4
+FILE_NAME_3=0;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fweb%2Fjs%2Freact%2Fadmin%2FdataFilters.js;0;4
+FILE_NAME_4=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcommands%2Fautomatization%2Fcontrols%2F1%2FobjectForm.py;0;4
 
 [VTE]
 last_dir=/home/sergey/Рабочий стол/Sergey/docker-compose-lamp/www/investportal/basic

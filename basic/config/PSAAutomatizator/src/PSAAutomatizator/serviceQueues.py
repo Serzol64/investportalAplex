@@ -45,7 +45,6 @@ class QueresDB():
                     proccessResponse = 'qrOK'
                 else:
                     proccessResponse = 'qrFailed'
-
             elif self.queryData.cmd == 'update':
                 if self.userData.visitor:
                     dColumn = 'All'
@@ -69,150 +68,146 @@ class QueresDB():
                     proccessResponse = 'quOK'
                 else:
                     proccessResponse = 'quFailed'
+				elif self.queryData.cmd == 'find':
+					searchResponse = []
 
-            elif self.queryData.cmd == 'find':
-                searchResponse = []
+					if self.userData.visitor:
+						dColumn = 'All'
+					else:
+						dColumn = 'Private'
 
-                if self.userData.visitor:
-                    dColumn = 'All'
-                else:
-                    dColumn = 'Private'
+					senderQWB = xlrd.open_workbook(
+						'../../commands/data/senders/Queues.xlsx')
+					currentSheet = senderQWB.sheet_by_name(dColumn)
 
-                senderQWB = xlrd.open_workbook(
-                    '../../commands/data/senders/Queues.xlsx')
-                currentSheet = senderQWB.sheet_by_name(dColumn)
+					for i in range(currentSheet.nrows):
+						findDataParameter = dColumn != 'All' if (self.serviceData.id == currentSheet.cell_value(i, 0)) else (self.userData == currentSheet.cell_value(i, 1)) (self.serviceData.id == currentSheet.cell_value(i, 0) and self.userData.visitor == currentSheet.cell_value(i, 2))
 
-                for i in range(currentSheet.nrows):
-                    findDataParameter = dColumn != 'All' if (self.serviceData.id == currentSheet.cell_value(i, 0)) else (self.userData == currentSheet.cell_value(i, 1)) (self.serviceData.id == currentSheet.cell_value(i, 0) and self.userData.visitor == currentSheet.cell_value(i, 2))
+						if findDataParameter:
+							searchResponse.append(dColumn != 'All' if
+															 {
+																 'svc': currentSheet.cell_value(i, 0),
+																 'datetime': currentSheet.cell_value(i, 2),
+																 'query': currentSheet.cell_value(i, 3)
+															 } else
+												  {
+																 'svc': currentSheet.cell_value(i, 0),
+																 'datetime': currentSheet.cell_value(i, 1),
+																 'query': currentSheet.cell_value(i, 3)
+															 })
 
-                    if findDataParameter:
-                        searchResponse.append(dColumn != 'All' if
-                                                         {
-                                                             'svc': currentSheet.cell_value(i, 0),
-                                                             'datetime': currentSheet.cell_value(i, 2),
-                                                             'query': currentSheet.cell_value(i, 3)
-                                                         } else
-                                              {
-                                                             'svc': currentSheet.cell_value(i, 0),
-                                                             'datetime': currentSheet.cell_value(i, 1),
-                                                             'query': currentSheet.cell_value(i, 3)
-                                                         })
+					proccessResponse = searchResponse
+					elif self.queryData.cmd == 'delete':
+						if self.userData.visitor:
+							dColumn = 'All'
+						else:
+							dColumn = 'Python'
 
-                proccessResponse = searchResponse
+						senderQueues = pandas.read_excel(
+							'../../commands/data/senders/Queues.xlsx', sheet_name=dColumn)
 
-            elif self.queryData.cmd == 'delete':
-                if self.userData.visitor:
-                    dColumn = 'All'
-                else:
-                    dColumn = 'Python'
+						findIndexFrame = senderQueues.set_index(
+							['ServiceID', 'Datetime', 'clientQuery'])
+						deleteCurrentQueue = findIndexFrame.drop(
+							[self.serviceData.id, self.queryData.datetime, self.queryData.query], axis=[0, 1, 2])
 
-                senderQueues = pandas.read_excel(
-                    '../../commands/data/senders/Queues.xlsx', sheet_name=dColumn)
+						deleteSuccess = deleteCurrentQueue.to_excel(
+							'../../commands/data/senders/Queues.xlsx', sheet_name=dColumn)
 
-                findIndexFrame = senderQueues.set_index(
-                    ['ServiceID', 'Datetime', 'clientQuery'])
-                deleteCurrentQueue = findIndexFrame.drop(
-                    [self.serviceData.id, self.queryData.datetime, self.queryData.query], axis=[0, 1, 2])
+						if deleteSuccess:
+							proccessResponse = 'qdOK'
+						else:
+							proccessResponse = 'qdFailed'		
+	    elif self.typeData.type == 'realtime':
+				if self.queryData.cmd == 'register':
+						if self.userData.visitor:
+							dColumn = 'All'
+						else:
+							dColumn = 'Private'
 
-                deleteSuccess = deleteCurrentQueue.to_excel(
-                    '../../commands/data/senders/Queues.xlsx', sheet_name=dColumn)
+						newQuery = {}
+						subscribeQueues = pandas.read_excel(
+							'../../commands/data/runtimes/Subscribes.xlsx', sheet_name=dColumn)
 
-                if deleteSuccess:
-                    proccessResponse = 'qdOK'
-                else:
-                    proccessResponse = 'qdFailed'
-            elif self.typeData.type == 'realtime':
-                if self.queryData.cmd == 'register':
-                    if self.userData.visitor:
-                        dColumn = 'All'
-                    else:
-                        dColumn = 'Private'
+						if dColumn != 'All':
+							newQuery = {
+								'ServiceID': self.serviceData.id,
+								'UserID': self.userData}
+						else:
+							newQuery = {
+								'ServiceID': self.serviceData.id,
+								'visitorData': self.userData.visitor}
 
-                    newQuery = {}
-                    subscribeQueues = pandas.read_excel(
-                        '../../commands/data/runtimes/Subscribes.xlsx', sheet_name=dColumn)
+						subscribeQueues.append(newQuery)
 
-                    if dColumn != 'All':
-                        newQuery = {
-                            'ServiceID': self.serviceData.id,
-                            'UserID': self.userData}
-                    else:
-                        newQuery = {
-                            'ServiceID': self.serviceData.id,
-                            'visitorData': self.userData.visitor}
+						registerSuccess = subscribeQueues.to_excel(
+							'../../commands/data/runtimes/Subscribes.xlsx', sheet_name=dColumn)
 
-                    subscribeQueues.append(newQuery)
+						if registerSuccess:
+							proccessResponse = 'qrOK'
+						else:
+							proccessResponse = 'qrFailed'
+				elif self.queryData.cmd == 'update':
+							if self.userData.visitor:
+								dColumn = 'All'
+							else:
+								dColumn = 'Private'
 
-                    registerSuccess = subscribeQueues.to_excel(
-                        '../../commands/data/runtimes/Subscribes.xlsx', sheet_name=dColumn)
+							updateQuery = ''
+							subscribeQueues = pandas.read_excel(
+								'../../commands/data/runtimes/Subscribes.xlsx', sheet_name=dColumn)
 
-                    if registerSuccess:
-                        proccessResponse = 'qrOK'
-                    else:
-                        proccessResponse = 'qrFailed'
+							if dColumn != 'All':
+								updateQuery = self.userData.new
+							else:
+								updateQuery = self.userData.new.visitor
 
-            elif self.queryData.cmd == 'update':
-                if self.userData.visitor:
-                    dColumn = 'All'
-                else:
-                    dColumn = 'Private'
+							subscribeQueues.replace(self.userData.old, updateQuery)
+							updateSuccess = subscribeQueues.to_excel(
+								'../../commands/data/runtimes/Subscribes.xlsx', sheet_name=dColumn)
 
-                updateQuery = ''
-                subscribeQueues = pandas.read_excel(
-                    '../../commands/data/runtimes/Subscribes.xlsx', sheet_name=dColumn)
+							if updateSuccess:
+								proccessResponse = 'quOK'
+							else:
+								proccessResponse = 'quFailed'
+				elif self.queryData.cmd == 'find':
+						searchResponse = []
 
-                if dColumn != 'All':
-                    updateQuery = self.userData.new
-                else:
-                    updateQuery = self.userData.new.visitor
+						if self.userData.visitor:
+							dColumn = 'All'
+						else:
+							dColumn = 'Private'
 
-                subscribeQueues.replace(self.userData.old, updateQuery)
-                updateSuccess = subscribeQueues.to_excel(
-                    '../../commands/data/runtimes/Subscribes.xlsx', sheet_name=dColumn)
+						senderQWB = xlrd.open_workbook(
+							'../../commands/data/senders/Queues.xlsx')
+						currentSheet = senderQWB.sheet_by_name(dColumn)
 
-                if updateSuccess:
-                    proccessResponse = 'quOK'
-                else:
-                    proccessResponse = 'quFailed'
+						for i in range(currentSheet.nrows):
+							findDataParameter = dColumn != 'All' if (self.userData == currentSheet.cell_value(i, 1)) else (self.userData.visitor == currentSheet.cell_value(i, 1))
 
-            elif self.queryData.cmd == 'find':
-                searchResponse = []
+							if findDataParameter:
+								searchResponse.append(currentSheet.cell_value(i, 0))
 
-                if self.userData.visitor:
-                    dColumn = 'All'
-                else:
-                    dColumn = 'Private'
+						proccessResponse = searchResponse
+				elif self.queryData.cmd == 'delete':
+						if self.userData.visitor:
+							dColumn = 'All'
+						else:
+							dColumn = 'Private'
 
-                senderQWB = xlrd.open_workbook(
-                    '../../commands/data/senders/Queues.xlsx')
-                currentSheet = senderQWB.sheet_by_name(dColumn)
+						subscribeQueues = pandas.read_excel(
+							'../../commands/data/runtimes/Subscribes.xlsx', sheet_name=dColumn)
 
-                for i in range(currentSheet.nrows):
-                    findDataParameter = dColumn != 'All' if (self.userData == currentSheet.cell_value(i, 1)) else (self.userData.visitor == currentSheet.cell_value(i, 1))
+						findIndexFrame = subscribeQueues.set_index(['ServiceID', dColumn != 'All' if 'UserID' else 'visitorQuery'])
+						deleteCurrentQueue = findIndexFrame.drop([self.serviceData.id, dColumn != 'All' if self.userData else self.userData.visitor], axis=[0, 1])
 
-                    if findDataParameter:
-                        searchResponse.append(currentSheet.cell_value(i, 0))
+						deleteSuccess = deleteCurrentQueue.to_excel(
+							'../../commands/data/senders/Queues.xlsx', sheet_name=dColumn)
 
-                proccessResponse = searchResponse
-
-            elif self.queryData.cmd == 'delete':
-                if self.userData.visitor:
-                    dColumn = 'All'
-                else:
-                    dColumn = 'Private'
-
-                subscribeQueues = pandas.read_excel(
-                    '../../commands/data/runtimes/Subscribes.xlsx', sheet_name=dColumn)
-
-                findIndexFrame = subscribeQueues.set_index(['ServiceID', dColumn != 'All' if 'UserID' else 'visitorQuery'])
-                deleteCurrentQueue = findIndexFrame.drop([self.serviceData.id, dColumn != 'All' if self.userData else self.userData.visitor], axis=[0, 1])
-
-                deleteSuccess = deleteCurrentQueue.to_excel(
-                    '../../commands/data/senders/Queues.xlsx', sheet_name=dColumn)
-
-                if deleteSuccess:
-                    proccessResponse = 'qdOK'
-                else:
-                    proccessResponse = 'qdFailed'
-
+						if deleteSuccess:
+							proccessResponse = 'qdOK'
+						else:
+							proccessResponse = 'qdFailed'
+			
+        
         return proccessResponse

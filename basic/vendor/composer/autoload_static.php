@@ -96,10 +96,6 @@ class ComposerStaticInit6bdaf22a967160d4a621a49df4f9409d
         array (
             'JamesGordo\\CSV\\' => 15,
         ),
-        'H' => 
-        array (
-            'HouseOfApis\\CurrencyApi\\' => 24,
-        ),
         'G' => 
         array (
             'GuzzleHttp\\Psr7\\' => 16,
@@ -283,10 +279,6 @@ class ComposerStaticInit6bdaf22a967160d4a621a49df4f9409d
         array (
             0 => __DIR__ . '/..' . '/jamesgordo/php-csv-parser/src',
         ),
-        'HouseOfApis\\CurrencyApi\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/houseofapis/currencyapi/src',
-        ),
         'GuzzleHttp\\Psr7\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
@@ -321,9 +313,9 @@ class ComposerStaticInit6bdaf22a967160d4a621a49df4f9409d
         ),
         'Codeception\\' => 
         array (
-            0 => __DIR__ . '/..' . '/codeception/codeception/src/Codeception',
-            1 => __DIR__ . '/..' . '/codeception/stub/src',
-            2 => __DIR__ . '/..' . '/codeception/verify/src/Codeception',
+            0 => __DIR__ . '/..' . '/codeception/stub/src',
+            1 => __DIR__ . '/..' . '/codeception/verify/src/Codeception',
+            2 => __DIR__ . '/..' . '/codeception/codeception/src/Codeception',
         ),
     );
 

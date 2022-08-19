@@ -71,9 +71,9 @@ $this->title = "Investment Objects and Projects";
                                 <span>Profitability</span>
                                 <div class="parameter-form">
                                     Profitability from 
-                                    <input type="text" name="profitability-from" id="text-from" value="0%">
+                                    <input type="text" name="profitability-from" id="text-from" value="<?php echo $minObjectParameter['profitability']; ?> %">
                                     to
-                                    <input type="text" name="profitability-to" id="text-to" value="100%">
+                                    <input type="text" name="profitability-to" id="text-to" value="<?php echo $maxObjectParameter['profitability']; ?> %">
                                 </div>
                             </div>
                         </div>
@@ -82,9 +82,9 @@ $this->title = "Investment Objects and Projects";
                                 <span>Cost</span>
                                 <div class="parameter-form">
                                     Cost from 
-                                    <input type="text" name="cost-from" id="text-from" value="$100">
+                                    <input type="text" name="cost-from" id="text-from" value="<?php echo $minObjectParameter['cost']; ?> $">
                                     to
-                                    <input type="text" name="cost-to" id="text-to" value="$10 000 000">
+                                    <input type="text" name="cost-to" id="text-to" value="<?php echo $maxObjectParameter['cost']; ?> $">
                                 </div>
                             </div>
                         </div>
@@ -112,12 +112,59 @@ $this->title = "Investment Objects and Projects";
 					<?php
 					foreach($dataset['all'] as $list){
 						$objectQuery = [':id' => $list->id];
-						$currentObject = Yii::$app->db->createCommand('SELECT FROM objectsData WHERE id=:id')->bindValues($objectQuery)->queryOne();
+						$currentObject = Yii::$app->db->createCommand('SELECT title, JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.region.country")) as "country", JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.region.region")) as "region", JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.cost[0].value")) as "cost" FROM objectsData WHERE id=:id')->bindValues($objectQuery)->queryOne();
 					?>
                             <tr class="content">
-                                <td><?php echo echo ($currentObject['country'] && $currentObject['region']) ? $currentObject['region'] . ', ' . $currentObject['country'] : ($currentObject['country']) ? $currentObject['country'] : 'Any location'; ?></td>
-                                <td><?php echo Html::a($currentObject['title'], ['', '' => $objectQuery[':id']]); ?></td>
-                                <td><?php echo ; ?></td>
+                                <td><?php echo ($currentObject['country'] && $currentObject['region']) ? $currentObject['region'] . ', ' . $currentObject['country'] : ($currentObject['country']) ? $currentObject['country'] : 'Any location'; ?></td>
+                                <td><?php echo Html::a($currentObject['title'], ['objects/view', 'objectId' => $objectQuery[':id']]); ?></td>
+                                <td>
+									<?php
+										$listQuery = ['type' => 'list'];
+										$dataCurrency = Yii::$app->currencyDB->execute($listQuery);
+											
+											
+										for($i = 0; $i < count($dataCurrency); $i++){
+											if(isset($_COOKIE['servicesCurrency'])){
+												if($_COOKIE['servicesCurrency'] == $dataCurrency[$i]['currency']){ 
+													$convertQuery = [
+														'myCur' => $dataCurrency[$i]['currency'],
+														'amount' => $currentObject['cost']
+													];
+													
+													$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
+													
+													$amountQuery = [
+														'isSymbol' => TRUE,
+														'query' => [
+															'cur' => $dataCurrency[$i]['currency'],
+															'amount' => $convertResponse['data'][$dataCurrency[$i]['currency']]['value']
+														]
+													];
+													
+													echo Yii::$app->currencyDB->getFullAmount($amountQuery);
+												}
+											}
+											else if($dataCurrency[$i]['selected'] == 'Yes'){ 
+												$convertQuery = [
+														'myCur' => $dataCurrency[$i]['currency'],
+														'amount' => $currentObject['cost']
+													];
+													
+													$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
+													
+													$amountQuery = [
+														'isSymbol' => TRUE,
+														'query' => [
+															'cur' => $dataCurrency[$i]['currency'],
+															'amount' => $convertResponse['data'][$dataCurrency[$i]['currency']]['value']
+														]
+													];
+													
+													echo Yii::$app->currencyDB->getFullAmount($amountQuery);
+											}
+										}
+									?>
+                                </td>
                                 <td>
                                     <div class="rating-mini">
                                         <span class="active"></span>	

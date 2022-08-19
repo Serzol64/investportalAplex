@@ -4,6 +4,7 @@ Yii Framework 2 Change Log
 2.0.46 under development
 ------------------------
 
+- Bug #19467: Revert changes in `Inflector::camel2words()` introduced in #19204 (samdark)
 - Bug #19471: Enable console commands on hostings with disabled `exec()` function (WinterSilence, lubosdz)
 - Bug #19469: Fix a virtual relation not working because of new isset checks in `\yii\db\ActiveRelationTrait` (wvanheumen)
 - Bug #19380: Fix PHP 8.1 passing non string to trim() in `yii\db\Query` (wa1kb0y)
@@ -30,6 +31,7 @@ Yii Framework 2 Change Log
 - Bug #19368: Fix PHP 8.1 error when `$fileMimeType` is `null` in `yii\validators\FileValidator::validateMimeType()` (bizley)
 - Enh #19384: Normalize `setBodyParams()` and `getBodyParam()` in `yii\web\Request` (WinterSilence, albertborsos)
 - Bug #19386: Fix recursive calling `yii\helpers\BaseArrayHelper::htmlDecode()` (WinterSilence)
+- Bug #19407: Fix `yii\validators\UniqueValidator` and `yii\validators\ExistValidator` to respect `skipOnError` option for target attributes (bizley)
 - Bug #19418: Fix `yii\filters\auth\CompositeAuth` ignoring `only` and `except` options (lesha724)
 - Enh #19401: Delay `exit(1)` in `yii\base\ErrorHandler::handleFatalError` (arrilot)
 - Bug #19402: Add shutdown event and fix working directory in `yii\base\ErrorHandler` (WinterSilence)
@@ -42,6 +44,7 @@ Yii Framework 2 Change Log
 - Bug #19454: Fix PDO exception code not properly passed to `yii\db\Exception` (Roguyt)
 - Bug #19477: cast shell_exec() output to string (schmunk42)
 - Bug #19481: Exception is always empty in ErrorHandler when handling fatal error (Renkas)
+- Bug #19462: Fix validator client options to encode HTML tags (bizley)
 
 2.0.45 February 11, 2022
 ------------------------
@@ -2621,14 +2624,14 @@ Yii Framework 2 Change Log
 - Bug: `yii\helpers\Json::encode()`` did not handle objects that implement `JsonSerializable` interface correctly (cebe)
 - Bug: Fixed issue with tabular input on `yii\widgets\ActiveField::radio()` and `yii\widgets\ActiveField::checkbox()` (jom)
 - Bug: Fixed the issue that query cache returns the same data for the same SQL but different query methods (qiangxue)
-- Bug: Fixed URL parsing so it's now properly giving 404 for URLs like `http://example.com//////site/about` (samdark)
+- Bug: Fixed URL parsing so it's now properly giving 404 for URLs like `https://example.com//////site/about` (samdark)
 - Bug: Fixed `yii\console\controllers\HelpController::getModuleCommands()` issue where it attempts to scan a module's controller directory when it doesn't exist (jom)
 - Bug: Fixed an issue with FileHelper and not accessible directories which resulted in endless loop (cebe)
 - Bug: Fixed `yii\base\Model::load()` returned `true` if `$data` and `formName` were empty (samdark)
 - Bug: Fixed issue with `yii\db\ActiveRelationTrait` preventing `yii\db\ActiveQuery` from clearing events and behaviors on clone (jom)
 - Bug: `yii\db\Query::queryScalar()` wasn't making `SELECT DISTINCT` queries subqueries (jom)
 - Bug: Fixed use `$files` instead of `self::$_files[$key]` to allow inheritance (pgaultier)
-- Enh #46: Added Image extension based on [Imagine library](http://imagine.readthedocs.org) (tonydspaniard)
+- Enh #46: Added Image extension based on [Imagine library](https://imagine.readthedocs.io/) (tonydspaniard)
 - Enh #364: Improve `yii\helpers\Inflector::slug()` with `intl` transliteration. Improved transliteration char map. (tonydspaniard)
 - Enh #497: Removed `yii\log\Target::logUser` and added `yii\log\Target::prefix` to support customizing message prefix (qiangxue)
 - Enh #499: Decoupled `Rule` from RBAC `Item` (samdark, qiangxue)

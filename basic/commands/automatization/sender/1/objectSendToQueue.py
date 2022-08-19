@@ -16,10 +16,42 @@ if __name__ == "__main__":
 	
 	if "--userQuery" in sys.argv[0]:
 		responseQuery = {}
-		readyQuery = sys.args[0].strip("--userQuery=")
+		readyQuery = json.loads(sys.args[0].strip("--userQuery="))
 		
-		if "--fastMode" in sys.argv[1]: responseQuery = {}
-		else: responseQuery = {}
+		if "--fastMode" in sys.argv[1]: 
+			responseQuery = {
+				'user' : {
+					'userData' : readyQuery.parameters.portalId
+				},
+				'service': {
+					'serviceData' : {
+						'id': 1
+					}
+				},
+				'data': {
+					'queryData': { 
+						'user': [ readyQuery.parameters.text, readyQuery.parameters.search, readyQuery.parameters.list, readyQuery.parameters.upload ]
+					}
+				}
+			}
+		else: 
+			responseQuery = {
+				'user' : {
+					'userData' : {
+						'visitor' : readyQuery.parameters.visitor
+					}
+				},
+				'service': {
+					'serviceData' : {
+						'id': 1
+					}
+				},
+				'data': {
+					'queryData': { 
+						'visitor': [ readyQuery.parameters.text, readyQuery.parameters.search, readyQuery.parameters.list, readyQuery.parameters.upload ]
+					}
+				}
+			}
 		
 		if registerQueue(responseQuery): queueMessage = 'Queue success'
 		else: queueMessage = 'Queue failed'

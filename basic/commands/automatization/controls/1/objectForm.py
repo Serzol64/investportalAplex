@@ -40,6 +40,10 @@ def formGenerator(t):
 			{
 				'stepN': 5,
 				'stepT': 'Enter brief information about your investment object and its parameters'
+			},
+			{
+				'stepN': 6,
+				'stepT': 'Object presentation(No require)'
 			}
 		}
 	elif t == 'body':
@@ -143,9 +147,25 @@ def formGenerator(t):
 					
 				}
 			}
+			{
+				'type': 'upload',
+				'stepD': 'Download only one presentation file in PDF format!',
+				'form': {
+					{
+						'name': 'PDF Presentation Data',
+						'fieldName': 'presentation',
+						'dExample': 'Max size - 500 MB',
+						'dSource': None,
+						'dMethod': None,
+						'optionData': None
+					}
+					
+				}
+			}
 		}
 	elif t == 'footer':
 		readyForm = {
+			{ 'isLast': False },
 			{ 'isLast': False },
 			{ 'isLast': False },
 			{ 'isLast': False },
@@ -156,7 +176,6 @@ def formGenerator(t):
 	return { 'fieldGen': readyForm }
 
 def formValid(q):
-	
 	
 
     return validResponse
