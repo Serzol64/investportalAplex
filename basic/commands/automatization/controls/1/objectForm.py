@@ -5,6 +5,12 @@ import mysql.connector
 from decimal import Decimal
 import socket
 
+from objectConnector import Cost, Attribute
+from dataConnector import Title, Content, Description, Region, presentationUpload, photoGallery
+
+dbConnect = ['database', 'developer', '19052000', 'aplex']
+getIp = socket.gethostbyname(socket.gethostname())
+
 if getIp != '127.0.0.1': dbConnect = [
     'localhost',
     'zolotaryow_inv',
@@ -94,7 +100,7 @@ def formGenerator(t):
 						'name': 'Object country',
 						'fieldName': 'objectRegion',
 						'dExample': 'Spain',
-						'dSource': '',
+						'dSource': '/services/3/get',
 						'dMethod': 'GET',
 						'optionData': None
 					}
@@ -117,6 +123,14 @@ def formGenerator(t):
 						'name': 'Video presentation',
 						'fieldName': 'presentation',
 						'dExample': 'Upload video presentation',
+						'dSource': None,
+						'dMethod': None,
+						'optionData': None
+					},
+					{
+						'name': 'Video presentation poster',
+						'fieldName': 'presentationPoster',
+						'dExample': 'Upload video presentation poster',
 						'dSource': None,
 						'dMethod': None,
 						'optionData': None
@@ -153,7 +167,7 @@ def formGenerator(t):
 				'form': {
 					{
 						'name': 'PDF Presentation Data',
-						'fieldName': 'presentation',
+						'fieldName': 'presentationFile',
 						'dExample': 'Max size - 500 MB',
 						'dSource': None,
 						'dMethod': None,
@@ -176,8 +190,45 @@ def formGenerator(t):
 	return { 'fieldGen': readyForm }
 
 def formValid(q):
+	validResponse = []
+	fieldsQuery = q.multivalidator
 	
+	for i in range(len(fieldsQuery.fieldsName)):
+		currentName = fieldsQuery.fieldsName[i]
+		currentValue = fieldsQuery.fieldsValue[i]
+		
+		if currentName == 'photogallery' or currentName == 'presentation' or currentName == 'presentationFile' or :
+			if currentName == 'presentation':
+				vValidation = presentationUpload('video', currentValue)
+				
+				if vValidation:
+					validResponse.append(vValidation)
+			elif currentName == 'presentationFile':
+				fValidation = presentationUpload('file', currentValue)
+				
+				if fValidation:
+					validResponse.append(fValidation)
+			elif currentName == 'presentationPoster':
+				pValidation = presentationPosterUpload('video', currentValue)
+				
+				if pValidation:
+					validResponse.append(fValidation)
+			else:
+				pgValidation = photoGallery(currentValue)
+				
+				if pgValidation:
+					validResponse.append(pgValidation)
 
+		elif currentName == 'objectTitle' or currentName == 'objectCost':
+			isCost = currentValue == 'objectCost' if Cost(currentValue) else Title(currentValue)
+			validResponse.append(isCost)
+		elif currentName == 'description' or currentName == 'content':
+			isContent = currentValue == 'content' if Content(currentValue) else Description(currentValue)
+			validResponse.append(isContent)
+		elif currentName == 'objectAttribute' or currentName == 'objectRegion':
+			isAttribute = currentValue == 'objectAttribute' if Attribute(currentValue) else Region(currentValue)
+			validResponse.append(isAttribute)
+			
     return validResponse
 
 if __name__ == "__main__":

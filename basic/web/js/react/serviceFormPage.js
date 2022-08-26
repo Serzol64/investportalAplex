@@ -48,7 +48,7 @@ class ServiceForm extends React.Component{
             }
         };
         var psfr = new FormData();
-
+		
         psfr.append('cmd', JSON.stringify(currentServiceForm));
         fetch('/services/2/get?id=' + currentService, { method: 'GET', body: psfr})
             .then(response => response.json())
@@ -491,7 +491,6 @@ class ServiceForm extends React.Component{
                     const sfld = newField.form.map((sfd) => {
                         <label>
                             <span>{ sfd.name }</span>
-                            <input type="search" id="search-field" className={ sfd.fieldName } data-dSource={ sfd.dSource } data-dMethod={ sfd.dMethod } placeholer={ sfd.dExample } />
                         </label>
                     });
 

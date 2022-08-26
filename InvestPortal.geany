@@ -29,14 +29,16 @@ long_line_column=72
 
 [files]
 current_page=0
-FILE_NAME_0=1453;Python;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcommands%2Fautomatization%2Fpush%2F1%2FobjectSendToBase.py;0;4
-FILE_NAME_1=4322;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcontrollers%2FObjectsController.php;0;4
-FILE_NAME_2=0;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fweb%2Fjs%2Freact%2Fadmin%2FportalServices%2Fmanagment.js;0;4
-FILE_NAME_3=0;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fweb%2Fjs%2Freact%2Fadmin%2FdataFilters.js;0;4
-FILE_NAME_4=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcommands%2Fautomatization%2Fcontrols%2F1%2FobjectForm.py;0;4
+FILE_NAME_0=6383;Python;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcommands%2Fautomatization%2Fcontrols%2F1%2FobjectForm.py;0;4
+FILE_NAME_1=61;Python;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcommands%2Fautomatization%2Fcontrols%2F1%2FobjectConnector.py;0;4
+FILE_NAME_2=4734;Python;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcommands%2Fautomatization%2Fcontrols%2F1%2FdataConnector.py;0;4
+FILE_NAME_3=1153;Javascript;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fweb%2Fjs%2Freact%2FserviceFormPage.js;0;4
+FILE_NAME_4=7466;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcontrollers%2FSiteController.php;0;4
+FILE_NAME_5=6132;PHP;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcontrollers%2FObjectsController.php;0;4
+FILE_NAME_6=22;Python;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fcommands%2Fautomatization%2Fpush%2F1%2FobjectSendToBase.py;0;4
 
 [VTE]
-last_dir=/home/sergey/Рабочий стол/Sergey/docker-compose-lamp/www/investportal/basic
+last_dir=/home/sergey/Рабочий стол/Sergey/docker-compose-lamp/www/investportal
 
 [prjorg]
 source_patterns=*.c;*.C;*.cpp;*.cxx;*.c++;*.cc;*.m;
