@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'c8ea0c06fef4006c3b58194fa370d96181585748',
+        'reference' => 'ebd854e9490ed71f23f9cfab97dd695a3470f6c7',
         'name' => 'yiisoft/yii2-app-basic',
         'dev' => true,
     ),
@@ -31,12 +31,12 @@
             'dev_requirement' => false,
         ),
         'bower-asset/jquery' => array(
-            'pretty_version' => '3.6.0',
-            'version' => '3.6.0.0',
+            'pretty_version' => '3.6.1',
+            'version' => '3.6.1.0',
             'type' => 'bower-asset',
             'install_path' => __DIR__ . '/../bower-asset/jquery',
             'aliases' => array(),
-            'reference' => 'e786e3d9707ffd9b0dd330ca135b66344dcef85a',
+            'reference' => '3711efedf0ca2e998cd0417324f717f2e0b828ec',
             'dev_requirement' => false,
         ),
         'bower-asset/punycode' => array(
@@ -205,16 +205,34 @@
             'reference' => 'eebc34ab379e7b7cb48f6d0e0f49378b00cafeff',
             'dev_requirement' => true,
         ),
-        'guzzlehttp/psr7' => array(
+        'guzzlehttp/guzzle' => array(
+            'pretty_version' => '6.5.x-dev',
+            'version' => '6.5.9999999.9999999-dev',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../guzzlehttp/guzzle',
+            'aliases' => array(),
+            'reference' => 'a52f0440530b54fa079ce76e8c5d196a42cad981',
+            'dev_requirement' => false,
+        ),
+        'guzzlehttp/promises' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
             'type' => 'library',
-            'install_path' => __DIR__ . '/../guzzlehttp/psr7',
+            'install_path' => __DIR__ . '/../guzzlehttp/promises',
             'aliases' => array(
-                0 => '2.4.x-dev',
+                0 => '1.5.x-dev',
             ),
-            'reference' => '8f0a09ce19adcf28f25ff9d90e7329488501b363',
-            'dev_requirement' => true,
+            'reference' => 'b94b2807d85443f9719887892882d0329d1e2598',
+            'dev_requirement' => false,
+        ),
+        'guzzlehttp/psr7' => array(
+            'pretty_version' => '1.x-dev',
+            'version' => '1.9999999.9999999.9999999-dev',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../guzzlehttp/psr7',
+            'aliases' => array(),
+            'reference' => 'e98e3e6d4f86621a9b75f623996e6bbdeb4b9318',
+            'dev_requirement' => false,
         ),
         'jamesgordo/php-csv-parser' => array(
             'pretty_version' => '1.0.0',
@@ -223,6 +241,17 @@
             'install_path' => __DIR__ . '/../jamesgordo/php-csv-parser',
             'aliases' => array(),
             'reference' => '9c75f94ba0f475e26ce58c5afcc1f1698bd94ef3',
+            'dev_requirement' => false,
+        ),
+        'jcobhams/newsapi' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../jcobhams/newsapi',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'reference' => '1fabcbb9bbfe003b1088e1812d9792f9cb3f69d9',
             'dev_requirement' => false,
         ),
         'linslin/yii2-curl' => array(
@@ -296,37 +325,6 @@
             'reference' => '4f7fd7836c6f332bb2933569e566a0d6c4cbed74',
             'dev_requirement' => true,
         ),
-        'phpdocumentor/reflection-common' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../phpdocumentor/reflection-common',
-            'aliases' => array(
-                0 => '2.x-dev',
-            ),
-            'reference' => 'a0eeab580cbdf4414fef6978732510a36ed0a9d6',
-            'dev_requirement' => true,
-        ),
-        'phpdocumentor/reflection-docblock' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../phpdocumentor/reflection-docblock',
-            'aliases' => array(
-                0 => '5.x-dev',
-            ),
-            'reference' => '407c40dcfb0250d015a6996c99db4bf3194aaca9',
-            'dev_requirement' => true,
-        ),
-        'phpdocumentor/type-resolver' => array(
-            'pretty_version' => '1.x-dev',
-            'version' => '1.9999999.9999999.9999999-dev',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../phpdocumentor/type-resolver',
-            'aliases' => array(),
-            'reference' => 'b84eadb189e2b0586d50e4acd202ddbe2321c742',
-            'dev_requirement' => true,
-        ),
         'phpspec/php-diff' => array(
             'pretty_version' => 'v1.1.3',
             'version' => '1.1.3.0',
@@ -334,17 +332,6 @@
             'install_path' => __DIR__ . '/../phpspec/php-diff',
             'aliases' => array(),
             'reference' => 'fc1156187f9f6c8395886fe85ed88a0a245d72e9',
-            'dev_requirement' => true,
-        ),
-        'phpspec/prophecy' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../phpspec/prophecy',
-            'aliases' => array(
-                0 => '1.x-dev',
-            ),
-            'reference' => 'bbcd7380b0ebf3961ee21409db7b38bc31d69a13',
             'dev_requirement' => true,
         ),
         'phpunit/php-code-coverage' => array(
@@ -400,7 +387,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpunit/phpunit',
             'aliases' => array(),
-            'reference' => 'fb0f0f6f88587bcc860c68262a1d9bbfd754a2b2',
+            'reference' => '525962d9230a3e80dbc897abb2238960049807ff',
             'dev_requirement' => true,
         ),
         'psr/container' => array(
@@ -431,23 +418,6 @@
                 0 => '1.0',
             ),
         ),
-        'psr/http-factory' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../psr/http-factory',
-            'aliases' => array(
-                0 => '1.0.x-dev',
-            ),
-            'reference' => '5a4f141ac2e5bc35e615134f127e1833158d2944',
-            'dev_requirement' => true,
-        ),
-        'psr/http-factory-implementation' => array(
-            'dev_requirement' => true,
-            'provided' => array(
-                0 => '1.0',
-            ),
-        ),
         'psr/http-message' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
@@ -457,10 +427,10 @@
                 0 => '1.0.x-dev',
             ),
             'reference' => 'efd67d1dc14a7ef4fc4e518e7dee91c271d524e4',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'psr/http-message-implementation' => array(
-            'dev_requirement' => true,
+            'dev_requirement' => false,
             'provided' => array(
                 0 => '1.0',
             ),
@@ -478,7 +448,7 @@
             'install_path' => __DIR__ . '/../ralouphie/getallheaders',
             'aliases' => array(),
             'reference' => '120b605dfeb996808c31b6477290a714d356e822',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'sebastian/code-unit-reverse-lookup' => array(
             'pretty_version' => '1.0.x-dev',
@@ -612,7 +582,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/console',
             'aliases' => array(),
-            'reference' => '8fe565067c4e8786d10e6ba36b161fc10e4c5224',
+            'reference' => 'c072aa8f724c3af64e2c7a96b796a4863d24dba1',
             'dev_requirement' => true,
         ),
         'symfony/css-selector' => array(
@@ -789,7 +759,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/string',
             'aliases' => array(),
-            'reference' => '2fc515e512d721bf31ea76bd02fe23ada4640058',
+            'reference' => '2900c668a32138a34118740de3e4d5a701801f53',
             'dev_requirement' => true,
         ),
         'symfony/yaml' => array(
@@ -821,15 +791,6 @@
             'reference' => 'a705100017263dee056146309b39173974d717f9',
             'dev_requirement' => false,
         ),
-        'webmozart/assert' => array(
-            'pretty_version' => '1.11.0',
-            'version' => '1.11.0.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../webmozart/assert',
-            'aliases' => array(),
-            'reference' => '11cb2199493b2f8a3b53e7f19068fc6aac760991',
-            'dev_requirement' => true,
-        ),
         'yiisoft/yii2' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
@@ -838,7 +799,7 @@
             'aliases' => array(
                 0 => '2.0.x-dev',
             ),
-            'reference' => '50b067a9cd5ea02be4676ed89c2bfabde2c94f3b',
+            'reference' => '89a489b85ac02f28a1ea9af2c969421c3e31f621',
             'dev_requirement' => false,
         ),
         'yiisoft/yii2-app-basic' => array(
@@ -847,7 +808,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'c8ea0c06fef4006c3b58194fa370d96181585748',
+            'reference' => 'ebd854e9490ed71f23f9cfab97dd695a3470f6c7',
             'dev_requirement' => false,
         ),
         'yiisoft/yii2-bootstrap4' => array(

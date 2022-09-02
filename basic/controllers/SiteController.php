@@ -22,13 +22,6 @@ use app\models\PortalServicesCategory;
 
 
 class SiteController extends Controller{
-	public function actions(){
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-        ];
-    }
 	public function beforeAction($action) { 
 		$this->enableCsrfValidation = false; 
 		return parent::beforeAction($action); 
@@ -55,6 +48,22 @@ class SiteController extends Controller{
 				'last' => Analytic::find()->select('id,titleImage,title')->orderBy('created DESC')->limit(3)->asArray()->all(),
 				'prelast' => Analytic::find()->select('id,titleImage,title')->orderBy('created DESC')->limit(6)->offset(3)->asArray()->all(),
 				'old' => Analytic::find()->select('id,titleImage,title')->orderBy('created DESC')->limit(9)->offset(6)->asArray()->all()
+			],
+			'objects' => [
+				'popular' => Yii::$app->smartData->getList('object-popular', 0),
+				'finding' => Yii::$app->smartData->getList('object-investors', 0),
+				'estate' => [
+					'last' => Yii::$app->smartData->getList('object-estates', 0),
+					'prelast' => Yii::$app->smartData->getList('object-estates', 1),
+					'old' => Yii::$app->smartData->getList('object-estates', 2),
+					'adaptive' => Yii::$app->smartData->getList('object-estates', 3)
+				]
+			],
+			'reviews' => [
+					'last' => Yii::$app->smartData->getList('reviews', 0),
+					'prelast' => Yii::$app->smartData->getList('reviews', 1),
+					'old' => Yii::$app->smartData->getList('reviews', 2),
+					'adaptive' => Yii::$app->smartData->getList('reviews', 3)
 			],
 			'services' => [
 				'desktop' => [
@@ -104,13 +113,15 @@ class SiteController extends Controller{
 
 		return $this->render('servicePage', ['servicePage' => $currentServiceQuery]);
 	}
-	public function actionServicePageForm($id, $pageType){
+	public function actionServicePageForm($id, $pagetype){
 
 		$this->view->registerJsFile("https://unpkg.com/@babel/standalone/babel.min.js", ['position' => View::POS_HEAD]);
 		$this->view->registerJsFile("https://unpkg.com/react@17/umd/react.production.min.js", ['position' => View::POS_HEAD]);
 		$this->view->registerJsFile("https://unpkg.com/react-dom@17/umd/react-dom.production.min.js", ['position' => View::POS_HEAD]);
 
-		if($pageType == 'form'){
+		if($pagetype == 'form'){
+			$servicePage = PortalServices::findOne(['id' => $id]);
+			
 			$this->view->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.11/jquery.autocomplete.min.js", ['position' => View::POS_HEAD]);
 			$this->view->registerJsFile("/js/react/serviceFormPage.js", ['position' => View::POS_END]);
 		}
@@ -119,7 +130,7 @@ class SiteController extends Controller{
 			return $this->redirect(['site/service-page', ['id' => $id]]);
 		}
 
-		return $this->render('serviceViewer', ['serviceForm' => $servicePage, 'type' => $pageType]);
+		return $this->render('serviceViewer', ['serviceForm' => $servicePage, 'type' => $pagetype]);
 	}
 	public function actionServicesApi($serviceId, $operation){
 		switch($serviceId){
@@ -259,9 +270,9 @@ class SiteController extends Controller{
 						$regexIs = 0;
 						
 						foreach($listSet as $lds){
-							$metaData = Json::deocde($lds->meta, true);
+							$metaData = Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.categoryId")) as "cat" FROM serviceList WHERE id=:service')->bindValues([':service' => $lds->id])->queryOne();
 							
-							if($metaData['categoryId'] == $cat){
+							if($metaData['cat'] == $cat){
 								$listResponse[] = [
 									'id' => $lds->id,
 									'title' => $lds->title,
@@ -606,12 +617,6 @@ class SiteController extends Controller{
 				Yii::$app->response->statusCode = 404;
 				\Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
 				return 'Service not found'; 
-		}
-	}
-	public function actionError(){
-		$exception = Yii::$app->errorHandler->exception;
-		if ($exception->statusCode == 404) {
-			return $this->redirect(['site/index']);
 		}
 	}
 	

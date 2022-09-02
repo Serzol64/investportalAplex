@@ -73,9 +73,11 @@ class AdminController extends Controller{
 									header('Location: '. Url::to(['admin/index']));
 								}
 								if(isset($_GET['page'])){ 
-									$this->view->registerJsFile("/js/lib/htmlbuilder.min.js", ['position' => View::POS_HEAD]); 
-									$this->view->registerJsFile("/js/ckeditor/ckeditor.js", ['position' => View::POS_HEAD]); 
-									$this->view->registerJsFile("/js/react/admin/portalServices/managment.js", ['type' => 'text/babel']); 
+									if($_GET['page'] == 'managment'){
+										$this->view->registerJsFile("/js/lib/htmlbuilder.min.js", ['position' => View::POS_HEAD]); 
+										$this->view->registerJsFile("/js/ckeditor/ckeditor.js", ['position' => View::POS_HEAD]); 
+										$this->view->registerJsFile("/js/react/admin/portalServices/managment.js", ['type' => 'text/babel']); 
+									}
 								}
 								$service = 'portalServices';
 							break;
@@ -705,13 +707,47 @@ class AdminController extends Controller{
 						$serviceResponse[] = "Not command found!";	
 				}
 		}
-		else if($svc == "portalServices" || $svc == "portalServicesCategory"){
+		else if($svc == "portalServices" || $svc == "portalServicesCategory" || $svc == "portalServicesCurrentCategory"){
 			$SConnector = [
 				'c' => [new PortalServices, PortalServices::find()],
 				's' => [new PortalServicesCategory, PortalServicesCategory::find()]
 			];
 					
 			if($svc == "portalServicesCategory"){ $svcl = $SConnector['s'][1]->all(); }
+			else if($svc == "portalServicesCurrentCategory"){
+				if(isset($_POST['categoryId'])){
+						$listSet = $SConnector['c'][1]->all();
+						$cat = $_POST['categoryId'];
+						$regexIs = 0;
+						
+						foreach($listSet as $lds){
+							$metaData = Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.categoryId")) as "cat" FROM serviceList WHERE id=:service')->bindValues([':service' => $lds->id])->queryOne();
+							
+							if($metaData['cat'] == $cat){
+								$svcl[] = [
+									'id' => $lds->id,
+									'title' => $lds->title,
+									'meta' => $lds->meta,
+									'content' => $lds->content,
+									'proc' => $lds->proc
+								];
+								
+								$regexIs++;
+							}
+						}
+						
+						if($regexIs == 0){
+							Yii::$app->response->statusCode = 404;
+							\Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
+							$svcl = 'Services not found'; 
+						}
+					}
+					else{
+						Yii::$app->response->statusCode = 402;
+						\Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
+						$svcl = 'Operation not found'; 
+					}
+			}
 			else if($svc == "portalServices"){ 
 				if(!isset($_GET['id'])){ $svcl = $SConnector['c'][1]->all(); }
 				else{
@@ -719,7 +755,7 @@ class AdminController extends Controller{
 					$multiResponse = [[], []];
 					$serviceDataQuery = [':service' => $_GET['id']];
 					$currentQuery = [
-						Yii::$app->db->createCommand('SELECT id, title, JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.categoryId")) as "cat" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
+						Yii::$app->db->createCommand('SELECT id, title, JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.country")) as "country", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.region")) as "region", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.categoryId")) as "cat" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
 						Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.description")) as "description",  JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.term")) as "term", JSON_EXTRACT(meta, "$.accessRole") as "private" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
 						Yii::$app->db->createCommand('SELECT JSON_EXTRACT(proc, "$.send") as "send",  JSON_EXTRACT(proc, "$.push") as "push",  JSON_EXTRACT(proc, "$.realtime") as "realtime",  JSON_EXTRACT(proc, "$.control") as "control" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
 						Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.faqService[*].question")) as "question",  JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.faqService[*].answer")) as "answer" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryAll(),
@@ -727,7 +763,7 @@ class AdminController extends Controller{
 					];
 					
 					for($i = 0; $i < count($currentQuery[3]); $i++){ $multiResponse[0][] = $currentQuery[3][$i]; }
-					for($i = 0; $i < count($currentQuery[4]); $i++)){ $multiResponse[1][] = $currentQuery[4][$i]; }
+					for($i = 0; $i < count($currentQuery[4]); $i++){ $multiResponse[1][] = $currentQuery[4][$i]; }
 					
 					$currentResponse = [
 						'title' => $currentQuery[0]['title'],
@@ -735,6 +771,13 @@ class AdminController extends Controller{
 						'accessLevel' => $currentQuery[1]['private'],
 						'description' => $currentQuery[1]['description'],
 						'terms' => $currentQuery[1]['term'],
+						'region' => [
+							'country' => $currentQuery[0]['country'],
+							'data' => [
+								'country' => $currentQuery[0]['country'],
+								'region' => $currentQuery[0]['region']
+							]
+						],
 						'proc' => [
 							'send' => $currentQuery[2]['send'],
 							'push' => $currentQuery[2]['push'],

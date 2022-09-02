@@ -44,7 +44,7 @@ class RegionList extends React.Component{
 		let myStates;
 		if(this.props.type === 'region'){
 			myStates = this.state.region.map((myState) =>
-				<option value={myState.city + '/' + myState.region + '/' + myState.country}>{ myState.title }</option>
+				<option value={myState.region}>{ myState.region }</option>
 			);
 		}
 		else{
@@ -65,6 +65,7 @@ class RegionListEditor extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
+		  query: props.current,
 		  country: [],
 		  region: []
 	    };
@@ -82,12 +83,12 @@ class RegionListEditor extends React.Component{
 		let myStates;
 		if(this.props.type === 'region'){
 			myStates = this.state.region.map((myState) =>
-				<option value={myState.city + '/' + myState.region + '/' + myState.country}>{ myState.title }</option>
+				<option selected={ (this.state.query.region === myState.region && this.state.query.country === myState.country) ? true : false } value={myState.region}>{ myState.region }</option>
 			);
 		}
 		else{
 			myStates = this.state.country.map((myState) =>
-				<option value={myState.code}>{ myState.title }</option>
+				<option selected={ this.state.query === myState.title ? true : false } value={myState.code}>{ myState.title }</option>
 			);
 		}
 		
@@ -118,6 +119,35 @@ class CategoryList extends React.Component{
 	render(){
 		const myStates = this.state.category.map((myState) =>
 			<option value={myState.id}>{ myState.name }</option>
+		);
+		return (
+			<React.Fragment>
+			  {myStates}
+			</React.Fragment>
+		);
+	}
+}
+
+class CategoryListEditor extends React.Component{
+	constructor(props){
+		super(props);
+		this.state = {
+		  query: props.current,
+		  category: []
+	    };
+	}
+	componentDidMount(){
+		fetch('/admin/api/dataServices/filters/portalServicesCategory/show', { method: 'GET' })
+        .then(response => response.json())
+		.then(data => this.setState({ category: data }))
+		.catch(error => {
+			alert('Response error!');
+			console.log(error);
+		});
+	}
+	render(){
+		const myStates = this.state.category.map((myState) =>
+			<option value={myState.id} selected={ myState.id === this.state.query ? true : false }>{ myState.name }</option>
 		);
 		return (
 			<React.Fragment>
@@ -182,7 +212,7 @@ function serviceEditorUpdater(q){
 		$('#ready-query').val(JSON.stringify(updateCategory));
 	}
 }
-    
+  
 class Add extends React.Component{
 	constructor(props){
 		super(props);
@@ -588,8 +618,12 @@ class Edit extends React.Component{
 	render(){
 		return this.renderDynamicForm(this.state.currentType, this.state.currentQuery);
 	}
-	inputCountryQuery(e,t){}
-	inputRegionQuery(e,t){}
+	inputCountryQuery(e,t){
+		
+	}
+	inputRegionQuery(e,t){
+		
+	}
 	renderDynamicForm(q, i){
 		
 		if(q === 'true'){
@@ -607,14 +641,14 @@ class Edit extends React.Component{
 			const responseStateData = i.form.map((response) => {
 				(
 					<div>
-						<input type="text" name="field" id="field" placeholder="Enter the field name" value={ i.name } />
+						<input type="text" name="field" id="field" placeholder="Enter the field name" value={ response.name } />
 						<select name="fieldType" id="fieldType">
 							<option>Select form field type</option>
-							<option value="default" { i.field === 'default' ? 'selected' }>Text form</option>
-							<option value="list" { i.field === 'list' ? 'selected' }>List form</option>
-							<option value="upload" { i.field === 'upload' ? 'selected' }>Files upload form</option>
-							<option value="search" { i.field === 'search' ? 'selected' }>Search form</option>
-							<option value="queryContent" { i.field === 'queryContent' ? 'selected' }>Query from content</option>
+							<option value="default" selected={ response.field === 'default' ? true : false }>Text form</option>
+							<option value="list" selected={ response.field === 'list' ? true : false }>List form</option>
+							<option value="upload" selected={ response.field === 'upload' ? true : false }>Files upload form</option>
+							<option value="search" selected={ response.field === 'search' ? true : false }>Search form</option>
+							<option value="queryContent" selected={ response.field === 'queryContent' ? true : false }>Query from content</option>
 						</select>
 						<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAABmJLR0QA/wD/AP+gvaeTAAACSklEQVRoge2aTWobMRiGn6/4KM4JUt+ji4ZQMNS7uIvkMt04e6cldJN7mJ7AvkjBjrrITDDFWPqkV/KiejaBMDOvHg+jv0/Q6XQ6nU7nUpj3huvH3ScL4TtAMLv/fTd90TerXr5L+Ppxe2OBH8Bk+NfBYLFZXq09z8lFkZ8sfCJspIm0Kj9J+ExYVqgXZX5UePhmfp0JG9kbNt8sp8+xZ3qYrXa3gbBOyQ9mN7Fv+kMscOggYmEAk0BYz1a724Rrk3DIAkzGzuwcUWEnMmmn7EiIXRAVDmb3wN4RWiydKbsPZg+xi6LCwzfxBb/002y1nTvuAd46qAzZgwUWKWNy8rD0cbX9DPx0N8TReyf0xqczAl83366eUi52TTxqSreQhYypZQ3pVrKQIQxa6ZaykCkMGunWslAgDGXSr8af1rJQKAz5Y+bw13WPYupaLAzZb9pD8ZsdkQhDVWmZLAiFoYq0VBbEwiCVlstCBWGQSFeRhUrCUCRdTRb06+F3ghX8mCX3Rh9dgcwZ1DHV9sjkwgLZkSrSUmGh7IhcWiZcQXZEKi0Rrig7IpP+7xYPRcNSyYYbDTcGj8l+w4rFe4uNwX/JElbuVLSWzqgP67dlWkqX1ofTGpYwN24lragPn2+QYyHQQlpVHz7dkIxVT21pZX34mKIxs6CY1rQ+/B5cOkHYLKfPhs1xjtOXqA/LTgFkSjetD8uPPDilm9aHDxZYqM93wJt0an6r+nDVPSh1fml9uImsMr/k6GEIZg8XPHp4kfxOp9PpdDr5/AUtRwPaP+ABuAAAAABJRU5ErkJggg==" alt="Delete current field" />
 					</div>
@@ -667,11 +701,11 @@ class Edit extends React.Component{
 											<h4>Select one access level:</h4>
 											<ul className="level">
 												<li>
-													<input type="radio" id="accessLevel" value="private" { i.accessLevel === 'Private' ? 'checked' }/>
+													<input type="radio" id="accessLevel" value="private" checked={ i.accessLevel === 'Private' ? true : false }/>
 													<span>For registred users</span>
 												</li>
 												<li>
-													<input type="radio" id="accessLevel" value="public" { i.accessLevel === 'Public' ? 'checked' }/>
+													<input type="radio" id="accessLevel" value="public" checked={ i.accessLevel === 'Public' ? true : false }/>
 													<span>For all users and visitors</span>
 												</li>
 											</ul>
@@ -769,14 +803,15 @@ const HeaderRender = (hash) => {
   switch(hash){
     case "#add": render = '<a href="/admin?svc=dataManagment&subSVC=portalServices">Back to list</a>'; break;
     case "#edit": render = '<a href="/admin?svc=dataManagment&subSVC=portalServices">Back to list</a>'; break;
+    case "#list": render = '<a href="">Add new service category</a><a href="">Add new service</a>'; break;
   }
   
   $('.data-page > header nav').html(render);
 }
 const UIRender = (hash) => {
   switch(hash){
-    case "#add": document.title = "Add new Service"; break;
-    case "#edit": document.title = "Edit current Service"; break;
+    case "#add": document.title = params['contentStatus'] !== 'true' ? "Add new Service Category" : "Add new Service"; break;
+    case "#edit": document.title = params['contentStatus'] !== 'true' ? "Edit current Service Category" : "Edit current Service"; break;
   }
 }
 const UXRender = (hash) => {

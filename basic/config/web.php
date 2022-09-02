@@ -32,8 +32,8 @@ $config = [
 				'' => 'site/index',
 				'about' => 'site/about',
 				'services' => 'site/services',
-				'services/<id: \d+>' => 'site/service-page',
-				'services/<id: \d+>/<page-type>' => 'site/service-page-form',
+				'services/<id:\d+>' => 'site/service-page',
+				'services/<id:\d+>/<pagetype>' => 'site/service-page-form',
 				'services/<serviceId:\d+>/<operation>' => 'site/services-api',
 				'investors' => 'objects/investors',
 				'accounts/<service>' => '/site/account-service',
@@ -78,6 +78,7 @@ $config = [
         'view' => [
             'class' => 'yii\web\View'
         ],
+        'smartData' => ['class' => 'app\components\SmartData'],
         'realtedDB' => ['class' => 'app\components\RealtedContent'],
         'cloudCategorizator' => ['class' => 'app\components\CloudCategorizator'],
         'adminCMSData' => ['class' => 'app\components\ContentData'],

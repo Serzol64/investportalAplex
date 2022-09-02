@@ -72,6 +72,7 @@ class ServiceForm extends React.Component{
             let validQuery = {
                 type: 'control',
                 parameters: {
+					service: 'validator',
                     fieldFormName: curClass,
                     fieldFormQuery: curValue
                 }
@@ -85,7 +86,7 @@ class ServiceForm extends React.Component{
             fetch('/services/2/get?id=' + currentService, { method: 'GET', body: vsq})
             .then(response => response.json())
             .then((data) => {
-                switch(data.valid.class){
+                switch(data.valid.classificator){
                     case true: return false; break;
                     default: alertify.error(data.valid.error); break;
                 }
@@ -161,6 +162,7 @@ class ServiceForm extends React.Component{
                     formValidQuery = {
                         type: 'control',
                         parameters: {
+							service: 'validator',
                             multiValidator: {
                                 fieldsName: getArrayClasses(validField[1]),
                                 fieldsValue: getArrayValues(validField[1])
@@ -172,6 +174,7 @@ class ServiceForm extends React.Component{
                     formValidQuery = {
                         type: 'control',
                         parameters: {
+							service: 'validator',
                             multiValidator: {
                                 fieldsName: getArrayClasses(validField[0]),
                                 fieldsValue: getArrayValues(validField[0])
@@ -183,6 +186,7 @@ class ServiceForm extends React.Component{
                     formValidQuery = {
                         type: 'control',
                         parameters: {
+							service: 'validator',
                             multiValidator: {
                                 fieldsName: getArrayClasses(validField[2]),
                                 fieldsValue: getArrayValues(validField[2])
@@ -194,6 +198,7 @@ class ServiceForm extends React.Component{
                     formValidQuery = {
                         type: 'control',
                         parameters: {
+							service: 'validator',
                             multiValidator: {
                                 fieldsName: getArrayClasses(validField[3]),
                                 fieldsValue: getArrayValues(validField[3])
@@ -241,6 +246,7 @@ class ServiceForm extends React.Component{
                     formValidQuery = {
                         type: 'control',
                         parameters: {
+							service: 'validator',
                             multiValidator: {
                                 fieldsName: getArrayClasses(validFinal[1]),
                                 fieldsValue: getArrayValues(validFinal[1])
@@ -252,6 +258,7 @@ class ServiceForm extends React.Component{
                     formValidQuery = {
                         type: 'control',
                         parameters: {
+							service: 'validator',
                             multiValidator: {
                                 fieldsName: getArrayClasses(validFinal[0]),
                                 fieldsValue: getArrayValues(validFinal[0])
@@ -263,6 +270,7 @@ class ServiceForm extends React.Component{
                     formValidQuery = {
                         type: 'control',
                         parameters: {
+							service: 'validator',
                             multiValidator: {
                                 fieldsName: getArrayClasses(validFinal[2]),
                                 fieldsValue: getArrayValues(validFinal[2])
@@ -274,6 +282,7 @@ class ServiceForm extends React.Component{
                     formValidQuery = {
                         type: 'control',
                         parameters: {
+							service: 'validator',
                             multiValidator: {
                                 fieldsName: getArrayClasses(validFinal[3]),
                                 fieldsValue: getArrayValues(validFinal[3])

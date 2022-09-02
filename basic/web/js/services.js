@@ -24,7 +24,7 @@ $(document).ready(function(){
 		.then(response => response.json())
 		.then((data) => {
 			let listResponse = '';
-			data.map(res => listResponse += '<li><a href="${res.id}">${res.title}</a></li>');
+			data.map(res => listResponse += '<li><a href="/services/${res.id}">${res.title}</a></li>');
 			
 			$('main#list > ul').html(listResponse);
 			window.setTimeout(function(){ 

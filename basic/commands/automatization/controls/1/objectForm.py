@@ -193,41 +193,51 @@ def formValid(q):
 	validResponse = []
 	fieldsQuery = q.multivalidator
 	
-	for i in range(len(fieldsQuery.fieldsName)):
-		currentName = fieldsQuery.fieldsName[i]
-		currentValue = fieldsQuery.fieldsValue[i]
+	if fieldsQuery:
 		
-		if currentName == 'photogallery' or currentName == 'presentation' or currentName == 'presentationFile' or :
-			if currentName == 'presentation':
-				vValidation = presentationUpload('video', currentValue)
-				
-				if vValidation:
-					validResponse.append(vValidation)
-			elif currentName == 'presentationFile':
-				fValidation = presentationUpload('file', currentValue)
-				
-				if fValidation:
-					validResponse.append(fValidation)
-			elif currentName == 'presentationPoster':
-				pValidation = presentationPosterUpload('video', currentValue)
-				
-				if pValidation:
-					validResponse.append(fValidation)
-			else:
-				pgValidation = photoGallery(currentValue)
-				
-				if pgValidation:
-					validResponse.append(pgValidation)
+		for i in range(len(fieldsQuery.fieldsName)):
+			currentName = fieldsQuery.fieldsName[i]
+			currentValue = fieldsQuery.fieldsValue[i]
+			
+			if currentName == 'photogallery' or currentName == 'presentation' or currentName == 'presentationFile' or currentName == 'presentationPoster':
+				if currentName == 'presentation':
+					vValidation = presentationUpload('video', currentValue)
+					
+					if vValidation:
+						validResponse.append(vValidation)
+				elif currentName == 'presentationFile':
+					fValidation = presentationUpload('file', currentValue)
+					
+					if fValidation:
+						validResponse.append(fValidation)
+				elif currentName == 'presentationPoster':
+					pValidation = presentationPosterUpload('video', currentValue)
+					
+					if pValidation:
+						validResponse.append(fValidation)
+				else:
+					pgValidation = photoGallery(currentValue)
+					
+					if pgValidation:
+						validResponse.append(pgValidation)
 
-		elif currentName == 'objectTitle' or currentName == 'objectCost':
+			elif currentName == 'objectTitle' or currentName == 'objectCost':
+				isCost = currentValue == 'objectCost' if Cost(currentValue) else Title(currentValue)
+				validResponse.append(isCost)
+			elif currentName == 'description' or currentName == 'content':
+				isContent = currentValue == 'content' if Content(currentValue) else Description(currentValue)
+				validResponse.append(isContent)
+			elif currentName == 'objectAttribute' or currentName == 'objectRegion':
+				isAttribute = currentValue == 'objectAttribute' if Attribute(currentValue) else Region(currentValue)
+				validResponse.append(isAttribute)
+				
+	else:
+		currentName = q.fieldsName
+		currentValue = q.fieldsValue
+
+		if currentName == 'objectTitle' or currentName == 'objectCost':
 			isCost = currentValue == 'objectCost' if Cost(currentValue) else Title(currentValue)
 			validResponse.append(isCost)
-		elif currentName == 'description' or currentName == 'content':
-			isContent = currentValue == 'content' if Content(currentValue) else Description(currentValue)
-			validResponse.append(isContent)
-		elif currentName == 'objectAttribute' or currentName == 'objectRegion':
-			isAttribute = currentValue == 'objectAttribute' if Attribute(currentValue) else Region(currentValue)
-			validResponse.append(isAttribute)
 			
     return validResponse
 
@@ -247,3 +257,5 @@ if __name__ == "__main__":
 			}
 			
 			print(json.dumps(readyResponse))
+		elif readyQuery.service == 'validator':
+			print(formValid(readyQuery))

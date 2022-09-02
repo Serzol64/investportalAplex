@@ -23,7 +23,7 @@ $this->title = 'Portal services';
 				  
 				  <div class="categories">
 					<?php foreach($categories as $cl){ ?>
-						<a data-cat="<?php echo $cl->id; ?>">
+						<a href="#" data-cat="<?php echo $cl->id; ?>">
 						  <img src="<?php echo $cl->icon; ?>" />
 						  <strong><?php echo $cl->name; ?></strong>
 						</a>

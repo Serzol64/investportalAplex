@@ -40,6 +40,87 @@ $this->title = 'Welcome to Investportal!';
 		</header>
 		<main class="swiper-container">
                 <div class="promo-feed swiper-wrapper">
+					<?php
+					foreach($interactiveFeed['objects']['popular'] as $currentPopular){
+					?>
+					<div class="promoblock swiper-slide">
+                        <div class="promoblock-content">
+                            <header></header>
+                            <main>
+                                <span class="location"><?php echo $currentPopular->content->country; ?></span>
+                                <img src="<?php echo $currentPopular->content->titlePhoto; ?>" alt="Place">
+                            </main>
+                            <footer>
+                                <div class="info">
+                                    <span><?php echo $currentPopular->title; ?></span>
+                                    <span>
+										<?php
+										$listQuery = ['type' => 'list'];
+										$dataCurrency = Yii::$app->currencyDB->execute($listQuery);
+											
+											
+										for($i = 0; $i < count($dataCurrency); $i++){
+											if(isset($_COOKIE['servicesCurrency'])){
+												if($_COOKIE['servicesCurrency'] == $dataCurrency[$i]['currency']){ 
+													$convertQuery = [
+														'myCur' => $dataCurrency[$i]['currency'],
+														'amount' => $currentPopular->content->cost
+													];
+													
+													$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
+													
+													$amountQuery = [
+														'isSymbol' => TRUE,
+														'query' => [
+															'cur' => $dataCurrency[$i]['currency'],
+															'amount' => $currentPopular->content->cost
+														]
+													];
+													
+													echo Yii::$app->currencyDB->getFullAmount($amountQuery);
+												}
+											}
+											else if($dataCurrency[$i]['selected'] == 'Yes'){ 
+												$convertQuery = [
+														'myCur' => $dataCurrency[$i]['currency'],
+														'amount' => $currentPopular->content->cost
+													];
+													
+													$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
+													
+													$amountQuery = [
+														'isSymbol' => TRUE,
+														'query' => [
+															'cur' => $dataCurrency[$i]['currency'],
+															'amount' => $currentPopular->content->cost
+														]
+													];
+													
+													echo Yii::$app->currencyDB->getFullAmount($amountQuery);
+											}
+										}
+									?>
+                                    </span>
+                                </div>
+                                <div class="raiting">
+                                    <span>Expert Raiting</span>
+                                    <div class="rating-mini">
+                                        <span class="active"></span>	
+                                        <span class="active"></span>    
+                                        <span class="active"></span> 
+                                        <span class="active"></span>	
+                                        <span class="active"></span>    
+                                        <span class="active"></span>
+                                        <span class="active"></span>    
+                                        <span class="active"></span>
+                                        <span></span>    
+                                        <span></span>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+					<?php } ?>
 				</div>
 
 				<div class="swiper-pagination"></div>
@@ -146,6 +227,7 @@ $this->title = 'Welcome to Investportal!';
             </header>
             <main class="swiper-container">
                 <div class="popular-objects swiper-wrapper">
+					
 				</div>
 
 				<div class="swiper-pagination"></div>
@@ -465,8 +547,428 @@ $this->title = 'Welcome to Investportal!';
 		 <main>
 				<header id="slider-controller-adaptive"><img src="/images/icons/slider-contorls/back.png" alt="Назад"></header>
 				<header id="slider-controller"><img src="/images/icons/slider-contorls/back.png" alt="Назад"></header>
-				<main id="slider-view-adaptive"></main>
-				<main id="slider-view"></main>
+				<main id="slider-view-adaptive">
+			<?php
+				$i = 8;
+				
+				foreach($interactiveFeed['objects']['estates']['adaptive'] as $offersFeed){
+					if($i < 8){
+			?>
+					<div class="estat">
+                        <div class="estat-content">
+                            <header>
+                                <h3><?php echo $offersFeed->content->country; ?></h3>
+                            </header>
+                            <main>
+                                <img src="<?php echo $offersFeed->content->titlePhoto; ?>" alt="Hotel">
+                            </main>
+                            <footer>
+                                <div class="info">
+                                    <span><?php echo $offersFeed->title; ?></span>
+                                    <span>
+										<?php
+										$listQuery = ['type' => 'list'];
+										$dataCurrency = Yii::$app->currencyDB->execute($listQuery);
+											
+											
+										for($i = 0; $i < count($dataCurrency); $i++){
+											if(isset($_COOKIE['servicesCurrency'])){
+												if($_COOKIE['servicesCurrency'] == $dataCurrency[$i]['currency']){ 
+													$convertQuery = [
+														'myCur' => $dataCurrency[$i]['currency'],
+														'amount' => $offersFeed->content->cost
+													];
+													
+													$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
+													
+													$amountQuery = [
+														'isSymbol' => TRUE,
+														'query' => [
+															'cur' => $dataCurrency[$i]['currency'],
+															'amount' => $offersFeed->content->cost
+														]
+													];
+													
+													echo Yii::$app->currencyDB->getFullAmount($amountQuery);
+												}
+											}
+											else if($dataCurrency[$i]['selected'] == 'Yes'){ 
+												$convertQuery = [
+														'myCur' => $dataCurrency[$i]['currency'],
+														'amount' => $offersFeed->content->cost
+													];
+													
+													$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
+													
+													$amountQuery = [
+														'isSymbol' => TRUE,
+														'query' => [
+															'cur' => $dataCurrency[$i]['currency'],
+															'amount' => $offersFeed->content->cost
+														]
+													];
+													
+													echo Yii::$app->currencyDB->getFullAmount($amountQuery);
+											}
+										}
+									?>
+                                    </span>
+                                </div>
+                                <div class="raiting">
+                                    <span>Expert Raiting</span>
+                                    <div class="rating-mini">
+                                        <span class="active"></span>	
+                                        <span class="active"></span>    
+                                        <span class="active"></span> 
+                                        <span class="active"></span>	
+                                        <span class="active"></span>    
+                                        <span class="active"></span>
+                                        <span class="active"></span>    
+                                        <span class="active"></span>
+                                        <span></span>    
+                                        <span></span>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+				<?php } else { ?>
+					<div class="estat" id="none">
+                         <div class="estat-content">
+                            <header>
+                                <h3><?php echo $offersFeed->content->country; ?></h3>
+                            </header>
+                            <main>
+                                <img src="<?php echo $offersFeed->content->titlePhoto; ?>" alt="Hotel">
+                            </main>
+                            <footer>
+                                <div class="info">
+                                    <span><?php echo $offersFeed->title; ?></span>
+                                    <span>
+										<?php
+										$listQuery = ['type' => 'list'];
+										$dataCurrency = Yii::$app->currencyDB->execute($listQuery);
+											
+											
+										for($i = 0; $i < count($dataCurrency); $i++){
+											if(isset($_COOKIE['servicesCurrency'])){
+												if($_COOKIE['servicesCurrency'] == $dataCurrency[$i]['currency']){ 
+													$convertQuery = [
+														'myCur' => $dataCurrency[$i]['currency'],
+														'amount' => $offersFeed->content->cost
+													];
+													
+													$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
+													
+													$amountQuery = [
+														'isSymbol' => TRUE,
+														'query' => [
+															'cur' => $dataCurrency[$i]['currency'],
+															'amount' => $offersFeed->content->cost
+														]
+													];
+													
+													echo Yii::$app->currencyDB->getFullAmount($amountQuery);
+												}
+											}
+											else if($dataCurrency[$i]['selected'] == 'Yes'){ 
+												$convertQuery = [
+														'myCur' => $dataCurrency[$i]['currency'],
+														'amount' => $offersFeed->content->cost
+													];
+													
+													$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
+													
+													$amountQuery = [
+														'isSymbol' => TRUE,
+														'query' => [
+															'cur' => $dataCurrency[$i]['currency'],
+															'amount' => $offersFeed->content->cost
+														]
+													];
+													
+													echo Yii::$app->currencyDB->getFullAmount($amountQuery);
+											}
+										}
+									?>
+                                    </span>
+                                </div>
+                                <div class="raiting">
+                                    <span>Expert Raiting</span>
+                                    <div class="rating-mini">
+                                        <span class="active"></span>	
+                                        <span class="active"></span>    
+                                        <span class="active"></span> 
+                                        <span class="active"></span>	
+                                        <span class="active"></span>    
+                                        <span class="active"></span>
+                                        <span class="active"></span>    
+                                        <span class="active"></span>
+                                        <span></span>    
+                                        <span></span>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+			<?php 
+					}
+					$i--;
+				} 
+			?>
+				</main>
+				<main id="slider-view">
+					 <div class="estat-feed">
+					<?php
+					foreach($interactiveFeed['objects']['estates']['last'] as $offersFeed){
+					?>
+                        <div class="estat">
+                             <div class="estat-content">
+								<header>
+									<h3><?php echo $offersFeed->content->country; ?></h3>
+								</header>
+								<main>
+									<img src="<?php echo $offersFeed->content->titlePhoto; ?>" alt="Hotel">
+								</main>
+								<footer>
+									<div class="info">
+										<span><?php echo $offersFeed->title; ?></span>
+										<span>
+											<?php
+											$listQuery = ['type' => 'list'];
+											$dataCurrency = Yii::$app->currencyDB->execute($listQuery);
+												
+												
+											for($i = 0; $i < count($dataCurrency); $i++){
+												if(isset($_COOKIE['servicesCurrency'])){
+													if($_COOKIE['servicesCurrency'] == $dataCurrency[$i]['currency']){ 
+														$convertQuery = [
+															'myCur' => $dataCurrency[$i]['currency'],
+															'amount' => $offersFeed->content->cost
+														];
+														
+														$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
+														
+														$amountQuery = [
+															'isSymbol' => TRUE,
+															'query' => [
+																'cur' => $dataCurrency[$i]['currency'],
+																'amount' => $offersFeed->content->cost
+															]
+														];
+														
+														echo Yii::$app->currencyDB->getFullAmount($amountQuery);
+													}
+												}
+												else if($dataCurrency[$i]['selected'] == 'Yes'){ 
+													$convertQuery = [
+															'myCur' => $dataCurrency[$i]['currency'],
+															'amount' => $offersFeed->content->cost
+														];
+														
+														$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
+														
+														$amountQuery = [
+															'isSymbol' => TRUE,
+															'query' => [
+																'cur' => $dataCurrency[$i]['currency'],
+																'amount' => $offersFeed->content->cost
+															]
+														];
+														
+														echo Yii::$app->currencyDB->getFullAmount($amountQuery);
+												}
+											}
+										?>
+										</span>
+									</div>
+									<div class="raiting">
+										<span>Expert Raiting</span>
+										<div class="rating-mini">
+											<span class="active"></span>	
+											<span class="active"></span>    
+											<span class="active"></span> 
+											<span class="active"></span>	
+											<span class="active"></span>    
+											<span class="active"></span>
+											<span class="active"></span>    
+											<span class="active"></span>
+											<span></span>    
+											<span></span>
+										</div>
+									</div>
+								</footer>
+							</div>
+                     </div>
+                    <?php } ?>
+                     <div class="estat-feed" id="hide">
+					<?php
+					foreach($interactiveFeed['objects']['estates']['prelast'] as $offersFeed){
+					?>
+                        <div class="estat">
+                             <div class="estat-content">
+								<header>
+									<h3><?php echo $offersFeed->content->country; ?></h3>
+								</header>
+								<main>
+									<img src="<?php echo $offersFeed->content->titlePhoto; ?>" alt="Hotel">
+								</main>
+								<footer>
+									<div class="info">
+										<span><?php echo $offersFeed->title; ?></span>
+										<span>
+											<?php
+											$listQuery = ['type' => 'list'];
+											$dataCurrency = Yii::$app->currencyDB->execute($listQuery);
+												
+												
+											for($i = 0; $i < count($dataCurrency); $i++){
+												if(isset($_COOKIE['servicesCurrency'])){
+													if($_COOKIE['servicesCurrency'] == $dataCurrency[$i]['currency']){ 
+														$convertQuery = [
+															'myCur' => $dataCurrency[$i]['currency'],
+															'amount' => $offersFeed->content->cost
+														];
+														
+														$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
+														
+														$amountQuery = [
+															'isSymbol' => TRUE,
+															'query' => [
+																'cur' => $dataCurrency[$i]['currency'],
+																'amount' => $offersFeed->content->cost
+															]
+														];
+														
+														echo Yii::$app->currencyDB->getFullAmount($amountQuery);
+													}
+												}
+												else if($dataCurrency[$i]['selected'] == 'Yes'){ 
+													$convertQuery = [
+															'myCur' => $dataCurrency[$i]['currency'],
+															'amount' => $offersFeed->content->cost
+														];
+														
+														$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
+														
+														$amountQuery = [
+															'isSymbol' => TRUE,
+															'query' => [
+																'cur' => $dataCurrency[$i]['currency'],
+																'amount' => $offersFeed->content->cost
+															]
+														];
+														
+														echo Yii::$app->currencyDB->getFullAmount($amountQuery);
+												}
+											}
+										?>
+										</span>
+									</div>
+									<div class="raiting">
+										<span>Expert Raiting</span>
+										<div class="rating-mini">
+											<span class="active"></span>	
+											<span class="active"></span>    
+											<span class="active"></span> 
+											<span class="active"></span>	
+											<span class="active"></span>    
+											<span class="active"></span>
+											<span class="active"></span>    
+											<span class="active"></span>
+											<span></span>    
+											<span></span>
+										</div>
+									</div>
+								</footer>
+							</div>
+                        </div>
+                    <?php } ?>
+                     <div class="estat-feed" id="hide">
+					<?php
+					foreach($interactiveFeed['objects']['estates']['old'] as $offersFeed){
+					?>
+                        <div class="estat">
+                             <div class="estat-content">
+								<header>
+									<h3><?php echo $offersFeed->content->country; ?></h3>
+								</header>
+								<main>
+									<img src="<?php echo $offersFeed->content->titlePhoto; ?>" alt="Hotel">
+								</main>
+								<footer>
+									<div class="info">
+										<span><?php echo $offersFeed->title; ?></span>
+										<span>
+											<?php
+											$listQuery = ['type' => 'list'];
+											$dataCurrency = Yii::$app->currencyDB->execute($listQuery);
+												
+												
+											for($i = 0; $i < count($dataCurrency); $i++){
+												if(isset($_COOKIE['servicesCurrency'])){
+													if($_COOKIE['servicesCurrency'] == $dataCurrency[$i]['currency']){ 
+														$convertQuery = [
+															'myCur' => $dataCurrency[$i]['currency'],
+															'amount' => $offersFeed->content->cost
+														];
+														
+														$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
+														
+														$amountQuery = [
+															'isSymbol' => TRUE,
+															'query' => [
+																'cur' => $dataCurrency[$i]['currency'],
+																'amount' => $offersFeed->content->cost
+															]
+														];
+														
+														echo Yii::$app->currencyDB->getFullAmount($amountQuery);
+													}
+												}
+												else if($dataCurrency[$i]['selected'] == 'Yes'){ 
+													$convertQuery = [
+															'myCur' => $dataCurrency[$i]['currency'],
+															'amount' => $offersFeed->content->cost
+														];
+														
+														$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
+														
+														$amountQuery = [
+															'isSymbol' => TRUE,
+															'query' => [
+																'cur' => $dataCurrency[$i]['currency'],
+																'amount' => $offersFeed->content->cost
+															]
+														];
+														
+														echo Yii::$app->currencyDB->getFullAmount($amountQuery);
+												}
+											}
+										?>
+										</span>
+									</div>
+									<div class="raiting">
+										<span>Expert Raiting</span>
+										<div class="rating-mini">
+											<span class="active"></span>	
+											<span class="active"></span>    
+											<span class="active"></span> 
+											<span class="active"></span>	
+											<span class="active"></span>    
+											<span class="active"></span>
+											<span class="active"></span>    
+											<span class="active"></span>
+											<span></span>    
+											<span></span>
+										</div>
+									</div>
+								</footer>
+							</div>
+                        </div>
+                    <?php } ?>
+                     </div>
+				</main>
 				<footer id="slider-controller-adaptive"><img src="/images/icons/slider-contorls/go.png" alt="Вперёд"></footer>
 				<footer id="slider-controller"><img src="/images/icons/slider-contorls/go.png" alt="Вперёд"></footer> 
          </main>
@@ -481,8 +983,70 @@ $this->title = 'Welcome to Investportal!';
 		<main>
 				<header id="slider-controller-adaptive"><img src="/images/icons/slider-contorls/back.png" alt="Назад"></header>
 				<header id="slider-controller"><img src="/images/icons/slider-contorls/back.png" alt="Назад"></header>
-				<main id="slider-view-adaptive"></main>
-				<main id="slider-view"></main>
+				<main id="slider-view-adaptive">
+					<?php 
+					$i = 8;
+					
+					foreach($interactiveFeed['reviews']['adaptive']['article'] as $newsFeed){
+						$domain = parse_url($newsFeed->url);
+						if($i < 8){
+					?>
+                        <div class="review" id="with-title-image">
+                            <header><img src="https://logo.clearbit.com/<?php echo $domain['host']; ?>?size=105" alt="<?php echo $newsFeed->source->name; ?>"></header>
+                            <main><h3><?php echo $newsFeed->title; ?></h3></main>
+                            <footer><a href="<?php echo $newsFeed->url; ?>" target="_blank">More</a></footer>
+                        </div>
+					<?php } else{ ?>
+						<div class="review hide" id="with-title-image">
+                            <header><img src="https://logo.clearbit.com/<?php echo $domain['host']; ?>?size=105" alt="<?php echo $newsFeed->source->name; ?>"></header>
+                            <main><h3><?php echo $newsFeed->title; ?></h3></main>
+                            <footer><a href="<?php echo $newsFeed->url; ?>" target="_blank">More</a></footer>
+                        </div>
+                     <?php 
+						}
+                     
+						$i--;
+                     } 
+                     ?>
+				</main>
+				<main id="slider-view">
+					 <div class="review-feed">
+					<?php 
+					foreach($interactiveFeed['reviews']['last']['article'] as $newsFeed){
+						$domain = parse_url($newsFeed->url);
+					?>
+                        <div class="review" id="with-title-image">
+                            <header><img src="https://logo.clearbit.com/<?php echo $domain['host']; ?>?size=105" alt="<?php echo $newsFeed->source->name; ?>"></header>
+                            <main><h3><?php echo $newsFeed->title; ?></h3></main>
+                            <footer><a href="<?php echo $newsFeed->url; ?>" target="_blank">More</a></footer>
+                        </div>
+                     <?php } ?>
+                     </div>
+                     <div class="review-feed" id="hide">
+					<?php 
+					foreach($interactiveFeed['reviews']['prelast']['article'] as $newsFeed){
+						$domain = parse_url($newsFeed->url);
+					?>
+                        <div class="review" id="with-title-image">
+                            <header><img src="https://logo.clearbit.com/<?php echo $domain['host']; ?>?size=105" alt="<?php echo $newsFeed->source->name; ?>"></header>
+                            <main><h3><?php echo $newsFeed->title; ?></h3></main>
+                            <footer><a href="<?php echo $newsFeed->url; ?>" target="_blank">More</a></footer>
+                        </div>
+                     <?php } ?>
+                     </div>
+                     <div class="review-feed" id="hide">
+					<?php 
+					foreach($interactiveFeed['reviews']['old']['article'] as $newsFeed){
+						$domain = parse_url($newsFeed->url);
+					?>
+                        <div class="review" id="with-title-image">
+                            <header><img src="https://logo.clearbit.com/<?php echo $domain['host']; ?>?size=105" alt="<?php echo $newsFeed->source->name; ?>"></header>
+                            <main><h3><?php echo $newsFeed->title; ?></h3></main>
+                            <footer><a href="<?php echo $newsFeed->url; ?>" target="_blank">More</a></footer>
+                        </div>
+                     <?php } ?>
+                     </div>
+				</main>
 				<footer id="slider-controller-adaptive"><img src="/images/icons/slider-contorls/go.png" alt="Вперёд"></footer>
 				<footer id="slider-controller"><img src="/images/icons/slider-contorls/go.png" alt="Вперёд"></footer> 
         </main>

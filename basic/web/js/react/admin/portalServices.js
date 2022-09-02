@@ -11,37 +11,27 @@ var params = window
         },
         {}
     );
-    
-    
+   
+
 class Services extends React.Component{
 	constructor(props){
 		super(props);
-		
-		this.query = props.q;
-		this.state = { list: [] };
+		this.state = { query: props.q, list: [] };
 	}
 	componentDidMount(){
-		fetch('/admin/api/dataServices/filters/portalServices/show', { method: 'GET' })
+		var fda = new FormData();
+		fda.append('categoryId', this.state.query);
+		fetch('/admin/api/dataServices/filters/portalServicesCurrentCategory/show', { method: 'POST', body: fda })
 			.then(response => response.json())
-			.then(this.generateSmartResponse)
-			.catch(error => {
-				console.log(error);
+			.then((data) => {
+				this.setState({ list: data });
 			});
 	}
-	generateSmartResponse(data){ this.setState({ list: data }); }
-	linkGenerator(q){ return '/admin?svc=dataManagment&subSVC=portalServices&contentStatus=true&id=' + q + '#edit'; }
 	render(){
-		const renderList = this.state.list.map((query) => {
-			(
-				<li><a href={ this.linkGenearator(query.id) }>{ query.title }</a></li>
-			)
-		});
+		
+		const renderList = this.state.list.map(query => <li><a href={ '/admin?svc=dataManagment&subSVC=portalServices&page=managment&contentStatus=true&id=' + query.id + '#edit' }>{ query.title }</a></li>);
 		return (
-			<React.Fragment>
-				<ul>
-				  { renderList }
-				</ul>
-			</React.Fragment>
+			<React.Fragment><ul>{ renderList }</ul></React.Fragment>
 		);
 	}
 }
@@ -49,7 +39,7 @@ class Services extends React.Component{
 class List extends React.Component{
 	constructor(props){
 		super(props);
-		this.state = { list: [], cQuery: { catId: 1 } };
+		this.state = { list: [], cQuery: 0 };
 	}
 	componentDidMount(){
 		fetch('/admin/api/dataServices/filters/portalServicesCategory/show', { method: 'GET'})
@@ -67,7 +57,10 @@ class List extends React.Component{
 			$(".categories > a").eq($(this).index()).addClass('active-category');
 				
 			let currentCat = $('.categories > a').eq($(this).index()).data('cat');
-			this.setState({ cQuery: { catId: currentCat } });
+			this.setState({ cQuery: currentCat });
+			
+			$('.load-screen-services').removeClass('list-smart-close');
+			$('.not-found-data, main#list > ul').addClass('list-smart-close');
 		});
 	}
 	render(){
@@ -97,9 +90,9 @@ class List extends React.Component{
 			<React.Fragment>
 				<div id="services-list">
 				  <header id="search">
-					  <div class="categories">{ catsList }</div>
+					  <div className="categories">{ catsList }</div>
 				  </header>
-				  <main id="list"><Services q={ this.state.cQuery } /></main>
+				  <main id="list"><Services q={ this.state.cQuery === 0 ? 1 : this.state.cQuery } /></main>
 				</div>
 			</React.Fragment>
 		);
@@ -117,6 +110,8 @@ const HeaderRender = () => {
 const UXRender = () => { ReactDOM.render(<List />, document.querySelector('.data-page > main')); }
 
 $(document).ready(function(){
-	HeaderRender();
-	UXRender();
+	if(!params['page']){
+		HeaderRender();
+		UXRender();
+	}
 });
