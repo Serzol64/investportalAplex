@@ -60,10 +60,10 @@ class SiteController extends Controller{
 				]
 			],
 			'reviews' => [
-					'last' => Yii::$app->smartData->getList('reviews', 0),
-					'prelast' => Yii::$app->smartData->getList('reviews', 1),
-					'old' => Yii::$app->smartData->getList('reviews', 2),
-					'adaptive' => Yii::$app->smartData->getList('reviews', 3)
+					'last' => Yii::$app->smartData->getList('reviews', 0)->articles,
+					'prelast' => Yii::$app->smartData->getList('reviews', 1)->articles,
+					'old' => Yii::$app->smartData->getList('reviews', 2)->articles,
+					'adaptive' => Yii::$app->smartData->getList('reviews', 3)->articles
 			],
 			'services' => [
 				'desktop' => [
@@ -74,6 +74,8 @@ class SiteController extends Controller{
 				'mobile' => Yii::$app->db->createCommand('SELECT id, title, JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.description")) as "description", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.categoryId")) as "cat", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.country")) as "country", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.region")) as "region" FROM serviceList ORDER BY id LIMIT 8')->queryAll()
 			]
 		];
+		
+		//var_dump($interactive['reviews']);
 		
 		return $this->render('index', ['staticCount' => $sc[0], 'staticMeta' => $sc[1], 'interactiveFeed' => $interactive, 'lastUpcoming' => $eventComing]);
 	}

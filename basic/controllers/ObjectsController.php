@@ -25,6 +25,8 @@ class ObjectsController extends Controller
             ObjectAttribute::find()->limit(24)->offset(12)->all(),
         ];
 
+
+ujj
         $ds = [
             'all' => ObjectsData::find()->select('id')->orderBy('id DESC')->all(),
         ];

@@ -1,8 +1,6 @@
 <?php
 
 /* @var $this yii\web\View */
-
-
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -41,18 +39,18 @@ $this->title = 'Welcome to Investportal!';
 		<main class="swiper-container">
                 <div class="promo-feed swiper-wrapper">
 					<?php
-					foreach($interactiveFeed['objects']['popular'] as $currentPopular){
+					for($i = 0; $i < count($interactiveFeed['objects']['popular']); $i++){
 					?>
 					<div class="promoblock swiper-slide">
                         <div class="promoblock-content">
                             <header></header>
                             <main>
-                                <span class="location"><?php echo $currentPopular->content->country; ?></span>
-                                <img src="<?php echo $currentPopular->content->titlePhoto; ?>" alt="Place">
+                                <span class="location"><?php echo $interactiveFeed['objects']['popular'][$i]['content']['country']; ?></span>
+                                <img src="<?php echo $interactiveFeed['objects']['popular'][$i]['content']['titlePhoto']; ?>" alt="Place">
                             </main>
                             <footer>
                                 <div class="info">
-                                    <span><?php echo $currentPopular->title; ?></span>
+                                    <span><?php echo $interactiveFeed['objects']['popular'][$i]['title']; ?></span>
                                     <span>
 										<?php
 										$listQuery = ['type' => 'list'];
@@ -64,7 +62,7 @@ $this->title = 'Welcome to Investportal!';
 												if($_COOKIE['servicesCurrency'] == $dataCurrency[$i]['currency']){ 
 													$convertQuery = [
 														'myCur' => $dataCurrency[$i]['currency'],
-														'amount' => $currentPopular->content->cost
+														'amount' => $interactiveFeed['objects']['popular'][$i]['content']['cost']
 													];
 													
 													$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
@@ -73,7 +71,7 @@ $this->title = 'Welcome to Investportal!';
 														'isSymbol' => TRUE,
 														'query' => [
 															'cur' => $dataCurrency[$i]['currency'],
-															'amount' => $currentPopular->content->cost
+															'amount' => $interactiveFeed['objects']['popular'][$i]['content']['cost']
 														]
 													];
 													
@@ -83,7 +81,7 @@ $this->title = 'Welcome to Investportal!';
 											else if($dataCurrency[$i]['selected'] == 'Yes'){ 
 												$convertQuery = [
 														'myCur' => $dataCurrency[$i]['currency'],
-														'amount' => $currentPopular->content->cost
+														'amount' => $interactiveFeed['objects']['popular'][$i]['content']['cost']
 													];
 													
 													$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
@@ -92,7 +90,7 @@ $this->title = 'Welcome to Investportal!';
 														'isSymbol' => TRUE,
 														'query' => [
 															'cur' => $dataCurrency[$i]['currency'],
-															'amount' => $currentPopular->content->cost
+															'amount' => $interactiveFeed['objects']['popular'][$i]['content']['cost']
 														]
 													];
 													
@@ -227,7 +225,22 @@ $this->title = 'Welcome to Investportal!';
             </header>
             <main class="swiper-container">
                 <div class="popular-objects swiper-wrapper">
-					
+				<?php for($i = 0; $i < count($interactiveFeed['objects']['finding']); $i++){ ?>
+					<div class="popular-object swiper-slide">
+                       <div class="popularobject-content">
+                            <header style="background-color: #4d93a7;"><h3><?php echo $interactiveFeed['objects']['finding'][$i]['cost']; ?></h3></header>
+                            <main><img src="<?php echo $interactiveFeed['objects']['finding'][$i]['titlePhoto']; ?>" alt="<?php echo $interactiveFeed['objects']['finding'][$i]['title']; ?>" /></main>
+                            <footer>
+                                <div class="info">
+                                    <span>ID <?php echo $interactiveFeed['objects']['finding'][$i]['id']; ?></span>
+                                    <span><?php echo $interactiveFeed['objects']['finding'][$i]['title']; ?></span>
+                                    <span><?php echo $interactiveFeed['objects']['finding'][$i]['regions']; ?></span>
+                                </div>
+                                <?php echo Html::a('+ Services for Investors', '#'); ?>
+                            </footer>
+                        </div>
+                    </div>
+                 <?php } ?>
 				</div>
 
 				<div class="swiper-pagination"></div>
@@ -549,22 +562,21 @@ $this->title = 'Welcome to Investportal!';
 				<header id="slider-controller"><img src="/images/icons/slider-contorls/back.png" alt="Назад"></header>
 				<main id="slider-view-adaptive">
 			<?php
-				$i = 8;
-				
-				foreach($interactiveFeed['objects']['estates']['adaptive'] as $offersFeed){
-					if($i < 8){
+				if($interactiveFeed['objects']['estates']['adaptive']){
+					for($i = 0; $i < count($interactiveFeed['objects']['estates']['adaptive']); $i++){
+						if($i < 8){
 			?>
 					<div class="estat">
                         <div class="estat-content">
                             <header>
-                                <h3><?php echo $offersFeed->content->country; ?></h3>
+                                <h3><?php echo $interactiveFeed['objects']['estates']['adaptive'][$i]['content']['country']; ?></h3>
                             </header>
                             <main>
-                                <img src="<?php echo $offersFeed->content->titlePhoto; ?>" alt="Hotel">
+                                <img src="<?php echo $interactiveFeed['objects']['estates']['adaptive'][$i]['content']['titlePhoto']; ?>" alt="Hotel">
                             </main>
                             <footer>
                                 <div class="info">
-                                    <span><?php echo $offersFeed->title; ?></span>
+                                    <span><?php echo $interactiveFeed['objects']['estates']['adaptive'][$i]['title']; ?></span>
                                     <span>
 										<?php
 										$listQuery = ['type' => 'list'];
@@ -576,7 +588,7 @@ $this->title = 'Welcome to Investportal!';
 												if($_COOKIE['servicesCurrency'] == $dataCurrency[$i]['currency']){ 
 													$convertQuery = [
 														'myCur' => $dataCurrency[$i]['currency'],
-														'amount' => $offersFeed->content->cost
+														'amount' => $interactiveFeed['objects']['estates']['adaptive'][$i]['content']['cost']
 													];
 													
 													$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
@@ -585,7 +597,7 @@ $this->title = 'Welcome to Investportal!';
 														'isSymbol' => TRUE,
 														'query' => [
 															'cur' => $dataCurrency[$i]['currency'],
-															'amount' => $offersFeed->content->cost
+															'amount' => $interactiveFeed['objects']['estates']['adaptive'][$i]['content']['cost']
 														]
 													];
 													
@@ -595,7 +607,7 @@ $this->title = 'Welcome to Investportal!';
 											else if($dataCurrency[$i]['selected'] == 'Yes'){ 
 												$convertQuery = [
 														'myCur' => $dataCurrency[$i]['currency'],
-														'amount' => $offersFeed->content->cost
+														'amount' => $interactiveFeed['objects']['estates']['adaptive'][$i]['content']['cost']
 													];
 													
 													$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
@@ -604,7 +616,7 @@ $this->title = 'Welcome to Investportal!';
 														'isSymbol' => TRUE,
 														'query' => [
 															'cur' => $dataCurrency[$i]['currency'],
-															'amount' => $offersFeed->content->cost
+															'amount' => $interactiveFeed['objects']['estates']['adaptive'][$i]['content']['cost']
 														]
 													];
 													
@@ -636,14 +648,14 @@ $this->title = 'Welcome to Investportal!';
 					<div class="estat" id="none">
                          <div class="estat-content">
                             <header>
-                                <h3><?php echo $offersFeed->content->country; ?></h3>
+                                <h3><?php echo $interactiveFeed['objects']['estates']['adaptive'][$i]['content']['country']; ?></h3>
                             </header>
                             <main>
-                                <img src="<?php echo $offersFeed->content->titlePhoto; ?>" alt="Hotel">
+                                <img src="<?php echo $interactiveFeed['objects']['estates']['adaptive'][$i]['content']['titlePhoto']; ?>" alt="Hotel">
                             </main>
                             <footer>
                                 <div class="info">
-                                    <span><?php echo $offersFeed->title; ?></span>
+                                    <span><?php echo $interactiveFeed['objects']['estates']['adaptive'][$i]['title']; ?></span>
                                     <span>
 										<?php
 										$listQuery = ['type' => 'list'];
@@ -655,7 +667,7 @@ $this->title = 'Welcome to Investportal!';
 												if($_COOKIE['servicesCurrency'] == $dataCurrency[$i]['currency']){ 
 													$convertQuery = [
 														'myCur' => $dataCurrency[$i]['currency'],
-														'amount' => $offersFeed->content->cost
+														'amount' => $interactiveFeed['objects']['estates']['adaptive'][$i]['content']['cost']
 													];
 													
 													$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
@@ -664,7 +676,7 @@ $this->title = 'Welcome to Investportal!';
 														'isSymbol' => TRUE,
 														'query' => [
 															'cur' => $dataCurrency[$i]['currency'],
-															'amount' => $offersFeed->content->cost
+															'amount' => $interactiveFeed['objects']['estates']['adaptive'][$i]['content']['cost']
 														]
 													];
 													
@@ -674,7 +686,7 @@ $this->title = 'Welcome to Investportal!';
 											else if($dataCurrency[$i]['selected'] == 'Yes'){ 
 												$convertQuery = [
 														'myCur' => $dataCurrency[$i]['currency'],
-														'amount' => $offersFeed->content->cost
+														'amount' => $interactiveFeed['objects']['estates']['adaptive'][$i]['content']['cost']
 													];
 													
 													$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
@@ -683,7 +695,7 @@ $this->title = 'Welcome to Investportal!';
 														'isSymbol' => TRUE,
 														'query' => [
 															'cur' => $dataCurrency[$i]['currency'],
-															'amount' => $offersFeed->content->cost
+															'amount' => $interactiveFeed['objects']['estates']['adaptive'][$i]['content']['cost']
 														]
 													];
 													
@@ -713,26 +725,27 @@ $this->title = 'Welcome to Investportal!';
                     </div>
 			<?php 
 					}
-					$i--;
 				} 
+			}
 			?>
 				</main>
 				<main id="slider-view">
 					 <div class="estat-feed">
 					<?php
-					foreach($interactiveFeed['objects']['estates']['last'] as $offersFeed){
+					if($interactiveFeed['objects']['estates']['last']){
+						for($i = 0; $i < count($interactiveFeed['objects']['estates']['last']); $i++){
 					?>
                         <div class="estat">
                              <div class="estat-content">
 								<header>
-									<h3><?php echo $offersFeed->content->country; ?></h3>
+									<h3><?php echo $interactiveFeed['objects']['estates']['last'][$i]['content']['country']; ?></h3>
 								</header>
 								<main>
-									<img src="<?php echo $offersFeed->content->titlePhoto; ?>" alt="Hotel">
+									<img src="<?php echo $interactiveFeed['objects']['estates']['last'][$i]['content']['titlePhoto']; ?>" alt="Hotel">
 								</main>
 								<footer>
 									<div class="info">
-										<span><?php echo $offersFeed->title; ?></span>
+										<span><?php echo $interactiveFeed['objects']['estates']['last'][$i]['title']; ?></span>
 										<span>
 											<?php
 											$listQuery = ['type' => 'list'];
@@ -744,7 +757,7 @@ $this->title = 'Welcome to Investportal!';
 													if($_COOKIE['servicesCurrency'] == $dataCurrency[$i]['currency']){ 
 														$convertQuery = [
 															'myCur' => $dataCurrency[$i]['currency'],
-															'amount' => $offersFeed->content->cost
+															'amount' => $interactiveFeed['objects']['estates']['last'][$i]['content']['cost']
 														];
 														
 														$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
@@ -753,7 +766,7 @@ $this->title = 'Welcome to Investportal!';
 															'isSymbol' => TRUE,
 															'query' => [
 																'cur' => $dataCurrency[$i]['currency'],
-																'amount' => $offersFeed->content->cost
+																'amount' => $interactiveFeed['objects']['estates']['last'][$i]['content']['cost']
 															]
 														];
 														
@@ -763,7 +776,7 @@ $this->title = 'Welcome to Investportal!';
 												else if($dataCurrency[$i]['selected'] == 'Yes'){ 
 													$convertQuery = [
 															'myCur' => $dataCurrency[$i]['currency'],
-															'amount' => $offersFeed->content->cost
+															'amount' => $interactiveFeed['objects']['estates']['last'][$i]['content']['cost']
 														];
 														
 														$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
@@ -772,7 +785,7 @@ $this->title = 'Welcome to Investportal!';
 															'isSymbol' => TRUE,
 															'query' => [
 																'cur' => $dataCurrency[$i]['currency'],
-																'amount' => $offersFeed->content->cost
+																'amount' => $interactiveFeed['objects']['estates']['last'][$i]['content']['cost']
 															]
 														];
 														
@@ -800,22 +813,23 @@ $this->title = 'Welcome to Investportal!';
 								</footer>
 							</div>
                      </div>
-                    <?php } ?>
+                    <?php } } ?>
                      <div class="estat-feed" id="hide">
 					<?php
-					foreach($interactiveFeed['objects']['estates']['prelast'] as $offersFeed){
+					if($interactiveFeed['objects']['estates']['prelast']){
+						for($i = 0; $i < count($interactiveFeed['objects']['estates']['prelast']); $i++){
 					?>
                         <div class="estat">
                              <div class="estat-content">
 								<header>
-									<h3><?php echo $offersFeed->content->country; ?></h3>
+									<h3><?php echo $interactiveFeed['objects']['estates']['prelast'][$i]['content']['country']; ?></h3>
 								</header>
 								<main>
-									<img src="<?php echo $offersFeed->content->titlePhoto; ?>" alt="Hotel">
+									<img src="<?php echo $interactiveFeed['objects']['estates']['prelast'][$i]['content']['titlePhoto']; ?>" alt="Hotel">
 								</main>
 								<footer>
 									<div class="info">
-										<span><?php echo $offersFeed->title; ?></span>
+										<span><?php echo $interactiveFeed['objects']['estates']['prelast'][$i]['title']; ?></span>
 										<span>
 											<?php
 											$listQuery = ['type' => 'list'];
@@ -827,7 +841,7 @@ $this->title = 'Welcome to Investportal!';
 													if($_COOKIE['servicesCurrency'] == $dataCurrency[$i]['currency']){ 
 														$convertQuery = [
 															'myCur' => $dataCurrency[$i]['currency'],
-															'amount' => $offersFeed->content->cost
+															'amount' => $interactiveFeed['objects']['estates']['prelast'][$i]['content']['cost']
 														];
 														
 														$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
@@ -836,7 +850,7 @@ $this->title = 'Welcome to Investportal!';
 															'isSymbol' => TRUE,
 															'query' => [
 																'cur' => $dataCurrency[$i]['currency'],
-																'amount' => $offersFeed->content->cost
+																'amount' => $interactiveFeed['objects']['estates']['prelast'][$i]['content']['cost']
 															]
 														];
 														
@@ -846,7 +860,7 @@ $this->title = 'Welcome to Investportal!';
 												else if($dataCurrency[$i]['selected'] == 'Yes'){ 
 													$convertQuery = [
 															'myCur' => $dataCurrency[$i]['currency'],
-															'amount' => $offersFeed->content->cost
+															'amount' => $interactiveFeed['objects']['estates']['prelast'][$i]['content']['cost']
 														];
 														
 														$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
@@ -855,7 +869,7 @@ $this->title = 'Welcome to Investportal!';
 															'isSymbol' => TRUE,
 															'query' => [
 																'cur' => $dataCurrency[$i]['currency'],
-																'amount' => $offersFeed->content->cost
+																'amount' => $interactiveFeed['objects']['estates']['prelast'][$i]['content']['cost']
 															]
 														];
 														
@@ -883,22 +897,23 @@ $this->title = 'Welcome to Investportal!';
 								</footer>
 							</div>
                         </div>
-                    <?php } ?>
+                    <?php } } ?>
                      <div class="estat-feed" id="hide">
 					<?php
-					foreach($interactiveFeed['objects']['estates']['old'] as $offersFeed){
+					if($interactiveFeed['objects']['estates']['old']){
+						for($i = 0; $i < count($interactiveFeed['objects']['estates']['old']); $i++){
 					?>
                         <div class="estat">
                              <div class="estat-content">
 								<header>
-									<h3><?php echo $offersFeed->content->country; ?></h3>
+									<h3><?php echo $interactiveFeed['objects']['estates']['old'][$i]['content']['country']; ?></h3>
 								</header>
 								<main>
-									<img src="<?php echo $offersFeed->content->titlePhoto; ?>" alt="Hotel">
+									<img src="<?php echo $interactiveFeed['objects']['estates']['old'][$i]['content']['titlePhoto']; ?>" alt="Hotel">
 								</main>
 								<footer>
 									<div class="info">
-										<span><?php echo $offersFeed->title; ?></span>
+										<span><?php echo $interactiveFeed['objects']['estates']['old'][$i]['title']; ?></span>
 										<span>
 											<?php
 											$listQuery = ['type' => 'list'];
@@ -910,7 +925,7 @@ $this->title = 'Welcome to Investportal!';
 													if($_COOKIE['servicesCurrency'] == $dataCurrency[$i]['currency']){ 
 														$convertQuery = [
 															'myCur' => $dataCurrency[$i]['currency'],
-															'amount' => $offersFeed->content->cost
+															'amount' => $interactiveFeed['objects']['estates']['old'][$i]['content']['cost']
 														];
 														
 														$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
@@ -919,7 +934,7 @@ $this->title = 'Welcome to Investportal!';
 															'isSymbol' => TRUE,
 															'query' => [
 																'cur' => $dataCurrency[$i]['currency'],
-																'amount' => $offersFeed->content->cost
+																'amount' => $interactiveFeed['objects']['estates']['old'][$i]['content']['cost']
 															]
 														];
 														
@@ -929,7 +944,7 @@ $this->title = 'Welcome to Investportal!';
 												else if($dataCurrency[$i]['selected'] == 'Yes'){ 
 													$convertQuery = [
 															'myCur' => $dataCurrency[$i]['currency'],
-															'amount' => $offersFeed->content->cost
+															'amount' => $interactiveFeed['objects']['estates']['old'][$i]['content']['cost']
 														];
 														
 														$convertResponse = Yii::$app->currencyDB->execute($convertQuery);
@@ -938,7 +953,7 @@ $this->title = 'Welcome to Investportal!';
 															'isSymbol' => TRUE,
 															'query' => [
 																'cur' => $dataCurrency[$i]['currency'],
-																'amount' => $offersFeed->content->cost
+																'amount' => $interactiveFeed['objects']['estates']['old'][$i]['content']['cost']
 															]
 														];
 														
@@ -966,14 +981,14 @@ $this->title = 'Welcome to Investportal!';
 								</footer>
 							</div>
                         </div>
-                    <?php } ?>
+                    <?php } } ?>
                      </div>
 				</main>
 				<footer id="slider-controller-adaptive"><img src="/images/icons/slider-contorls/go.png" alt="Вперёд"></footer>
 				<footer id="slider-controller"><img src="/images/icons/slider-contorls/go.png" alt="Вперёд"></footer> 
          </main>
 	</section>
-	<section id="reviews" data-text="Review" class="section">
+<section id="reviews" data-text="Review" class="section">
 		 <header>
                 <hr color="#0079bf" size="4" width="37px" align="left"/>
                 <h2>Reviews</h2>
@@ -987,7 +1002,7 @@ $this->title = 'Welcome to Investportal!';
 					<?php 
 					$i = 8;
 					
-					foreach($interactiveFeed['reviews']['adaptive']['article'] as $newsFeed){
+					foreach($interactiveFeed['reviews']['adaptive'] as $newsFeed){
 						$domain = parse_url($newsFeed->url);
 						if($i < 8){
 					?>
@@ -1012,7 +1027,7 @@ $this->title = 'Welcome to Investportal!';
 				<main id="slider-view">
 					 <div class="review-feed">
 					<?php 
-					foreach($interactiveFeed['reviews']['last']['article'] as $newsFeed){
+					foreach($interactiveFeed['reviews']['last'] as $newsFeed){
 						$domain = parse_url($newsFeed->url);
 					?>
                         <div class="review" id="with-title-image">
@@ -1024,7 +1039,7 @@ $this->title = 'Welcome to Investportal!';
                      </div>
                      <div class="review-feed" id="hide">
 					<?php 
-					foreach($interactiveFeed['reviews']['prelast']['article'] as $newsFeed){
+					foreach($interactiveFeed['reviews']['prelast'] as $newsFeed){
 						$domain = parse_url($newsFeed->url);
 					?>
                         <div class="review" id="with-title-image">
@@ -1036,7 +1051,7 @@ $this->title = 'Welcome to Investportal!';
                      </div>
                      <div class="review-feed" id="hide">
 					<?php 
-					foreach($interactiveFeed['reviews']['old']['article'] as $newsFeed){
+					foreach($interactiveFeed['reviews']['old'] as $newsFeed){
 						$domain = parse_url($newsFeed->url);
 					?>
                         <div class="review" id="with-title-image">
@@ -1051,5 +1066,4 @@ $this->title = 'Welcome to Investportal!';
 				<footer id="slider-controller"><img src="/images/icons/slider-contorls/go.png" alt="Вперёд"></footer> 
         </main>
 	</section>
-	
 </main>

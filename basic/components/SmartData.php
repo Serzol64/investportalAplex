@@ -3,7 +3,9 @@ namespace app\components;
 
 use Yii;
 use yii\base\Component;
+use yii\helpers\Json;
 
+use app\models\ObjectAttribute;
 use app\models\Cart;
 use app\models\Investments;
 use app\models\ObjectsData;
@@ -17,7 +19,7 @@ class SmartData extends Component{
 	
 	public function init(){
 		parent::init();
-		$this->newsFeed = new NewsApi(getenv('newsnetAPI'));
+		$this->newsFeed = new NewsApi('e63e9d769ca1465e8d8777971c194ea1');
 	}
 	private function forecast($input, $type){
 		$result = 0;
@@ -43,9 +45,6 @@ class SmartData extends Component{
 			$result = (int) round($f / ($e + $d + $c + $b));
 			
 			if($result > ($b + $c + $d + $e) / 5){ $result = (int) round(($b + $c + $d + $e) / 5); }
-		}
-		else if($type == 'findingObject'){
-			
 		}
 		else if($type == 'offeringsObject'){
 			$a = $input['id'];
@@ -75,10 +74,10 @@ class SmartData extends Component{
 		
 		if($type == 'reviews'){
 			$lastMatherial = [
-				$this->newsFeed->getEverything($q='estate', $from=date('Y-m-d'), $language='en', $page_size=3),
-				$this->newsFeed->getEverything($q='estate', $from=date('Y-m-d', strtotime(date('Y-m-d') . '- 3 days')), $to=date('Y-m-d'), $language='en', $page_size=3),
-				$this->newsFeed->getEverything($q='estate', $from=date('Y-m-d', strtotime(date('Y-m-d') . '- 6 days')), $to=date('Y-m-d'), $language='en', $page_size=3),
-				$this->newsFeed->getEverything($q='estate', $from=date('Y-m-d', strtotime(date('Y-m-d') . '- 9 days')), $to=date('Y-m-d'), $language='en', $page_size=9, $sort_by='quality')
+				$this->newsFeed->getEverything('estate', NULL, NULL, NULL, NULL, NULL, 'en', NULL, 3, 1),
+				$this->newsFeed->getEverything('estate', NULL, NULL, NULL, NULL, NULL, 'en', NULL, 3, 2),
+				$this->newsFeed->getEverything('estate', NULL, NULL, NULL, NULL, NULL, 'en', NULL, 3, 3),
+				$this->newsFeed->getEverything('estate', NULL, NULL, NULL, NULL, NULL, 'en', NULL, 9, 1)
 			];
 			
 			$dataResponse = $lastMatherial[$index];
@@ -96,22 +95,21 @@ class SmartData extends Component{
 				foreach($lastObjects['generator'] as $currentObject){
 					$contentData = [
 						[
-							Yii::$app->db->createCommand('')->bindValues([':obj' => $currentObject->id])->queryOne(),
-							Yii::$app->db->createCommand('')->bindValues([':obj' => $currentObject->id])->queryOne(),
-							Yii::$app->db->createCommand('')->bindValues([':obj' => $currentObject->id])->queryOne()
+							Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content,"$.meta.mediagallery.photo.data[0].file")) as "photo", JSON_UNQUOTE(JSON_EXTRACT(content,"$.content.parameters.cost[0].value")) as "cost" FROM objectData WHERE id=:obj')->bindValues([':obj' => $currentObject->id])->queryOne(),
+							Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content,"$.meta.region.country")) as "country" FROM objectData WHERE id=:obj')->bindValues([':obj' => $currentObject->id])->queryOne()
 						],
 						[
 							function(){
 								$categoryId = ObjectsData::findOne(['id' => $currentObject->id])->select('category');
-								$objectsCurrentCategoryCount = ObjectsData::find(['category' => $categoryId])->count();
+								$objectsCurrentCategoriyCount = ObjectsData::find(['category' => $categoryId])->count();
 								
 								return $objectsCurrentCategoryCount;
 							},
 							function(){
-								$regionId = Yii::$app->db->createCommand('')->bindValues([':obj' => $currentObject->id])->queryOne();
-								$objectsCurrentRegionCount = Yii::$app->db->createCommand('')->bindValues([':obj' => $currentObject->id])->queryOne();
+								$regionId = Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content,"$.meta.region.country")) as "country", JSON_UNQUOTE(JSON_EXTRACT(content,"$.meta.region.region")) as "region" FROM objectData WHERE id=:obj')->bindValues([':obj' => $currentObject->id])->queryOne();
+								$objectsCurrentRegionCount = Yii::$app->db->createCommand('SELECT COUNT(id) as "count" FROM objectData WHERE JSON_EXTRACT(content,"$.meta.region.country") = :country, JSON_EXTRACT(content,"$.meta.region.region") = :region')->bindValues([':country' => $regionId['country'], ':region' => $regionId['region']])->queryOne();
 								
-								return $objectsCurrentRegionCount;
+								return $objectsCurrentRegionCount['count'];
 							},
 							function(){
 								$objectsCurrentInvestmentsCount = Investments::find(['objectId' => $currentObject->id, 'status' => 0])->count();
@@ -146,16 +144,33 @@ class SmartData extends Component{
 				$dataResponse = $lastObjects['response'][$index];
 			}
 			else if(strrpos($type,'investors')){
-				$fastList = round(ObjectsData::find()->count() / 8);
-				$investmentObjects = [
-					'generator' => ObjectsData::find()->select('id, title, category')->orderBy('id DESC')->limit($fastList)->all(),
+				$fastList = round(ObjectAttribute::find()->count() / 13);
+				$last = [
+					'generator' => ObjectAttribute::find()->limit($fastList)->all(),
 					'response' => [
 						[]
 					]
 				];
 				
+				foreach($last['generator'][0] as $currentAttribute){
+					
+					$lastObject = Yii::$app->db->createCommand('SELECT id, JSON_UNQUOTE(JSON_EXTRACT(content,"$.meta.mediagallery.photo.data[0].file")) as "photo" FROM objectData WHERE category=:category LIMIT 1 ORDER BY id DESC')->bindValues([':category' => $currentAttribute->name])->queryOne();
+					$countries = Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.region.country")) as "countries", COUNT(id) as "objectsCount", GROUP_CONCAT(countries SEPARATOR ', ') as "regions" FROM objectData WHERE category=:category LIMIT 3 ORDER BY objectsCount DESC')->bindValues([':category' => $currentAttribute->name])->queryOne();
+					
+					$recommendCost = Yii::$app->db->createCommand('SELECT MIN(JSON_EXTRACT(content,"$.content.parameters.cost[0].value")) as "min", MAX(JSON_EXTRACT(content,"$.content.parameters.cost[0].value")) as "max" FROM objectData WHERE category=:category')->bindValues([':category' => $currentAttribute->name])->queryOne();
+					$recommendCost = $recommendCost['min'] == $recommendCost['max'] ? '&dollar; ' . $recommendCost['max'] : '&dollar; ' . $recommendCost['min'] . ' - &dollar; ' . $recommendCost['max'];
+					
+					
+					$last['response'][0][] = [
+						'id' => $lastObject['id'],
+						'title' => $currentAttribute->name,
+						'titlePhoto' => $lastObject['photo'],
+						'regions' => $countries['regions'],
+						'cost' => $recommendCost
+					];
+				}
 				
-				$dataResponse = $investmentObjects['response'][$index];
+				$dataResponse = $last['response'][$index];
 			}
 			else if(strrpos($type,'estates')){
 				$offersObjects = [
@@ -177,9 +192,8 @@ class SmartData extends Component{
 					foreach($offersObjects['generator'][$i] as $currentObject){
 						$contentData = [
 							[
-								Yii::$app->db->createCommand('')->bindValues([':obj' => $currentObject->id])->queryOne(),
-								Yii::$app->db->createCommand('')->bindValues([':obj' => $currentObject->id])->queryOne(),
-								Yii::$app->db->createCommand('')->bindValues([':obj' => $currentObject->id])->queryOne()
+								Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content,"$.meta.mediagallery.photo.data[0].file")) as "photo", JSON_UNQUOTE(JSON_EXTRACT(content,"$.content.parameters.cost[0].value")) as "cost" FROM objectData WHERE id=:obj')->bindValues([':obj' => $currentObject->id])->queryOne(),
+								Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content,"$.meta.region.country")) as "country" FROM objectData WHERE id=:obj')->bindValues([':obj' => $currentObject->id])->queryOne()
 							],
 							[
 								function(){
