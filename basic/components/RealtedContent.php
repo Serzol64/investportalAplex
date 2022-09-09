@@ -58,7 +58,7 @@ class RealtedContent extends Component{
 					}
 				}
 			}
-			$listResponse[] = [$similar_counter * 100 / $count, $row->id, $row->title];
+			$listResponse[] = [$count > 0 ? $similar_counter * 100 / $count : $similar_counter * 100 / 2, $row->id, $row->title];
 		}
 		 
 		arsort($listResponse);

@@ -73,7 +73,7 @@
     padding: 8px;
 }
 
-#period > li input{
+#period > li input, #period > li input:focus{
 	width: 90%;
     background-color: #bec4c6;
     font-size: 100%;
@@ -81,9 +81,6 @@
     padding: 8px;
 }
 
-#period > li input:focus{
-    background-color: transparent;
-}
 
 .events-feed{
 	padding-top: 2%;
