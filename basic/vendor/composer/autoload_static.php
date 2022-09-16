@@ -54,6 +54,10 @@ class ComposerStaticInit6bdaf22a967160d4a621a49df4f9409d
         array (
             'linslin\\yii2\\curl\\' => 18,
         ),
+        'k' => 
+        array (
+            'klisl\\behaviors\\' => 16,
+        ),
         'j' => 
         array (
             'jcobhams\\NewsApi\\' => 17,
@@ -167,6 +171,10 @@ class ComposerStaticInit6bdaf22a967160d4a621a49df4f9409d
         'linslin\\yii2\\curl\\' => 
         array (
             0 => __DIR__ . '/..' . '/linslin/yii2-curl',
+        ),
+        'klisl\\behaviors\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/klisl/yii2-json-behavior/src',
         ),
         'jcobhams\\NewsApi\\' => 
         array (

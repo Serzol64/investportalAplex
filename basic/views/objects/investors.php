@@ -18,6 +18,7 @@ $this->title = 'Investors';
 					<h2 class="inv-title">Region</h2>
 					<ul class="inv">
 						<li>All regions</li>
+						<?php foreach($lake['popularRegions'] as $vitrina){ echo Html::tag('li', $vitrina['country']); } ?>
 					</ul>
 				</div>
 				<div class="body">
@@ -51,6 +52,7 @@ $this->title = 'Investors';
 							<label for="acc">Type of activity:</label>
 							<select name="acc">
 								<option value="all">All categories</option>
+								<?php foreach($lake['category'] as $vitrina){ echo Html::tag('option', $vitrina->name, ['value' => $vitrina->id]); } ?>
 							</select>
 						</li>
 						<li>

@@ -5,11 +5,17 @@ use Yii;
 use yii\web\Controller;
 use yii\web\View;
 
+use yii\helpers\Json;
+
 use app\models\News;
 use app\models\Analytic;
 use app\models\Event;
 
 class NewsController extends Controller{
+	public function beforeAction($action) { 
+		$this->enableCsrfValidation = false; 
+		return parent::beforeAction($action); 
+	}
 	public function actionIndex(){
 		$this->view->registerCssFile("/css/news.css");
 		$this->view->registerJsFile("/js/news.js", ['position' => View::POS_END]);
@@ -49,6 +55,8 @@ class NewsController extends Controller{
 	}
 	public function actionEventsFeed(){
 		$this->view->registerCssFile("/css/news.css");
+		$this->view->registerJsFile("https://unpkg.com/@demouth/mb_strimwidth@1.0.0/dist/mb_strimwidth.min.js", ['position' => View::POS_HEAD]);
+		$this->view->registerJsFile("/js/lib/moment.js", ['position' => View::POS_HEAD]);
 		$this->view->registerJsFile("/js/events.js", ['position' => View::POS_END]);
 		$this->view->registerCssFile("/css/events.css");
 		
@@ -252,13 +260,11 @@ class NewsController extends Controller{
 				$cqContent = $cq['query'];
 				
 				if($cq['service'] == 'categoryLastNews'){
-					$acng = [
+					$serviceResponse = [
 						'last' => $asd->where(['category' => $cqContent['name']])->orderBy('created DESC')->limit(3)->all(),
 						'preLast' => $asd->where(['category' => $cqContent['name']])->orderBy('created DESC')->limit(6)->offset(3)->all(),
 						'old' => $asd->where(['category' => $cqContent['name']])->orderBy('created DESC')->limit(9)->offset(6)->all()
 					];
-						
-					$serviceResponse = [ 'l' => $acng['last'], 'pl' => $acng['preLast'], 'o' => $acng['old'] ];
 				}
 				else{
 					Yii::$app->response->statusCode = 404;

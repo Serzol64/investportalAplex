@@ -24,14 +24,17 @@ $(document).ready(function(){
 				pl = '',
 				o = '';
 				
-			data.l.map((item) => { l += '<li><img src="' + item.titleImage + '" alt="' + item.title + '"><a href="/analytics/' + item.id + '">' + item.title + '</a></li>'; });
-			data.pl.map((item) => { pl += '<li><img src="' + item.titleImage + '" alt="' + item.title + '"><a href="/analytics/' + item.id + '">' + item.title + '</a></li>'; });
-			data.o.map((item) => { o += '<li><img src="' + item.titleImage + '" alt="' + item.title + '"><a href="/analytics/' + item.id + '">' + item.title + '</a></li>'; });
+			data.last[0].map((item) => { l += '<li><img src="' + item.titleImage + '" alt="' + item.title + '"><a href="/analytics/' + item.id + '">' + item.title + '</a></li>'; });
+			data.prelast[0].map((item) => { pl += '<li><img src="' + item.titleImage + '" alt="' + item.title + '"><a href="/analytics/' + item.id + '">' + item.title + '</a></li>'; });
+			data.old[0].map((item) => { o += '<li><img src="' + item.titleImage + '" alt="' + item.title + '"><a href="/analytics/' + item.id + '">' + item.title + '</a></li>'; });
 				
 			$('.news-feed > footer #down-feed .down-feed-cont:nth-child(1) #cont-content').html('<ul>' + l + '</ul>');
 			$('.news-feed > footer #down-feed .down-feed-cont:nth-child(2) #cont-content').html('<ul>' + pl + '</ul>');
 			$('.news-feed > footer #down-feed .down-feed-cont:nth-child(3) #cont-content').html('<ul>' + o + '</ul>');
 		})
-		.catch(() => $('.news-feed > footer #down-feed .down-feed-cont #cont-content').html('<div class="not-found-data"> <img src="/images/icons/services/error.gif" /> <div><h3>There are no matherials in the selected category!</h3> <span>In the category you have selected, matherials from their collection on the portal are unavailable. Empty, because we have recently registered a category and the first matherials inside it will be available later or earlier.</span></div></div>'));
+		.catch((error) => {
+			$('.news-feed > footer #down-feed .down-feed-cont #cont-content').html('<div class="not-found-data"> <img src="/images/icons/services/error.gif" /> <div><h3>There are no matherials in the selected category!</h3> <span>In the category you have selected, matherials from their collection on the portal are unavailable. Empty, because we have recently registered a category and the first matherials inside it will be available later or earlier.</span></div></div>')
+			console.log(error);
+		});
   });
 });

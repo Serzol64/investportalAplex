@@ -23,7 +23,8 @@
         "linslin/yii2-curl": "*",
         "vova07/yii2-console-runner-extension": "*",
         "ogheo/yii2-htmlcompress": "*",
-        "jcobhams/newsapi": "*"
+        "jcobhams/newsapi": "*",
+        "klisl/yii2-json-behavior": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

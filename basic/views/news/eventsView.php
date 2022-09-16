@@ -6,8 +6,6 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
 
-use app\widgets\EventProgram;
-use app\widgets\EventProgramModal;
 
 use app\models\Event;
 
@@ -32,8 +30,7 @@ $this->title = $curEvent->title . ":: Events";
                         <section class="title-image"><img src="<?php echo $curEvent->titleImage; ?>" alt="Title Image"></section>
                         <section class="news-content">
 							<?php 
-							echo EventProgram::widget(['id' => $contentId]);
-							echo EventProgramModal::widget(['id' => $contentId]);
+								echo Html::decode($curEvent->content);
 							?>
 						</section>
                     </main>

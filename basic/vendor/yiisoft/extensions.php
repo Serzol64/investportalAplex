@@ -80,4 +80,13 @@ return array (
       '@yii/swiftmailer' => $vendorDir . '/yiisoft/yii2-swiftmailer/src',
     ),
   ),
+  'klisl/yii2-json-behavior' => 
+  array (
+    'name' => 'klisl/yii2-json-behavior',
+    'version' => 'dev-master',
+    'alias' => 
+    array (
+      '@klisl/behaviors' => $vendorDir . '/klisl/yii2-json-behavior/src',
+    ),
+  ),
 );

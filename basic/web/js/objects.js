@@ -6,8 +6,22 @@ const searchwinclose = (e,t) => {
     e.preventDefault();
     $('#objects > .projects-search-form').addClass('window-closed');
 }
+const searchwinproccess = (e,t) => {
+	$('.load-screen-services').removeClass('list-smart-close'); 
+	
+	let attributeData = $(''),
+		regionData = [$(''), $('')],
+		parameterData = [
+			[$(''), $('')],
+			[$(''), $('')]
+		];
+		
+	
+}
+
 $(document).ready(function () {
     $('#objects > .projects-search-form header #right-content .close').click(searchwinclose);
+    $('#objects > .projects-search-form main form .selectors .selector #type-selector, #objects > .projects-search-form footer .filter .option #option-selector, #objects > .projects-search-form footer .filter .parameters .parameter-form #text-from, #objects > .projects-search-form footer .filter .parameters .parameter-form #text-to').change(searchwinproccess);
 });
 
 const ServiceSliderSwitcher_Back = (cntl,slider) => {
@@ -54,7 +68,9 @@ const regionAutoList = (select) => {
 }
 
 $(document).ready(function () {
-
+	$(window).resize(function(){ $('#objects').height($('.main').height() - $('.objects-list').height()); });
+    $(window).resize();
+    
     let controlsBack = [
         $('#services > main header#slider-controller img'),
         $('#services > main header#slider-controller-adaptive img')

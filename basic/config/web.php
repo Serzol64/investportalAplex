@@ -72,7 +72,7 @@ $config = [
 				'objects/search' => 'objects/object',
 				'objects/<objectId:\d+>' => 'objects/view',
 				'experts' => 'objects/experts',
-				'experts/<objectId:\d+>' => 'objects/experts-view'
+				'experts/<expertId:\d+>' => 'objects/experts-view'
 			 ]
         ],
         'view' => [

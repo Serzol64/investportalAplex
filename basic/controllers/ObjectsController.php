@@ -2,15 +2,17 @@
 
 namespace app\controllers;
 
-use app\models\Expert;
-use app\models\Investors;
-use app\models\ObjectAttribute;
-use app\models\ObjectsData;
-use app\models\User;
 use Yii;
 use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\View;
+
+use app\models\Expert;
+use app\models\Investors;
+use app\models\InvestorsCategory;
+use app\models\ObjectAttribute;
+use app\models\ObjectsData;
+use app\models\User;
 
 class ObjectsController extends Controller
 {
@@ -24,9 +26,6 @@ class ObjectsController extends Controller
             ObjectAttribute::find()->limit(12)->all(),
             ObjectAttribute::find()->limit(24)->offset(12)->all(),
         ];
-
-
-ujj
         $ds = [
             'all' => ObjectsData::find()->select('id')->orderBy('id DESC')->all(),
         ];
@@ -94,23 +93,35 @@ ujj
     {
         $this->view->registerCssFile('/css/investors.css');
         $this->view->registerJsFile('/js/investors.js', ['position' => View::POS_END]);
-
+		
+		$dataLake = [
+			'category' => InvestorsCategory::find()->all(),
+			'popularRegions' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(region, "$[*].country")) as "country", COUNT(id) as "objectsCount" FROM investors GROUP BY country ORDER BY objectsCount DESC LIMIT 4')->queryAll()
+		];
+		
         $adverstments = Investors::find()->all();
-
-        return $this->render('investors', ['ads' => $adverstments]);
+		
+        return $this->render('investors', ['ads' => $adverstments, 'lake' => $dataLake]);
     }
-
     public function actionExperts()
     {
         $this->view->registerCssFile('/css/experts.css');
         $this->view->registerJsFile('/js/experts.js', ['position' => View::POS_END]);
 
         $basicResponse = [
-            'list' => Expert::find()->orderBy('created DESC')->all(),
+            'list' => Expert::find()->select('id, created, JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].titleImage")) as "titleImage", JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].name")) as "name", JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].specialization")) as "specialization", JSON_UNQUOTE(JSON_EXTRACT(inform, "$[*][1].slogan")) as "slogan", JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].workExperience")) as "workExperience", JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].regulator")) as "regulator", JSON_UNQUOTE(JSON_EXTRACT(inform, "$[*][2].isFreeAppreal")) as "isFreeAppreal", JSON_UNQUOTE(JSON_EXTRACT(inform, "$[*][0].attachments")) as "attachments", JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].raiting")) as "raiting"')->orderBy('created DESC')->asArray()->all(),
             'expertsCount' => Expert::find()->count(),
         ];
+        
+        $dataLake = [
+			'theme' => Expert::find()->select('JSON_UNQUOTE(JSON_EXTRACT(inform, "$.service[*].svc")) as "title"')->distinct()->all(),
+			'cost' => Expert::find()->select('JSON_UNQUOTE(JSON_EXTRACT(inform, "$.amounts[*][0]")) as "cost"')->distinct()->all(),
+			'region' => Expert::find()->select('JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].region")) as "region"')->distinct()->all(),
+			'type' => Expert::find()->select('JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].specialization")) as "type"')->distinct()->all(),
+			'regulation' => Expert::find()->select('JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].regulator")) as "regulator"')->distinct()->all()
+        ];
 
-        return $this->render('experts', ['response' => $basicResponse]);
+        return $this->render('experts', ['response' => $basicResponse, 'lake' => $dataLake]);
     }
 
     public function actionExpertsView($expertId)
@@ -118,7 +129,7 @@ ujj
         $this->view->registerCssFile('/css/experts/view.css');
         $this->view->registerJsFile('/js/experts/view.js', ['position' => View::POS_END]);
 
-        $queryPage = Expert::findOne(['id' => $expertId]);
+        $queryPage = Expert::findOne(['id' => $expertId])->asArray();
 
         if (!$queryPage) {
             Yii::$app->response->statusCode = 404;
@@ -127,12 +138,12 @@ ujj
         }
 
         $contentStructure = [
-            'person' => Json::decode($queryPage->person, true),
+            'person' => $queryPage['person'],
             'info' => [
-                Json::decode($queryPage->content, true),
-                Json::decode($queryPage->inform, true),
-                Json::decode($queryPage->contact, true),
-            ],
+                $queryPage['content'],
+                $queryPage['inform'],
+                $queryPage['contact'],
+            ]
         ];
 
         return $this->render('expert', ['structureResponse' => $contentStructure]);
@@ -140,13 +151,67 @@ ujj
 
     public function actionObjectservice($type)
     {
+		$serviceResponse = array();
+		
+		if($type == 'get'){
+			if(isset($_GET['svcQuery'])){
+				$osq = Json::decode($_GET['svcQuery'], true);
+			}
+			else{
+				Yii::$app->response->statusCode = 405;
+				$serviceResponse = "Query not found!";
+			}
+		}
+		else{
+			Yii::$app->response->statusCode = 404;
+			$serviceResponse = "Not command found!";
+		}
+		
+		\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+		return $serviceResponse;
     }
 
     public function actionExpertsservice($type)
     {
+		$serviceResponse = array();
+		
+		if($type == 'get'){
+			if(isset($_GET['svcQuery'])){
+				$esq = Json::decode($_GET['svcQuery'], true);
+			}
+			else{
+				Yii::$app->response->statusCode = 405;
+				$serviceResponse = "Query not found!";
+			}
+		}
+		else{
+			Yii::$app->response->statusCode = 404;
+			$serviceResponse = "Not command found!";
+		}
+		
+		\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+		return $serviceResponse;
     }
 
     public function actionInvestorssservice($type)
     {
+		$serviceResponse = array();
+		
+		if($type == 'get'){
+			if(isset($_GET['svcQuery'])){
+				$isq = Json::decode($_GET['svcQuery'], true);
+			}
+			else{
+				Yii::$app->response->statusCode = 405;
+				$serviceResponse = "Query not found!";
+			}
+		}
+		else{
+			Yii::$app->response->statusCode = 404;
+			$serviceResponse = "Not command found!";
+		}
+		
+		\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+		return $serviceResponse;
     }
 }

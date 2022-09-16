@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'ebd854e9490ed71f23f9cfab97dd695a3470f6c7',
+        'reference' => '14e5f5738b5a381e909296e29a9cb95b2a58afd7',
         'name' => 'yiisoft/yii2-app-basic',
         'dev' => true,
     ),
@@ -252,6 +252,17 @@
                 0 => '9999999-dev',
             ),
             'reference' => '1fabcbb9bbfe003b1088e1812d9792f9cb3f69d9',
+            'dev_requirement' => false,
+        ),
+        'klisl/yii2-json-behavior' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'type' => 'yii2-extension',
+            'install_path' => __DIR__ . '/../klisl/yii2-json-behavior',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'reference' => 'ebc621bc87d417b0c4711c10473d8868afdc5b1c',
             'dev_requirement' => false,
         ),
         'linslin/yii2-curl' => array(
@@ -808,7 +819,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'ebd854e9490ed71f23f9cfab97dd695a3470f6c7',
+            'reference' => '14e5f5738b5a381e909296e29a9cb95b2a58afd7',
             'dev_requirement' => false,
         ),
         'yiisoft/yii2-bootstrap4' => array(

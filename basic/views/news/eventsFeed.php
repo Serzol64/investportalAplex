@@ -60,6 +60,12 @@ $this->title = 'Events';
 							</li>
 						<?php } ?>
 						  </ul>
+						  <div class="load-screen-services list-smart-close">
+						   <center>
+							<img src="/images/icons/loading.gif" />
+							<span>Please wait... The process of processing the search query is underway</span>
+						   </center>
+						  </div>
 					</main>
 				</section>
 			</div>
