@@ -42,10 +42,6 @@ class ComposerStaticInit6bdaf22a967160d4a621a49df4f9409d
             'yii\\bootstrap4\\' => 15,
             'yii\\' => 4,
         ),
-        'v' => 
-        array (
-            'vova07\\console\\' => 15,
-        ),
         'o' => 
         array (
             'ogheo\\htmlcompress\\' => 19,
@@ -158,11 +154,6 @@ class ComposerStaticInit6bdaf22a967160d4a621a49df4f9409d
         'yii\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2',
-        ),
-        'vova07\\console\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/vova07/yii2-console-runner-extension/src',
-            1 => __DIR__ . '/..' . '/vova07/yii2-console-runner-extension/tests',
         ),
         'ogheo\\htmlcompress\\' => 
         array (

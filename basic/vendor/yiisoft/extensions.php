@@ -48,11 +48,6 @@ return array (
       '@linslin/yii2/curl' => $vendorDir . '/linslin/yii2-curl',
     ),
   ),
-  'vova07/yii2-console-runner-extension' => 
-  array (
-    'name' => 'vova07/yii2-console-runner-extension',
-    'version' => 'dev-master',
-  ),
   'yiisoft/yii2-faker' => 
   array (
     'name' => 'yiisoft/yii2-faker',

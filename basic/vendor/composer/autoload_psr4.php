@@ -14,7 +14,6 @@ return array(
     'yii\\composer\\' => array($vendorDir . '/yiisoft/yii2-composer'),
     'yii\\bootstrap4\\' => array($vendorDir . '/yiisoft/yii2-bootstrap4/src'),
     'yii\\' => array($vendorDir . '/yiisoft/yii2'),
-    'vova07\\console\\' => array($vendorDir . '/vova07/yii2-console-runner-extension/src', $vendorDir . '/vova07/yii2-console-runner-extension/tests'),
     'ogheo\\htmlcompress\\' => array($vendorDir . '/ogheo/yii2-htmlcompress/src'),
     'linslin\\yii2\\curl\\' => array($vendorDir . '/linslin/yii2-curl'),
     'klisl\\behaviors\\' => array($vendorDir . '/klisl/yii2-json-behavior/src'),

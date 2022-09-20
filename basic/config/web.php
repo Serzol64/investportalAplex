@@ -16,10 +16,6 @@ $config = [
             'enableCookieValidation' => false,
             'baseUrl' => ''
         ],
-		'consoleRunner' => [
-			'class' => 'vova07\console\ConsoleRunner',
-			'file' => __DIR__ . '/../yii'
-		],
         'errorHandler' => [
 			'errorAction' => 'site/error',
 		],

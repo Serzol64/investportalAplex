@@ -21,7 +21,6 @@
         "yiisoft/yii2-httpclient": "~2.0.0",
         "jamesgordo/php-csv-parser": "1.0.0",
         "linslin/yii2-curl": "*",
-        "vova07/yii2-console-runner-extension": "*",
         "ogheo/yii2-htmlcompress": "*",
         "jcobhams/newsapi": "*",
         "klisl/yii2-json-behavior": "dev-master"

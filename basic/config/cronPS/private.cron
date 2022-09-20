@@ -1,2 +1,0 @@
-0 0/5 * ? * * * sh ../cronPSConnector/private.sh "Push"
-0 0/1 * ? * * * sh ../cronPSConnector/private.sh "Realtime"

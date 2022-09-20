@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '14e5f5738b5a381e909296e29a9cb95b2a58afd7',
+        'reference' => '8ef7c01ba52f568ae1bb81586e2d33a1e57bf098',
         'name' => 'yiisoft/yii2-app-basic',
         'dev' => true,
     ),
@@ -791,17 +791,6 @@
             'reference' => '34a41e998c2183e22995f158c581e7b5e755ab9e',
             'dev_requirement' => true,
         ),
-        'vova07/yii2-console-runner-extension' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'type' => 'yii2-extension',
-            'install_path' => __DIR__ . '/../vova07/yii2-console-runner-extension',
-            'aliases' => array(
-                0 => '9999999-dev',
-            ),
-            'reference' => 'a705100017263dee056146309b39173974d717f9',
-            'dev_requirement' => false,
-        ),
         'yiisoft/yii2' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
@@ -819,7 +808,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '14e5f5738b5a381e909296e29a9cb95b2a58afd7',
+            'reference' => '8ef7c01ba52f568ae1bb81586e2d33a1e57bf098',
             'dev_requirement' => false,
         ),
         'yiisoft/yii2-bootstrap4' => array(

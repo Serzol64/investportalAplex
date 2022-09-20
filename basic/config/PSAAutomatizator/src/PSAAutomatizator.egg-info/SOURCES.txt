@@ -1,6 +1,0 @@
-pyproject.toml
-setup.py
-src/PSAAutomatizator.egg-info/PKG-INFO
-src/PSAAutomatizator.egg-info/SOURCES.txt
-src/PSAAutomatizator.egg-info/dependency_links.txt
-src/PSAAutomatizator.egg-info/top_level.txt

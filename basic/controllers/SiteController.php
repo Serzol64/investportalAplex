@@ -17,8 +17,6 @@ use app\models\ObjectAttribute;
 use app\models\Investments;
 use app\models\Offers;
 use app\models\ObjectsData;
-use app\models\PortalServices;
-use app\models\PortalServicesCategory;
 
 
 class SiteController extends Controller{
@@ -64,14 +62,6 @@ class SiteController extends Controller{
 					'prelast' => Yii::$app->smartData->getList('reviews', 1)->articles,
 					'old' => Yii::$app->smartData->getList('reviews', 2)->articles,
 					'adaptive' => Yii::$app->smartData->getList('reviews', 3)->articles
-			],
-			'services' => [
-				'desktop' => [
-					'last' => Yii::$app->db->createCommand('SELECT id, title, JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.description")) as "description", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.categoryId")) as "cat", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.country")) as "country", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.region")) as "region" FROM serviceList ORDER BY id LIMIT 3')->queryAll(),
-					'prelast' => Yii::$app->db->createCommand('SELECT id, title, JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.description")) as "description", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.categoryId")) as "cat", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.country")) as "country", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.region")) as "region" FROM serviceList ORDER BY id LIMIT 6 OFFSET 3')->queryAll(),
-					'old' => Yii::$app->db->createCommand('SELECT id, title, JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.description")) as "description", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.categoryId")) as "cat", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.country")) as "country", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.region")) as "region" FROM serviceList ORDER BY id LIMIT 9 OFFSET 6')->queryAll()
-				],
-				'mobile' => Yii::$app->db->createCommand('SELECT id, title, JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.description")) as "description", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.categoryId")) as "cat", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.country")) as "country", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.region")) as "region" FROM serviceList ORDER BY id LIMIT 8')->queryAll()
 			]
 		];
 
@@ -185,59 +175,6 @@ class SiteController extends Controller{
 					return 'Operation not found'; 
 				}
 			break;
-			case 2:
-				if($operation == 'post'){
-					$cuData = [];
-					
-					if(isset($_GET['id']) && isset($_POST['cmd'])){
-						$cmdQuery = JSON::deocde($_POST['cmd'], true);
-
-						switch($cmdQuery['type']){
-							case 'sender': 
-								if(isset($_COOKIE['portalId'])){ $senderCall = Yii::$app->consoleRunner->run('portal-service-sender/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=TRUE'); }
-								else{ $senderCall = Yii::$app->consoleRunner->run('portal-service-sender/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=FALSE'); }
-
-								$cuData = $senderCall;
-							break;
-							case 'control': 
-								if(isset($_COOKIE['portalId'])){ $controlCall = Yii::$app->consoleRunner->run('portal-service-control/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=TRUE'); }
-								else{ $controlCall = Yii::$app->consoleRunner->run('portal-service-control/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=FALSE'); }
-
-								$cuData = $controlCall;
-							break;
-							default: 
-								Yii::$app->response->statusCode = 403;
-								$cuData[] = 'Operation not found!';
-							break;
-						}
-					}
-					
-					\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-					return $cuData;
-				}
-				else if($operation == 'get'){
-					$vuData = [];
-					
-					if(isset($_GET['id']) && isset($_GET['cmd'])){
-						$cmdQuery = JSON::deocde($_GET['cmd'], true);
-
-						switch($cmdQuery['type']){
-							case 'sender': 
-								if(isset($_COOKIE['portalId'])){ $senderCall = Yii::$app->consoleRunner->run('portal-service-sender/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=TRUE'); }
-								else{ $senderCall = Yii::$app->consoleRunner->run('portal-service-sender/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=FALSE'); }
-
-								$vuData = $senderCall;
-							break;
-							case 'control': 
-								if(isset($_COOKIE['portalId'])){ $controlCall = Yii::$app->consoleRunner->run('portal-service-control/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=TRUE'); }
-								else{ $controlCall = Yii::$app->consoleRunner->run('portal-service-control/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=FALSE'); }
-
-								$vuData = $controlCall;
-							break;
-							default: 
-								Yii::$app->response->statusCode = 403;
-								$vuData[] = 'Operation not found!';
-							break;
 						}
 					}
 

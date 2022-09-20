@@ -1,6 +1,0 @@
-README.rst
-setup.py
-PSAAutomatizator.egg-info/PKG-INFO
-PSAAutomatizator.egg-info/SOURCES.txt
-PSAAutomatizator.egg-info/dependency_links.txt
-PSAAutomatizator.egg-info/top_level.txt
