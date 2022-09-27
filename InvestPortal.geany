@@ -35,7 +35,6 @@ FILE_NAME_0=12;None;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%
 last_dir=/home/sergey/Рабочий стол/Sergey/docker-compose-lamp/www/investportal
 
 [build-menu]
-filetypes=Javascript;
 
 [prjorg]
 source_patterns=*.c;*.C;*.cpp;*.cxx;*.c++;*.cc;*.m;
