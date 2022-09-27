@@ -29,9 +29,13 @@ long_line_column=72
 
 [files]
 current_page=0
+FILE_NAME_0=12;None;0;EUTF-8;1;1;0;%2Fhome%2Fsergey%2FРабочий%20стол%2FSergey%2Fdocker-compose-lamp%2Fwww%2Finvestportal%2Fbasic%2Fruntime%2F.gitignore;0;4
 
 [VTE]
 last_dir=/home/sergey/Рабочий стол/Sergey/docker-compose-lamp/www/investportal
+
+[build-menu]
+filetypes=Javascript;
 
 [prjorg]
 source_patterns=*.c;*.C;*.cpp;*.cxx;*.c++;*.cc;*.m;
@@ -41,15 +45,3 @@ ignored_file_patterns=*.o;*.obj;*.a;*.lib;*.so;*.dll;*.lo;*.la;*.class;*.jar;*.p
 generate_tag_prefs=0
 show_empty_dirs=true
 external_dirs=
-
-[build-menu]
-NF_02_LB=
-NF_02_CM=
-NF_02_WD=
-EX_00_LB=
-EX_00_CM=
-EX_00_WD=
-JavascriptFT_02_LB=
-JavascriptFT_02_CM=
-JavascriptFT_02_WD=
-filetypes=Javascript;

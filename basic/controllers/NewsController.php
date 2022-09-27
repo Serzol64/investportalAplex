@@ -150,55 +150,7 @@ class NewsController extends Controller{
 		
 		if($type == 'get'){
 			if(isset($_GET['svcQuery'])){
-				$cq = Json::decode($_GET['svcQuery'], true);
-				$cqContent = $cq['query'];
 				
-				if($cq['service'] == 'eventsFind'){
-					$searchData = $cqContent['search'];
-					$paramFind = [];
-					$resultFind = [];
-					$statusFind = 200;
-					
-					if(isset($searchData['region'])){
-						if($searchData['region']){ $paramFind[] = ['location' => $searchData['region']]; }
-					}
-					
-					if(isset($searchData['type'])){
-						if($searchData['type']){ $paramFind[] = ['type' => $searchData['type']]; }
-					}
-					
-					if(isset($searchData['tematic'])){
-						if($searchData['tematic']){ $paramFind[] = ['tematic' => $searchData['tematic']]; }
-					}
-					
-					if(isset($searchData['period'])){
-						$dateQuery = $searchData['period'];
-						
-						if(isset($dateQuery['from'])){ 
-							if($dateQuery['from']){ $paramFind[] = ['date_from' => $dateQuery['from']]; }
-						}
-						
-						if(isset($dateQuery['to'])){ 
-							if($dateQuery['to']){ $paramFind[] = ['date_to' => $dateQuery['to']]; }
-						}
-						
-					}
-					
-					$queryFind = sizeOf($paramFind) > 0 ? Event::find()->where($paramFind)->all() : Event::find()->all();
-					
-					if($queryFind){ $resultFind = $queryFind; }
-					else{
-						$statusFind = 404;
-						$resultFind = 'No events were found for the query!';
-					}
-					
-					Yii::$app->response->statusCode = $statusFind;
-					$serviceResponse = $resultFind;
-				}
-				else{
-					Yii::$app->response->statusCode = 404;
-					$serviceResponse = "Service not found!";
-				}
 			}
 			else{
 				Yii::$app->response->statusCode = 405;
