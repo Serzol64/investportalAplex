@@ -192,20 +192,16 @@ $this->beginPage();
 		</header>
 		<?php echo $content; ?>
 		<footer class="footer">
-			<?php
-				$sl = file_get_contents('../../config/portalManager/socialLinks.json');
-				$sl = Json::decode($sl, true);
-			?>
 			<header>
 				<div class="logo">
 					<img src="/images/icons/investportal-light.png" alt="InvestPortal" />
 				</div>
 				<span>International Platform <br />for Investors and<br /> Investment Projects</span>
 				<main>
-					<a href="<?php echo $sl['FB']; ?>" target="_blank"><img src="/images/icons/socials/1-foot.png" alt="SN" /></a>
-					<a href="<?php echo $sl['YT']; ?>" target="_blank"><img src="/images/icons/socials/2-foot.png" alt="SN" /></a>
-					<a href="<?php echo $sl['TG']; ?>" target="_blank"><img src="/images/icons/socials/3-foot.png" alt="SN" /></a>
-					<a href="<?php echo $sl['IG']; ?>" target="_blank"><img src="/images/icons/socials/4-foot.png" alt="SN" /></a>
+					<a href="https://facebook.com/" target="_blank"><img src="/images/icons/socials/1-foot.png" alt="SN" /></a>
+					<a href="https://www.youtube.com/" target="_blank"><img src="/images/icons/socials/2-foot.png" alt="SN" /></a>
+					<a href="https://t.me/" target="_blank"><img src="/images/icons/socials/3-foot.png" alt="SN" /></a>
+					<a href="https://instagram.com/" target="_blank"><img src="/images/icons/socials/4-foot.png" alt="SN" /></a>
 				</main>
 			</header>
 			<main>

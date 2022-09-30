@@ -46,4 +46,8 @@ $(document).ready(function(){
     
     searchEl.val(currentV);
   });
+  
+  $('header#search > input').input(function(e,t){
+	  
+  });
 });

@@ -3,6 +3,19 @@
 
 #services-public{ padding-bottom: 15%; }
 
+.add-but{
+            text-align: center;
+            color: white;
+            background-color: #0079bf;
+            border: none;
+            font-size: 100%;
+            padding: 10px;
+            position: relative;
+            top: -54px;
+            float: right;
+            margin-right: 13%;
+}
+
 .list-smart-close{ visibility: hidden; }
 
 h2#title {
@@ -140,11 +153,26 @@ main#list > ul li a{
   font-size: 100%;
 width: 88%;display: block;}
 
+@media all and (max-width: 600px){
+	.add-but{ display: none; }
+}
 @media all and (max-width: 414px){
 	#services-public { height: calc(800px * 3); }
 	#services-list {
+		display: inline-flex;
+		flex-flow: column nowrap;
+		justify-content: center;
 		width: 100%;
-		flex-flow: wrap;
+	}
+	
+	#services-list > header#search, #services-list > main#list { width: 100%; }
+	.not-found-data {
+		width: 82%;
+		margin-left: -2%;
+	}
+	.load-screen-services {
+		width: 79%;
+		margin-left: 0%;
 	}
 	header#search > .last-example { font-size: 70%; }
 	main#list > ul {
@@ -157,8 +185,20 @@ width: 88%;display: block;}
 @media all and (min-width: 414px) and (max-width: 768px){
 	#services-public {padding-bottom: 191%;}
 	#services-list {
-		width: 108%;
-		flex-flow: wrap;
+		display: inline-flex;
+		flex-flow: column nowrap;
+		justify-content: center;
+		width: 100%;
+	}
+	
+	#services-list > header#search, #services-list > main#list { width: 100%; }
+	.not-found-data {
+		width: 82%;
+		margin-left: -2%;
+	}
+	.load-screen-services {
+		width: 79%;
+		margin-left: 0%;
 	}
 	header#search > .last-example { font-size: 70%; }
 	main#list > ul {
@@ -171,8 +211,20 @@ width: 88%;display: block;}
 @media all and (min-width: 600px) and (max-width: 768px){
 	#services-public {padding-bottom: 226%;}
 	#services-list {
+		display: inline-flex;
+		flex-flow: column nowrap;
+		justify-content: center;
 		width: 100%;
-		flex-flow: wrap;
+	}
+	.add-but { margin-right: 8%; }
+	#services-list > header#search, #services-list > main#list { width: 100%; }
+	.not-found-data {
+		width: 82%;
+		margin-left: -2%;
+	}
+	.load-screen-services {
+		width: 79%;
+		margin-left: 0%;
 	}
 	header#search > .last-example { font-size: 70%; }
 	main#list > ul {
@@ -185,8 +237,20 @@ width: 88%;display: block;}
 @media all and (min-width: 768px) and (max-width: 800px){
 	#services-public {padding-bottom: 115%;}
 	#services-list {
-		width: 107%;
-		flex-flow: wrap;
+		display: inline-flex;
+		flex-flow: column nowrap;
+		justify-content: center;
+		width: 100%;
+	}
+	.add-but { margin-right: 8%; }
+	#services-list > header#search, #services-list > main#list { width: 100%; }
+	.not-found-data {
+		width: 82%;
+		margin-left: -2%;
+	}
+	.load-screen-services {
+		width: 79%;
+		margin-left: 0%;
 	}
 	header#search > .last-example { font-size: 70%; }
 	main#list > ul {
@@ -199,8 +263,20 @@ width: 88%;display: block;}
 @media all and (min-width: 800px) and (max-width: 1024px){
 	#services-public {padding-bottom: 226%;}
 	#services-list {
+		display: inline-flex;
+		flex-flow: column nowrap;
+		justify-content: center;
 		width: 100%;
-		flex-flow: wrap;
+	}
+	.add-but { margin-right: 8%; }
+	#services-list > header#search, #services-list > main#list { width: 100%; }
+	.not-found-data {
+		width: 82%;
+		margin-left: -2%;
+	}
+	.load-screen-services {
+		width: 79%;
+		margin-left: 0%;
 	}
 	header#search > .last-example { font-size: 70%; }
 	main#list > ul {
@@ -215,6 +291,14 @@ width: 88%;display: block;}
 		padding-bottom: 27%;
 	}
 	#services-list {
-		width: 89%;
+		width: 97%;
 	}
+	.add-but { margin-right: 6%; }
+}
+@media all and (min-width: 1280px) and (max-width: 1366px){
+	.add-but { margin-right: 7%; }
+	#services-list > header#search, #services-list > main#list {
+		width: 50%;
+	}
+	.not-found-data, .load-screen-services{ margin-left: -10%; }
 }
