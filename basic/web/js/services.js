@@ -40,6 +40,8 @@ $(document).ready(function(){
 		});
   });
   
+  $('.modal').css('max-width', '100%').height(567);
+  
   $('.last-example > #exmpl').click(function(e, t){
     var searchEl = $('header#search > input'),
         currentV = $(this).text();
@@ -47,7 +49,18 @@ $(document).ready(function(){
     searchEl.val(currentV);
   });
   
-  $('header#search > input').input(function(e,t){
+  
+  $('.newServiceForm > div[data-modalpart=\'content\'] main#formUI .formStep #step.active #formStepUI .header a').click(function(e,t){
+	  e.preventDefault();
+	
+	  let nfsEl = [$('.newServiceForm > div[data-modalpart=\'content\'] main#formUI .formStep #step.active #formStepUI .header a'), $('.newServiceForm > div[data-modalpart=\'content\'] main#formUI .formStep #step.active #formStepUI .content #tab')];
 	  
+	  for(let i = 0; i < nfsEl.length; i++){
+		  nfsEl[i].removeClass('active');
+		  nfsEl[i].eq($(this).index()).addClass('active');
+	  }
+	  
+	  $('.newServiceForm > div[data-modalpart=\'content\'] header#formUI .formStep #step.active span').css('display', 'none');
+	  $('.newServiceForm > div[data-modalpart=\'content\'] header#formUI .formStep #step.active span').eq($(this).index()).css('display', 'block');
   });
 });
