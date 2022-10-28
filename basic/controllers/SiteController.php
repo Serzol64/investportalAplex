@@ -92,7 +92,7 @@ class SiteController extends Controller{
 		
 		$this->view->registerCssFile("https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css");
 		$this->view->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js", ['position' => View::POS_BEGIN]);
-
+		
 		$sf = [
 			PortalServicesCategory::find()->all(),
 			PortalServices::find(['meta->seoData->categoryId' => '1'])->all()
@@ -132,7 +132,7 @@ class SiteController extends Controller{
 		}
 		else{
 			Yii::$app->response->statusCode = 404;
-			return $this->redirect(['site/service-page', ['id' => $id]]);
+			return $this->redirect(['site/service-page', 'id' => $id]);
 		}
 
 		return $this->render('serviceViewer', ['serviceForm' => $servicePage, 'type' => $pagetype]);

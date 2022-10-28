@@ -48,7 +48,7 @@ $this->title = "Investment Objects and Projects";
                         <div class="filter">
                             <div class="option">
                                 <span>Country</span>
-                                <select name="country" id="option-selector" onchange="regionAutoList(this)">
+                                <select name="country" id="option-selector">
                                     <option value="any">All Countries</option>
                                     <?php
 									$countriesList = Yii::$app->regionDB->getFullDataFrame();

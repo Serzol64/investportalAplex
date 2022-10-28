@@ -46,13 +46,14 @@ const ServiceSliderSwitcher_Go = (cntl,slider) => {
     });
 }
 
-const regionAutoList = (select) => {
-	var regionCont = $('#objects > .projects-search-form footer .filter .option:nth-child(2) #option-selector'),
-		rdbq = new FormData();
-		
-	rdbq.append('country', select.value);
+const regionAutoList = (e) => {
 	
-	if(select.value !== 'any'){
+	if(this.value !== 'any'){
+		var regionCont = $('#objects > .projects-search-form footer .filter .option:nth-child(2) #option-selector'),
+			rdbq = new FormData();
+		
+		rdbq.append('country', this.value);
+		
 		fetch('/services/0/post', { method: 'POST', body: rdbq })
 			.then(response => response.json())
 			.then((data) => {
@@ -93,6 +94,8 @@ $(document).ready(function () {
         ServiceSliderSwitcher_Go(g,e);
         
     }
+    
+    $('#objects > .projects-search-form footer .filter .option:nth-child(1) #option-selector').on('change', regionAutoList);
 
     
 });

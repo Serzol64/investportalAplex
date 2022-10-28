@@ -103,8 +103,86 @@ $this->title = 'Portal services';
 								  <a href="#">Your form or separate service</a>
 								</div>
 								<div class="content">
-								  <div id="tab" class="active"></div>
-								  <div id="tab"></div>
+								  <div id="tab" class="active">
+									  <form class="newSVCFormContent" method="POST" action="">
+										  <ul>
+											<li>
+											  <span>Input the service offer title</span>
+											  <input type="text" id="title" placeholder="Input service offer title" />
+											</li>
+											<li>
+											  <span>Upload the logo of your organization for which you are publishing an offer</span>
+											  <label>
+												
+											  </label>
+											  <input type="file" id="logo" />
+											</li>
+											<li>
+											  <span>Select your service category</span>
+											  <select name="category" id="category">
+												<option>Any category</option>
+												<?php foreach($categories as $cl){ ?><option value="<?php echo $cl->id; ?>"><?php echo $cl->name; ?></option><?php } ?>
+											  </select>
+											</li>
+											<li>
+											  <span>Select your service country</span>
+											  <select name="country" id="country">
+												<option value="any">All Countries</option>
+												<?php
+												$countriesList = Yii::$app->regionDB->getFullDataFrame();
+												for($i = 0; $i < count($countriesList); $i++){ 
+													$curC = $countriesList[$i];
+													echo '<option value="' . $curC['code'] . '">' . $curC['title'] . '</option>';
+												}
+												?>
+											  </select>
+											</li>
+											<li>
+												<span>Select your service region</span>
+												<select name="region" id="region" disabled>
+													<option value="any">All Regions</option>
+												</select>
+											</li>
+										  </ul>
+										</form>
+								  </div>
+								  <div id="tab">
+									  <form class="newSVCFormContent" method="POST" action="">
+										  <ul>
+											<li>
+											  <span>Input the service name</span>
+											  <input type="text" id="title" placeholder="Input service name" />
+											</li>
+											<li>
+											  <span>Select your service category</span>
+											  <select name="category" id="category">
+												<option>Any category</option>
+												<?php foreach($categories as $cl){ ?><option value="<?php echo $cl->id; ?>"><?php echo $cl->name; ?></option><?php } ?>
+											  </select>
+											</li>
+											<li>
+											  <span>Select your service country</span>
+											  <select name="country" id="country">
+												<option value="any">All Countries</option>
+												<?php
+												$countriesList = Yii::$app->regionDB->getFullDataFrame();
+												for($i = 0; $i < count($countriesList); $i++){ 
+													$curC = $countriesList[$i];
+													echo '<option value="' . $curC['code'] . '">' . $curC['title'] . '</option>';
+												}
+												?>
+											  </select>
+											</li>
+											<li>
+												<span>Select your service region</span>
+												<select name="region" id="region" disabled>
+													<option value="any">All Regions</option>
+												</select>
+											</li>
+										  </ul>
+										</form>
+								  </div>
+								  
 								</div>
 							  </section>
 							</div>
@@ -115,8 +193,31 @@ $this->title = 'Portal services';
 								  <a href="#">Your form or separate service</a>
 								</div>
 								<div class="content">
-								  <div id="tab" class="active"></div>
-								  <div id="tab"></div>
+									<div id="tab" class="active">
+									   <ul class="level">
+												<li>
+													<input type="radio" id="accessLevel" value="private" />
+													<span>For registred users</span>
+												</li>
+												<li>
+													<input type="radio" id="accessLevel" value="public" />
+													<span>For all users and visitors</span>
+												</li>
+										</ul>
+								  </div>
+								  <div id="tab">
+									  <ul class="level">
+												<li>
+													<input type="radio" id="accessLevel" value="private" />
+													<span>For registred users</span>
+												</li>
+												<li>
+													<input type="radio" id="accessLevel" value="public" />
+													<span>For all users and visitors</span>
+												</li>
+										</ul>
+								  </div>
+								  
 								</div>
 							  </section>
 							</div>
@@ -127,8 +228,65 @@ $this->title = 'Portal services';
 								  <a href="#">Your form or separate service</a>
 								</div>
 								<div class="content">
-								  <div id="tab" class="active"></div>
-								  <div id="tab"></div>
+									<div id="tab" class="active">
+									  <ul class="SVCData">
+										<li>
+											<h4>Brief description of the offer</h4>
+										</li>
+										<li>
+											<h4>Full information on the service offer</h4>
+										</li>
+										<li>
+											<h4>Price list</h4>
+										</li>
+										<li>
+											<h4>Advantages of the offer</h4>
+										</li>
+										<li>
+											<h4>Disadvantages of the offer</h4>
+										</li>
+										<li>
+											<h4>Advantages and privileges</h4>
+										</li>
+										<li>
+											<h4>Location and infrastructure</h4>
+										</li>
+										<li>
+											<h4>Photogallery</h4>
+										</li>  
+										<li>
+											<h4>Presentation</h4>
+										</li>
+										<li>
+											<h4>More information</h4>
+										</li> 
+									  </ul>
+								  </div>
+								  <div id="tab">
+									  <ul class="SVCData">
+										<li>
+											<h4>Service Page URL</h4>
+											<input type="text" name="serviceURL" id="serviceURL" />
+										</li>
+										<li>
+											<h4>Sender command URL</h4>
+											<input type="text" name="senderCmd" id="senderCmd" />
+										</li>
+										<li>
+											<h4>Push command URL</h4>
+											<input type="text" name="pushCmd" id="pushCmd" />
+										</li>
+										<li>
+											<h4>Realtime command URL</h4>
+											<input type="text" name="realtimeCmd" id="realtimeCmd" />
+										</li>
+										<li>
+											<h4>Control command URL</h4>
+											<input type="text" name="controlCmd" id="controlCmd" />
+										</li>
+									</ul>
+								  </div>
+	
 								</div>
 							  </section>
 							</div>
@@ -139,8 +297,62 @@ $this->title = 'Portal services';
 								  <a href="#">Your form or separate service</a>
 								</div>
 								<div class="content">
-								  <div id="tab" class="active"></div>
-								  <div id="tab"></div>
+								  <div id="tab" class="active">
+									  <nav>
+										<div class="wf">
+											<h4>Input service term:</h4>
+											<textarea class="editor-component" id="terms" name="terms"></textarea>
+										</div>
+										<div class="wf">
+											<h4>Adding service questions:</h4>
+											<div class="add-questions">
+												<header>
+													<div>
+														<input type="text" id="question" placeholder="Input service FAQ question" />
+														<textarea class="editor-component" placeholder="Input service answer for FAQ question" id="answer" name="answer"></textarea>
+													</div>
+												</header>
+												<main><button>Add question</button></main>
+											</div>
+										</div>
+										<div class="wf">
+											<h4>Input service term:</h4>
+											<textarea class="editor-component" id="terms" name="terms"></textarea>
+										</div>
+										<div class="wf">
+											<h4>Adding service questions:</h4>
+											<div class="add-questions">
+												<header>
+													<div>
+														<input type="text" id="question" placeholder="Input service FAQ question" />
+														<textarea class="editor-component" placeholder="Input service answer for FAQ question" id="answer" name="answer"></textarea>
+													</div>
+												</header>
+												<main><button>Add question</button></main>
+											</div>
+										</div>
+									</nav>
+								  </div>
+								  <div id="tab">
+									  <nav>
+										<div class="wf">
+											<h4>Input service term:</h4>
+											<textarea class="editor-component" id="terms" name="terms"></textarea>
+										</div>
+										<div class="wf">
+											<h4>Adding service questions:</h4>
+											<div class="add-questions">
+												<header>
+													<div>
+														<input type="text" id="question" placeholder="Input service FAQ question" />
+														<textarea class="editor-component" placeholder="Input service answer for FAQ question" id="answer" name="answer"></textarea>
+													</div>
+												</header>
+												<main><button>Add question</button></main>
+											</div>
+										</div>
+									</nav>
+								  </div>
 								</div>
 							  </section>
 							</div>
