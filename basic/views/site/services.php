@@ -113,9 +113,9 @@ $this->title = 'Portal services';
 											<li>
 											  <span>Upload the logo of your organization for which you are publishing an offer</span>
 											  <label>
-												
+												<span>Upload logo file</span>
+												<input type="file" id="logo" accept="image/*"/>
 											  </label>
-											  <input type="file" id="logo" />
 											</li>
 											<li>
 											  <span>Select your service category</span>
@@ -232,33 +232,49 @@ $this->title = 'Portal services';
 									  <ul class="SVCData">
 										<li>
 											<h4>Brief description of the offer</h4>
+											<textarea ></textarea>
 										</li>
 										<li>
 											<h4>Full information on the service offer</h4>
+											<textarea></textarea>
 										</li>
 										<li>
 											<h4>Price list</h4>
+											<textarea></textarea>
 										</li>
 										<li>
 											<h4>Advantages of the offer</h4>
+											<textarea></textarea>
 										</li>
 										<li>
 											<h4>Disadvantages of the offer</h4>
+											<textarea></textarea>
 										</li>
 										<li>
 											<h4>Advantages and privileges</h4>
+											<textarea></textarea>
 										</li>
 										<li>
 											<h4>Location and infrastructure</h4>
+											<textarea></textarea>
 										</li>
 										<li>
 											<h4>Photogallery</h4>
+											<label>
+												<span>Upload image files</span>
+												<input type="file" id="gallery" accept="image/*" multiple />
+											</label>
 										</li>  
 										<li>
 											<h4>Presentation</h4>
+											<label>
+												<span>Upload presentation file(PPTX, PPSX, ODP, PDF, PPT, PPS file formats requires)</span>
+												<input type="file" id="presentation" accept="application/mspowerpoint, application/vnd.ms-powerpoint, application/powerpoint, application/x-mspowerpoint, application/vnd.oasis.opendocument.presentation, application/pdf"/>
+										    </label>
 										</li>
 										<li>
 											<h4>More information</h4>
+											<textarea></textarea>
 										</li> 
 									  </ul>
 								  </div>
@@ -300,11 +316,11 @@ $this->title = 'Portal services';
 								  <div id="tab" class="active">
 									  <nav>
 										<div class="wf">
-											<h4>Input service term:</h4>
+											<h4>Input offer term</h4>
 											<textarea class="editor-component" id="terms" name="terms"></textarea>
 										</div>
 										<div class="wf">
-											<h4>Adding service questions:</h4>
+											<h4>Adding offer questions</h4>
 											<div class="add-questions">
 												<header>
 													<div>
@@ -316,31 +332,32 @@ $this->title = 'Portal services';
 											</div>
 										</div>
 										<div class="wf">
-											<h4>Input service term:</h4>
-											<textarea class="editor-component" id="terms" name="terms"></textarea>
+											<h4>Offer contacts</h4>
+											<ul class="contactDataForm">
+											  <li>
+												<img src="/images/icons/user.svg" />
+												<input type="text" placeholder="Name and Surname"/>
+											  </li>
+											  <li>
+												<img src="/images/icons/phone.svg" />
+												<input type="phone" placeholder="Your phone"/>
+											  </li>
+											  <li>
+												<img src="/images/icons/mail.svg" />
+												<input type="email" placeholder="Your EMail"/>
+											  </li>
+											</ul>
 										</div>
-										<div class="wf">
-											<h4>Adding service questions:</h4>
-											<div class="add-questions">
-												<header>
-													<div>
-														<input type="text" id="question" placeholder="Input service FAQ question" />
-														<textarea class="editor-component" placeholder="Input service answer for FAQ question" id="answer" name="answer"></textarea>
-													</div>
-												</header>
-												<main><button>Add question</button></main>
-											</div>
-										</div>
-									</nav>
+									  </nav>
 								  </div>
 								  <div id="tab">
 									  <nav>
 										<div class="wf">
-											<h4>Input service term:</h4>
+											<h4>Input service term</h4>
 											<textarea class="editor-component" id="terms" name="terms"></textarea>
 										</div>
 										<div class="wf">
-											<h4>Adding service questions:</h4>
+											<h4>Adding service questions</h4>
 											<div class="add-questions">
 												<header>
 													<div>

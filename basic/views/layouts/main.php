@@ -2,10 +2,14 @@
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
+
 use app\assets\AppAsset;
 use app\widgets\PassportModals;
 
 use yii\httpclient\Client;
+
+use app\models\Analytic;
+
 /* @var $this yii\web\View */
 /* @var $content string */
 
@@ -180,10 +184,10 @@ $this->beginPage();
 							</main>
 							<footer>
 								<center>
-									<a href="" target="_blank" style="font-size: 142%;"><i class="fab fa-facebook-f" style="color: gray;"></i></a>
-									<a href="" target="_blank" style="font-size: 142%;"><i class="fab fa-youtube" style="color: gray;"></i></a>
-									<a href="" target="_blank" style="font-size: 142%;"><i class="fab fa-instagram" style="color: gray;"></i></a>
-									<a href="" target="_blank" style="font-size: 142%;"><i class="fab fa-telegram" style="color: gray;"></i></a>
+									<a href="https://facebook.com/" target="_blank" style="font-size: 142%;"><i class="fab fa-facebook-f" style="color: gray;"></i></a>
+									<a href="https://youtube.com/" target="_blank" style="font-size: 142%;"><i class="fab fa-youtube" style="color: gray;"></i></a>
+									<a href="https://instagram.com/" target="_blank" style="font-size: 142%;"><i class="fab fa-instagram" style="color: gray;"></i></a>
+									<a href="https://t.me/" target="_blank" style="font-size: 142%;"><i class="fab fa-telegram" style="color: gray;"></i></a>
 								</center>
 							</footer>
 						</section>
@@ -192,6 +196,11 @@ $this->beginPage();
 		</header>
 		<?php echo $content; ?>
 		<footer class="footer">
+			<?php 
+			$inputl = [
+				Analytic::find()->select('category')->groupBy('category')->orderBy('COUNT(id) DESC')->all()
+			];
+			?>
 			<header>
 				<div class="logo">
 					<img src="/images/icons/investportal-light.png" alt="InvestPortal" />
@@ -207,27 +216,19 @@ $this->beginPage();
 			<main>
 				<div id="category_menu">
 					<a href="#" class="catname">Low</a>
-					<ul>
-						
-					</ul>
+					<ul><li>Links under development</li></ul>
 				</div>
 				<div id="category_menu">
 					<a href="#" class="catname">Search for Investors</a>
-					<ul>
-						
-					</ul>
+					<ul><li>Links under development</li></ul>
 				</div>
 				<div id="category_menu">
-					<a href="#" class="catname">Analytics</a>
-					<ul>
-						
-					</ul>
+					<a href="<?php echo Url::to(['news/analytics-feed']); ?>" class="catname">Analytics</a>
+					<ul><?php foreach($inputl[0] as $output){ echo Html::tag('li', Html::a($output->category, ['news/analytics-feed', '#' => 'catId=' . $output->category])); } ?></ul>
 				</div>
 				<div id="category_menu">
 					<a href="#" class="catname">Evaluation and Audit</a>
-					<ul>
-						
-					</ul>
+					<ul><li>Links under development</li></ul>
 				</div>
 			</main>
     </footer>

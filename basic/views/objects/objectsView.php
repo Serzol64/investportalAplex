@@ -131,7 +131,7 @@ $this->title = $objectDF->title . " :: Investment objects";
 					<?php
 					foreach($dataset['all'] as $list){
 						$objectQuery = [':id' => $list->id];
-						$currentObject = Yii::$app->db->createCommand('SELECT title, JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.region.country")) as "country", JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.region.region")) as "region", JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.cost[0].value")) as "cost" FROM objectsData WHERE id=:id')->bindValues($objectQuery)->queryOne();
+						$currentObject = Yii::$app->db->createCommand('SELECT title, JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.region.country")) as "country", JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.region.region")) as "region", JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.cost[0].value")) as "cost" FROM objectData WHERE id=:id')->bindValues($objectQuery)->queryOne();
 					?>
                             <tr class="content">
                                 <td><?php echo ($currentObject['country'] && $currentObject['region']) ? $currentObject['region'] . ', ' . $currentObject['country'] : ($currentObject['country']) ? $currentObject['country'] : 'Any location'; ?></td>

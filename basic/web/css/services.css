@@ -291,6 +291,19 @@ width: 88%;display: block;}
   text-indent: 2%;
 }
 
+.newSVCFormContent > ul li label{
+  text-align: center;
+  color: white;
+  background-color: #0079bf;
+  border: none;
+  font-size: 90%;
+  padding: 10px;
+  height: calc(100px / 4);
+}
+.newSVCFormContent > ul li label input{
+	display: none;
+}
+
 .level{
   list-style-type: none;
   display: flex;
@@ -311,8 +324,72 @@ width: 88%;display: block;}
   margin-left: 4%;
 }
 
+.contactDataForm{
+  list-style-type: none;
+  margin: 10px;
+  padding: 5px;
+}
+.contactDataForm > li{
+  display: block;
+  margin-top: 2.5%;
+}
+.contactDataForm > li *{
+  margin-left: 1.25%;
+}
+.contactDataForm > li img{
+  width: 40%;
+}
+.contactDataForm > li input{
+  width: 20%;
+  padding: 1%;
+  font-size: 120%;
+  text-indent: 2%;
+}
 @media all and (max-width: 600px){
 	.add-but{ display: none; }
+}
+
+.SVCData{
+  list-style-type: none;
+  margin: 10px;
+  padding: 5px;
+}
+.SVCData > li{
+  margin-top: 2.5%;
+  display: grid; 
+  grid-auto-flow: row dense; 
+  grid-auto-columns: 50%; 
+  grid-auto-rows: 0.5em; 
+  grid-template-columns: 50% 50%; 
+  grid-template-rows: 1fr; 
+  gap: 1em 2px; 
+  justify-items: stretch; 
+  width: 100%; 
+}
+.SVCData > li *{
+  margin-left: 1.25%;
+  display: inline;
+  width: 50%;
+  height: 100px;
+}
+.SVCData > li h4{
+  font-size: 120%;
+}
+.SVCData > li textarea{
+  font-size: 100%;
+  padding: 2%;
+}
+.SVCData > li label{
+  text-align: center;
+  color: white;
+  background-color: #0079bf;
+  border: none;
+  font-size: 90%;
+  padding: 10px;
+  height: calc(100px / 4);
+}
+.SVCData > li label input{
+  display: none;
 }
 @media all and (max-width: 414px){
 	#services-public { height: calc(800px * 3); }

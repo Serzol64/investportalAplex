@@ -83,7 +83,35 @@ class SiteController extends Controller{
 		$this->view->registerCssFile("/css/about.css");
 		$this->view->registerJsFile("/js/about.js", ['position' => View::POS_END]);
 		
-		return $this->render('about');
+		$catName = Yii::$app->db->createCommand('SELECT category as name, COUNT(id) as count FROM objectData GROUP BY name ORDER BY count DESC LIMIT 1')->queryOne();
+		
+		$successObjects = floor((Investments::find(['status' => 1])->count() + Offers::find(['status' => 1])->count()) / 2);
+		$objectsCount = ObjectsData::find()->count();
+		
+		
+		$successLevel = function(){
+			$responseLevel = '';
+			
+			if(is_nan($objectsCount) || is_infinite($objectsCount)){ $responseLevel = floor((($successObjects / $objectsCount) * 100) * 100) . '%'; }
+			else{ $responseLevel = '0%'; }
+			
+			return $responseLevel;
+		};
+		$topCategory = $catName['name'];
+		
+		$integer = [
+			Yii::$app->db->createCommand('SELECT COUNT(phone) as portalUsers FROM users')->queryOne(),
+			Yii::$app->db->createCommand('SELECT FLOOR(COUNT(phone) / 12) as portalUsersMonth FROM users')->queryOne(),
+			Yii::$app->db->createCommand('SELECT FLOOR(COUNT(id) / 365) as dayObjects FROM objectData')->queryOne(),
+			Yii::$app->db->createCommand('SELECT SUM(JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.parameters.cost[0].value"))) as totalCast FROM objectData')->queryOne(),
+			Yii::$app->db->createCommand('SELECT SUM(offer) as trancsations FROM investmentsOffer WHERE status=1')->queryOne()
+		];
+		
+		$precentable = $successLevel;
+		$text = $topCategory;
+		
+		$infographic = [ $integer, $precentable, $text ];
+		return $this->render('about', ['graphic' => $infographic]);
 	}
 	
 	public function actionServices(){

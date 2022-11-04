@@ -99,23 +99,23 @@ $this->title = 'About Investportal';
 				<div data-block="forecast">
 					<div>
 						<p>
-							<strong>2000</strong> new objects adding in portal services on average per day!
+							<strong><?php echo $graphic[0]['dayObjects']; ?></strong> new objects adding in portal services on average per day!
 						</p>
 						<p>
-							Deals were successfully concluded with <strong>50%</strong> of the total number of objects available in the portal, thanks to its capabilities!
+							Deals were successfully concluded with <strong><?php echo $graphic[1](); ?></strong> of the total number of objects available in the portal, thanks to its capabilities!
 						</p>
 					</div>
 					<div>
-						<p><strong>15000</strong> portal services verifyed users</p>
-						<p><strong>400</strong> new verifyed users appear in the databases and services of the portal every month!</p>
+						<p><strong><?php echo $graphic[0]['portalUsers']; ?></strong> portal services verifyed users</p>
+						<p><strong><?php echo $graphic[0]['portalUsersMonth']; ?></strong> new verifyed users appear in the databases and services of the portal every month!</p>
 					</div>
 					<div>
-						<p>Objects with a total cost are available in the portal services - <strong>105 800 700 $</strong></p>
-						<p><strong>52 900 350 $</strong> - the total amount of successful transactions successfully concluded within the entire portal as a whole</p>
+						<p>Objects with a total cost are available in the portal services - <strong><?php echo $graphic[0]['totalCost']; ?></strong></p>
+						<p><strong><?php echo $graphic[0]['trancsations']; ?></strong> - the total amount of successful transactions successfully concluded within the entire portal as a whole</p>
 					</div>
 					<div>
 						<p>
-							<strong>Hotels</strong> - one of the most preferred categories of objects by portal users!
+							<strong><?php echo $graphic[2]; ?></strong> - one of the most preferred categories of objects by portal users!
 						</p>
 					</div>
 				</div>

@@ -61,10 +61,10 @@ class ObjectsController extends Controller
 
         $connector = [
             'meta' => [
-                'meta' => Yii::$app->db->createCommand('SELECT id, title, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.region.country")), ', ', JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.region.region"))) as "region", JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.parameters.cost[0].value")) as "cost", JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.parameters.precentable[0].value")) as "profitableness", JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.description")) as "description", JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.mediagallery.video.poster")) as "videoPoster" FROM objectsData WHERE id=:object')->bindValues($objectQuery)->queryOne(),
-                'parameters' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.parameters..filter")) as "filter", JSON_UNQUOTE(JSON_EXTRACT(content, "content.parameters..value")) as "value" FROM objectsData WHERE id=:object')->bindValues($objectQuery)->queryAll(),
-                'photo' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.mediagallery.photo.data[*].file")) as "file" FROM objectsData WHERE id=:object')->bindValues($objectQuery)->queryAll(),
-                'video' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.mediagallery.video.data[*].file")) as "file" FROM objectsData WHERE id=:object')->bindValues($objectQuery)->queryAll(),
+                'meta' => Yii::$app->db->createCommand('SELECT id, title, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.region.country")), ', ', JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.region.region"))) as "region", JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.parameters.cost[0].value")) as "cost", JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.parameters.precentable[0].value")) as "profitableness", JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.description")) as "description", JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.mediagallery.video.poster")) as "videoPoster" FROM objectData WHERE id=:object')->bindValues($objectQuery)->queryOne(),
+                'parameters' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.parameters..filter")) as "filter", JSON_UNQUOTE(JSON_EXTRACT(content, "content.parameters..value")) as "value" FROM objectData WHERE id=:object')->bindValues($objectQuery)->queryAll(),
+                'photo' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.mediagallery.photo.data[*].file")) as "file" FROM objectData WHERE id=:object')->bindValues($objectQuery)->queryAll(),
+                'video' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.mediagallery.video.data[*].file")) as "file" FROM objectData WHERE id=:object')->bindValues($objectQuery)->queryAll(),
             ],
             'creator' => function () {
                 $login = ObjectsData::findOne(['id' => $objectQuery[':object']]);
@@ -93,6 +93,9 @@ class ObjectsController extends Controller
     {
         $this->view->registerCssFile('/css/investors.css');
         $this->view->registerJsFile('/js/investors.js', ['position' => View::POS_END]);
+		
+		$this->view->registerCssFile("https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css");
+		$this->view->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js", ['position' => View::POS_BEGIN]);
 		
 		$dataLake = [
 			'category' => InvestorsCategory::find()->all(),
@@ -206,6 +209,15 @@ class ObjectsController extends Controller
 				$serviceResponse = "Query not found!";
 			}
 		}
+		else if($type == 'post'){
+			if(isset($_POST['svcQuery'])){
+				$isq = Json::decode($_POST['svcQuery'], true);
+			}
+			else{
+				Yii::$app->response->statusCode = 405;
+				$serviceResponse = "Query not found!";
+			}
+		}
 		else{
 			Yii::$app->response->statusCode = 404;
 			$serviceResponse = "Not command found!";
@@ -214,4 +226,5 @@ class ObjectsController extends Controller
 		\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 		return $serviceResponse;
     }
+    
 }

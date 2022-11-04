@@ -13,6 +13,7 @@ $this->title = 'Investors';
             <a href="<?php echo Url::to(['site/index']); ?>">Main</a> <span id="delimeter"> / </span> <a href="<?php echo Url::to(['objects/investors']); ?>" class="active">Investors</a>
         </section>
         <section class="section" id="investors">
+			<a href="#newOffer" rel="modal:open" class="new-ad-form-modal">Add investment search/offer information</a>
 			<div id="investors-list">
 				<div class="header">
 					<h2 class="inv-title">Region</h2>
@@ -67,4 +68,44 @@ $this->title = 'Investors';
 				</div>
 			</div>
         </section>
+        <div id="newOffer" class="modal">
+			<section class="new-ad-form-modal-data">
+							<div id="header">
+					  <a href="#" class="modal-active">Investment offer</a>
+				  <a href="#">Investment search</a>
+				  <a href="#">Investors search</a>
+					</div>
+				<div id="content">
+				  <ul>
+					<li class="modal-active">
+					  <section class="form" data-endpoint="">
+						<div>
+						  <label>Offer title</label>
+						  <input type="text" />
+						</div>
+					  </section>
+					</li>
+					<li>
+					  <section class="form" data-endpoint="">
+						<div>
+						  <label>Title</label>
+						  <input type="text" />
+						</div>
+					  </section>
+					</li>
+					<li>
+					  <section class="form" data-endpoint="">
+						<div>
+						  <label>Target title</label>
+						  <input type="text" />
+						</div>
+					  </section>
+					</li>
+				  </ul>
+				</div>
+				<div id="footer">
+				  <button>Send</button>
+				</div>
+			</section>
+        </div>
 </main>
