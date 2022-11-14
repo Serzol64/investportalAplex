@@ -32,6 +32,7 @@ $config = [
 				'services/<id:\d+>/<pagetype>' => 'site/service-page-form',
 				'services/<serviceId:\d+>/<operation>' => 'site/services-api',
 				'investors' => 'objects/investors',
+				'investors/<id:\d+>' => 'objects/investor',
 				'accounts/<service>' => '/site/account-service',
 				'accounts/accept/<service>' => '/site/service-code-center',
 				'admin' => 'admin/index',

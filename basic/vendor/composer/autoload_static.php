@@ -94,6 +94,10 @@ class ComposerStaticInit6bdaf22a967160d4a621a49df4f9409d
         array (
             'JamesGordo\\CSV\\' => 15,
         ),
+        'H' => 
+        array (
+            'HtmlGenerator\\' => 14,
+        ),
         'G' => 
         array (
             'GuzzleHttp\\Psr7\\' => 16,
@@ -266,6 +270,10 @@ class ComposerStaticInit6bdaf22a967160d4a621a49df4f9409d
         'JamesGordo\\CSV\\' => 
         array (
             0 => __DIR__ . '/..' . '/jamesgordo/php-csv-parser/src',
+        ),
+        'HtmlGenerator\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/airmanbzh/php-html-generator/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (

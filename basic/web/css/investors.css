@@ -120,6 +120,9 @@ a.new-ad-form-modal{
   width: 90%;
   overflow: auto;
   display: none;
+  width: 100%;
+  height: 240px;
+  overflow: auto;
 }
 .new-ad-form-modal-data > #content ul li section.form{
   padding: 0.5%;
@@ -127,18 +130,19 @@ a.new-ad-form-modal{
 }
 .new-ad-form-modal-data > #content ul li section.form div{
   padding: 0.25%;
-  display: grid; 
-  grid-auto-flow: row dense; 
-  grid-auto-columns: 38%; 
-  grid-auto-rows: 0.38em; 
-  grid-template-columns: 25% 50%; 
-  grid-template-rows: 1fr; 
-  gap: 1em 2px; 
-  grid-template-areas: 
-    "stepHeader stepContent"; 
-  justify-items: stretch; 
-  width: 100%; 
+  display: grid;
+  grid-auto-flow: row dense;
+  grid-auto-columns: 38%;
+  grid-auto-rows: 0.38em;
+  grid-template-columns: 25% 50%;
+  grid-template-rows: 1fr;
+  gap: 1em 2px;
+  grid-template-areas:
+    "stepHeader stepContent";
+  justify-items: stretch;
+  width: 100%;
   font-size: 120%;
+  margin-top: 2%;
 }
 .new-ad-form-modal-data > #content ul li section.form div *{
   padding: 0.13%;

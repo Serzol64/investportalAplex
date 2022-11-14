@@ -6,10 +6,10 @@ use Yii;
 use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\View;
+use airmanbzh/php-html-generator;
 
 use app\models\Expert;
 use app\models\Investors;
-use app\models\InvestorsCategory;
 use app\models\ObjectAttribute;
 use app\models\ObjectsData;
 use app\models\User;
@@ -98,14 +98,16 @@ class ObjectsController extends Controller
 		$this->view->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js", ['position' => View::POS_BEGIN]);
 		
 		$dataLake = [
-			'category' => InvestorsCategory::find()->all(),
 			'popularRegions' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(region, "$[*].country")) as "country", COUNT(id) as "objectsCount" FROM investors GROUP BY country ORDER BY objectsCount DESC LIMIT 4')->queryAll()
 		];
 		
-        $adverstments = Investors::find()->all();
+        $adverstments = Investors::find()->select(['id', 'title', 'CONCAT(SUBSTRING(description->data->content, 1, 340), IF(LENGTH(description->data->content) > 340, \'...\', \'\'))' => 'description', 'DATE_FORMAT(date, \'%m.%d.%Y %H:%i\')' => 'date'])->all();
 		
         return $this->render('investors', ['ads' => $adverstments, 'lake' => $dataLake]);
     }
+    public function actionInvestor($id){
+		
+	}
     public function actionExperts()
     {
         $this->view->registerCssFile('/css/experts.css');
@@ -203,6 +205,37 @@ class ObjectsController extends Controller
 		if($type == 'get'){
 			if(isset($_GET['svcQuery'])){
 				$isq = Json::decode($_GET['svcQuery'], true);
+				$adversting = Investors::find();
+				
+				if(isset($_GET['service'])){
+					if($_GET['service'] == 'find'){
+						$findQuery = [];
+						
+						if(isset($isq['type'])){
+							if($isq['type'] != 'all'){ $findQuery[] = ['type' => $isq['type']]; }
+						}
+						
+						if(isset($isq['activityFrom']) && isset($isq['activityTo'])){
+							$findQuery[] = [
+								'date' => $isq['activityFrom'],
+								'timeActivity' => $isq['activityTo']
+							];
+						}
+						else if(isset($isq['activityFrom']) || isset($isq['activityTo'])){
+							if(isset($isq['activityTo'])){ $paramQuery = ['timeActivity' => $isq['activityTo']]; }
+							else{ $paramQuery = ['date' => $isq['activityFrom']]; }
+							
+							$findQuery[] = $paramQuery;
+						}
+						
+						
+						$getResponse = $findQuery ? $adversting->select(['id', 'title', 'CONCAT(SUBSTRING(description->data->content, 1, 340), IF(LENGTH(description->data->content) > 340, \'...\', \'\'))' => 'description', 'DATE_FORMAT(date, \'%m.%d.%Y %H:%i\')' => 'date'])->where($findQuery)->orderBy('date DESC')->all() : $adversting->select(['id', 'title', 'CONCAT(SUBSTRING(description->data->content, 1, 340), IF(LENGTH(description->data->content) > 340, \'...\', \'\'))' => 'description', 'DATE_FORMAT(date, \'%m.%d.%Y %H:%i\')' => 'date'])->orderBy('date DESC')->all();
+						
+						
+					}
+				}
+			
+				$serviceResponse = $getResponse;
 			}
 			else{
 				Yii::$app->response->statusCode = 405;
@@ -212,6 +245,48 @@ class ObjectsController extends Controller
 		else if($type == 'post'){
 			if(isset($_POST['svcQuery'])){
 				$isq = Json::decode($_POST['svcQuery'], true);
+				
+				$meta    = $isq['header'];
+				$content = $isq['body'];
+				$contact = $isq['footer'];
+				
+				if(isset($_GET['service'])){
+					if($_GET['service'] == 'send'){
+						
+						if(isset($_GET['subService'])){
+							if($_GET['subService'] == 'search'){
+								$query = [
+									'type' => 'search',
+									'content' = > $content
+								];
+							}
+							else if($_GET['subService'] == 'offer'){
+								$query = [
+									'type' => 'offers',
+									'content' = > $content
+								];
+							}
+							
+							$newAdversting = new Investors();
+							
+							$newAdversting->title = $meta['title'];
+							$newAdversting->type = $query['type'];
+							$newAdversting->date = date('Y-m-d H:i:s');
+							$newAdversting->timeActivity = $contact['activity'];
+							$newAdversting->region = $meta['country'];
+							$newAdversting->description = Json::encode($query['content']);
+							$newAdversting->contact = Json::encode($contact['data']);
+							
+							if($newAdversting->save()){ $postResponse = 'Send success'; }
+							else{
+								Yii::$app->response->statusCode = 405;
+								$postResponse = 'Gateway error';
+							}
+						}
+					}
+				}
+			
+				$serviceResponse = $postResponse;
 			}
 			else{
 				Yii::$app->response->statusCode = 405;

@@ -24,4 +24,102 @@ $(document).ready(function(){
 		  nfsEl[i].eq($(this).index()).addClass('modal-active');
 	  }
   });
+  
+  let queryObject = [{}, {}];
+  var investForm = [
+	new FormData(),
+	new FormData()
+  ];
+  
+  $('.new-ad-form-modal-data > #footer button').click(function(e,t){
+	  let endpointName = $('.new-ad-form-modal-data > #content ul li.modal-active section.form').data('endpoint'),
+		  endpointCode = endpointName === 'search' ? '/investors/api/post?service=send&subService=search' : '/investors/api/post?service=send&subService=offer';
+		  content = {};
+		  
+	  var meta = {
+		  title: $('input#title').val(),
+		  country: $('select#region').val()
+	  };
+	  
+	  var footer = {
+		  activity: $('input#activityTo').val(),
+		  name: $('input#contactName').val(),
+		  phone: $('input#contactPhone').val(),
+		  mail: $('input#contactMail').val()
+	  };
+	  
+	  if(endpointName === 'search'){
+		  content = {
+			 parameters: {
+				  target: $('input#needI').val(),
+				  purpose: $('input#existence').val(),
+				  solved: $('input#problem').val(),
+				  competitors: $('textarea#competitors').val(),
+				  implementation: $('input#period').val()
+			 },
+			 data: {
+				  content: $('textarea#contentSearch').val()
+			 } 
+		  };
+	  }
+	  else{
+		  content = {
+			  parameters: {
+				  payback: $('input#period').val(),
+				  amount: $('input#amount').val()
+			  },
+			  data: {
+				  content: $('textarea#content').val()
+			  }
+		  };
+	  }
+	  
+	  queryObject[0] = {
+		  header: meta,
+		  body: content,
+		  footer: contact
+	  };
+	  
+	  investForm[0].append(JSON.stringify(queryObject[0]));
+	  
+	  fetch(endpointCode, { method: 'POST', body: investForm[0] })
+		.then((response) => {
+			if(response.status === 200){
+				$('.modal').css('display', 'none');
+				window.reload(true);
+			}
+		})
+		.catch(() => { alert('Failed to send data! Try again later...'); });
+	  
+  });
+  $('#investors-list > .footer ul li button').click(function(e,t){
+	  
+	  $('#investors-list > .body').html('');
+	  let searchQuery = {};
+	  
+	  if($('#investors-list > .footer ul li select').val() !== 'all'){ searchQuery.type = $('#investors-list > .footer ul li select').val(); }
+	  if($('#investors-list > .footer ul li input').eq(1).val()){ searchQuery.activityTo = $('#investors-list > .footer ul li input').eq(1).val(); }
+	  if($('#investors-list > .footer ul li input').eq(0).val()){ searchQuery.date = $('#investors-list > .footer ul li input').eq(0).val(); }
+	  
+	  queryObject[1] = searchQuery;
+	  
+	  investForm[1].append(JSON.stringify(queryObject[1]));
+	  
+	  fetch('/investors/api/get?service=find', { method: 'GET', body: investForm[1] })
+		.then((response) => {
+			if(response.status === 200){
+				return response.json();
+			}
+			else{ alert('Results not found!'); }
+		})
+		.then((data) => {
+			let resultAppend = '';
+			
+			data.map((result) => {
+				resultAppend += '<aside><div>${result.title}</div><div>${result.description}</div><div><i>${result.date}</i><a href="${result.id}">Read more</a></div></aside>\n';
+			});
+			
+			$('#investors-list > .body').append(resultAppend);
+		});
+  });
 });

@@ -23,7 +23,8 @@
         "linslin/yii2-curl": "*",
         "ogheo/yii2-htmlcompress": "*",
         "jcobhams/newsapi": "*",
-        "klisl/yii2-json-behavior": "dev-master"
+        "klisl/yii2-json-behavior": "dev-master",
+        "airmanbzh/php-html-generator": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
