@@ -1,10 +1,19 @@
 $(document).ready(function(){
-  var tematic = $('#investors-list > .header .inv li');
+  var tematic = $('#investors-list > .header .inv li'),
+	  currentAd = $('#investors-list > .body aside div:nth-child(3) a');
  
   $(window).resize(function(){ $('#investors-list').height(($('.main').height() - $('#investors-list').height()) * 2); });
   $(window).resize();
   
   $('.modal').css('max-width', '100%').height(567);
+  
+  currentAd.click(function(event) {
+	  event.preventDefault();
+	  this.blur();
+	  $.get(this.href, function(html) {
+		$(html).appendTo('body').modal();
+	  });
+  });
   
   tematic.click(function(e,t){
     var currentT = tematic.eq($(this).index());
@@ -38,14 +47,14 @@ $(document).ready(function(){
 		  
 	  var meta = {
 		  title: $('input#title').val(),
-		  country: $('select#region').val()
+		  country: $('select#region option:selected').val()
 	  };
 	  
-	  var footer = {
-		  activity: $('input#activityTo').val(),
-		  name: $('input#contactName').val(),
-		  phone: $('input#contactPhone').val(),
-		  mail: $('input#contactMail').val()
+	  var contact = {
+		  activity: $('input#activityTo, input#activitySearchTo').val(),
+		  name: $('input#contactName, input#contactSearchName').val(),
+		  phone: $('input#contactPhone, input#contactSearchPhone').val(),
+		  mail: $('input#contactMail, input#contactSearchMail').val()
 	  };
 	  
 	  if(endpointName === 'search'){
@@ -80,7 +89,7 @@ $(document).ready(function(){
 		  footer: contact
 	  };
 	  
-	  investForm[0].append(JSON.stringify(queryObject[0]));
+	  investForm[0].append('svcQuery', JSON.stringify(queryObject[0]));
 	  
 	  fetch(endpointCode, { method: 'POST', body: investForm[0] })
 		.then((response) => {
@@ -97,13 +106,13 @@ $(document).ready(function(){
 	  $('#investors-list > .body').html('');
 	  let searchQuery = {};
 	  
-	  if($('#investors-list > .footer ul li select').val() !== 'all'){ searchQuery.type = $('#investors-list > .footer ul li select').val(); }
+	  if($('#investors-list > .footer ul li select option:selected').val() !== 'all'){ searchQuery.type = $('#investors-list > .footer ul li select option:selected').val(); }
 	  if($('#investors-list > .footer ul li input').eq(1).val()){ searchQuery.activityTo = $('#investors-list > .footer ul li input').eq(1).val(); }
 	  if($('#investors-list > .footer ul li input').eq(0).val()){ searchQuery.date = $('#investors-list > .footer ul li input').eq(0).val(); }
 	  
 	  queryObject[1] = searchQuery;
 	  
-	  investForm[1].append(JSON.stringify(queryObject[1]));
+	  investForm[1].append('svcQuery', JSON.stringify(queryObject[1]));
 	  
 	  fetch('/investors/api/get?service=find', { method: 'GET', body: investForm[1] })
 		.then((response) => {

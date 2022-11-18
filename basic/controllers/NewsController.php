@@ -207,8 +207,8 @@ class NewsController extends Controller{
 		$asd = Analytic::find();
 		
 		if($type == 'get'){
-			if(isset($_GET['svcQuery'])){
-				$cq = Json::decode($_GET['svcQuery'], true);
+			if(isset($_POST['svcQuery'])){
+				$cq = Json::decode($_POST['svcQuery'], true);
 				$cqContent = $cq['query'];
 				
 				if($cq['service'] == 'categoryLastNews'){
@@ -216,6 +216,13 @@ class NewsController extends Controller{
 						'last' => $asd->where(['category' => $cqContent['name']])->orderBy('created DESC')->limit(3)->all(),
 						'preLast' => $asd->where(['category' => $cqContent['name']])->orderBy('created DESC')->limit(6)->offset(3)->all(),
 						'old' => $asd->where(['category' => $cqContent['name']])->orderBy('created DESC')->limit(9)->offset(6)->all()
+					];
+				}
+				else if($cq['service'] == 'lastNews'){
+					$serviceResponse = [
+						'last' => $asd->orderBy('created DESC')->limit(3)->all(),
+						'preLast' => $asd->orderBy('created DESC')->limit(6)->offset(3)->all(),
+						'old' => $asd->orderBy('created DESC')->limit(9)->offset(6)->all()
 					];
 				}
 				else{

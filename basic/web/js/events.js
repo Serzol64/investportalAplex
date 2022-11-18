@@ -1,5 +1,4 @@
 $(document).ready(function(){
-<<<<<<< HEAD
    var sq = [new FormData(), new FormData()],
 	   sqr = [{}, {}];
   
@@ -95,7 +94,4 @@ $(document).ready(function(){
 		})
 		.catch(() => { $('.load-screen-services').addClass('list-smart-close'); });
   });
-=======
-  
->>>>>>> parent of 14e5f573 (98.05% Countine)
 });

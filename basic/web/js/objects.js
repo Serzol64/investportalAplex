@@ -46,15 +46,15 @@ const ServiceSliderSwitcher_Go = (cntl,slider) => {
     });
 }
 
-const regionAutoList = (e) => {
+const regionAutoList = () => {
 	
-	if(this.value !== 'any'){
+	if($('#objects > .projects-search-form footer .filter .option:nth-child(1) #option-selector option:selected').val() !== 'any'){
 		var regionCont = $('#objects > .projects-search-form footer .filter .option:nth-child(2) #option-selector'),
 			rdbq = new FormData();
 		
-		rdbq.append('country', this.value);
+		rdbq.append('country', $('#objects > .projects-search-form footer .filter .option:nth-child(1) #option-selector option:selected').val());
 		
-		fetch('/services/0/post', { method: 'POST', body: rdbq })
+		fetch('/services/api/0/post', { method: 'POST', body: rdbq })
 			.then(response => response.json())
 			.then((data) => {
 				regionCont.html('');
@@ -95,7 +95,7 @@ $(document).ready(function () {
         
     }
     
-    $('#objects > .projects-search-form footer .filter .option:nth-child(1) #option-selector').on('change', regionAutoList);
+    $('#objects > .projects-search-form footer .filter .option:nth-child(1) #option-selector').change(regionAutoList);
 
     
 });

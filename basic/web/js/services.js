@@ -1,11 +1,11 @@
-const regionAutoList = (e) => {
-	if(this.value !== 'any'){
+const regionAutoList = () => {
+	if($('.newSVCFormContent > ul li select#country option:selected').val() !== 'any'){
 		var regionCont = $('.newSVCFormContent > ul li select#region'),
 			rdbq = new FormData();
 		
-		rdbq.append('country', this.value);
+		rdbq.append('country', $('.newSVCFormContent > ul li select#country option:selected').val());
 		
-		fetch('/services/0/post', { method: 'POST', body: rdbq })
+		fetch('/services/api/0/post', { method: 'POST', body: rdbq })
 			.then(response => response.json())
 			.then((data) => {
 				regionCont.html('');
@@ -42,7 +42,7 @@ $(document).ready(function(){
     
     
     
-    fetch('/services/4/post', { method: 'POST', body: sfd })
+    fetch('/services/api/4/post', { method: 'POST', body: sfd })
 		.then(response => response.json())
 		.then((data) => {
 			let listResponse = '';
@@ -71,8 +71,8 @@ $(document).ready(function(){
     searchEl.val(currentV);
   });
   
-  $('.newServiceForm > div[data-modalpart=\'content\'] footer#formUI button, .newServiceForm > div[data-modalpart=\'header\'] .formStep #step').click(function(e,t){
-	  let stepList = $('.newServiceForm > div[data-modalpart=\'header\'] .formStep #step, .newServiceForm > div[data-modalpart=\'content\'] .formStep #step');
+  $('#newSVCForm > .newServiceForm div[data-modalpart=\'content\'] footer#formUI button, #newSVCForm > .newServiceForm div[data-modalpart=\'header\'] .formStep #step').click(function(e,t){
+	  let stepList = $('#newSVCForm > .newServiceForm div[data-modalpart=\'header\'] .formStep #step, #newSVCForm > .newServiceForm div[data-modalpart=\'content\'] .formStep #step');
 	  
 	  for(let i = 0; i < stepList.length; i++){
 		  let currentStep = stepList.eq(i).hasClass('active');
@@ -81,13 +81,13 @@ $(document).ready(function(){
 			  if(i === 2 && currentStep){
 				  stepList.removeClass('active');
 				  stepList.eq(3).addClass('active');
-				  $('.newServiceForm > div[data-modalpart=\'content\'] footer#formUI button').html('Finish');
+				  $('#newSVCForm > .newServiceForm div[data-modalpart=\'content\'] footer#formUI button').html('Finish');
 			  }
 			  else{
 				  stepList.removeClass('active');
 				  stepList.eq($(this).index()).addClass('active');
 				  
-				  if($('.newServiceForm > div[data-modalpart=\'content\'] footer#formUI button').html() === 'Finish'){ $('.newServiceForm > div[data-modalpart=\'content\'] footer#formUI *').html('Countine'); }
+				  if($('#newSVCForm > .newServiceForm div[data-modalpart=\'content\'] footer#formUI button').html() === 'Finish'){ $('#newSVCForm > .newServiceForm div[data-modalpart=\'content\'] footer#formUI *').html('Countine'); }
 				  
 			  }
 		  }
@@ -108,20 +108,20 @@ $(document).ready(function(){
 	  }
   });
   
-  $('.newServiceForm > div[data-modalpart=\'content\'] main#formUI .formStep #step.active #formStepUI .header a').click(function(e,t){
+  $('#newSVCForm > .newServiceForm div[data-modalpart=\'content\'] main#formUI .formStep #step.active #formStepUI .header a').click(function(e,t){
 	  e.preventDefault();
 	
-	  let nfsEl = [$('.newServiceForm > div[data-modalpart=\'content\'] main#formUI .formStep #step #formStepUI .header a'), $('.newServiceForm > div[data-modalpart=\'content\'] main#formUI .formStep #step #formStepUI .content #tab')];
+	  let nfsEl = [$('#newSVCForm > .newServiceForm div[data-modalpart=\'content\'] main#formUI .formStep #step #formStepUI .header a'), $('#newSVCForm > .newServiceForm div[data-modalpart=\'content\'] main#formUI .formStep #step #formStepUI .content #tab')];
 	  
 	  for(let i = 0; i < nfsEl.length; i++){
 		  nfsEl[i].removeClass('active');
 		  nfsEl[i].eq($(this).index()).addClass('active');
 	  }
 	  
-	  $('.newServiceForm > div[data-modalpart=\'content\'] header#formUI .formStep #step span').css('display', 'none');
-	  $('.newServiceForm > div[data-modalpart=\'content\'] header#formUI .formStep #step span').eq($(this).index()).css('display', 'block');
+	  $('#newSVCForm > .newServiceForm div[data-modalpart=\'content\'] header#formUI .formStep #step span').css('display', 'none');
+	  $('#newSVCForm > .newServiceForm div[data-modalpart=\'content\'] header#formUI .formStep #step span').eq($(this).index()).css('display', 'block');
   });
   
   
-  $('.newSVCFormContent > ul li select#country').on('change', regionAutoList);
+  $('.newSVCFormContent > ul li select#country').change(regionAutoList);
 });

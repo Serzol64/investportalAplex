@@ -6,7 +6,6 @@ use Yii;
 use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\View;
-use airmanbzh/php-html-generator;
 
 use app\models\Expert;
 use app\models\Investors;
@@ -16,6 +15,10 @@ use app\models\User;
 
 class ObjectsController extends Controller
 {
+	public function beforeAction($action) { 
+		$this->enableCsrfValidation = false; 
+		return parent::beforeAction($action); 
+	}
     public function actionIndex()
     {
         $this->view->registerCssFile('/css/objects.css');
@@ -62,7 +65,7 @@ class ObjectsController extends Controller
         $connector = [
             'meta' => [
                 'meta' => Yii::$app->db->createCommand('SELECT id, title, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.region.country")), ', ', JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.region.region"))) as "region", JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.parameters.cost[0].value")) as "cost", JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.parameters.precentable[0].value")) as "profitableness", JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.description")) as "description", JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.mediagallery.video.poster")) as "videoPoster" FROM objectData WHERE id=:object')->bindValues($objectQuery)->queryOne(),
-                'parameters' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.parameters..filter")) as "filter", JSON_UNQUOTE(JSON_EXTRACT(content, "content.parameters..value")) as "value" FROM objectData WHERE id=:object')->bindValues($objectQuery)->queryAll(),
+                'parameters' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.parameters[*].filter")) as "filter", JSON_UNQUOTE(JSON_EXTRACT(content, "content.parameters[*].value")) as "value" FROM objectData WHERE id=:object')->bindValues($objectQuery)->queryAll(),
                 'photo' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.mediagallery.photo.data[*].file")) as "file" FROM objectData WHERE id=:object')->bindValues($objectQuery)->queryAll(),
                 'video' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.mediagallery.video.data[*].file")) as "file" FROM objectData WHERE id=:object')->bindValues($objectQuery)->queryAll(),
             ],
@@ -98,15 +101,32 @@ class ObjectsController extends Controller
 		$this->view->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js", ['position' => View::POS_BEGIN]);
 		
 		$dataLake = [
-			'popularRegions' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(region, "$[*].country")) as "country", COUNT(id) as "objectsCount" FROM investors GROUP BY country ORDER BY objectsCount DESC LIMIT 4')->queryAll()
+			'popularRegions' => Yii::$app->db->createCommand('SELECT region as "country", COUNT(id) as "objectsCount" FROM investors GROUP BY country ORDER BY objectsCount DESC LIMIT 4')->queryAll()
 		];
 		
-        $adverstments = Investors::find()->select(['id', 'title', 'CONCAT(SUBSTRING(description->data->content, 1, 340), IF(LENGTH(description->data->content) > 340, \'...\', \'\'))' => 'description', 'DATE_FORMAT(date, \'%m.%d.%Y %H:%i\')' => 'date'])->all();
+        $adverstments = Investors::find()->select(['id', 'title', 'description' => "CONCAT(SUBSTRING(JSON_UNQUOTE(JSON_EXTRACT(description, \"$.data.content\")), 1, 340), IF(LENGTH(JSON_UNQUOTE(JSON_EXTRACT(description, \"$.data.content\"))) > 340, '...', ''))", 'date' => "DATE_FORMAT(date, '%m.%d.%Y %H:%i')"])->all();
 		
         return $this->render('investors', ['ads' => $adverstments, 'lake' => $dataLake]);
     }
     public function actionInvestor($id){
+		$this->view->registerCssFile('/css/investors/view.css');
 		
+		$findQuery = [
+			'id',
+			'type',
+			'title',
+			'description' => "JSON_UNQUOTE(JSON_EXTRACT(description, \"$.data.content\"))",
+			'region',
+			'timeActivity',
+			'user' => "JSON_UNQUOTE(JSON_EXTRACT(contactData, \"$.name\"))",
+			'phone' => "JSON_UNQUOTE(JSON_EXTRACT(contactData, \"$.phone\"))",
+			'mail' => "JSON_UNQUOTE(JSON_EXTRACT(contactData, \"$.mail\"))"
+		];
+		
+		$dataLake = Investors::find()->select($findQuery)->where(['id' => $id])->one();
+		
+		$this->layout = 'modalPage';
+		return $this->render('investor', ['lake' => $dataLake]);
 	}
     public function actionExperts()
     {
@@ -114,16 +134,16 @@ class ObjectsController extends Controller
         $this->view->registerJsFile('/js/experts.js', ['position' => View::POS_END]);
 
         $basicResponse = [
-            'list' => Expert::find()->select('id, created, JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].titleImage")) as "titleImage", JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].name")) as "name", JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].specialization")) as "specialization", JSON_UNQUOTE(JSON_EXTRACT(inform, "$[*][1].slogan")) as "slogan", JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].workExperience")) as "workExperience", JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].regulator")) as "regulator", JSON_UNQUOTE(JSON_EXTRACT(inform, "$[*][2].isFreeAppreal")) as "isFreeAppreal", JSON_UNQUOTE(JSON_EXTRACT(inform, "$[*][0].attachments")) as "attachments", JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].raiting")) as "raiting"')->orderBy('created DESC')->asArray()->all(),
+            'list' => Expert::find()->select(['id', 'created', 'titleImage' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].titleImage"))', 'name' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].name"))', 'specialization' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].specialization"))', 'slogan' => 'JSON_UNQUOTE(JSON_EXTRACT(inform, "$[*][1].slogan"))', 'workExperience' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].workExperience"))', 'regulator' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].regulator"))', 'isFreeAppreal' => 'JSON_UNQUOTE(JSON_EXTRACT(inform, "$[*][2].isFreeAppreal"))', 'attachments' => 'JSON_UNQUOTE(JSON_EXTRACT(inform, "$[*][0].attachments"))', 'raiting' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].raiting"))'])->orderBy('created DESC')->asArray()->all(),
             'expertsCount' => Expert::find()->count(),
         ];
         
         $dataLake = [
-			'theme' => Expert::find()->select('JSON_UNQUOTE(JSON_EXTRACT(inform, "$.service[*].svc")) as "title"')->distinct()->all(),
-			'cost' => Expert::find()->select('JSON_UNQUOTE(JSON_EXTRACT(inform, "$.amounts[*][0]")) as "cost"')->distinct()->all(),
-			'region' => Expert::find()->select('JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].region")) as "region"')->distinct()->all(),
-			'type' => Expert::find()->select('JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].specialization")) as "type"')->distinct()->all(),
-			'regulation' => Expert::find()->select('JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].regulator")) as "regulator"')->distinct()->all()
+			'theme' => Expert::find()->select(['title' => 'JSON_UNQUOTE(JSON_EXTRACT(inform, "$.service[*].svc"))'])->distinct()->all(),
+			'cost' => Expert::find()->select(['cost' => 'JSON_UNQUOTE(JSON_EXTRACT(inform, "$.amounts[*][0]"))'])->distinct()->all(),
+			'region' => Expert::find()->select(['region' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].region"))'])->distinct()->all(),
+			'type' => Expert::find()->select(['type' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].specialization"))'])->distinct()->all(),
+			'regulation' => Expert::find()->select(['regulator' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].regulator"))'])->distinct()->all()
         ];
 
         return $this->render('experts', ['response' => $basicResponse, 'lake' => $dataLake]);
@@ -198,7 +218,7 @@ class ObjectsController extends Controller
 		return $serviceResponse;
     }
 
-    public function actionInvestorssservice($type)
+    public function actionInvestorsservice($type)
     {
 		$serviceResponse = array();
 		
@@ -229,7 +249,7 @@ class ObjectsController extends Controller
 						}
 						
 						
-						$getResponse = $findQuery ? $adversting->select(['id', 'title', 'CONCAT(SUBSTRING(description->data->content, 1, 340), IF(LENGTH(description->data->content) > 340, \'...\', \'\'))' => 'description', 'DATE_FORMAT(date, \'%m.%d.%Y %H:%i\')' => 'date'])->where($findQuery)->orderBy('date DESC')->all() : $adversting->select(['id', 'title', 'CONCAT(SUBSTRING(description->data->content, 1, 340), IF(LENGTH(description->data->content) > 340, \'...\', \'\'))' => 'description', 'DATE_FORMAT(date, \'%m.%d.%Y %H:%i\')' => 'date'])->orderBy('date DESC')->all();
+						$getResponse = $findQuery ? $adversting->select(['id', 'title', 'description' => "CONCAT(SUBSTRING(JSON_UNQUOTE(JSON_EXTRACT(description, \"$.data.content\")), 1, 340), IF(LENGTH(JSON_UNQUOTE(JSON_EXTRACT(description, \"$.data.content\"))) > 340, '...', ''))", 'date' => "DATE_FORMAT(date, '%m.%d.%Y %H:%i')"])->where($findQuery)->orderBy('date DESC')->all() : $adversting->select(['id', 'title', 'description' => "CONCAT(SUBSTRING(JSON_UNQUOTE(JSON_EXTRACT(description, \"$.data.content\")), 1, 340), IF(LENGTH(JSON_UNQUOTE(JSON_EXTRACT(description, \"$.data.content\"))) > 340, '...', ''))", 'date' => "DATE_FORMAT(date, '%m.%d.%Y %H:%i')"])->orderBy('date DESC')->all();
 						
 						
 					}
@@ -257,13 +277,13 @@ class ObjectsController extends Controller
 							if($_GET['subService'] == 'search'){
 								$query = [
 									'type' => 'search',
-									'content' = > $content
+									'content' => $content
 								];
 							}
 							else if($_GET['subService'] == 'offer'){
 								$query = [
 									'type' => 'offers',
-									'content' = > $content
+									'content' => $content
 								];
 							}
 							
@@ -275,9 +295,9 @@ class ObjectsController extends Controller
 							$newAdversting->timeActivity = $contact['activity'];
 							$newAdversting->region = $meta['country'];
 							$newAdversting->description = Json::encode($query['content']);
-							$newAdversting->contact = Json::encode($contact['data']);
+							$newAdversting->contactData = Json::encode($contact['data']);
 							
-							if($newAdversting->save()){ $postResponse = 'Send success'; }
+							if($newAdversting->save(false)){ $postResponse = 'Send success'; }
 							else{
 								Yii::$app->response->statusCode = 405;
 								$postResponse = 'Gateway error';

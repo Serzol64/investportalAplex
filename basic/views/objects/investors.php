@@ -29,7 +29,7 @@ $this->title = 'Investors';
 							<div><?php echo $adList->description; ?></div>
 							<div>
 								<i><?php echo $adList->date; ?></i>
-								<a href="">Read more</a>
+								<a href="/investors/<?php echo $adList->id; ?>">Read more</a>
 							</div>
 						</aside>
 					<?php } ?>
@@ -158,19 +158,19 @@ $this->title = 'Investors';
 						</div>
 						<div>
 						  <label>Contact name</label>
-						  <input type="text" id="contactName"/>
+						  <input type="text" id="contactSearchName"/>
 						</div>
 						<div>
 						  <label>Contact phone</label>
-						  <input type="phone" id="contactPhone"/>
+						  <input type="phone" id="contactSearchPhone"/>
 						</div>
 						<div>
 						  <label>Contact E-Mail</label>
-						  <input type="email" id="contactMail"/>
+						  <input type="email" id="contactSearchMail"/>
 						</div>
 						<div>
 						  <label>Activity to</label>
-						  <input type="date" min="<?php echo date('Y-m-d'); ?>" id="activityTo" />
+						  <input type="date" min="<?php echo date('Y-m-d'); ?>" id="activitySearchTo" />
 						</div>
 					  </section>
 					</li>

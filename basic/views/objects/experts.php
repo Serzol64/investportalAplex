@@ -20,6 +20,7 @@ $this->title = 'Experts';
 					<div class="searchComponent">
 						<div id="search-header">
 							<ul>
+						<?php if(is_array($lake['theme']) || is_object($lake['theme'])){ ?>
 								<li>
 									<label for="consultT">Consult Theme</label>
 									<select name="consultT" data-formState='yes'>
@@ -27,6 +28,7 @@ $this->title = 'Experts';
 										<?php foreach($lake['theme'] as $vitrina){ echo Html::tag('option', $vitrina->title, ['value' => $vitrina->title]); } ?>
 									</select>
 								</li>
+						<?php } if(is_array($lake['cost']) || is_object($lake['cost'])){ ?>
 								<li>
 									<label for="attachment">Attachments cost, $</label>
 									<select name="attachment" data-formState='yes'>
@@ -34,6 +36,7 @@ $this->title = 'Experts';
 										<?php foreach($lake['cost'] as $vitrina){ echo Html::tag('option', $vitrina->cost, ['value' => $vitrina->cost]); } ?>
 									</select>
 								</li>
+						<?php } if(is_array($lake['region']) || is_object($lake['region'])){ ?>
 								<li>
 									<label for="reg">Region</label>
 									<select name="reg" data-formState='yes'>
@@ -41,6 +44,7 @@ $this->title = 'Experts';
 										<?php foreach($lake['region'] as $vitrina){ echo Html::tag('option', $vitrina->region, ['value' => $vitrina->region]); } ?>
 									</select>
 								</li>
+						<?php } if(is_array($lake['type']) || is_object($lake['type'])){ ?>
 								<li>
 									<label for="type">Type of expert</label>
 									<select name="type" data-formState='yes'>
@@ -48,6 +52,7 @@ $this->title = 'Experts';
 										<?php foreach($lake['type'] as $vitrina){ echo Html::tag('option', $vitrina->type, ['value' => $vitrina->type]); } ?>
 									</select>
 								</li>
+						<?php } if(is_array($lake['regulator']) || is_object($lake['regulator'])){ ?>
 								<li>
 									<label for="member">Is a member of the SRO:</label>
 									<select name="member" data-formState='yes'>
@@ -55,6 +60,7 @@ $this->title = 'Experts';
 										<?php foreach($lake['regulator'] as $vitrina){ echo Html::tag('option', $vitrina->regulator, ['value' => $vitrina->regulator]); } ?>
 									</select>
 								</li>
+						<?php } ?>
 							</ul>
 						</div>
 						<div id="search-footer">

@@ -16,7 +16,6 @@ return array(
     'yii\\' => array($vendorDir . '/yiisoft/yii2'),
     'ogheo\\htmlcompress\\' => array($vendorDir . '/ogheo/yii2-htmlcompress/src'),
     'linslin\\yii2\\curl\\' => array($vendorDir . '/linslin/yii2-curl'),
-    'klisl\\behaviors\\' => array($vendorDir . '/klisl/yii2-json-behavior/src'),
     'jcobhams\\NewsApi\\' => array($vendorDir . '/jcobhams/newsapi/src'),
     'cebe\\markdown\\' => array($vendorDir . '/cebe/markdown'),
     'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),

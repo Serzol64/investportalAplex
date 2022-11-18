@@ -42,10 +42,11 @@ $this->title = $curEvent->title . ":: Events";
                                 <li data-channel="telegram" style="margin-left: 40%;" onClick='window.open("https://telegram.me/share/url?url=<?php echo ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>","sharer","status=0,toolbar=0,width=650,height=500");'><i class="fab fa-telegram" style="color: gray;"></i></li>
                             </ul>
                         </section>
-                       <section class="realted"><strong>Realted events</strong><ul><?php foreach($realted as $key => $value){ echo Html::tag('li', Html::a($value[2], ['news/event', 'contentId' => $value[1]])); } ?></ul></ul></section>
+                       <?php if(is_array($realted) || is_object($realted)){ ?><section class="realted"><strong>Realted events</strong><ul><?php foreach($realted as $key => $value){ echo Html::tag('li', Html::a($value[2], ['news/event', 'contentId' => $value[1]])); } ?></ul></ul></section><?php } ?>
                     </footer>
                 </div>
                <div id="right-content">
+			<?php if(is_array($realted) || is_object($realted)){ ?>
 					 <div class="realted-news">
 						 <?php 
 								foreach($realted as $key => $value){ 
@@ -57,6 +58,7 @@ $this->title = $curEvent->title . ":: Events";
 								} 
 						?>
 					</div>
+			<?php } ?>
 				</div>
             </div>
         </section>

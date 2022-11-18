@@ -1,0 +1,77 @@
+html,body{
+  margin: 0;
+}
+ul{
+  list-style-type: none;
+  width: 80vw;
+  padding: 2%;
+  margin: 0 auto;
+}
+ul > li{
+  margin: 1%;
+  display: grid; 
+  grid-auto-flow: row dense; 
+  grid-auto-columns: 50%; 
+  grid-auto-rows: 0.5em; 
+  grid-template-columns: 100%; 
+  grid-template-rows: min-content min-content max-content 25%; 
+  gap: 2% 4em;
+  align-content: stretch; 
+  justify-items: stretch; 
+}
+ul > li div{
+  margin: 0.5%;
+}
+ul > li div *{
+  margin: 0.25%;
+}
+
+ul > li div#meta *{
+  font-size: xxx-large;
+}
+
+ul li div#param, ul li div#content{
+  display: inline-flex;
+
+}
+ul li div#param *, ul li div#content *{
+  display: inline-flex;
+  margin: 0.33%;
+  flex: 1 0.5 0.25%;
+  align-self: flex-start;
+  order: 1;
+}
+
+ul li div#contact *{
+  display: flex;
+  margin: 0.66%;
+  flex: 2 1 0.5%;
+  align-self: flex-start;
+  order: 2;
+}
+
+div#param > div h4{
+  font-size: x-large;
+}
+div#param > div span{
+  font-size: large;
+}
+
+div#content > div h3{
+  font-size: x-large;
+}
+
+div#content > div p{
+  font-size: xx-large;
+}
+
+div#contact > div h2{
+  font-size: xx-large;
+}
+div#contact > div p{
+  font-size: x-large;
+}
+div#contact > div p a{
+  font-size: xx-large;
+  color: #0079bf;
+}

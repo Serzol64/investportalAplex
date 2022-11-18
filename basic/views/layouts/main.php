@@ -18,7 +18,7 @@ $this->beginPage();
 <!DOCTYPE html>
 <html lang="en-US">
 	<head>
-		<meta charset="UTF-8">
+		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
 		<title><?= Html::encode($this->title) ?></title>
 		<?= Html::csrfMetaTags() ?>

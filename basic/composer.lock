@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fb13d4e8eec73262a0c0c388c3732c67",
+    "content-hash": "87a066a27cd752495c4c5339d5aafb12",
     "packages": [
         {
             "name": "airmanbzh/php-html-generator",
@@ -802,55 +802,6 @@
                 "source": "https://github.com/jcobhams/newsapi-php/tree/master"
             },
             "time": "2021-06-22T23:58:59+00:00"
-        },
-        {
-            "name": "klisl/yii2-json-behavior",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/klisl/yii2-json-behavior.git",
-                "reference": "ebc621bc87d417b0c4711c10473d8868afdc5b1c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/klisl/yii2-json-behavior/zipball/ebc621bc87d417b0c4711c10473d8868afdc5b1c",
-                "reference": "ebc621bc87d417b0c4711c10473d8868afdc5b1c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0",
-                "yiisoft/yii2": "~2.0.0"
-            },
-            "default-branch": true,
-            "type": "yii2-extension",
-            "autoload": {
-                "psr-4": {
-                    "klisl\\behaviors\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Sergey Klimenchuk",
-                    "email": "ksl80@ukr.net",
-                    "homepage": "https://github.com/klisl/yii2-json-behavior",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Behavior for working with JSON format fields",
-            "keywords": [
-                "Behavior",
-                "json",
-                "yii2"
-            ],
-            "support": {
-                "issues": "https://github.com/klisl/yii2-json-behavior/issues",
-                "source": "https://github.com/klisl/yii2-json-behavior/tree/1.3"
-            },
-            "time": "2018-04-17T11:39:52+00:00"
         },
         {
             "name": "linslin/yii2-curl",
@@ -5755,7 +5706,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "klisl/yii2-json-behavior": 20,
         "airmanbzh/php-html-generator": 20
     },
     "prefer-stable": false,
