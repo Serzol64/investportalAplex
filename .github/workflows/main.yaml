@@ -2,14 +2,14 @@ on: [push]
 
 jobs:
     deploy_job:
-    runs-on: ubuntu-latest
-    name: deploy
-    steps:
+      runs-on: ubuntu-latest
+      name: deploy
+      steps:
         - name: Checkout
-        uses: actions/checkout@v2
+          uses: actions/checkout@v2
         - name: Deploy portal
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
-        with:
+          uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+          with:
             username: ${{ secrets.FTP_WORK_LOGIN }}
             server: ${{ secrets.FTP_WORK_SERVER }}
             remote_path: ${{ secrets.FTP_WORK_PATH }}
