@@ -167,11 +167,12 @@ width: 88%;display: block;}
   height: 50%;
 }
 .newServiceForm > div[data-modalpart]{
-  padding: 4%;
+  padding: 1%;
 }
-.newServiceForm > div[data-modalpart='header']{ 
-  grid-area: stepHeader; 
+.newServiceForm > div[data-modalpart='header']{
+  grid-area: stepHeader;
   background-color: #0079bf;
+  height: 100%;
 }
 .newServiceForm > div[data-modalpart='header'] .formStep{ 
   list-style-type: none;
@@ -191,26 +192,6 @@ width: 88%;display: block;}
 .newServiceForm  > div[data-modalpart='content']{ grid-area: stepContent; 
 }
 
-.newServiceForm  > div[data-modalpart='content'] header#formUI .formStep{ 
-  list-style-type: none;
-  margin-left: -3%;
-  font-size: 90%;
-  color: darkgray;
-}
-.newServiceForm  > div[data-modalpart='content'] header#formUI .formStep #step{ 
-  list-style-type: none;
-  display: none;
-}
-.newServiceForm  > div[data-modalpart='content'] header#formUI .formStep #step.active{ 
-  display: block;
-}
-.newServiceForm  > div[data-modalpart='content'] header#formUI .formStep #step span{ 
-  display: block;
-  margin-top: 2em;
-}
-.newServiceForm  > div[data-modalpart='content'] header#formUI .formStep #step span:nth-last-child(1){ 
-  display: none;
-}
 .newServiceForm  > div[data-modalpart='content'] main#formUI .formStep #step:not(.active){ 
   display: none;
 }
@@ -256,7 +237,7 @@ width: 88%;display: block;}
   padding: 10px;
   width: 20%;
 }
-.newServiceForm  > div[data-modalpart='content'] footer#formUI{ grid-area: stepFooter; width: 100%; float: left; margin-top: 8%; }
+.newServiceForm  > div[data-modalpart='content'] footer#formUI{grid-area: stepFooter;width: 100%;float: left;margin-top: 7%;margin-left: -3%;}
 
 .newSVCFormContent{
   display: flex;

@@ -12,10 +12,8 @@ $this->title = 'Experts';
             <a href="<?php echo Url::to(['site/index']); ?>">Main</a> <span id="delimeter"> / </span> <a href="<?php echo Url::to(['objects/experts-feed']); ?>">Experts</a>
         </section>
         <section class="section" id="experts">
+			<a href="#newExpert" class="newExpert" rel="modal:open">Add your expert data</a>
 			<div id="experts-search">
-				<header>
-					<input type="search" name="consultQ" id="consultQ" placeholder="Expert name or theme" />
-				</header>
 				<main>
 					<div class="searchComponent">
 						<div id="search-header">
@@ -107,4 +105,72 @@ $this->title = 'Experts';
 				</footer>
 			</div>
         </section>
+        <div id="newExpert" class="modal">
+			<section class="new-ad-form-modal-data">
+					<div id="content">
+					  <ul>
+						<li class="modal-active">
+						  <section class="form">
+										<div>
+										  <label>Your specialization</label>
+										  <input type="text" id="specialization" placeholder=""/>
+										</div>
+										<div>
+										  <label>Your slogan</label>
+										  <input type="text" id="slogan" placeholder=""/>
+										</div>
+										<div>
+										  <label>Experience start date</label>
+										  <input type="date" id="exprStart" placeholder="" min=""/>
+										</div>
+										<div>
+										  <label>About your work</label>
+										  <textarea id="about" placeholder=""></textarea>
+										</div>
+										<div>
+										  <label>Your investment amounts</label>
+										  <textarea id="amounts" placeholder=""></textarea>
+										</div>
+										<div>
+										  <label>Your specialization history</label>
+										  <textarea id="specHistory" placeholder=""></textarea>
+										</div>
+										<div>
+										  <label>Your services and prices</label>
+										  <textarea id="prices" placeholder=""></textarea>
+										</div>
+										<div>
+										  <label>Legal state</label>
+										   <select id="sro">
+												<option>Select state</option>
+												<option value="0">Certified Investor</option>
+												<option value="1">An expert trusted by financial organizations, institutions and regulators</option>
+										   </select>
+										</div>
+										<div>
+										  <label>Quality parameters</label>
+										  <ul id="selector">
+											<li>
+											  <span>Your membership in the SRO</span>
+											  <select id="sro">
+												<option value="any">I no SRO membership</option>
+											  </select>
+											</li>
+											<li>
+											  <div>
+												<input type="checkbox" id="free" value="true" />
+												<p>Is free appreal</p>
+											  </div>
+											</li>
+										  </ul>
+										</div>
+									  </section>
+									</li>
+								  </ul>
+								</div>
+								<div id="footer">
+								  <button>Send query</button>
+								</div>
+			</section>
+        </div>
 </main>

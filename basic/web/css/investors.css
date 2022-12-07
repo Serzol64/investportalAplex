@@ -26,7 +26,7 @@ a.new-ad-form-modal{
 	grid-area: 1 / 1 / 2 / 3;
 }
 #investors-list > .body{
-	grid-area: 2 / 1 / 4 / 3;
+	grid-area: 2 / 1 / 3 / 3;
 	padding-top: 2%;
 	padding-bottom: 2%;
 	margin-top: -12%;
@@ -56,6 +56,12 @@ a.new-ad-form-modal{
   padding: 2%;
   border: solid 2px gray;
   border-radius: 10px;
+  -moz-user-select: none;
+  -o-user-select:none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 #investors-list > .header .inv li:hover, #investors-list > .header .inv li.selected{
@@ -79,9 +85,6 @@ a.new-ad-form-modal{
 .new-ad-form-modal-data{
   padding: 4%;
 }
-.new-ad-form-modal-data > #header{
-  padding: 2%;
-}
 .new-ad-form-modal-data > #content{
   padding: 2%;
 }
@@ -89,15 +92,6 @@ a.new-ad-form-modal{
   padding: 1%;
 }
 
-
-.new-ad-form-modal-data > #header *{
-  padding: 1%;
-  display: inline-table;
-  color: gray;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: 140%;
-}
 .new-ad-form-modal-data > #footer *{
   float: right;
   margin-right: 10%;
@@ -181,9 +175,11 @@ a.new-ad-form-modal{
 	#investors-list{
 		width: 120%;
 	}
-
+	
+	#investors-list > .header { display: none; }
 	#investors-list > .body {
-		margin-top: -41%;
+		grid-area: 2 / 1 / 3 / 3;
+		margin-top: -2%;
 	}
 	#investors-list > .header .inv {
 		width: 95%;
@@ -191,6 +187,12 @@ a.new-ad-form-modal{
 		margin-top: 0%;
 	}
 	#investors-list > .header .inv li { margin-top: 11px; }
+
+	#investors-list > .body aside {
+	padding: 4%;
+	margin-bottom: 5%;
+	}
+	
 }
 @media all and (min-width: 768px) and (max-width: 1024px){
     #investors-list > .footer{ display: none; }
@@ -199,33 +201,31 @@ a.new-ad-form-modal{
 	}
 	#investors-list > .header .inv {
 		margin-top: -9%;
-		left: 9%;
+		left: 1%;
 	}
 	#investors-list > .body {
-		margin-top: -22%;
+		margin-top: -5%;
 	}
 	#investors-list > .footer ul {
 		padding-bottom: 12%;
 	}
 	#investors-list > .header .inv li {
-		margin-left: 0%;
+		margin-left: 3%;
 		margin-top: 6px;
 	}
 }
 @media all and (min-width: 1024px) and (max-width: 1440px){
 	#investors-list > .header .inv {
-		margin-top: -7%;
-		left: -11%;
+		font-size: 80%;
+		margin-top: -9%;
+		left: 8%;
 	}
 	#investors-list > .body {
-		margin-top: -23%;
+		margin-top: -12%;
 	}
+	
 	#investors-list > .footer ul {
 		padding-bottom: 12%;
-	}
-	#investors-list > .header .inv {
-		font-size: 70%;
-		width: 70%;
 	}
 	#investors-list > .header .inv li { margin-left: 1%; }
 }

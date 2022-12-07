@@ -5,6 +5,8 @@ use Yii;
 use yii\db\ActiveRecord;
 
 class Investors extends ActiveRecord{
+	public $descript;
+	
 	public function rules(){
 		return [
 			[['id','date','type','description','timeActivity','region','contactData'],'required']

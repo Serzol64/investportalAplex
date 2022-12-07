@@ -35,6 +35,7 @@ class ContentData extends Component{
 						$ncm->created = date('Y-m-d h:i:s');
 						$ncm->titleImage = $q['query']['image'];
 						$ncm->content = $q['query']['content'];
+						$ncm->category = Yii::$app->cloudCategorizator('news', [$q['query']['title'], $q['query']['content']]);
 						
 						if(!$ncm->save()){
 							$response[1] = 500;
@@ -63,6 +64,7 @@ class ContentData extends Component{
 						$currentNews->created = date('Y-m-d h:i:s');
 						$currentNews->titleImage = $q['query']['image'];
 						$currentNews->content = $q['query']['content'];
+						$currentNews->category = Yii::$app->cloudCategorizator('news', [$q['query']['title'], $q['query']['content']]);
 						
 						if(!$currentNews->save()){
 							$response[1] = 500;
@@ -101,6 +103,7 @@ class ContentData extends Component{
 						$acm->created = date('Y-m-d h:i:s');
 						$acm->titleImage = $q['query']['image'];
 						$acm->content = $q['query']['content'];
+						$acm->category = Yii::$app->cloudCategorizator('news', [$q['query']['title'], $q['query']['content']]);
 						
 						if(!$acm->save()){
 							$response[1] = 500;
@@ -129,6 +132,7 @@ class ContentData extends Component{
 						$currentNews->created = date('Y-m-d h:i:s');
 						$currentNews->titleImage = $q['query']['image'];
 						$currentNews->content = $q['query']['content'];
+						$currentNews->category = Yii::$app->cloudCategorizator('news', [$q['query']['title'], $q['query']['content']]);
 						
 						if(!$currentNews->save()){
 							$response[1] = 500;
@@ -169,6 +173,7 @@ class ContentData extends Component{
 						$ecm->date_to = $q['query']['period']['to'];
 						$ecm->location = $q['query']['location'];
 						$ecm->content = $q['query']['content'];
+						$ecm->tematic = $q['query']['tematic'];
 						
 						if(!$ecm->save()){
 							$response[1] = 500;
@@ -199,6 +204,7 @@ class ContentData extends Component{
 						$currentNews->date_to = $q['query']['period']['to'];
 						$currentNews->location = $q['query']['location'];
 						$currentNews->content = $q['query']['content'];
+						$currentNews->tematic = $q['query']['tematic'];
 						
 						if(!$currentNews->save()){
 							$response[1] = 500;

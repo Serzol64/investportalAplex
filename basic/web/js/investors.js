@@ -5,8 +5,6 @@ $(document).ready(function(){
   $(window).resize(function(){ $('#investors-list').height(($('.main').height() - $('#investors-list').height()) * 2); });
   $(window).resize();
   
-  $('.modal').css('max-width', '100%').height(567);
-  
   currentAd.click(function(event) {
 	  event.preventDefault();
 	  this.blur();
@@ -18,8 +16,13 @@ $(document).ready(function(){
   tematic.click(function(e,t){
     var currentT = tematic.eq($(this).index());
     
-    tematic.removeClass('selected');
-    currentT.addClass('selected');
+    if(currentT.hasClass('selected')){
+		tematic.removeClass('selected');
+	}
+    else{
+		tematic.removeClass('selected');
+		currentT.addClass('selected');
+	}
     
   });
   
@@ -39,40 +42,64 @@ $(document).ready(function(){
 	new FormData(),
 	new FormData()
   ];
-  
-  $('.new-ad-form-modal-data > #footer button').click(function(e,t){
-	  let endpointName = $('.new-ad-form-modal-data > #content ul li.modal-active section.form').data('endpoint'),
-		  endpointCode = endpointName === 'search' ? '/investors/api/post?service=send&subService=search' : '/investors/api/post?service=send&subService=offer';
-		  content = {};
+  $('.new-ad-form-modal-data[data-endpoint=\'search\'] > #footer button').click(function(e,t){
+	   let endpointCodeSearch = '/investors/api/post?service=send&subService=search';
+		   contentSearch = {},
+		   metaSearch = {},
+		   contactSearch = {};
 		  
-	  var meta = {
-		  title: $('input#title').val(),
-		  country: $('select#region option:selected').val()
-	  };
-	  
-	  var contact = {
-		  activity: $('input#activityTo, input#activitySearchTo').val(),
-		  name: $('input#contactName, input#contactSearchName').val(),
-		  phone: $('input#contactPhone, input#contactSearchPhone').val(),
-		  mail: $('input#contactMail, input#contactSearchMail').val()
-	  };
-	  
-	  if(endpointName === 'search'){
-		  content = {
+	   metaSearch = {
+			title: $('input#titleSearch').val(),
+			country: $('select#regionSearch option:selected').val()
+	   };
+		  
+	   contentSearch = {
 			 parameters: {
 				  target: $('input#needI').val(),
 				  purpose: $('input#existence').val(),
 				  solved: $('input#problem').val(),
 				  competitors: $('textarea#competitors').val(),
-				  implementation: $('input#period').val()
+				  implementation: $('input#implementation').val()
 			 },
 			 data: {
 				  content: $('textarea#contentSearch').val()
 			 } 
-		  };
-	  }
-	  else{
-		  content = {
+	   };
+		  
+	   contactSearch = {
+			  activity: $('input#activitySearchTo').val(),
+			  data: {
+				  user: $('input#contactSearchName').val(),
+				  phone: $('input#contactSearchPhone').val(),
+			      mail: $('input#contactSearchMail').val()
+			  }
+	   };
+	   
+	   queryObject[1] = {
+		  header: metaSearch,
+		  body: contentSearch,
+		  footer: contactSearch
+	   };
+	  
+	   investForm[1].append('svcQuery', JSON.stringify(queryObject[1]));
+	  
+	   fetch(endpointCodeSearch, { method: 'POST', body: investForm[1] })
+		.then((response) => { if(response.ok){ window.location.reload(true); } })
+		.catch(() => { alert('Failed to send data! Try again later...'); });
+  });
+  $('.new-ad-form-modal-data[data-endpoint=\'offer\'] > #footer button').click(function(e,t){
+	  let endpointCode = '/investors/api/post?service=send&subService=offer';
+		  content = {},
+		  meta = {},
+		  contact = {};
+		  
+	 
+     meta = {
+			  title: $('input#title').val(),
+			  country: $('select#region option:selected').val()
+	 };
+		  
+	 content = {
 			  parameters: {
 				  payback: $('input#period').val(),
 				  amount: $('input#amount').val()
@@ -80,8 +107,16 @@ $(document).ready(function(){
 			  data: {
 				  content: $('textarea#content').val()
 			  }
-		  };
-	  }
+	  };
+		  
+	  contact = {
+			  activity: $('input#activityTo').val(),
+			  data: {
+				  user: $('input#contactName').val(),
+				  phone: $('input#contactPhone').val(),
+			      mail: $('input#contactMail').val()
+			  }
+	  };
 	  
 	  queryObject[0] = {
 		  header: meta,
@@ -92,12 +127,7 @@ $(document).ready(function(){
 	  investForm[0].append('svcQuery', JSON.stringify(queryObject[0]));
 	  
 	  fetch(endpointCode, { method: 'POST', body: investForm[0] })
-		.then((response) => {
-			if(response.status === 200){
-				$('.modal').css('display', 'none');
-				window.reload(true);
-			}
-		})
+		.then((response) => { if(response.ok){ window.location.reload(true); } })
 		.catch(() => { alert('Failed to send data! Try again later...'); });
 	  
   });
@@ -125,7 +155,7 @@ $(document).ready(function(){
 			let resultAppend = '';
 			
 			data.map((result) => {
-				resultAppend += '<aside><div>${result.title}</div><div>${result.description}</div><div><i>${result.date}</i><a href="${result.id}">Read more</a></div></aside>\n';
+				resultAppend += '<aside><div>${result.title}</div><div>${result.description}</div><div><i>${result.date}</i><a href="/investors/${result.id}" data-modal="modal:open">Read more</a></div></aside>\n';
 			});
 			
 			$('#investors-list > .body').append(resultAppend);

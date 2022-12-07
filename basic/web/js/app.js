@@ -203,33 +203,3 @@ function get_cookie(b){var a=document.cookie.match("(^|;) ?"+b+"=([^;]*)(;|$)");
 function getRandomFromRange(min, max) {
     return Math.random() * (max - min) + min;
 }
-
-let responseSelector = [];
-function getArrayValues(htmlSelector){
-    $.map(htmlSelector, function (el, i) {
-        responseSelector.push(el.eq(i).val());
-    });
-
-    return responseSelector;
-}
-function getArrayClasses(htmlSelector){
-    $.map(htmlSelector, function (el, i) {
-        responseSelector.push(el.eq(i).attr('class'));
-    });
-
-    return responseSelector;
-}
-function getArrayTexts(htmlSelector){
-    $.map(htmlSelector, function (el, i) {
-        responseSelector.push(el.eq(i).text());
-    });
-
-    return responseSelector;
-}
-function getArrayContents(htmlSelector){
-    $.map(htmlSelector, function (el, i) {
-        responseSelector.push(el.eq(i).html());
-    });
-
-    return responseSelector;
-}

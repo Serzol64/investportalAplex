@@ -1,13 +1,13 @@
 html,body{
   margin: 0;
 }
-ul{
+ul.viewer{
   list-style-type: none;
   width: 80vw;
   padding: 2%;
   margin: 0 auto;
 }
-ul > li{
+ul.viewer > li{
   margin: 1%;
   display: grid; 
   grid-auto-flow: row dense; 
@@ -19,22 +19,22 @@ ul > li{
   align-content: stretch; 
   justify-items: stretch; 
 }
-ul > li div{
+ul.viewer > li div{
   margin: 0.5%;
 }
-ul > li div *{
+ul.viewer > li div *{
   margin: 0.25%;
 }
 
-ul > li div#meta *{
+ul.viewer > li div#meta *{
   font-size: xxx-large;
 }
 
-ul li div#param, ul li div#content{
+ul.viewer li div#param, ul.viewer li div#content{
   display: inline-flex;
 
 }
-ul li div#param *, ul li div#content *{
+ul.viewer li div#param *, ul.viewer li div#content *{
   display: inline-flex;
   margin: 0.33%;
   flex: 1 0.5 0.25%;
@@ -42,7 +42,7 @@ ul li div#param *, ul li div#content *{
   order: 1;
 }
 
-ul li div#contact *{
+ul.viewer li div#contact *{
   display: flex;
   margin: 0.66%;
   flex: 2 1 0.5%;
@@ -54,7 +54,7 @@ div#param > div h4{
   font-size: x-large;
 }
 div#param > div span{
-  font-size: large;
+  font-size: x-large;
 }
 
 div#content > div h3{

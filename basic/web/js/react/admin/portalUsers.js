@@ -20,7 +20,7 @@ class RegionList extends React.Component{
 	    };
 	}
 	componentDidMount(){
-		fetch('/services/api/0/get', { method: 'GET' })
+		fetch('/services/0/get', { method: 'GET' })
         .then(response => response.json())
 		.then(data => this.setState({ region: data }))
 		.catch(error => {
@@ -48,7 +48,7 @@ class RegionListEditor extends React.Component{
 	    };
 	}
 	componentDidMount(){
-		fetch('/services/api/0/get', { method: 'GET' })
+		fetch('/services/0/get', { method: 'GET' })
         .then(response => response.json())
 		.then(data => this.setState({ region: data }))
 		.catch(error => {

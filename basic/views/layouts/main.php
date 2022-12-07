@@ -22,14 +22,11 @@ $this->beginPage();
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
 		<title><?= Html::encode($this->title) ?></title>
 		<?= Html::csrfMetaTags() ?>
-		<script src="js/lib/autocomplete/jquery.easy-autocomplete.min.js"></script>
-		<link rel="stylesheet" href="js/lib/autocomplete/easy-autocomplete.min.css">
-		<link rel="stylesheet" href="js/lib/autocomplete/easy-autocomplete.themes.min.css">
 		<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.min.js"></script>
 		<script src="https://kit.fontawesome.com/97c3285af2.js" crossorigin="anonymous"></script>
 		<meta property="fb:app_id" name="app_id" content="404988774385568" />
-<?php if(Yii::$app->controller->id == 'Objects' && Yii::$app->controller->action->id == 'Object'){ ?>	
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous"></script>
+<?php if(Yii::$app->controller->id == 'Objects' && Yii::$app->controller->action->id == 'Object'){ ?>
+		<script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.13.2/jquery-ui.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js" integrity="sha512-0bEtK0USNd96MnO4XhH8jhv3nyRF0eK87pJke6pkYf3cM0uDIhNJy9ltuzqgypoIFXw3JSuiy04tVk4AjpZdZw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css" integrity="sha512-okE4owXD0kfXzgVXBzCDIiSSlpXn3tJbNodngsTnIYPJWjuYhtJ+qMoc0+WUwLHeOwns0wm57Ka903FqQKM1sA==" crossorigin="anonymous" />
 <?php } ?>

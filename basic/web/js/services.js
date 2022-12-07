@@ -62,8 +62,6 @@ $(document).ready(function(){
 		});
   });
   
-  $('.modal').css('max-width', '100%').height(567);
-  
   $('.last-example > #exmpl').click(function(e, t){
     var searchEl = $('header#search > input'),
         currentV = $(this).text();
@@ -106,20 +104,6 @@ $(document).ready(function(){
 			  }
 		  }
 	  }
-  });
-  
-  $('#newSVCForm > .newServiceForm div[data-modalpart=\'content\'] main#formUI .formStep #step.active #formStepUI .header a').click(function(e,t){
-	  e.preventDefault();
-	
-	  let nfsEl = [$('#newSVCForm > .newServiceForm div[data-modalpart=\'content\'] main#formUI .formStep #step #formStepUI .header a'), $('#newSVCForm > .newServiceForm div[data-modalpart=\'content\'] main#formUI .formStep #step #formStepUI .content #tab')];
-	  
-	  for(let i = 0; i < nfsEl.length; i++){
-		  nfsEl[i].removeClass('active');
-		  nfsEl[i].eq($(this).index()).addClass('active');
-	  }
-	  
-	  $('#newSVCForm > .newServiceForm div[data-modalpart=\'content\'] header#formUI .formStep #step span').css('display', 'none');
-	  $('#newSVCForm > .newServiceForm div[data-modalpart=\'content\'] header#formUI .formStep #step span').eq($(this).index()).css('display', 'block');
   });
   
   

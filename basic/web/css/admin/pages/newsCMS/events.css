@@ -40,7 +40,7 @@
   padding-bottom: 2vh;
   width: 96%;
 }
-#events-list > *[data-block='search'], #events-list > *[data-block='name']{
+#events-list > *[data-block='search'], #events-list > *[data-block='name'], #events-list > *[data-block='type']{
   padding-top: 1%;
   padding-bottom: 1%;
 }
@@ -71,7 +71,7 @@
     margin-top: 2%;
     display: inline-table;
 }
-*[data-block='search'] > *, *[data-block='name'] > *{
+*[data-block='search'] > *, *[data-block='name'] > *, *[data-block='type'] > *{
   padding: 2%;
   width: 88%;
   text-indent: 2%;

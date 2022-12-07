@@ -47,6 +47,21 @@ class CountriesList extends Component{
 		
 		return $response;
 	}
+	public function listAllRegions(){
+		$response = [];
+		$regId = 0;
+		
+		$cities = Json::decode($this->countryDF[1], true);
+		for($i = 0; $i < count($cities); $i++){
+				$response[] = [
+					'id' => $regId,
+					'region' => $cities[$i]['region']
+				];
+				$regId++;
+		}
+		
+		return $response;
+	}
 	public function listCities(){
 		$response = [];
 		$regId = 0;

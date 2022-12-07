@@ -15,7 +15,7 @@ $this->title = 'Portal services';
         </section>
         <section class="section" id="services-public">
 			<h2 id="title">Services list and search</h2>
-			<a href="#newSVCForm" class="add-but" rel="modal:open">Add New Service</a>
+			<a href="#newSVCForm" class="add-but" rel="modal:open">Add New Service Offer</a>
 			<div id="services-list">
 			  <header id="search">
 				<input type="search" name="servicesQ" placeholder="Services search..."/>
@@ -68,40 +68,15 @@ $this->title = 'Portal services';
 				<div data-modalpart="header">
 					<ul class="formStep">
 					  <li id="step" class="active">Enter basic information about the service</li>
-					  <li id="step">Select the service access level</li>
-						<li id="step">Decide on the operation of logic or other functions inside the service</li>
-						<li id="step">Provide parameters to the functionality of your service</li>
+					  <li id="step">Decide on the operation of logic or other functions inside the service</li>
+					  <li id="step">Provide parameters to the functionality of your service</li>
 					</ul>
 				</div>
 				<div data-modalpart="content">
-					  <header id="formUI">
-						<ul class="formStep">
-							<li id="step" class="active">
-							  <span>Enter the basic information about your service offer from the organization</span>
-							  <span>Enter the basic and metadata about your form or special service</span>
-							</li>
-							<li id="step">
-							  <span>Decide on the level of access to your service offer</span>
-							  <span>Decide on the level of access to your form or special service</span>
-							</li>
-							<li id="step">
-							  <span>Describe the logic and other features of your service offer</span>
-							  <span>Describe the logic and other features of your form or special service</span>
-							</li>
-							<li id="step">
-							  <span>Inform the portal of your contact and other personal data, according to which our users will accept your offer for your service within your organization</span>
-							  <span>Will inform the portal about the data processing parameters received from your form or your service</span>
-							</li>
-						</ul>
-			 </header>
-			 <main id="formUI">
+					<main id="formUI">
 						<section class="formStep">
 							<div id="step" class="active">
 							  <section id="formStepUI">
-								<div class="header">
-								  <a href="#" class="active">Your proposal</a>
-								  <a href="#">Your form or separate service</a>
-								</div>
 								<div class="content">
 								  <div id="tab" class="active">
 									  <form class="newSVCFormContent" method="POST" action="">
@@ -146,87 +121,12 @@ $this->title = 'Portal services';
 										  </ul>
 										</form>
 								  </div>
-								  <div id="tab">
-									  <form class="newSVCFormContent" method="POST" action="">
-										  <ul>
-											<li>
-											  <span>Input the service name</span>
-											  <input type="text" id="title" placeholder="Input service name" />
-											</li>
-											<li>
-											  <span>Select your service category</span>
-											  <select name="category" id="category">
-												<option>Any category</option>
-												<?php foreach($categories as $cl){ ?><option value="<?php echo $cl->id; ?>"><?php echo $cl->name; ?></option><?php } ?>
-											  </select>
-											</li>
-											<li>
-											  <span>Select your service country</span>
-											  <select name="country" id="country">
-												<option value="any">All Countries</option>
-												<?php
-												$countriesList = Yii::$app->regionDB->getFullDataFrame();
-												for($i = 0; $i < count($countriesList); $i++){ 
-													$curC = $countriesList[$i];
-													echo '<option value="' . $curC['code'] . '">' . $curC['title'] . '</option>';
-												}
-												?>
-											  </select>
-											</li>
-											<li>
-												<span>Select your service region</span>
-												<select name="region" id="region" disabled>
-													<option value="any">All Regions</option>
-												</select>
-											</li>
-										  </ul>
-										</form>
-								  </div>
 								  
 								</div>
 							  </section>
 							</div>
 							<div id="step">
 							  <section id="formStepUI">
-								<div class="header">
-								  <a href="#" class="active">Your proposal</a>
-								  <a href="#">Your form or separate service</a>
-								</div>
-								<div class="content">
-									<div id="tab" class="active">
-									   <ul class="level">
-												<li>
-													<input type="radio" id="accessLevel" value="private" />
-													<span>For registred users</span>
-												</li>
-												<li>
-													<input type="radio" id="accessLevel" value="public" />
-													<span>For all users and visitors</span>
-												</li>
-										</ul>
-								  </div>
-								  <div id="tab">
-									  <ul class="level">
-												<li>
-													<input type="radio" id="accessLevel" value="private" />
-													<span>For registred users</span>
-												</li>
-												<li>
-													<input type="radio" id="accessLevel" value="public" />
-													<span>For all users and visitors</span>
-												</li>
-										</ul>
-								  </div>
-								  
-								</div>
-							  </section>
-							</div>
-							<div id="step">
-							  <section id="formStepUI">
-								<div class="header">
-								  <a href="#" class="active">Your proposal</a>
-								  <a href="#">Your form or separate service</a>
-								</div>
 								<div class="content">
 									<div id="tab" class="active">
 									  <ul class="SVCData">
@@ -278,40 +178,12 @@ $this->title = 'Portal services';
 										</li> 
 									  </ul>
 								  </div>
-								  <div id="tab">
-									  <ul class="SVCData">
-										<li>
-											<h4>Service Page URL</h4>
-											<input type="text" name="serviceURL" id="serviceURL" />
-										</li>
-										<li>
-											<h4>Sender command URL</h4>
-											<input type="text" name="senderCmd" id="senderCmd" />
-										</li>
-										<li>
-											<h4>Push command URL</h4>
-											<input type="text" name="pushCmd" id="pushCmd" />
-										</li>
-										<li>
-											<h4>Realtime command URL</h4>
-											<input type="text" name="realtimeCmd" id="realtimeCmd" />
-										</li>
-										<li>
-											<h4>Control command URL</h4>
-											<input type="text" name="controlCmd" id="controlCmd" />
-										</li>
-									</ul>
-								  </div>
 	
 								</div>
 							  </section>
 							</div>
 							<div id="step">
 							  <section id="formStepUI">
-								<div class="header">
-								  <a href="#" class="active">Your proposal</a>
-								  <a href="#">Your form or separate service</a>
-								</div>
 								<div class="content">
 								  <div id="tab" class="active">
 									  <nav>
@@ -349,26 +221,6 @@ $this->title = 'Portal services';
 											</ul>
 										</div>
 									  </nav>
-								  </div>
-								  <div id="tab">
-									  <nav>
-										<div class="wf">
-											<h4>Input service term</h4>
-											<textarea class="editor-component" id="terms" name="terms"></textarea>
-										</div>
-										<div class="wf">
-											<h4>Adding service questions</h4>
-											<div class="add-questions">
-												<header>
-													<div>
-														<input type="text" id="question" placeholder="Input service FAQ question" />
-														<textarea class="editor-component" placeholder="Input service answer for FAQ question" id="answer" name="answer"></textarea>
-													</div>
-												</header>
-												<main><button>Add question</button></main>
-											</div>
-										</div>
-									</nav>
 								  </div>
 								</div>
 							  </section>

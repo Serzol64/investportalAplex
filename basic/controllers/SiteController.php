@@ -4,6 +4,7 @@ namespace app\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\web\View;
+use yii\helpers\Url;
 use yii\helpers\Json;
 use linslin\yii2\curl\Curl;
 use yii\httpclient\Client;
@@ -75,8 +76,6 @@ class SiteController extends Controller{
 			]
 		];
 		
-		//var_dump($interactive['reviews']);
-		
 		return $this->render('index', ['staticCount' => $sc[0], 'staticMeta' => $sc[1], 'interactiveFeed' => $interactive, 'lastUpcoming' => $eventComing]);
 	}
 	public function actionAbout(){
@@ -133,14 +132,14 @@ class SiteController extends Controller{
 		$this->view->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js", ['position' => View::POS_HEAD]);
 		
 		
-		$this->view->registerCssFile("/css/services/portalServices/page.css");
+		$this->view->registerCssFile("/css/services/portalServices/view.css");
 		$this->view->registerJsFile("/js/services/page.js", ['position' => View::POS_END]);
 		
 		$serviceDataQuery = [':service' => $id];
 		$currentServiceQuery = [
 			Yii::$app->db->createCommand('SELECT id, title FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
-			Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.country")) as "country", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.region.region")) as "region", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.description")) as "description",  JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.term")) as "term", JSON_EXTRACT(meta, "$.accessRole") as "private" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
-			Yii::$app->db->createCommand('SELECT JSON_EXTRACT(proc, "$.send") as "send",  JSON_EXTRACT(proc, "$.push") as "push",  JSON_EXTRACT(proc, "$.realtime") as "realtime",  JSON_EXTRACT(proc, "$.control") as "control" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
+			Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.description")) as "description",  JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.term")) as "term", JSON_EXTRACT(meta, "$.accessRole") as "private" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
+			Yii::$app->db->createCommand('SELECT JSON_EXTRACT(proc, "$.send") as "send", JSON_EXTRACT(proc, "$.control") as "control" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
 			Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.faqService[*].question")) as "question",  JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.faqService[*].answer")) as "answer" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryAll(),
 		];
 
@@ -148,14 +147,28 @@ class SiteController extends Controller{
 	}
 	public function actionServicePageForm($id, $pagetype){
 
-		$this->view->registerJsFile("https://unpkg.com/@babel/standalone/babel.min.js", ['position' => View::POS_HEAD]);
-		$this->view->registerJsFile("https://unpkg.com/react@17/umd/react.production.min.js", ['position' => View::POS_HEAD]);
-		$this->view->registerJsFile("https://unpkg.com/react-dom@17/umd/react-dom.production.min.js", ['position' => View::POS_HEAD]);
-
+		
+		$serviceClient = new Client;
+		
 		if($pagetype == 'form'){
 			$servicePage = PortalServices::findOne(['id' => $id]);
 			
+			$currentServiceForm = [
+					'type' => 'control',
+					'parameters' => ['service' => 'getForm']
+			];
+			
+			$generatorQuery = ['cmd' => JSON::encode($currentServiceForm)];
+			$generatorCall = $serviceClient->createRequest()->setMethod('POST')->setUrl(Url::to(['site/services-api', 'serviceId' => 2, 'operation' => 'post'], true) . '?id=' . $id)->setData($generatorQuery)->send();
+			
+			
+			$this->view->registerJsFile("/js/lib/moment.js", ['position' => View::POS_HEAD]);
+			$this->view->registerJsFile("/js/passport/alertify/alertify.min.js", ['position' => View::POS_HEAD]);
+			$this->view->registerCssFile("/js/passport/alertify/css/alertify.min.css");
+			$this->view->registerCssFile("/js/passport/alertify/css/themes/default.min.css");
+			
 			$this->view->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.11/jquery.autocomplete.min.js", ['position' => View::POS_HEAD]);
+			$this->view->registerCssFile("/css/services/portalServices/view.css");
 			$this->view->registerJsFile("/js/react/serviceFormPage.js", ['position' => View::POS_END]);
 		}
 		else{
@@ -163,14 +176,23 @@ class SiteController extends Controller{
 			return $this->redirect(['site/service-page', 'id' => $id]);
 		}
 
-		return $this->render('serviceViewer', ['serviceForm' => $servicePage, 'type' => $pagetype]);
+		return $this->render('serviceViewer', ['serviceForm' => $servicePage, 'type' => $pagetype, 'currentService' => $id, 'form' => $generatorCall->data['steps']]);
 	}
 	public function actionServicesApi($serviceId, $operation){
 		switch($serviceId){
 			case 0: 
 				if($operation == 'get'){
 					\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-					return Yii::$app->regionDB->getFullDataFrame();
+					if(isset($_GET['sheet'])){
+						$key = $_GET['sheet'];
+						
+						if($key === 'regions'){ $smartData = Yii::$app->regionDB->listAllRegions(); }
+					}
+					else{
+						$smartData = Yii::$app->regionDB->getFullDataFrame();
+					}
+					
+					return $smartData;
 				}
 				else if($operation == 'post'){
 					if(isset($_POST['country'])){
@@ -223,20 +245,29 @@ class SiteController extends Controller{
 					$cuData = [];
 					
 					if(isset($_GET['id']) && isset($_POST['cmd'])){
-						$cmdQuery = JSON::deocde($_POST['cmd'], true);
-
+						$cmdQuery = JSON::decode($_POST['cmd'], true);
+						$serviceClient = new Client;
+						
 						switch($cmdQuery['type']){
 							case 'sender': 
-								if(isset($_COOKIE['portalId'])){ $senderCall = Yii::$app->consoleRunner->run('portal-service-sender/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=TRUE'); }
-								else{ $senderCall = Yii::$app->consoleRunner->run('portal-service-sender/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=FALSE'); }
-
-								$cuData = $senderCall;
+								$serviceQuery = PortalServices::find()->select(['sender' => 'JSON_UNQUOTE(JSON_EXTRACT(proc, "$.send"))'])->where(['id' => $_GET['id']])->one();
+								
+								$endpointSVC = $serviceQuery->sender . '?command=' . $cmdQuery['service'];
+								$endpointQuery = $cmdQuery['parameters'];
+								$senderCall = $serviceClient->createRequest()->setMethod('POST')->setUrl($endpointSVC)->setData(['query' => JSON::encode($endpointQuery)])->send();
+								
+								$cuData = $senderCall->data;
 							break;
 							case 'control': 
-								if(isset($_COOKIE['portalId'])){ $controlCall = Yii::$app->consoleRunner->run('portal-service-control/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=TRUE'); }
-								else{ $controlCall = Yii::$app->consoleRunner->run('portal-service-control/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=FALSE'); }
-
-								$cuData = $controlCall;
+								$serviceQuery = PortalServices::find()->select(['control' => 'JSON_UNQUOTE(JSON_EXTRACT(proc, "$.control"))'])->where(['id' => $_GET['id']])->one();
+								$controlService = $cmdQuery['parameters']['service'];
+								
+								if($controlService == 'getForm'){
+									$endpointSVC = $serviceQuery->control;
+									$controlCall = $serviceClient->createRequest()->setMethod('POST')->setUrl($endpointSVC)->send();
+								}
+								
+								$cuData = $controlCall->data;
 							break;
 							default: 
 								Yii::$app->response->statusCode = 403;
@@ -252,20 +283,29 @@ class SiteController extends Controller{
 					$vuData = [];
 					
 					if(isset($_GET['id']) && isset($_GET['cmd'])){
-						$cmdQuery = JSON::deocde($_GET['cmd'], true);
-
+						$cmdQuery = JSON::decode($_GET['cmd'], true);
+						$serviceClient = new Client;
+						
 						switch($cmdQuery['type']){
 							case 'sender': 
-								if(isset($_COOKIE['portalId'])){ $senderCall = Yii::$app->consoleRunner->run('portal-service-sender/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=TRUE'); }
-								else{ $senderCall = Yii::$app->consoleRunner->run('portal-service-sender/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=FALSE'); }
-
-								$vuData = $senderCall;
+								$serviceQuery = PortalServices::findOne()->select(['sender' => 'JSON_UNQUOTE(JSON_EXTRACT(proc, "$.send"))'])->where(['id' => $_GET['id']]);
+								
+								$endpointSVC = $serviceQuery->sender . '?command=' . $cmdQuery['service'];
+								$endpointQuery = $cmdQuery['parameters'];
+								$senderCall = $serviceClient->createRequest()->setMethod('POST')->setUrl($endpointSVC)->setData(['query' => JSON::encode($endpointQuery)])->send();
+								
+								$vuData = $senderCall->data;
 							break;
 							case 'control': 
-								if(isset($_COOKIE['portalId'])){ $controlCall = Yii::$app->consoleRunner->run('portal-service-control/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=TRUE'); }
-								else{ $controlCall = Yii::$app->consoleRunner->run('portal-service-control/index --serviceId=' . $_GET['id'] . ' --query=' . $cmdQuery['parameters'] . ' --userAuthType=FALSE'); }
-
-								$vuData = $controlCall;
+								$serviceQuery = PortalServices::findOne()->select(['control' => 'JSON_UNQUOTE(JSON_EXTRACT(proc, "$.control"))'])->where(['id' => $_GET['id']]);
+								$controlService = $cmdQuery['parameters']['service'];
+								
+								if($controlService == 'getForm'){
+									$endpointSVC = $serviceQuery->control;
+									$controlCall = $serviceClient->createRequest()->setMethod('POST')->setUrl($endpointSVC)->send();
+								}
+								
+								$vuData = $controlCall->data;
 							break;
 							default: 
 								Yii::$app->response->statusCode = 403;

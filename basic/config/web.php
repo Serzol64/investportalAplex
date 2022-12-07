@@ -16,6 +16,9 @@ $config = [
             'enableCookieValidation' => false,
             'baseUrl' => ''
         ],
+		'view' => [
+				'class' => 'app\components\View',
+		],
         'errorHandler' => [
 			'errorAction' => 'site/error',
 		],
@@ -47,7 +50,7 @@ $config = [
 				'admin/api/dataServices/newsService/<svc>/delete' => '/admin/news-delete-service',
 				'admin/api/dataServices/newsService/<svc>/show' => '/admin/news-res-service',
 				'services/api/<serviceId:\d+>/<operation>' => '/site/services-api',
-				'objects/api/<type>' => 'objects/objectsservice',
+				'objects/api/<type>' => 'objects/objectservice',
 				'investors/api/<type>' => 'objects/investorsservice',
 				'experts/api/<type>' => 'objects/expertsservice',
 				'news/api/<type>' => 'news/newsservice',
@@ -76,6 +79,7 @@ $config = [
             'class' => 'yii\web\View'
         ],
         'smartData' => ['class' => 'app\components\SmartData'],
+        'portalService' => ['class' => 'app\components\PortalServiceKernel'],
         'realtedDB' => ['class' => 'app\components\RealtedContent'],
         'cloudCategorizator' => ['class' => 'app\components\CloudCategorizator'],
         'adminCMSData' => ['class' => 'app\components\ContentData'],

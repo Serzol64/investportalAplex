@@ -14,9 +14,8 @@
     padding-right: 5px;
 }
 #service-page > .svcMeta{
-  padding: 4%;
-  margin-top: 2%;
-  margin-bottom: 2%;
+  margin-top: 1%;
+  margin-bottom: 4%;
 }
 
 .svcMeta > *[data-group='metaData'] *[data-block='title']{
@@ -72,7 +71,6 @@ margin-left: 30%;}
 #service-page > .svcContent div{
   margin-top: 1%;
   margin-bottom: 1%;
-  padding: 2%;
 }
 #service-page > .svcContent div *{
   width: 90%;
@@ -103,6 +101,12 @@ margin-left: 30%;}
   border: solid 2px gray;
   padding: 2%;
   cursor: pointer;
+  -moz-user-select: none;
+  -o-user-select:none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 #service-page > .svcFooter ul li #answer{
   padding: 2%;
@@ -158,4 +162,3 @@ margin-left: 30%;}
 		margin-left: -7%;
 	}
 }
-

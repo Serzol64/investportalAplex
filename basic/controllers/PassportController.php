@@ -72,7 +72,7 @@ class PassportController extends Controller{
 		
 		$this->view->registerJsFile("/js/passport/alertify/alertify.min.js", ['position' => View::POS_HEAD]);
 		$this->view->registerCssFile("/js/passport/alertify/css/alertify.min.css");
-		$this->view->registerCssFile("/js/passport/alertify/themes/default.min.css");
+		$this->view->registerCssFile("/js/passport/alertify/css/themes/default.min.css");
 		
 		if(isset($_COOKIE['portalId'])){ 
 			$query = $_COOKIE['portalId']; 

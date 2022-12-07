@@ -1,27 +1,37 @@
 #experts{padding-bottom: 300%;}
 
+.newExpert{
+	position: relative;
+	left: 12%;
+    float: left;
+    display: block;
+    text-align: center;
+    color: white;
+    background-color: #0079bf;
+    border: none;
+    font-size: 90%;
+    padding: 10px;
+    text-decoration: none;
+}
+
 #experts-search{
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 150px 300px auto;
-  grid-column-gap: 15px;
-  grid-row-gap: 15px;
+  display: grid; 
+  grid-auto-flow: row dense; 
+  grid-auto-columns: 50%; 
+  grid-auto-rows: 0.5em; 
+  grid-template-columns: 30% 70%; 
+  grid-template-rows: 1fr; 
+  gap: 1% 2%; 
+  align-content: stretch; 
+  justify-items: stretch; 
   margin-left: 4%;
 }
 #experts-search > *{
-  padding-top: 2%;
-  padding-bottom: 2%;
-}
-
-#experts-search > header{
-  grid-area: 1 / 1 / 2 / 4;
-}
-#experts-search > main{
-  grid-area: 2 / 1 / 3 / 2; 
+  padding-top: 1%;
+  padding-bottom: 1%;
 }
 #experts-search > footer{
-  grid-area: 2 / 2 / 3 / 4;
-  width: 80%;
+  margin-top: 47px;
 }
 
 #consultQ{
@@ -166,17 +176,92 @@
     transform: rotate(-45deg);
 }
 
+
+.new-ad-form-modal-data > #header .modal-active{ color: #0079bf; }
+.new-ad-form-modal-data > #content ul li.modal-active{ display: block; }
+
+.new-ad-form-modal-data{
+  padding: 4%;
+}
+.new-ad-form-modal-data > #content{
+  padding: 2%;
+  overflow: auto;
+}
+.new-ad-form-modal-data > #footer{
+  padding: 1%;
+}
+
+.new-ad-form-modal-data > #footer *{
+  float: right;
+  margin-right: 10%;
+  width: 10%;
+  padding: 10px;
+  margin-top: -3%;
+  border: none;
+  background: #0079bf;
+  color: white;
+  font-size: 100%;
+}
+
+.new-ad-form-modal-data > #content ul{
+  list-style-type: none;
+  margin-left: -4%;
+}
+.new-ad-form-modal-data > #content ul li{
+  display: block;
+  padding: 1%;
+  width: 90%;
+  overflow: auto;
+  display: none;
+}
+.new-ad-form-modal-data > #content ul li section.form{
+  padding: 0.5%;
+  
+}
+.new-ad-form-modal-data > #content ul li section.form div{
+  padding: 0.25%;
+  display: grid; 
+  grid-auto-flow: row dense; 
+  grid-auto-columns: 38%; 
+  grid-auto-rows: 0.38em; 
+  grid-template-columns: 25% 50%; 
+  grid-template-rows: 1fr; 
+  gap: 1em 2px; 
+  grid-template-areas: 
+    "stepHeader stepContent"; 
+  justify-items: stretch; 
+  width: 100%; 
+  font-size: 120%;
+}
+.new-ad-form-modal-data > #content ul li section.form div *{
+  padding: 0.13%;
+  margin-left: 2%;
+}
+.new-ad-form-modal-data > #content ul li section.form div label{
+  padding: 0.06%;
+}
+.new-ad-form-modal-data > #content ul li section.form div *:nth-last-child(1){
+  padding: 2%;
+  font-size: calc(60% * 2);
+  text-indent: 2%;
+}
+
+
+ul#selector{}
+ul#selector > li{}
+ul#selector > li span{}
+ul#selector > li *:nth-child(2){}
+ul#selector > li div{}
+ul#selector > li div *{}
+
 @media all and (max-width: 414px){
 	#experts { height: calc(800px * 9); }
 	#consultQ {
 		width: 90%;
 		font-size: 110%;
 	}
-	#experts-search > header {
-		grid-area: 1 / 1 / 2 / 6;
-	}
 	#experts-search > main {
-		grid-area: 2 / 1 / 3 / 6;
+		grid-area: 1 / 1 / 2 / 4;
 	}
 	.searchComponent {
 		background-color: white;
@@ -186,7 +271,7 @@
 		margin-left: 4%;
 	}
 	#experts-search > footer {
-		grid-area: 3 / 1 / 4 / 6;
+		grid-area: 2 / 1 / 3 / 4;
 		width: 91%;
 	}
 	#experts-search > footer i {
@@ -221,11 +306,8 @@
 		width: 90%;
 		font-size: 110%;
 	}
-	#experts-search > header {
-		grid-area: 1 / 1 / 2 / 6;
-	}
 	#experts-search > main {
-		grid-area: 2 / 1 / 3 / 6;
+		grid-area: 1 / 1 / 2 / 4;
 	}
 	.searchComponent {
 		background-color: white;
@@ -235,7 +317,7 @@
 		margin-left: 4%;
 	}
 	#experts-search > footer {
-		grid-area: 3 / 1 / 4 / 6;
+		grid-area: 2 / 1 / 3 / 4;
 		width: 91%;
 	}
 	#experts-search > footer i {
@@ -271,11 +353,8 @@
 		width: 90%;
 		font-size: 110%;
 	}
-	#experts-search > header {
-		grid-area: 1 / 1 / 2 / 6;
-	}
 	#experts-search > main {
-		grid-area: 2 / 1 / 3 / 6;
+		grid-area: 1 / 1 / 2 / 4;
 	}
 	.searchComponent {
 		background-color: white;
@@ -285,7 +364,7 @@
 		margin-left: 4%;
 	}
 	#experts-search > footer {
-		grid-area: 3 / 1 / 4 / 6;
+		grid-area: 2 / 1 / 3 / 4;
 		width: 91%;
 	}
 	#experts-search > footer i {
@@ -320,11 +399,8 @@
 		width: 90%;
 		font-size: 110%;
 	}
-	#experts-search > header {
-		grid-area: 1 / 1 / 2 / 6;
-	}
 	#experts-search > main {
-		grid-area: 2 / 1 / 3 / 6;
+		grid-area: 1 / 1 / 2 / 4;
 	}
 	.searchComponent {
 		background-color: white;
@@ -334,7 +410,7 @@
 		margin-left: 4%;
 	}
 	#experts-search > footer {
-		grid-area: 3 / 1 / 4 / 6;
+		grid-area: 2 / 1 / 3 / 4;
 		width: 91%;
 	}
 	#experts-search > footer i {
@@ -366,11 +442,8 @@
 		width: 90%;
 		font-size: 110%;
 	}
-	#experts-search > header {
-		grid-area: 1 / 1 / 2 / 6;
-	}
 	#experts-search > main {
-		grid-area: 2 / 1 / 3 / 6;
+		grid-area: 1 / 1 / 1 / 4;
 	}
 	.searchComponent {
 		background-color: white;
@@ -380,7 +453,7 @@
 		margin-left: 4%;
 	}
 	#experts-search > footer {
-		grid-area: 3 / 1 / 4 / 6;
+		grid-area: 2 / 1 / 3 / 4;
 		width: 91%;
 	}
 	#experts-search > footer i {

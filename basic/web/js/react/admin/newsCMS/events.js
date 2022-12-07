@@ -34,7 +34,7 @@ class ListCities extends React.Component{
 	    };
 	}
 	componentDidMount(){
-		fetch('/services/3/get', { method: 'GET' })
+		fetch('/services/api/3/get', { method: 'GET' })
         .then(response => response.json())
 		.then(data => this.setState({ region: data }))
 		.catch(error => {
@@ -106,7 +106,8 @@ class Add extends React.Component{
 							title: $('input#title').val(),
 							location: $('#event-location').val() !== '' ? $('#event-location').val() : null,
 							period: { from: $('.period > ul li #from').val() !== '' ? $('.period > ul li #from').val() : null, to: $('.period > ul li #to').val() !== '' ? $('.period > ul li #to').val() : null },
-							content: CKEDITOR.instances.eventEditor.getData()
+							content: CKEDITOR.instances.eventEditor.getData(),
+							tematic: $('#eventTematic').val()
 						}
 					}
 				},
@@ -165,6 +166,14 @@ class Add extends React.Component{
 				  <main data-block="form">
 					<div id="news"><textarea id="eventEditor" name="eventEditor"></textarea></div>
 				  </main>
+				  <footer data-block="type">
+					<select id="eventTematic">
+					    <option>Select event type</option>
+						<option value="Conferences">Conference</option>
+						<option value="Exhibitions">Exhibition</option>
+						<option value="Meetings and webinars">{'Meeting/Webinar'}</option>
+					</select>
+				  </footer>
 				  <button id="send">Add event page</button>
 				</section>
 				<datalist id="regions">
@@ -215,7 +224,8 @@ class Edit extends React.Component{
 							title: $('input#title').val() || get_cookie('title'),
 							location: $('#event-location').val() !== '' ? $('#event-location').val() : null,
 							period: { from: $('.period > ul li #from').val() !== '' ? $('.period > ul li #from').val() : null, to: $('.period > ul li #to').val() !== '' ? $('.period > ul li #to').val() : null },
-							content: CKEDITOR.instances.eventEditor.getData()
+							content: CKEDITOR.instances.eventEditor.getData(),
+							tematic: $('#eventTematic').val()
 						}
 					}
 				},
@@ -302,6 +312,13 @@ class Edit extends React.Component{
 				  <main data-block="form">
 					<div id="news"><textarea id="eventEditor" name="eventEditor"></textarea></div>
 				  </main>
+				 <footer data-block="type">
+					<select id="eventTematic">
+						<option value="Conferences" selected={ this.state.currentEvent.tematic === 'Conferences' ? true : false }>Conference</option>
+						<option value="Exhibitions" selected={ this.state.currentEvent.tematic === 'Exhibitions' ? true : false }>Exhibition</option>
+						<option value="Meetings and webinars" selected={ this.state.currentEvent.tematic === 'Meetings and webinars' ? true : false }>{'Meeting/Webinar'}</option>
+					</select>
+				  </footer>
 				  <button id="send">Update news</button>
 				  <button id="delete" style={{ backgroundColor: 'red' }}>Delete news</button>
 				</section>

@@ -6,65 +6,123 @@
 #formUI > .formStep{
   list-style-type: none;
   padding: 1%;
-  margin-top: 5mm;
-  margin-bottom: 5mm;
-}
-.formStep > #step{
-  padding: 5mm;
-  margin-top: 2.5mm;
-  margin-bottom: 2.5mm;
-  font-size: 200%;
-  font-weight: bolder;
-}
-.formStep > #step:not(:nth-child(1)){
-  display: none;
+  margin-top: -5%;
+  margin-bottom: -3%;
 }
 
-#step > div#header{
-  font-size: 160%;
-  text-align: justify;
-  margin-top: 1.25em;
-  margin-bottom: 1.25em;
-}
-#step > div#body{
-  margin-top: 0.62em;
-  margin-bottom: 0.62em;
-}
-
-#step > div#body label{
-  padding-top: calc(0.62em * 2);
-  padding-bottom: calc(0.62em * 2);
-  display: block;
-}
-#step > div#body label *{
-  display: block;
-  margin-top: calc(0.62em * 5);
-  margin-bottom: calc(0.62em * 5);
-}
-#step > div#body label span:nth-child(1){
-  font-size: 100%;
-  color: gray;
+.finish-message{
+	display: grid;
+	grid-auto-flow: row dense;
+	grid-auto-columns: 50%;
+	grid-auto-rows: 0.5em;
+	grid-template-columns: 25% 75fr;
+	grid-template-rows: 1fr;
+	gap: 1% 2%;
+	grid-template-areas:
+		". .";
+	align-content: stretch;
+	justify-items: stretch;
+	width: 100%;
+	height: 50%;
 }
 
-#step > div#body label span+input#upload-field{
-  display: none;
+header#formUI > .finish-message{
+	font-weight: bolder;
 }
-
-#step > div#body label #upload-field-content button{
-	  text-align: center;
+.finish-message.success{
+	color: green;
+}
+.finish-message.error{
+	color: red;
+}
+.finish-message > button{
+	position: relative;
+	left: 80vw;
+	top: 100px;
+	float: right;
+    text-align: center;
     color: white;
     background-color: #0079bf;
     border: none;
-    font-size: 100%;
+    font-size: 90%;
     padding: 10px;
+    width: 10vw;
 }
-#step > div#body label #upload-field-content span{
-	 display: inline-block;
-   margin-top: calc(-1.7em * 2.5);
-   margin-bottom: calc(0.15em * 2.5);
-   margin-right: 72%;
-   float: right;
-   font-size: 120%;
+.finish-message > img{
+	width: 70%;
+	margin: 0 auto;
+	object-fit: cover;
+}
+.finish-message > p{
+	
+}
+.formStep > #step{
+  padding: 1%;
+  margin-top: 2.5mm;
+  margin-bottom: 2.5mm;
+  font-size: 100%;
+  font-weight: bolder;
+  display: none;
+}
+
+#step.currentStep{ display: block; }
+
+#step > div#header{
+  font-size: 100%;
+  text-align: justify;
+  margin-top: 0.76%;
+  font-weight: normal;
+  margin-left: 8%;
+  width: 83%;
+}
+#step > div#body{
+  margin-top: 1%;
+  margin-bottom: 1%;
+  margin-left: 6%;
+  width: 83%;
+}
+
+#step > div#body label{
+  padding-top: 3%;
+  display: block;
+  margin-left: 2vw;
+}
+#step > div#body label *{
+  display: block;
+  margin-top: 2%;
+  width: 50%;
+}
+#step > div#body label textarea{
+  display: block;
+  margin-top: 1%;
+  width: 80%;
+  min-height: 200px;
+  resize: none;
+  padding: 2%;
+  font-family: sans-serif;
+  font-size: 120%;
+}
+#step > div#body label *:nth-child(2){
+  font-size: 120%;
+  padding: 1%;
+  text-indent: 2%;
+}
+#step > div#body label datalist{
+  max-height: calc(7110px / 60);
+}
+#step > div#body label span:nth-child(1){
+  font-size: 150%;
+  color: gray;
+}
+
+#step > div#body label input[type=file]{
+	text-align: center;
+	border: none;
+	font-size: 100%;
+	padding: 10px;
+	float: left;
+	margin-top: 9px;
+	margin-left: -1%;
 }
 
 #step > div#body label input#default-field, #step > div#body label input#search-field, #step > div#body label select#list-field{
@@ -80,16 +138,10 @@
   color: white;
   background-color: #0079bf;
   border: none;
-  font-size: 45%;
+  font-size: 90%;
   padding: 10px;
-  width: 117px;
+  width: 10vw;
 }
 #step > div#body button:disabled{
   background-color: lightgray;
 }
-
-
-
-
-
-

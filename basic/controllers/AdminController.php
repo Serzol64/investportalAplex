@@ -25,7 +25,7 @@ class AdminController extends Controller{
 	}
     public function actionIndex(){
 		$sessionData = Yii::$app->session;
-		if(!$sessionData->isActive && !$sessionData->get('adminUser')){ return $this->redirect(['admin/auth']); }
+		if(!$sessionData->isActive && !$sessionData->get('adminUser')){ return $this->redirect(['admin/auth'], 301); }
 		else{
 			$pgUI = '';
 			$this->layout = "adminPortal";
@@ -66,6 +66,18 @@ class AdminController extends Controller{
 									header('Location: '. Url::to(['admin/index']));
 								}
 								$service='newsCMS/events'; 
+							break;
+							case "portalServices":
+								if($getAdminData->role != 'admin' || $getAdminData->role != 'moderator' || $getAdminData->role != 'dev'){
+									Yii::$app->response->statusCode = 401;
+									header('Location: '. Url::to(['admin/index']));
+								}
+								if(isset($_GET['page'])){ 
+									$this->view->registerJsFile("/js/lib/htmlbuilder.min.js", ['position' => View::POS_HEAD]); 
+									$this->view->registerJsFile("/js/ckeditor/ckeditor.js", ['position' => View::POS_HEAD]); 
+									$this->view->registerJsFile("/js/react/admin/portalServices/managment.js", ['type' => 'text/babel']); 
+								}
+								$service = 'portalServices';
 							break;
 							default: 
 								if($getAdminData->role != 'admin' || $getAdminData->role != 'moderator' || $getAdminData->role != 'dev'){
@@ -137,7 +149,7 @@ class AdminController extends Controller{
 	}
 	public function actionAuth(){
 		$sessionData = Yii::$app->session;
-		if($sessionData->isActive && $sessionData->get('adminUser')){ header('Location: '. Url::to(['admin/index'])); }
+		if($sessionData->isActive && $sessionData->get('adminUser')){ return $this->redirect(['admin/index'], 301); }
 		else{
 			$this->layout = "adminAuth";
 			$this->view->registerCssFile("/css/admin/auth.css");
@@ -245,6 +257,60 @@ class AdminController extends Controller{
 					}
 										
 				}
+				else if($svc == "portalServices" || $svc == "portalServicesCategory"){
+					$SConnector = [
+						'c' => [new PortalServices, PortalServices::find()],
+						's' => [new PortalServicesCategory, PortalServicesCategory::find()]
+					];
+					
+					if($svc == "portalServicesCategory"){
+						if($q['query']['iconBlob']){
+							$lastId = $SConnector['s'][1]->orderBy('id desc')->limit(1)->all();
+						
+							if($lastId){
+								foreach($lastId as $code){ $newId = $code->id + 1; }
+							}
+							else{ $newId = 1; }
+							
+							$SConnector['s'][0]->id = $newId;
+							$SConnector['s'][0]->name = $q['query']['title'];
+							$SConnector['s'][0]->icon = $q['query']['iconBlob'];
+							
+							if($SConnector['s'][0]->save()){ $serviceResponse[] = 'New service category added!'; }
+							else{
+								Yii::$app->response->statusCode = 502;
+								$serviceResponse[] = 'Services gateway!';
+							}
+						}
+						else{
+							Yii::$app->response->statusCode = 402;
+							$serviceResponse[] = 'Icon required!';
+						}
+					}
+					else if($svc == "portalServices"){
+						$lastId = $SConnector['c'][1]->orderBy('id desc')->limit(1)->all();
+						
+						if($lastId){
+							foreach($lastId as $code){ $newId = $code->id + 1; }
+						}
+						else{ $newId = 1; }
+
+						$SConnector['c'][0]->id = $newId;
+						$SConnector['c'][0]->title = $q['query']['title'];
+						$SConnector['c'][0]->created = date('Y-m-d H:i:s');
+
+						if($q['query']['head']){ $SConnector['c'][0]->meta = $q['query']['head']; }
+						if($q['query']['body']){ $SConnector['c'][0]->content = $q['query']['body']; }
+						if($q['query']['footer']){ $SConnector['c'][0]->proc = $q['query']['footer']; }
+
+						if($SConnector['c'][0]->save()){ $serviceResponse[] = 'New service added!'; }
+						else{
+							Yii::$app->response->statusCode = 502;
+							$serviceResponse[] = 'Services gateway!';
+						}
+							
+					}
+				}
 				else if($svc == "adminPortalUsers"){
 					$adminDB = new Admin;
 					
@@ -344,6 +410,54 @@ class AdminController extends Controller{
 					}
 									
 				}
+				else if($svc == "portalServices" || $svc == "portalServicesCategory"){
+					$SConnector = [
+						'c' => [new PortalServices, PortalServices::find()],
+						's' => [new PortalServicesCategory, PortalServicesCategory::find()]
+					];
+					
+					if($svc == "portalServicesCategory"){
+						if($q['query']['iconBlob']){
+							$sq = $SConnector['s'][1]->where(['id' => $q['query']['id']])->one();
+						
+							
+							$sq->name = $q['query']['title'];
+							if($q['query']['iconBlob']){ $sq->icon = $q['query']['iconBlob']; }
+							
+							if($sq->save()){ $serviceResponse[] = 'Service category updated!'; }
+							else{
+								Yii::$app->response->statusCode = 502;
+								$serviceResponse[] = 'Services gateway!';
+							}
+						}
+						else{
+								Yii::$app->response->statusCode = 402;
+								$serviceResponse[] = 'Icon required!';
+						}
+						
+					}
+					else if($svc == "portalServices"){
+						$sq = $SConnector['c'][1]->where(['id' => $q['query']['id']])->one();
+						
+							
+						$sq->title = $q['query']['title'];
+
+						if($q['query']['head']){ $sq->meta = $q['query']['head']; }
+						else{ $sq->meta = NULL; }
+
+						if($q['query']['body']){ $sq->content = $q['query']['body']; }
+						else{ $sq->content = NULL; }
+
+						if($q['query']['footer']){ $sq->proc = $q['query']['footer']; }
+						else{ $sq->proc = NULL; }
+
+						if($sq->save()){ $serviceResponse[] = 'Service data updated!'; }
+						else{
+							Yii::$app->response->statusCode = 502;
+							$serviceResponse[] = 'Services gateway!';
+						}
+					}
+				}
 				else if($svc == "adminPortalUsers"){
 					$currentLogin = $q['login'];
 					
@@ -435,6 +549,31 @@ class AdminController extends Controller{
 					else{
 						Yii::$app->response->statusCode = 502;
 						$serviceResponse[] = 'DBA Service Error!';
+					}
+				}
+				else if($svc == "portalServices" || $svc == "portalServicesCategory"){
+					$SConnector = [
+						'c' => [new PortalServices, PortalServices::find()],
+						's' => [new PortalServicesCategory, PortalServicesCategory::find()]
+					];
+					
+					if($svc == "portalServicesCategory"){
+						if($SConnector['s'][0]::deleteAll('id = :attr', [':attr' => $q['query']['id']])){ 
+							$serviceResponse[] = 'Current category deleted!'; 
+						}
+						else{
+							Yii::$app->response->statusCode = 502;
+							$serviceResponse[] = 'DBA Service Error!';
+						}
+					}
+					else if($svc == "portalServices"){
+						if($SConnector['c'][0]::deleteAll('id = :attr', [':attr' => $q['query']['id']])){ 
+							$serviceResponse[] = 'Current service deleted!'; 
+						}
+						else{
+							Yii::$app->response->statusCode = 502;
+							$serviceResponse[] = 'DBA Service Error!';
+						}
 					}
 				}
 				else if($svc == "adminPortalUsers"){
@@ -566,6 +705,52 @@ class AdminController extends Controller{
 						Yii::$app->response->statusCode = 404;
 						$serviceResponse[] = "Not command found!";	
 				}
+		}
+		else if($svc == "portalServices" || $svc == "portalServicesCategory"){
+			$SConnector = [
+				'c' => [new PortalServices, PortalServices::find()],
+				's' => [new PortalServicesCategory, PortalServicesCategory::find()]
+			];
+					
+			if($svc == "portalServicesCategory"){ $svcl = $SConnector['s'][1]->all(); }
+			else if($svc == "portalServices"){ 
+				if(!isset($_GET['id'])){ $svcl = $SConnector['c'][1]->all(); }
+				else{
+					$currentResponse = [];
+					$multiResponse = [[], []];
+					$serviceDataQuery = [':service' => $_GET['id']];
+					$currentQuery = [
+						Yii::$app->db->createCommand('SELECT id, title, JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.categoryId")) as "cat" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
+						Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.description")) as "description",  JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.term")) as "term", JSON_EXTRACT(meta, "$.accessRole") as "private" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
+						Yii::$app->db->createCommand('SELECT JSON_EXTRACT(proc, "$.send") as "send",  JSON_EXTRACT(proc, "$.push") as "push",  JSON_EXTRACT(proc, "$.realtime") as "realtime",  JSON_EXTRACT(proc, "$.control") as "control" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
+						Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.faqService[*].question")) as "question",  JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.faqService[*].answer")) as "answer" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryAll(),
+						Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content, "$.form[*].field")) as "name",  JSON_UNQUOTE(JSON_EXTRACT(content, "$.form[*].type")) as "field" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryAll()
+					];
+					
+					for($i = 0; $i < count($currentQuery[3]); $i++){ $multiResponse[0][] = $currentQuery[3][$i]; }
+					for($i = 0; $i < count($currentQuery[4]); $i++){ $multiResponse[1][] = $currentQuery[4][$i]; }
+					
+					$currentResponse = [
+						'title' => $currentQuery[0]['title'],
+						'category' => $currentQuery[0]['cat'],
+						'accessLevel' => $currentQuery[1]['private'],
+						'description' => $currentQuery[1]['description'],
+						'terms' => $currentQuery[1]['term'],
+						'proc' => [
+							'send' => $currentQuery[2]['send'],
+							'push' => $currentQuery[2]['push'],
+							'realtime' => $currentQuery[2]['realtime'],
+							'control' => $currentQuery[2]['push']
+						],
+						'field' => $multiResponse[0],
+						'faq' => $multiResponse[1]
+					];
+					
+					$svcl = $currentResponse;
+				}
+			}
+			
+			$serviceResponse = $svcl;
 		}
 		else if($svc == "Attributes"){
 				$tables = [];
