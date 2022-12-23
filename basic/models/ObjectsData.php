@@ -5,6 +5,8 @@ use Yii;
 use yii\db\ActiveRecord;
 
 class ObjectsData extends ActiveRecord{
+	public $cost;
+	
 	public function rules(){
 		return [
 			[['id', 'category', 'title', 'content'],'required']];

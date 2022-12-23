@@ -180,16 +180,20 @@ $(document).ready(function () {
 });
 
 const AuthLightBoxModuleOpen = () => {
-    $('.header > #header_bottom .hb_bottom header .header-informer footer .user-services a, .header > #header_bottom_adaptive header ul.adaptive-buttons li:nth-last-child(2)').click(function(e,t){
-      e.preventDefault();
-      $('#auth-lightbox').removeClass('lightbox-closed');
-    });
+	if(!get_cookie('portalId')){
+		$('.header > #header_bottom .hb_bottom header .header-informer footer .user-services a, .header > #header_bottom_adaptive header ul.adaptive-buttons li:nth-last-child(2)').click(function(e,t){
+		  e.preventDefault();
+		  $('#auth-lightbox').removeClass('lightbox-closed');
+		});
+	}
 }
 const AuthLightBoxModuleClose = () => {
-    $('#auth-lightbox > .close').click(function(e,t){
-      $('#auth-lightbox').addClass('lightbox-closed');
-      $('#auth-lightbox > .module-page').removeAttr('style');
-    });
+	if(!get_cookie('portalId')){
+		$('#auth-lightbox > .close').click(function(e,t){
+		  $('#auth-lightbox').addClass('lightbox-closed');
+		  $('#auth-lightbox > .module-page').removeAttr('style');
+	    });
+	}
 }
 const AuthLightBoxModule = () => {
     AuthLightBoxModuleOpen();

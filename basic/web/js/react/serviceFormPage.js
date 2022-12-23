@@ -1,45 +1,11 @@
 let currentService = $('#service-page-form > div[data-serviceForm-type="main"]').data('service');
 let currentStep = 0, n;
 
-
-function toBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
-}
-
 $(document).ready(function(){
-		
-		$('#upload-field[multiple]').change(async function(e){
-			let responseQuery = '';
-			var file = e.target.files;
+		$('#step > div#body label input#default-field, #step > div#body label input#search-field, #step > div#body label select#list-field').change(function(e,t){
+			set_cookie($(this).attr('class'), $(this).val(), new Date().getFullYear(), new Date().getMonth() + 1, 0, location.pathname, location.hostname, location.hostname === 'investportal.aplex.ru' ? true : false);
+		});
 	
-			let filesData = [];
-				
-			for(let k = 0; k < file.length; k++){ 
-					await toBase64(file[k]).then((value) => {
-						filesData.push(value);
-					}); 
-			}
-				
-			$('input#hidden-field.' + e.target.className).val(filesData.join(', '));
-			
-		});
-		
-		$('#upload-field:not([multiple])').change(function(e){
-			const file = e.target.files[0];
-
-			const reader = new FileReader();
-			reader.onloadend = () => {
-				$('input#hidden-field.' + e.target.className).val(reader.result);
-			};
-			reader.readAsDataURL(file);
-			
-		});
-		
 		
         $('#formUI > .formStep #step #body button#action').click(function(e,t){
             var message = $(this).text(),
@@ -58,7 +24,7 @@ $(document).ready(function(){
 					
 				for(let i = 0; i < validField.length; i++){
 					countineSelect[0].push(validField.eq(i).find('*').eq(1).attr('class'));
-					countineSelect[1].push(validField.eq(i).find('*').eq(1).attr('id') === 'upload-field' ? validField.eq(i).find('*').eq(2).attr('multiple') ? validField.eq(i).find('*').eq(2).attr('multiple') : validField.eq(i).find('*').eq(2).val() : validField.eq(i).find('*').eq(1).val());
+					countineSelect[1].push(validField.eq(i).find('*').eq(1).val());
 				}
 					
                 formValidQuery = {
@@ -90,7 +56,7 @@ $(document).ready(function(){
                     $('footer#formUI > .formStep #step').eq(currentStep).addClass('currentStep');
                 }
                 else{
-                    alertify.set('notifier','position', 'bottom-right');
+                    alertify.set('notifier','position', 'top-right');
 			        alertify.set('notifier','delay', 10);
 
                     for(var i = 0; i < formError.length; i++){ errorContentForm += formError[i] + '\n\n'; }
@@ -101,16 +67,16 @@ $(document).ready(function(){
             }
             else{
                var cmd = new FormData();
-               let cmdQuery = null, fi, fa, fields = $('#formUI > .formStep #step'), subFields, textFields, searchFields, uploadFields, contentFields;
+               let cmdQuery = null, fi, fa, fields = $('#formUI > .formStep #step'), subFields;
                
                let validFinal = fields.eq($('#formUI > .formStep #step').length - 1).find('#body label');
 
                let finalSelect = [[],[]];
 					
 			   
-				for(let i = 0; i < validField.length; i++){
+				for(let i = 0; i < validFinal.length; i++){
 						finalSelect[0].push(validFinal.eq(i).find('*').eq(1).attr('class'));
-						finalSelect[1].push(validFinal.eq(i).find('*').eq(1).attr('id') === 'upload-field' ? validFinal.eq(i).find('*').eq(2).attr('multiple') ? validFinal.eq(i).find('*').eq(2).attr('multiple') : validFinal.eq(i).find('*').eq(2).val() : validFinal.eq(i).find('*').eq(1).val());
+						finalSelect[1].push(validFinal.eq(i).find('*').eq(1).val());
 				}
 					
                formValidQuery = {
@@ -129,8 +95,8 @@ $(document).ready(function(){
                fetch('/services/api/2/post?id=' + currentService, {method: 'POST', body: validCMD})
                  .then(response => response.json())
                  .then((data) => {
-                    if(data.error.length > 0){
-                        for(var i = 0; i < data.error.length; i++){ formError.push(data.error[i]); }
+                    if(data.length > 0){
+                        for(var i = 0; i < data.length; i++){ formError.push(data[i]); }
                     }
                 });
                
@@ -144,12 +110,8 @@ $(document).ready(function(){
                    for(fi = 0; fi < fields.length; fi++){
                         subFields = fields.eq(fi).find('div#body label');
 						
-						for(fa = 0; fa < subFields.length; fa++){ authorizedQ.parameters.push({ [subFields.eq(fa).find('*').eq(1).attr('class')] : subFields.eq(fa).find('*').eq(1).attr('id') === 'upload-field' ? subFields.eq(fa).find('*').eq(2).attr('multiple') ? subFields.eq(fa).find('*').eq(2).attr('multiple') : subFields.eq(fa).find('*').eq(2).val() : subFields.eq(fa).find('*').eq(1).val() }); }
+						for(fa = 0; fa < subFields.length; fa++){ authorizedQ.parameters[subFields.eq(fa).find('*').eq(1).attr('class')] = subFields.eq(fa).find('*').eq(1).val(); }
                    }
-                   
-                   
-                   
-
                    cmdQuery = authorizedQ;
                }
                else if(formError.length === 0 && !get_cookie('portalId')){
@@ -163,13 +125,13 @@ $(document).ready(function(){
                     for(fi = 0; fi < fields.length; fi++){
                         subFields = fields.eq(fi).find('div#body label');
 						
-						for(fa = 0; fa < subFields.length; fa++){ authorizedQ.parameters.push({ [subFields.eq(fa).find('*').eq(1).attr('class')] : subFields.eq(fa).find('*').eq(1).attr('id') === 'upload-field' ? subFields.eq(fa).find('*').eq(2).attr('multiple') ? subFields.eq(fa).find('*').eq(2).attr('multiple') : subFields.eq(fa).find('*').eq(2).val() : subFields.eq(fa).find('*').eq(1).val() }); }
+						for(fa = 0; fa < subFields.length; fa++){ authorizedQ.parameters[subFields.eq(fa).find('*').eq(1).attr('class')] = subFields.eq(fa).find('*').eq(1).val(); }
                    }
 
                     cmdQuery = visitorQ;
                }
                else{
-                alertify.set('notifier','position', 'bottom-right');
+                alertify.set('notifier','position', 'top-right');
                 alertify.set('notifier','delay', 10);
 
                 for(var i = 0; i < formError.length; i++){ errorContentForm += formError[i] + '\n\n'; }
@@ -198,8 +160,8 @@ function SuccessServiceResponse(data){
         $('main#formUI > .formStep').html('<div class="finish-message success"><img src="/images/icons/services-status/success.svg" /><p>After 10 seconds, you will be automatically redirected to the information page about the service from which you came to this page. During this time, you will see a block on the upper right corner with a notification about the successful sending of the request.</p></div>');
         $('footer#formUI > .formStep').remove();
 
-        alertify.success(get_cookie('portalId') ? data.sendFinish.forAuth : data.sendFinish.forVisitor);
-        window.setTimeout(function(){ window.location.assign('/services/api/' + currentService); }, 10000);
+        alertify.success(data.message);
+        window.setTimeout(function(){ window.location.assign('/services/' + currentService); }, 10000);
 }
 function FailServiceResponse(error){
         $('header#formUI > .formStep').html('<div class="finish-message error">An error occurred in sending the request</div>');

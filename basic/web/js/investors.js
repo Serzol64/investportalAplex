@@ -13,15 +13,76 @@ $(document).ready(function(){
 	  });
   });
   
+   let queryObject = [{}, {}, {}];
+	  var investForm = [
+		new FormData(),
+		new FormData(),
+		new FormData()
+	  ];
+  
   tematic.click(function(e,t){
+	findDataLoading(false);
+	var searchQueryHead = {};
     var currentT = tematic.eq($(this).index());
     
     if(currentT.hasClass('selected')){
-		tematic.removeClass('selected');
+		currentT.removeClass('selected');
+		
+		if($('#investors-list > .footer ul li select option:selected').val() !== 'all'){ searchQueryHead.type = $('#investors-list > .footer ul li select option:selected').val(); }
+		if($('#investors-list > .footer ul li input').eq(1).val()){ searchQueryHead.activityTo = $('#investors-list > .footer ul li input').eq(1).val(); }
+		if($('#investors-list > .footer ul li input').eq(0).val()){ searchQueryHead.date = $('#investors-list > .footer ul li input').eq(0).val(); }
+		  
+		queryObject[2] = searchQueryHead;
+		  
+		investForm[2].append('svcQuery', JSON.stringify(queryObject[2]));
+		  
+		  fetch('/investors/api/get?service=find', { method: 'POST', body: investForm[2] })
+			.then((response) => {
+				if(response.status === 200){
+					return response.json();
+				}
+				else{ alert('Results not found!'); }
+			})
+			.then((data) => {
+				let resultAppend = '';
+				
+				data.map((result) => {
+					resultAppend += '<aside><div>' + result.title + '</div><div>' + result.description + '</div><div><i>' + result.date + '</i><a href="/investors/' + result.id + '" data-modal="modal:open">Read more</a></div></aside>\n';
+				});
+				
+				$('#investors-list > .body').html(resultAppend);
+				findDataLoading(true);
+			});
 	}
     else{
 		tematic.removeClass('selected');
 		currentT.addClass('selected');
+		
+		if($('#investors-list > .footer ul li select option:selected').val() !== 'all'){ searchQueryHead.type = $('#investors-list > .footer ul li select option:selected').val(); }
+		if($('#investors-list > .footer ul li input').eq(1).val()){ searchQueryHead.activityTo = $('#investors-list > .footer ul li input').eq(1).val(); }
+		if($('#investors-list > .footer ul li input').eq(0).val()){ searchQueryHead.date = $('#investors-list > .footer ul li input').eq(0).val(); }
+		  
+		searchQueryHead.region = currentT.data('region');
+		queryObject[2] = searchQueryHead;
+		  
+		investForm[2].append('svcQuery', JSON.stringify(queryObject[2]));
+		  
+		  fetch('/investors/api/get?service=find', { method: 'POST', body: investForm[2] })
+			.then((response) => {
+				if(response.status === 200){
+					return response.json();
+				}
+				else{ alert('Results not found!'); }
+			})
+			.then((data) => {
+				let resultAppend = '';
+				
+				data.map((result) => {
+					resultAppend += '<aside><div>' + result.title + '</div><div>' + result.description + '</div><div><i>' + result.date + '</i><a href="/investors/' + result.id + '" data-modal="modal:open">Read more</a></div></aside>\n';
+				});
+				
+				$('#investors-list > .body').html(resultAppend);
+			});
 	}
     
   });
@@ -37,11 +98,6 @@ $(document).ready(function(){
 	  }
   });
   
-  let queryObject = [{}, {}];
-  var investForm = [
-	new FormData(),
-	new FormData()
-  ];
   $('.new-ad-form-modal-data[data-endpoint=\'search\'] > #footer button').click(function(e,t){
 	   let endpointCodeSearch = '/investors/api/post?service=send&subService=search';
 		   contentSearch = {},
@@ -132,7 +188,7 @@ $(document).ready(function(){
 	  
   });
   $('#investors-list > .footer ul li button').click(function(e,t){
-	  
+	  findDataLoading(false);
 	  $('#investors-list > .body').html('');
 	  let searchQuery = {};
 	  
@@ -144,7 +200,7 @@ $(document).ready(function(){
 	  
 	  investForm[1].append('svcQuery', JSON.stringify(queryObject[1]));
 	  
-	  fetch('/investors/api/get?service=find', { method: 'GET', body: investForm[1] })
+	  fetch('/investors/api/get?service=find', { method: 'POST', body: investForm[1] })
 		.then((response) => {
 			if(response.status === 200){
 				return response.json();
@@ -155,10 +211,21 @@ $(document).ready(function(){
 			let resultAppend = '';
 			
 			data.map((result) => {
-				resultAppend += '<aside><div>${result.title}</div><div>${result.description}</div><div><i>${result.date}</i><a href="/investors/${result.id}" data-modal="modal:open">Read more</a></div></aside>\n';
+				resultAppend += '<aside><div>' + result.title + '</div><div>' + result.description + '</div><div><i>' + result.date + '</i><a href="/investors/' + result.id + ' data-modal="modal:open">Read more</a></div></aside>\n';
 			});
 			
-			$('#investors-list > .body').append(resultAppend);
+			$('#investors-list > .body').html(resultAppend);
+			findDataLoading(true);
 		});
   });
 });
+function findDataLoading(state){
+	var loadingUI = new Loading({
+		loadingBgColor: '#ffffff',
+		loadingAnimation: 'image',
+		animationSrc: '/images/icons/loading.gif',
+		defaultApply: true
+	});
+	
+	if(state){ loadingUI.out(); }
+}

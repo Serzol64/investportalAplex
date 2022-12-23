@@ -70,7 +70,8 @@ class PortalServiceKernel extends Component{
 				$sfld = '';
 				
 				foreach($newField['form'] as $generator){
-					$labelContent = Html::textarea($generator['fieldName'], '', ['class' => $generator['fieldName'], 'placeholder' => $generator['dExample'], 'id' => 'content-field']);
+					$labelContent = Html::tag('span', $generator['name']);
+					$labelContent .= Html::textarea($generator['fieldName'], '', ['class' => $generator['fieldName'], 'wrap' => 'soft', 'placeholder' => $generator['dExample'], 'id' => 'content-field']);
 					$sfld .= Html::label($labelContent);
 				}
 				

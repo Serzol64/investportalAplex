@@ -5,17 +5,14 @@ use Yii;
 use yii\db\ActiveRecord;
 
 class Expert extends ActiveRecord{
-	public function behaviors(){
-		return [
-			[
-				'class' => JsonBehavior::class,
-				'property' => ['person', 'content', 'inform', 'contact']
-			]
-		];
-	}
+	public $title;
+	public $cost;
+	public $region;
+	public $type;
+	
 	public function rules(){
 		return [
-			[['id', 'person', 'content', 'inform', 'contact'],'required']];
+			[['id', 'person', 'content', 'inform', 'contact', 'isModerate'],'required']];
 	}
 	public static function tableName(){ return 'experts'; }
 }

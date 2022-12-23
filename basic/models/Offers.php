@@ -5,9 +5,12 @@ use Yii;
 use yii\db\ActiveRecord;
 
 class Offers extends ActiveRecord{
+	public $title;
+	public $category;
+	
 	public function rules(){
 		return [
-			[['id', 'login', 'objectId', 'offer', 'status'],'required']];
+			[['id', 'login', 'query', 'offer', 'status', 'isMail'],'required']];
 	}
 	public static function tableName(){ return 'investmentsOffer'; }
 }

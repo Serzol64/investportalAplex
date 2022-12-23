@@ -2,8 +2,38 @@
 
 /* @var $this yii\web\View */
 
+function autoAmount($query){
+	$currency = Yii::$app->currencyDB;
+							
+	$convertQuery = [
+		'type' => 'currency',
+		'response' => [
+			'myCur' => $_COOKIE['servicesCurrency'],
+			'amount' => $offer->offer
+		]
+	];
+												
+	$dataAmount = [
+		'isSymbol' => TRUE,
+		'query' => [
+			'myCur' => $_COOKIE['servicesCurrency'],
+			'amount' => $currency->execute($convertQuery)
+		]
+	];
+												
+
+	return $currency->getFullAmount($dataAmount);
+}
+
+
 use yii\helpers\Html;
 use yii\helpers\Url;
+
+
+use app\models\ObjectsData;
+use app\models\Offers;
+use app\models\Investments;
+use app\models\PortalServices;
 
 $this->title = "Shopping cart";
 ?>
@@ -40,17 +70,37 @@ $this->title = "Shopping cart";
 										</tr>
 									</thead>
 									<tbody>
-										<tr class="content">
-											<td>1</td>
-											<td>Private boarding house on the beach, high-quality service and high profitability</td>
-											<td>Hotel</td>
-											<td>$ 10 000 000</td>
-											<td>
-												<div class="status" style="background-color: #72dade;">
-													Active
-												</div>
-											</td>
-										</tr>
+										<?php 
+										$id = 1;
+										$cartFragment = '';
+										
+										foreach($connector[1] as $cartResponse){
+											$fragmentPart = '';
+											
+											$currentObject = ObjectsData::find()->where(['id' => $cartResponse->operationId])->one();
+											$dataStatus = [
+												'request' => Investments::find()->where(['objectId' => $currentObject->id, 'status' => TRUE])->count(),
+												'offer' => Offers::find()->where(['objectId' => $currentObject->id, 'status' => TRUE])->count()
+											];
+											
+											if($dataStatus['offer'] > $dataStatus['request']){ $currentStatus = Html::tag('div', "Active", ['class' => 'status', 'style' => 'background-color:  #72dade;']); }
+											else{ $currentStatus = Html::tag('div', "Not active", ['class' => 'status', 'style' => 'background-color:  ;']); }
+											
+											
+											
+											$fragmentPart .= Html::tag('td', $id);
+											$fragmentPart .= Html::tag('td', $currentObject->title);
+											$fragmentPart .= Html::tag('td', $currentObject->category);
+											$fragmentPart .= Html::tag('td', autoAmount($currentObject->cost));
+											$fragmentPart .= Html::tag('td', $currentStatus);
+											
+											$cartFragment .= Html::tag('tr', $fragmentPart, ['class' => 'content']);
+											
+											$id++;
+										}
+										
+										echo $cartFragment;
+										?>
 									</tbody>
 								</table>
 							<?php } else{ ?>
@@ -73,12 +123,10 @@ $this->title = "Shopping cart";
 										</tr>
 									</thead>
 									<tbody>
-										<tr class="content">
-											<td>1</td>
-											<td>$ 4 000 000</td>
-											<td>Soccer club, Hotel, Rabbit farm</td>
-											<td>Austria, Canada</td>
-										</tr>
+										<div class="error-container">
+											<h2>This block is under development!</h2>
+											<span>The data in it is available, but here we implement an algorithm for searching and outputting data in accordance with the parameters that are requested by this block. Be patient.</span>
+										</div>
 									</tbody>
 								</table>
                             <?php } else{ ?>
@@ -100,11 +148,26 @@ $this->title = "Shopping cart";
 										</tr>
 									</thead>
 									<tbody>
-										<tr class="content">
-											<td>1</td>
-											<td>Recruitment, management companies</td>
-											<td>Austria</td>
-										</tr>
+										<?php 
+										$id = 1;
+										$cartFragment = '';
+										
+										foreach($connector[2] as $cartResponse){
+											$fragmentPart = '';
+											
+											
+											$currentService = PortalServices::find()->select(['title', 'category'])->where(['id' => $cartResponse->operationId])->one();
+											
+											$fragmentPart .= Html::tag('td', $id);
+											$fragmentPart .= Html::tag('td', $currentService->title);
+											$fragmentPart .= Html::tag('td', $currentService->category);
+											
+											$cartFragment .= Html::tag('tr', $fragmentPart, ['class' => 'content']);
+											$id++;
+										}
+										
+										echo $cartFragment;
+										?>
 									</tbody>
 								</table>
 							<?php } else{ ?>

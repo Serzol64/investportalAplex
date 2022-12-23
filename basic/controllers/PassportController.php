@@ -27,10 +27,14 @@ class PassportController extends Controller{
 		$this->view->registerCssFile("/css/inpage_codes/passport/1.css");
 		$this->view->registerJsFile("/js/passport.js", ['position' => View::POS_END]);
 		
+		$this->view->registerJsFile("/js/passport/alertify/alertify.min.js", ['position' => View::POS_HEAD]);
+		$this->view->registerCssFile("/js/passport/alertify/css/alertify.min.css");
+		$this->view->registerCssFile("/js/passport/alertify/themes/default.min.css");
+		
 		if(isset($_COOKIE['portalId'])){ 
 			$query = $_COOKIE['portalId']; 
 			
-			$requestsData = Investments::find()->where(['login' => $query])->all();
+			$requestsData = Investments::find()->select(['title' => 'JSON_UNQUOTE(JSON_EXTRACT(query, "$.name"))', 'category' => 'JSON_UNQUOTE(JSON_EXTRACT(query, "$.category"))'])->where(['login' => $query])->orderBy('created DESC')->all();
 			return $this->render('passportPage', ['requestData' => $requestsData]);
 		}
 		else{ 
@@ -52,11 +56,9 @@ class PassportController extends Controller{
 		if(isset($_COOKIE['portalId'])){ 
 			$query = $_COOKIE['portalId']; 
 			
-			$wsInit = new Curl();
-			$q = $wsInit->setOption(CURLOPT_POSTFIELDS, http_build_query(array('login' => $query)))->setHeaders(array('Content-Type' => 'application/x-www-form-urlencoded'))->post((!empty($_SERVER['HTTPS'])) ? 'https' : 'http' . '://' . $_SERVER['HTTP_HOST'] ."/services/1/post");
+			$ud_data = User::find()->where(['login' => $query])->asArray()->one();
 			
-			$ud_data = JSON::decode($q, true);
-			return $this->render('passportProfile', ['ud_data' => $ud_data[0]]);
+			return $this->render('passportProfile', ['ud_data' => $ud_data]);
 		}
 		else{ 
 			Yii::$app->response->statusCode = 401;
@@ -91,6 +93,11 @@ class PassportController extends Controller{
 	public function actionOffer(){
 		$this->view->registerJsFile("https://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.4/jquery-ui.min.js", ['position' => View::POS_HEAD]);
 		$this->view->registerCssFile("https://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.4/themes/flick/jquery-ui.css");
+		
+		$this->view->registerJsFile("/js/passport/alertify/alertify.min.js", ['position' => View::POS_HEAD]);
+		$this->view->registerCssFile("/js/passport/alertify/css/alertify.min.css");
+		$this->view->registerCssFile("/js/passport/alertify/themes/default.min.css");
+		
 		$this->view->registerCssFile("/css/passport.css");
 		$this->view->registerCssFile("/css/inpage_codes/passport/4.css");
 		$this->view->registerJsFile("/js/passport.js", ['position' => View::POS_END]);
@@ -100,7 +107,7 @@ class PassportController extends Controller{
 		if(isset($_COOKIE['portalId'])){ 
 			$query = $_COOKIE['portalId']; 
 			
-			$getOffers = Offers::find()->where(['login' => $query])->all();
+			$getOffers = Offers::find()->select(['title' => 'JSON_UNQUOTE(JSON_EXTRACT(query, "$.name"))', 'offer', 'category' => 'JSON_UNQUOTE(JSON_EXTRACT(query, "$.category"))'])->where(['login' => $query])->orderBy('created DESC')->all();
 			
 			
 			return $this->render('passportOffers', ['getOffers' => $getOffers]);
@@ -121,9 +128,9 @@ class PassportController extends Controller{
 			$query = $_COOKIE['portalId']; 
 			
 			$connector = [
-				Cart::find()->where(['and', ['login' => $query, 'category' => 'b']])->all(),
-				Cart::find()->where(['and', ['login' => $query, 'category' => 'a']])->all(),
-				Cart::find()->where(['and', ['login' => $query, 'category' => 'c']])->all()
+				Cart::find()->select([])->where(['and', ['login' => $query, 'category' => 'b']])->orderBy('created DESC')->all(),
+				Cart::find()->select([])->where(['and', ['login' => $query, 'category' => 'a']])->orderBy('created DESC')->all(),
+				Cart::find()->select([])->where(['and', ['login' => $query, 'category' => 'c']])->orderBy('created DESC')->all()
 			];
 			
 			return $this->render('passportCart', ['connector' => $connector]);
@@ -183,6 +190,61 @@ class PassportController extends Controller{
 								\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 								Yii::$app->response->statusCode = 503;
 								$postProfile = 'Investportal ID Data Update Failed!';
+							}
+						}
+						else{
+							\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+							Yii::$app->response->statusCode = 403;
+							$postProfile = 'Query required!';
+						}
+					break;
+					case 'requests':
+						if(isset($_POST['svcQuery'])){
+							$oq = JSON::decode($_POST['svcQuery'], true);
+							$odp = new Investments();
+							
+							
+							$odp->created = date('Y-m-d H:i:s');
+							$odp->login = $oq['login'];
+							$odp->status = $oq['status'];
+							$odp->query = $oq['parameter'];
+							$odp->isMail = $oq['isMail'];
+							
+							if(isset($oq['region'])){ $odp->region = $oq['region']; }
+							if(isset($oq['objectId'])){ $odp->objectId = $oq['objectId']; }
+							
+							if($odp->save()){ $postResponse = 'Send success'; }
+							else{
+								Yii::$app->response->statusCode = 405;
+								$postResponse = 'Gateway error';
+							}
+						}
+						else{
+							\Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+							Yii::$app->response->statusCode = 403;
+							$postProfile = 'Query required!';
+						}
+					break;
+					case 'offers':
+						if(isset($_POST['svcQuery'])){
+							$oq = JSON::decode($_POST['svcQuery'], true);
+							$odp = new Offers();
+							
+							
+							$odp->created = date('Y-m-d H:i:s');
+							$odp->login = $oq['login'];
+							$odp->status = $oq['status'];
+							$odp->offer = $oq['offer'];
+							$odp->query = $oq['parameter'];
+							$odp->isMail = $oq['isMail'];
+							
+							if(isset($oq['region'])){ $odp->region = $oq['region']; }
+							if(isset($oq['objectId'])){ $odp->objectId = $oq['objectId']; }
+							
+							if($odp->save(false)){ $postResponse = 'Send success'; }
+							else{
+								Yii::$app->response->statusCode = 405;
+								$postResponse = 'Gateway error';
 							}
 						}
 						else{

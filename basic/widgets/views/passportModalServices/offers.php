@@ -3,7 +3,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 ?>
 <main id="lightbox" class="lightbox-closed">
-        <div class="lightwin-passport lightbox-closed">
+        <div class="lightwin-passport lightbox-closed" id="offer">
             <header>
                 <div id="left-content">
                     <span>New investment object</span>
@@ -15,7 +15,7 @@ use yii\helpers\Url;
             <main>
                 <form action="#" method="post">
                     <label for="object">Name of the investment object</label>
-                    <input type="text" name="object" id="textput">
+                    <input type="text" name="object" class="title" id="textput">
                     <label for="type">Type of investment object</label>
                     <select name="type" id="selector-form">
 						<?php foreach($datasets[0] as $attrList){ ?><option value="<?php echo $attrList->name; ?>"><?php echo $attrList->name; ?></option><?php } ?>
@@ -31,17 +31,8 @@ use yii\helpers\Url;
 						}
 						?>
                     </select>
-                    <div id="from-to">
-                        <div class="left">
-                            <label for="cost-from">The cost of</label>
-                            <select name="cost-from" id="selector-form-add"></select>
-                        </div>
-                        <span>-</span>
-                        <div class="right">
-                            <label for="cost-to">Cost up to</label>
-                            <select name="cost-to" id="selector-form-add"></select>
-                        </div>
-                    </div>
+                    <label for="cost">Offer cost(in USD)</label>
+                    <input type="text" name="cost" id="textput" class="offer" placeholder="Example: 1000000">
                 </form>
             </main>
             <footer>
@@ -58,11 +49,11 @@ use yii\helpers\Url;
                     </div>
                 </div>
                 <div id="left-content-plus">
-                    <button class="add-but">Add Request</button>
+                    <button class="add-but" data-control="default">Add Request</button>
                 </div>
             </footer>
         </div>
-        <div class="lightwin-passport-regional">
+        <div class="lightwin-passport-regional" id="offer">
             <header>
                 <div id="left-content">
                     <span>Selection of the country</span>
@@ -81,7 +72,7 @@ use yii\helpers\Url;
 							<?php for($k = $region[$i][0]; $k < $region[$i][1]; $k++){ ?>
 								<label>
 									<input type="checkbox" name="countries" id="country-selector" value="<?php echo $countriesList[$k]['code']; ?>" />
-									<span class="country-name"><?php echo $countriesList[$k]['title']; ?>"</span>
+									<span class="country-name"><?php echo $countriesList[$k]['title']; ?></span>
 								</label>
 							<?php } ?>
 						</div>
@@ -89,7 +80,7 @@ use yii\helpers\Url;
                 </form>
             </main>
             <footer>
-                <div id="left-content"><button class="add-but" style="padding-left: 30px;padding-right: 30px;">Ok</button></div>
+                <div id="left-content"><button class="add-but" data-control="region" style="padding-left: 30px;padding-right: 30px;">Ok</button></div>
             </footer>
         </div>
  </main>

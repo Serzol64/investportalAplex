@@ -8,6 +8,10 @@
             width: 117px;
 }
 
+.waiting-mode{
+	opacity: 0.25;
+}
+
 @media all and (max-width: 414px){}
 @media all and (max-width: 600px){}
 @media all and (max-width: 768px){}

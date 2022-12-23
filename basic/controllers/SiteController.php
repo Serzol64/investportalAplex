@@ -132,7 +132,7 @@ class SiteController extends Controller{
 		$this->view->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js", ['position' => View::POS_HEAD]);
 		
 		
-		$this->view->registerCssFile("/css/services/portalServices/view.css");
+		$this->view->registerCssFile("/css/services/portalServices/page.css");
 		$this->view->registerJsFile("/js/services/page.js", ['position' => View::POS_END]);
 		
 		$serviceDataQuery = [':service' => $id];
@@ -292,7 +292,7 @@ class SiteController extends Controller{
 								
 								$endpointSVC = $serviceQuery->sender . '?command=' . $cmdQuery['service'];
 								$endpointQuery = $cmdQuery['parameters'];
-								$senderCall = $serviceClient->createRequest()->setMethod('POST')->setUrl($endpointSVC)->setData(['query' => JSON::encode($endpointQuery)])->send();
+								$senderCall = $serviceClient->createRequest()->setMethod('POST')->setUrl($endpointSVC)->setHeaders(['content-type' => 'application/x-www-form-urlencoded'])->setData(['query' => JSON::encode($endpointQuery)])->send();
 								
 								$vuData = $senderCall->data;
 							break;
@@ -302,7 +302,7 @@ class SiteController extends Controller{
 								
 								if($controlService == 'getForm'){
 									$endpointSVC = $serviceQuery->control;
-									$controlCall = $serviceClient->createRequest()->setMethod('POST')->setUrl($endpointSVC)->send();
+									$controlCall = $serviceClient->createRequest()->setMethod('POST')->setUrl($endpointSVC)->setHeaders(['content-type' => 'application/x-www-form-urlencoded'])->send();
 								}
 								
 								$vuData = $controlCall->data;

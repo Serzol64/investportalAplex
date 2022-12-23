@@ -64,7 +64,7 @@ class ObjectsController extends Controller
 
         $connector = [
             'meta' => [
-                'meta' => Yii::$app->db->createCommand('SELECT id, title, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.region.country")), ', ', JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.region.region"))) as "region", JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.parameters.cost[0].value")) as "cost", JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.parameters.precentable[0].value")) as "profitableness", JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.description")) as "description", JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.mediagallery.video.poster")) as "videoPoster" FROM objectData WHERE id=:object')->bindValues($objectQuery)->queryOne(),
+                'meta' => Yii::$app->db->createCommand('SELECT id, title, CONCAT(JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.region.country")), ', ', JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.region.region"))) as "region", JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.parameters.cost.value")) as "cost", JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.parameters.precentable[0].value")) as "profitableness", JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.description")) as "description", JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.mediagallery.video.poster")) as "videoPoster" FROM objectData WHERE id=:object')->bindValues($objectQuery)->queryOne(),
                 'parameters' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content, "$.content.parameters[*].filter")) as "filter", JSON_UNQUOTE(JSON_EXTRACT(content, "content.parameters[*].value")) as "value" FROM objectData WHERE id=:object')->bindValues($objectQuery)->queryAll(),
                 'photo' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.mediagallery.photo.data[*].file")) as "file" FROM objectData WHERE id=:object')->bindValues($objectQuery)->queryAll(),
                 'video' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content, "$.meta.mediagallery.video.data[*].file")) as "file" FROM objectData WHERE id=:object')->bindValues($objectQuery)->queryAll(),
@@ -94,8 +94,12 @@ class ObjectsController extends Controller
 
     public function actionInvestors()
     {
+		$this->view->registerCssFile('/js/lib/modalLoading/modal-loading-animate.css');
+		$this->view->registerJsFile('/js/lib/modalLoading/modal-loading.js', ['position' => View::POS_HEAD]);
+		
         $this->view->registerCssFile('/css/investors.css');
         $this->view->registerJsFile('/js/investors.js', ['position' => View::POS_END]);
+        
 		
 		$this->view->registerCssFile("https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css");
 		$this->view->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js", ['position' => View::POS_BEGIN]);
@@ -129,6 +133,9 @@ class ObjectsController extends Controller
 	}
     public function actionExperts()
     {
+		$this->view->registerCssFile('/js/lib/modalLoading/modal-loading-animate.css');
+		$this->view->registerJsFile('/js/lib/modalLoading/modal-loading.js', ['position' => View::POS_HEAD]);
+		
 		$this->view->registerCssFile("https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css");
 		$this->view->registerJsFile("https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js", ['position' => View::POS_BEGIN]);
 		
@@ -136,16 +143,16 @@ class ObjectsController extends Controller
         $this->view->registerJsFile('/js/experts.js', ['position' => View::POS_END]);
 
         $basicResponse = [
-            'list' => Expert::find()->select(['id', 'created', 'titleImage' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].titleImage"))', 'name' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].name"))', 'specialization' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].specialization"))', 'slogan' => 'JSON_UNQUOTE(JSON_EXTRACT(inform, "$[*][1].slogan"))', 'workExperience' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].workExperience"))', 'regulator' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].regulator"))', 'isFreeAppreal' => 'JSON_UNQUOTE(JSON_EXTRACT(inform, "$[*][2].isFreeAppreal"))', 'attachments' => 'JSON_UNQUOTE(JSON_EXTRACT(inform, "$[*][0].attachments"))', 'raiting' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].raiting"))'])->orderBy('created DESC')->asArray()->all(),
-            'expertsCount' => Expert::find()->count(),
+            'list' => Expert::find()->select(['id', 'created', 'titleImage' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].titleImage"))', 'name' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].name"))', 'specialization' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].specialization"))', 'slogan' => 'JSON_UNQUOTE(JSON_EXTRACT(inform, "$[*][1].slogan"))', 'workExperience' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].workExperience"))', 'regulator' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].regulator"))', 'isFreeAppreal' => 'JSON_UNQUOTE(JSON_EXTRACT(inform, "$[*][2].isFreeAppreal"))', 'attachments' => 'JSON_UNQUOTE(JSON_EXTRACT(inform, "$[*][0].attachments"))', 'raiting' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].raiting"))'])->where(['isModerate' => TRUE])->orderBy('created DESC')->asArray()->all(),
+            'expertsCount' => Expert::find()->where(['isModerate' => TRUE])->count(),
         ];
         
         $dataLake = [
-			'theme' => Expert::find()->select(['title' => 'JSON_UNQUOTE(JSON_EXTRACT(inform, "$.service[*].svc"))'])->distinct()->all(),
-			'cost' => Expert::find()->select(['cost' => 'JSON_UNQUOTE(JSON_EXTRACT(inform, "$.amounts[*][0]"))'])->distinct()->all(),
-			'region' => Expert::find()->select(['region' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].region"))'])->distinct()->all(),
-			'type' => Expert::find()->select(['type' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].specialization"))'])->distinct()->all(),
-			'regulation' => Expert::find()->select(['regulator' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].regulator"))'])->distinct()->all()
+			'theme' => Expert::find()->select(['title' => 'JSON_UNQUOTE(JSON_EXTRACT(inform, "$.service[*].svc"))'])->where(['isModerate' => TRUE])->distinct()->all(),
+			'cost' => Expert::find()->select(['cost' => 'JSON_UNQUOTE(JSON_EXTRACT(inform, "$.amounts[*][0]"))'])->where(['isModerate' => TRUE])->distinct()->all(),
+			'region' => Expert::find()->select(['region' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].region"))'])->where(['isModerate' => TRUE])->distinct()->all(),
+			'type' => Expert::find()->select(['type' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].specialization"))'])->where(['isModerate' => TRUE])->distinct()->all(),
+			'regulation' => Expert::find()->select(['regulator' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].regulator"))'])->where(['isModerate' => TRUE])->distinct()->all()
         ];
 
         return $this->render('experts', ['response' => $basicResponse, 'lake' => $dataLake]);
@@ -159,10 +166,10 @@ class ObjectsController extends Controller
 		$currentExpert = [':id' => $expertId];
 		
         $queryPage = [
-			'person' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT()) as "name", JSON_UNQUOTE(JSON_EXTRACT()) as "specialization", JSON_UNQUOTE(JSON_EXTRACT()) as "workExperience", JSON_UNQUOTE(JSON_EXTRACT()) as "regulator", JSON_UNQUOTE(JSON_EXTRACT()) as "titleImage", JSON_UNQUOTE(JSON_EXTRACT()) as "raiting" FROM experts WHERE id=:id')->bindValues($currentExpert)->queryOne(),
-			'content' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT()) as "attachments", JSON_UNQUOTE(JSON_EXTRACT()) as "amounts", JSON_UNQUOTE(JSON_EXTRACT()) as "about", JSON_UNQUOTE(JSON_EXTRACT()) as "specialization" FROM experts WHERE id=:id')->bindValues($currentExpert)->queryOne(),
-			'inform' => Yii::$app->db->createCommand('SELECT  JSON_UNQUOTE(JSON_EXTRACT()) as "slogan", JSON_UNQUOTE(JSON_EXTRACT()) as "legalState", JSON_UNQUOTE(JSON_EXTRACT()) as "price" FROM experts WHERE id=:id')->bindValues($currentExpert)->queryOne(),
-			'contact' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT()) as "region", JSON_UNQUOTE(JSON_EXTRACT()) as "isFreeAppreal" FROM experts WHERE id=:id')->bindValues($currentExpert)->queryOne()
+			'person' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(person, "$.name")) as "name", JSON_UNQUOTE(JSON_EXTRACT(person, "$.specialization")) as "specialization", JSON_UNQUOTE(JSON_EXTRACT(person, "$.experience")) as "workExperience", JSON_UNQUOTE(JSON_EXTRACT(contact, "$.regulator")) as "regulator", JSON_UNQUOTE(JSON_EXTRACT(person, "$.titleImage")) as "titleImage", JSON_UNQUOTE(JSON_EXTRACT(person, "$.raiting")) as "raiting" FROM experts WHERE id=:id AND isModerate=true')->bindValues($currentExpert)->queryOne(),
+			'content' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(content, "$.attachments")) as "attachments", JSON_UNQUOTE(JSON_EXTRACT(content, "$.amounts")) as "amounts", JSON_UNQUOTE(JSON_EXTRACT(inform, "$.about")) as "about", JSON_UNQUOTE(JSON_EXTRACT(inform, "$.specHistory")) as "specialization" FROM experts WHERE id=:id AND isModerate=true')->bindValues($currentExpert)->queryOne(),
+			'inform' => Yii::$app->db->createCommand('SELECT  JSON_UNQUOTE(JSON_EXTRACT(inform, "$.slogan")) as "slogan", JSON_UNQUOTE(JSON_EXTRACT(person, "$.legalState")) as "legalState", JSON_UNQUOTE(JSON_EXTRACT(content, "$.price")) as "price" FROM experts WHERE id=:id AND isModerate=true')->bindValues($currentExpert)->queryOne(),
+			'contact' => Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(contact, "$.region")) as "region", JSON_UNQUOTE(JSON_EXTRACT(inform, "$.isFreeAppreal")) as "isFreeAppreal" FROM experts WHERE id=:id AND isModerate=true')->bindValues($currentExpert)->queryOne()
         ];
 
         if (!$queryPage) {
@@ -218,6 +225,23 @@ class ObjectsController extends Controller
 			if(isset($_GET['svcQuery'])){
 				$esq = Json::decode($_GET['svcQuery'], true);
 				
+				if(isset($_GET['service'])){
+					if($_GET['service'] == 'find'){
+						$findQuery = ['isModerate' => TRUE];
+						
+						if($esq['theme']){ $findQuery[] = ['JSON_EXTRACT(inform, "$.service[*].svc")' => $esq['theme']]; }
+						if($esq['cost']){ $findQuery[] = ['JSON_EXTRACT(inform, "$.amounts[*][0]"))' => $esq['cost']]; }
+						if($esq['region']){ $findQuery[] = ['JSON_EXTRACT(person, "$[*].region")' => $esq['region']]; }
+						if($esq['type']){ $findQuery[] = ['JSON_EXTRACT(person, "$[*].specialization")' => $esq['type']]; }
+						
+						if($esq['isFreeAppreal']){ $findQuery[] = ['JSON_EXTRACT(inform, "$.isFreeAppreal")' => $esq['isFreeAppreal']]; }
+						
+						
+						$getResponse = Expert::find()->select(['id', 'created', 'titleImage' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].titleImage"))', 'name' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].name"))', 'specialization' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].specialization"))', 'slogan' => 'JSON_UNQUOTE(JSON_EXTRACT(inform, "$[*][1].slogan"))', 'workExperience' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].workExperience"))', 'regulator' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].regulator"))', 'isFreeAppreal' => 'JSON_UNQUOTE(JSON_EXTRACT(inform, "$[*][2].isFreeAppreal"))', 'attachments' => 'JSON_UNQUOTE(JSON_EXTRACT(inform, "$[*][0].attachments"))', 'raiting' => 'JSON_UNQUOTE(JSON_EXTRACT(person, "$[*].raiting"))'])->where($findQuery)->orderBy('created DESC')->all();
+					}
+				}
+			
+				$serviceResponse = $getResponse;
 			}
 			else{
 				Yii::$app->response->statusCode = 405;
@@ -237,8 +261,9 @@ class ObjectsController extends Controller
 					$ex->inform = $query['content']['i'];
 					$ex->content = $query['content']['m'];
 					$ex->contact = $query['content']['c'];
+					$ex->isModerate = FALSE;
 					
-					if($ex->save()){ $serviceResponse[] = "New expert added success!"; }
+					if($ex->save(false)){ $serviceResponse[] = "New expert added success!"; }
 					else{
 						Yii::$app->response->statusCode = 405;
 						$serviceResponse[] = 'Gateway error';
@@ -264,8 +289,8 @@ class ObjectsController extends Controller
 		$serviceResponse = array();
 		
 		if($type == 'get'){
-			if(isset($_GET['svcQuery'])){
-				$isq = Json::decode($_GET['svcQuery'], true);
+			if(isset($_POST['svcQuery'])){
+				$isq = Json::decode($_POST['svcQuery'], true);
 				$adversting = Investors::find();
 				
 				if(isset($_GET['service'])){
@@ -273,26 +298,24 @@ class ObjectsController extends Controller
 						$findQuery = [];
 						
 						if(isset($isq['type'])){
-							if($isq['type'] != 'all'){ $findQuery[] = ['type' => $isq['type']]; }
+							if($isq['type'] != 'all'){ $findQuery['type'] = $isq['type']; }
+						}
+						
+						if(isset($isq['region'])){
+							$findQuery['region'] = $isq['region'];
 						}
 						
 						if(isset($isq['activityFrom']) && isset($isq['activityTo'])){
-							$findQuery[] = [
-								'date' => $isq['activityFrom'],
-								'timeActivity' => $isq['activityTo']
-							];
+							$findQuery['date'] = $isq['activityFrom'];
+							$findQuery['timeActivity'] = $isq['activityTo'];
 						}
 						else if(isset($isq['activityFrom']) || isset($isq['activityTo'])){
-							if(isset($isq['activityTo'])){ $paramQuery = ['timeActivity' => $isq['activityTo']]; }
-							else{ $paramQuery = ['date' => $isq['activityFrom']]; }
-							
-							$findQuery[] = $paramQuery;
+							if(isset($isq['activityTo'])){ $findQuery['timeActivity'] = $isq['activityTo']; }
+							else{ $findQuery['date'] = $isq['activityFrom']; }
 						}
 						
 						
 						$getResponse = $findQuery ? $adversting->select(['id', 'title', 'description' => "CONCAT(SUBSTRING(JSON_UNQUOTE(JSON_EXTRACT(description, '$.data.content')), 1, 340), IF(LENGTH(JSON_UNQUOTE(JSON_EXTRACT(description, '$.data.content'))) > 340, '...', ''))", 'date' => "DATE_FORMAT(date, '%m.%d.%Y %H:%i')"])->where($findQuery)->orderBy('date DESC')->all() : $adversting->select(['id', 'title', 'description' => "CONCAT(SUBSTRING(JSON_UNQUOTE(JSON_EXTRACT(description, '$.data.content')), 1, 340), IF(LENGTH(JSON_UNQUOTE(JSON_EXTRACT(description, '$.data.content'))) > 340, '...', ''))", 'date' => "DATE_FORMAT(date, '%m.%d.%Y %H:%i')"])->orderBy('date DESC')->all();
-						
-						
 					}
 				}
 			

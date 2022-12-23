@@ -101,6 +101,7 @@ header#formUI > .finish-message{
   padding: 2%;
   font-family: sans-serif;
   font-size: 120%;
+  text-indent: 0%;
 }
 #step > div#body label *:nth-child(2){
   font-size: 120%;

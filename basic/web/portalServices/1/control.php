@@ -78,7 +78,7 @@ function formGenerator($container){
 			],
 			[
 						'type' => 'queryContent',
-						'stepD' => 'Describe your object and its features. Then specify the filters and parameters of your object in the "filter - value" format in accordance with the data filtering standards set in the selected attribute',
+						'stepD' => 'Describe your object and its features. Then specify the filters and parameters of your object in the "Filter - value" format in accordance with the data filtering standards set in the selected attribute',
 						'form' => [
 							[
 								'name' => 'Object description',
@@ -97,8 +97,6 @@ function formGenerator($container){
 	}
 	else if($container == 'footer'){
 		$readyForm = [
-			[ 'isLast' => FALSE ],
-			[ 'isLast' => FALSE ],
 			[ 'isLast' => FALSE ],
 			[ 'isLast' => FALSE ],
 			[ 'isLast' => FALSE ],

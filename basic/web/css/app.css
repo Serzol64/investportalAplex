@@ -936,7 +936,7 @@ h4.title, p.descr{
     display: none;
 }
 #analytics > main #slider-view .analytic-feed{
-   margin-left: -15%;
+   margin-left: -6%;
    margin-top: -4%;
 }
 #analytics > main #slider-view-adaptive .analytic{
@@ -1571,6 +1571,7 @@ h4.title, p.descr{
     }
     .footer > main #category_menu {
         padding-right: 3%;
+        width: 90vw;
     }
     
 }
@@ -1635,8 +1636,8 @@ h4.title, p.descr{
         width: 50%;
     }
     .footer > main {
-        margin-right: -11vw;
-        width: 100%;
+        margin-right: 3vw;
+        width: 90vw;
         top: 12%;
     }
 }
@@ -1781,7 +1782,7 @@ h4.title, p.descr{
         top: 12%;
     }
     .footer > main #category_menu {
-        padding-right: 17%;
+        padding-right: 10%;
     }
 }
 @media all and (min-width: 960px) and (max-width: 1024px){

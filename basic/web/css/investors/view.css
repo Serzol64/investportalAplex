@@ -35,11 +35,13 @@ ul.viewer li div#param, ul.viewer li div#content{
 
 }
 ul.viewer li div#param *, ul.viewer li div#content *{
-  display: inline-flex;
   margin: 0.33%;
   flex: 1 0.5 0.25%;
   align-self: flex-start;
   order: 1;
+}
+ul.viewer li div#content *{
+  display: inline-flex;
 }
 
 ul.viewer li div#contact *{
@@ -50,28 +52,71 @@ ul.viewer li div#contact *{
   order: 2;
 }
 
-div#param > div h4{
+div#param > div *{
   font-size: x-large;
-}
-div#param > div span{
-  font-size: x-large;
-}
-
-div#content > div h3{
-  font-size: x-large;
+  padding-bottom: 10%;
+  display: block;
 }
 
-div#content > div p{
+div#content > div *{
+  font-size: xx-large;
+  padding-bottom: 5%;
+}
+
+div#contact > div *{
   font-size: xx-large;
 }
 
-div#contact > div h2{
-  font-size: xx-large;
-}
-div#contact > div p{
-  font-size: x-large;
-}
 div#contact > div p a{
-  font-size: xx-large;
   color: #0079bf;
+}
+
+@media all and (max-width: 768px){
+    ul.viewer{ width: 70vw; }
+	ul.viewer > li{
+	  margin: 1%;
+	  display: grid; 
+	  grid-auto-flow: row dense; 
+	  grid-auto-columns: 50%; 
+	  grid-auto-rows: 0.5em; 
+	  grid-template-columns: 100%; 
+	  grid-template-rows: min-content min-content max-content 25%; 
+	  gap: 2% 4em;
+	  align-content: stretch; 
+	  justify-items: stretch; 
+	}
+	ul.viewer li div#param, ul.viewer li div#content, ul.viewer li div#content *, ul.viewer li div#contact * { display: block; }
+	ul.viewer li div#contact *:nth-child(1){
+		font-size: x-large;
+		margin-bottom: 4%;
+	}
+	ul.viewer li div#contact *:nth-child(2), ul.viewer li div#contact *:nth-child(2) a{
+		font-size: large;
+		margin-bottom: 2%;
+	}
+}
+@media all and (min-width: 768px) and (max-width: 1500px){
+    ul.viewer{ width: 70vw; }
+	ul.viewer > li{
+	  margin: 1%;
+	  display: grid; 
+	  grid-auto-flow: row dense; 
+	  grid-auto-columns: 50%; 
+	  grid-auto-rows: 0.5em; 
+	  grid-template-columns: 100%; 
+	  grid-template-rows: min-content min-content max-content 25%; 
+	  gap: 2% 4em;
+	  align-content: stretch; 
+	  justify-items: stretch; 
+	}
+	ul.viewer li div#param, ul.viewer li div#content, ul.viewer li div#content *, ul.viewer li div#contact * { display: block; }
+	ul.viewer li div#param *{ display: inline-flex; width: 100%;}
+	ul.viewer li div#contact *:nth-child(1){
+		font-size: xx-large;
+		margin-bottom: 2%;
+	}
+	ul.viewer li div#contact *:nth-child(2), ul.viewer li div#contact *:nth-child(2) a{
+		font-size: x-large;
+		margin-bottom: 4%;
+	}
 }

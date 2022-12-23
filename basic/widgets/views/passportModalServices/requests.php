@@ -3,7 +3,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 ?>
 <main id="lightbox" class="lightbox-closed">
-        <div class="lightwin-passport lightbox-closed">
+        <div class="lightwin-passport lightbox-closed" id="request">
             <header>
                 <div id="left-content">
                     <span>New investment object</span>
@@ -58,11 +58,11 @@ use yii\helpers\Url;
                     </div>
                 </div>
                 <div id="left-content-plus">
-                    <button class="add-but">Add Request</button>
+                    <button class="add-but" data-control="default">Add Request</button>
                 </div>
             </footer>
         </div>
-        <div class="lightwin-passport-regional">
+        <div class="lightwin-passport-regional" id="request">
             <header>
                 <div id="left-content">
                     <span>Selection of the country</span>
@@ -81,7 +81,7 @@ use yii\helpers\Url;
 							<?php for($k = $region[$i][0]; $k < $region[$i][1]; $k++){ ?>
 								<label>
 									<input type="checkbox" name="countries" id="country-selector" value="<?php echo $countriesList[$k]['code']; ?>" />
-									<span class="country-name"><?php echo $countriesList[$k]['title']; ?>"</span>
+									<span class="country-name"><?php echo $countriesList[$k]['title']; ?></span>
 								</label>
 							<?php } ?>
 						</div>
@@ -89,7 +89,7 @@ use yii\helpers\Url;
                 </form>
             </main>
             <footer>
-                <div id="left-content"><button class="add-but" style="padding-left: 30px;padding-right: 30px;">Ok</button></div>
+                <div id="left-content"><button class="add-but" data-control="region" style="padding-left: 30px;padding-right: 30px;">Ok</button></div>
             </footer>
         </div>
     </main>

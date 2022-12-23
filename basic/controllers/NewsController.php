@@ -149,7 +149,30 @@ class NewsController extends Controller{
 		$esd = Event::find();
 		
 		if($type == 'get'){
-			if(isset($_GET['svcQuery'])){
+			if(isset($_POST['svcQuery'])){
+				$esdq = Json::decode($_POST['svcQuery'], true);
+				$esdqd = $esdq['query'];
+				
+				if($esdq['service'] == 'eventsFind'){
+					$eventsFind = [];
+					
+					if(isset($esdqd['search']['region'])){ $eventsFind['location'] = $esdqd['search']['region']; }
+					if(isset($esdqd['search']['type'])){ $eventsFind['type'] = $esdqd['search']['type']; }
+					if(isset($esdqd['search']['tematic'])){ $eventsFind['tematic'] = $esdqd['search']['tematic']; }
+					
+					if(isset($esdqd['search']['period'])){
+						if(isset($esdqd['search']['period']['from'])){ $eventsFind['date_from'] = $esdqd['search']['period']['from']; }
+						if(isset($esdqd['search']['period']['to'])){ $eventsFind['date_to'] = $esdqd['search']['period']['to']; }
+					}
+					
+					$eventResponse = $eventsFind ? $esd->where($eventsFeed)->all() : $esd->all();
+				}
+				else{
+					Yii::$app->response->statusCode = 404;
+					$eventResponse = "Service not found!";
+				}
+				
+				$serviceResponse = $eventResponse;
 				
 			}
 			else{

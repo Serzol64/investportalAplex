@@ -47,6 +47,10 @@
             width: 27%;
 }
 
+.waiting-mode{
+	opacity: 0.25;
+}
+
 @media all and (max-width: 414px){
             .passport-page > main #left-content #table-list .content td:nth-child(2) {
                 width: 25%;

@@ -5,6 +5,8 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
+use app\models\ObjectsData;
+
 $this->title = "Offers for Investors";
 ?>
 <main class="main" style="background-color:   #eff3f4;">
@@ -45,9 +47,29 @@ $this->title = "Offers for Investors";
 									?>
 											<tr class="content">
 												<td><?php echo $id; ?></td>
-												<!--<td>Private boarding house on the beach, high-quality service and high profitability</td>-->
-												<!--<td>Hotel</td>-->
-												<!--<td>$ 10 000 000</td>-->
+												<?php
+												$currency = Yii::$app->currencyDB;
+							
+												$convertQuery = [
+													'type' => 'currency',
+													'response' => [
+														'myCur' => $_COOKIE['servicesCurrency'],
+														'amount' => $offer->offer
+													]
+												];
+												
+												$dataAmount = [
+													'isSymbol' => TRUE,
+													'query' => [
+														'myCur' => $_COOKIE['servicesCurrency'],
+														'amount' => $currency->execute($convertQuery)
+													]
+												];
+												
+												echo Html::tag('td', $offer->title);
+												echo Html::tag('td', $offer->category);
+												echo Html::tag('td', $currency->getFullAmount($dataAmount));
+												?>
 												<td>
 													<?php if($offer->status){ ?><div class="status" style="background-color: #72dade;">Active</div><?php } else { ?><div class="status" style="padding-top: 15px;padding-bottom: 15px;">Not<br/>active</div><?php } ?>
 												</td>

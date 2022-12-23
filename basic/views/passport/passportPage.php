@@ -5,6 +5,8 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
+use app\models\ObjectsData;
+
 $this->title = "Investment requests";
 ?>
 
@@ -46,8 +48,12 @@ $this->title = "Investment requests";
 									?>
 											<tr class="content">
 												<td><?php echo $id; ?></td>
-												<!--<td>Private boarding house on the beach, high-quality service and high profitability</td>-->
-												<!--<td>Hotel</td>-->
+												<?php
+												
+												echo Html::tag('td', $offer->title);
+												echo Html::tag('td', $offer->category);
+												
+												?>
 												<td>
 													<?php if($offer->status){ ?><div class="status" style="background-color: #72dade;">Active</div><?php } else { ?><div class="status" style="padding-top: 15px;padding-bottom: 15px;">Not<br/>active</div><?php } ?>
 												</td>

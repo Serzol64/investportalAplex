@@ -1,24 +1,33 @@
 <?php 
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 
-if($_SERVER['SERVER_NAME'] == 'investportal.aplex.ru'){
-	$remoteConnect = [
-		'ds' => ['localhost', 'zolotaryow_inv'],
-		'u' => 'zolotaryow_inv',
-		'p' => 'pNtJCRTGEZ'
-	];
-}
-else{ 
-	$remoteConnect = [
-		'ds' => ['database', 'aplex'],
-		'u' => 'developer',
-		'p' => '19052000'
-	];
+function connectorParam(){
+	if($_SERVER['SERVER_NAME'] == 'investportal.aplex.ru'){
+		$remoteConnect = [
+			'ds' => ['localhost', 'zolotaryow_inv'],
+			'u' => 'zolotaryow_inv',
+			'p' => 'pNtJCRTGEZ'
+		];
+	}
+	else{ 
+		$remoteConnect = [
+			'ds' => ['database', 'aplex'],
+			'u' => 'developer',
+			'p' => '19052000'
+		];
+	}
+	
+	return $remoteConnect;
 }
 
-$database = new mysqli($remoteConnect['ds'][0], $remoteConnect['u'], $remoteConnect['p'], $remoteConnect['ds'][1]);
+
+function connector(){ return new PDO('mysql:host=' . connectorParam()['ds'][0] . ';port=3306;dbname=' . connectorParam()['ds'][1], connectorParam()['u'], connectorParam()['p']); }
 
 function validData($label, $data){
 	
+	$database = connector();
 	$errorResponse = [];
 	
 	if($label == 'objectTitle'){
@@ -48,37 +57,38 @@ function validData($label, $data){
 			$category = $_COOKIE['objectAttribute'];
 			
 			if($database->connect_error){
-				$listFilters = 'SELECT field, type FROM objectdata_filters WHERE name=$category';
-				$listFilters .= $database->query($listFilters);
+				$listFilters = 'SELECT field, type FROM objectdata_filters WHERE name=:c';
+				$listFilters .= $database->prepare($listFilters)->execute(['c' => $category]);
 				
-				$queryFilter = explode(' - ', $data);
+				$queryFilter = explode(PHP_EOL, $data);
 				
-				if(!count($queryFilters[0]) == $listFilters->num_rows){ $errorResponse[] = 'The number of parameters entered does not match the number of required parameters!'; }
+				if(!count($queryFilters) == $listFilters->num_rows){ $errorResponse[] = 'The number of parameters entered does not match the number of required parameters!'; }
 				
 				while($row = $listFilters->fetch_assoc()){
-					for($i = 0; $i < count($queryFilters[0]); $i++){
-						if($row["field"] == $queryFilters[0][$i]){
+					for($i = 0; $i < count($queryFilters); $i++){
+						$queryField = explode(' - ', $queryFilters[$i]);
+						if($row["field"] == $queryField[0]){
 							switch($row["type"]){
 								case 'int':
-									if(!ctype_digit($queryFilters[1][$i])){ $errorResponse[] = 'Only numbers are accepted in this field'; }
+									if(!ctype_digit($queryField[1])){ $errorResponse[] = 'Only numbers are accepted in this field'; }
 								break;
 								case 'precentable':
-									if(!ctype_digit($queryFilters[1][$i])){ $errorResponse[] = 'Only numbers are accepted in this field'; }
+									if(!ctype_digit($queryField[1])){ $errorResponse[] = 'Only numbers are accepted in this field'; }
 									else{
-										if($queryFilters[1][$i] >= 100){ $errorResponse[] = 'Numbers less than or equal to 100 are accepted here'; }
+										if($queryField[1] >= 100){ $errorResponse[] = 'Numbers less than or equal to 100 are accepted here'; }
 									}
 								break;
 								case 'cost':
-									if(!ctype_digit($queryFilters[1][$i])){ $errorResponse[] = 'Either digits or floating-point digits are accepted in this field'; }
+									if(!ctype_digit($queryField[1])){ $errorResponse[] = 'Either digits or floating-point digits are accepted in this field'; }
 									else{
-										if($queryFilters[1][$i] >= 67000000000000){ $errorResponse[] = 'Numbers are accepted here, or floating-point numbers! Condition: Data less than or equal to 67 trillion dollars'; }
+										if($queryField[1] >= 67000000000000){ $errorResponse[] = 'Numbers are accepted here, or floating-point numbers! Condition: Data less than or equal to 67 trillion dollars'; }
 									}
 								break;
 								case 'selecting':
-									if(($queryFilters[1][$i] != 'Yes') || ($queryFilters[1][$i] != 'No')){ $errorResponse[] = 'In this field, enter either "Yes" or "No" without punctuation marks!'; }
+									if(($queryField[1] != 'Yes') || ($queryField[1] != 'No')){ $errorResponse[] = 'In this field, enter either "Yes" or "No" without punctuation marks!'; }
 								break;
 								case 'default':
-									if(!preg_match('/[^A-Za-z]/', $queryFilters[1][$i])){ $errorResponse[] = 'In this field, you most often use exclusively English characters!'; }
+									if(!preg_match('/[^A-Za-z]/', $queryField[1])){ $errorResponse[] = 'In this field, you most often use exclusively English characters!'; }
 								break;
 							}
 						}
@@ -95,21 +105,20 @@ function validData($label, $data){
 }
 
 function sendProccess($data){
-	if(!$database->connect_error){
-		
-		$galleryList = function($service){
+		$database = connector();
+		$galleryList = function($service, $q){
 			
 			$readyData = [];
-			
-			
 			
 			if($service == 'content'){
 				$param = [];
 				
-				$contentData = explode(PHP_EOL, $data['content']);
-				$contentData .= explode('-', $contentData);
+				$contentData = explode(PHP_EOL, $q['content']);
 				
-				for($i = 0; $i < count($contentData[0]); $i++){ $param[] = [$contentData[0][$i] => $contentData[1][$i]]; }
+				for($i = 0; $i < count($contentData); $i++){ 
+					$dataResult = explode(' - ', $contentData[$i]);
+					$param[] = [$dataResult[0] => $dataResult[1]]; 
+				}
 				
 				$readyData = $param;
 			}
@@ -117,7 +126,7 @@ function sendProccess($data){
 			return $readyData;
 		};
 		
-		$paramData = $galleryList('content');
+		$paramData = $galleryList('content', $data);
 		
 		$contentQuery = [
 				'meta' => [
@@ -125,11 +134,11 @@ function sendProccess($data){
 					'region' => [
 						'country' => $data['objectCountry'],
 						'region' => $data['objectRegion']
-					],
-					'mediagallery' => []
+					]
 				],
 				'content' => [
-					'parameters' => $paramData
+					'parameters' => $paramData,
+					'cost' => $data['objectCost']
 				]
 		];
 		
@@ -138,31 +147,18 @@ function sendProccess($data){
 		
 		$jsonContent = $contentQuery;
 		
-		$query = 'INSERT INTO objectData (title, category, content, creator) VALUES($metaTitle, $metaCategory, $jsonContent, $creator)';
-		$queryTRUE = $database->query($query);
 		
-		return successSend($queryTRUE);
-	}
-}
-
-function successSend($state){
-	$finalResponse = [];
-	
-	if($state){
-		$finalResponse = [
-			'state' => 0,
-			'message' => 'The object has been successfully added to the portal!'
+		$queryParam = [
+			't' => $metaTitle,
+			'c' => $metaCategory,
+			'j' => json_encode($jsonContent, JSON_UNESCAPED_SLASHES),
+			'user' => $_COOKIE['portalId']
 		];
-	}
-	else{
-		$finalResponse = [
-			'state' => 1,
-			'message' => 'The registration of this object failed'
-		];
-	}
-	
-	return $finalResponse;
-	
+		$query = 'INSERT INTO objectData (title, category, content, creator) VALUES(:t, :c, :j, :user)';
+		$queryTRUE = $database->prepare($query);
+		$executeData = $queryTRUE;
+		
+		return $executeData ? ['message' => 'The object has been successfully added to the portal!', 'error' => $executeData->errorInfo(), 'source' => $queryParam, 'query' => $data['content']] : ['message' => 'The registration of this object failed', 'error' => $executeData->errorInfo()];
 }
 
 if (!count(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS))){
@@ -171,16 +167,14 @@ if (!count(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS))){
     if(isset($_GET['command'])){
 		if($_GET['command'] == 'submit'){
 			if(isset($_POST['query'])){
-				$query = json_decode($_POST['query'], true);
-				$sendResponse = sendProccess($query['query']);
+				$queryResponse = json_decode($_POST['query'], true);
+				$readyResponse = sendProccess($queryResponse);
 			}
-			
-			$readyResponse = $sendResponse;
 		}
 		else if($_GET['command'] == 'valid'){
 			if(isset($_POST['query'])){
 				$query = json_decode($_POST['query'], true);
-				if($query['multivalidator']){
+				if(isset($query['multivalidator'])){
 					$multivalid = [];
 					for($i = 0; $i < count($query['multivalidator']['label']); $i++){ $multiValid[] = validData($query['multivalidator']['label'][$i], $query['multivalidator']['value'][$i]); }
 					$validResponse = $multiValid;

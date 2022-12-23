@@ -86,20 +86,20 @@ $this->beginPage();
 									   </div>
 								</header>
 								<main>
-									<a href="" target="_blank" style="font-size: 142%;"><i class="fab fa-facebook-f" style="color: gray;"></i></a>
-									<a href="" target="_blank" style="font-size: 142%;"><i class="fab fa-youtube" style="color: gray;"></i></a>
-									<a href="" target="_blank" style="font-size: 142%;"><i class="fab fa-instagram" style="color: gray;"></i></a>
-									<a href="" target="_blank" style="font-size: 142%;"><i class="fab fa-telegram" style="color: gray;"></i></a>
+									<a href="https://facebook.com/" target="_blank" style="font-size: 142%;"><i class="fab fa-facebook-f" style="color: gray;"></i></a>
+									<a href="https://youtube.com/" target="_blank" style="font-size: 142%;"><i class="fab fa-youtube" style="color: gray;"></i></a>
+									<a href="https://instagram.com/" target="_blank" style="font-size: 142%;"><i class="fab fa-instagram" style="color: gray;"></i></a>
+									<a href="https://t.me/" target="_blank" style="font-size: 142%;"><i class="fab fa-telegram" style="color: gray;"></i></a>
 								</main>
 								<footer>
 									<div class="user-services">
 										<div>
-											<?php if(isset($_COOKIE['portalId'])){ ?><a href="" data-profile="passport">Passport</a><?php } else{ ?><a href="">Join/Login</a><?php } ?>
+											<?php if(isset($_COOKIE['portalId'])){ ?><a href="/passport" data-profile="passport">Passport</a><?php } else{ ?><a href="">Join/Login</a><?php } ?>
 											
 										</div>
 										<div>
 											<?php
-												if(isset($_COOKIE['portalId'])){ echo '<a href="" data-profile="passport"><i class="fas fa-briefcase" style="color: #0079bf;"></i></a>'; }
+												if(isset($_COOKIE['portalId'])){ echo '<a href="/passport" data-profile="passport"><i class="fas fa-briefcase" style="color: #0079bf;"></i></a>'; }
 												else{ echo '<a href=""><i class="fas fa-user-check" style="color: #0079bf;"></i></a>'; }
 											?>
 										</div>

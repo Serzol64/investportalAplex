@@ -149,8 +149,11 @@ a.new-ad-form-modal{
   padding: 2%;
   font-size: calc(60% * 2);
   text-indent: 2%;
+  resize: none;
 }
-
+.new-ad-form-modal-data > #content ul li section.form div textarea{
+  height: calc(75px * 2);
+}
 
 #investors-list > .footer ul{color: black;list-style-type: none;padding-top: 1%;padding-bottom: 6%;padding-left: 2%;background: white;}
 #investors-list > .footer ul li{padding-top: 4%;padding-bottom: 4%;}
