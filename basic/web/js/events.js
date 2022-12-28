@@ -1,11 +1,16 @@
 $(document).ready(function(){
    var sq = [new FormData(), new FormData()],
-	   sqr = [{}, {}];
+	   sqr = [{}, {}],
+	   readyDescription = ['', ''],
+	   content = ['', ''],
+	   eventCard = ['', ''],
+	   dateFormat = [[], []];
   
+    let responseHtml = ['', ''];
   
   $('#events-search > .content select').change(function(e,t){
 	  $('.load-screen-services').removeClass('list-smart-close'); 
-	  $('.slider').html('');
+	  $('#events-body > .events-feed main .slider').html('');
 	  
 	  let currentField = $(this).attr('name'),
 		  childrenField = [
@@ -30,31 +35,33 @@ $(document).ready(function(){
 	  sq[0].append('svcQuery', JSON.stringify(sqr[0]));
 	  
 	  fetch('/events/api/get', { method: 'POST', body: sq[0] })
-		.then(response => response.json())
+		.then(response => response[index].json())
 		.then((data) => {
 			console.log(data);
-			data.map((response) => {
-				var content = response.location !== '' ? '<span data-type="location">' + response.location + '</span>' : '',
-					readyDescription = response.content.matchAll(/<p[^>]*>(([^>]|.)*?)<\/p>/ug);
-				content += '<span data-type="description">' + readyDescription[1][0].length > 234 ? mb_strimwidth(readyDescription[1][0], 0, 234, '...') : readyDescription[1][0] + '</span>';
-				
-				var dateFormat = [
-					moment(response.date_from, 'd/m/Y'),
-					moment(response.date_to, 'd/m/Y')
-				];
-				
-				var eventCard = '<span id="date">' + response.date_to ? dateFormat.join(' - ') : dateFormat[0] + '</span><img src="' + response.titleImage + '" alt="' + response.title + '" />';
-				eventCard += '<span id="title">' + response.title + '</span><p>{content}</p><a href="/events/' + response.id + '">Show more</a>';
-				
-				$('.slider').append('<li>' + eventCard + '</li>');
+			
+			data.forEach((response, index) => {
+					content[0] = response[index].location !== '' ? '<span data-type="location">' + response[index].location + '</span>' : '';
+					readyDescription[0] = response[index].content.matchAll(/<p[^>]*>(([^>]|.)*?)<\/p>/ug);
+					content[0] += '<span data-type="description">' + readyDescription[0][1][0].length > 234 ? mb_strimwidth(readyDescription[0][1][0], 0, 234, '...') : readyDescription[0][1][0] + '</span>';
+					
+					dateFormat[0] = [
+						moment(response[index].date_from, 'd/m/Y'),
+						moment(response[index].date_to, 'd/m/Y')
+					];
+					
+					eventCard[0] = '<span id="date">' + response[index].date_to ? dateFormat[0].join(' - ') : dateFormat[0][0] + '</span><img src="' + response[index].titleImage + '" alt="' + response[index].title + '" />';
+					eventCard[0] += '<span id="title">' + response[index].title + '</span><p>' + content[0] + '</p><a href="/events/' + response[index].id + '">Show more</a>';
+			
+					responseHtml[0] += '<li>' + eventCard[0] + '</li>';
 			});
+			$('#events-body > .events-feed main .slider').html(responseHtml[0]);
 			$('.load-screen-services').addClass('list-smart-close');
 		})
 		.catch(() => { $('.load-screen-services').addClass('list-smart-close'); });
   });
   $('#period > li input').change(function(e,t){
 	  $('.load-screen-services').removeClass('list-smart-close'); 
-	  $('.slider').html('');
+	  $('#events-body > .events-feed main .slider').html('');
 	  
 	  let currentField = $(this).data('pm'),
 		  childrenField = [
@@ -78,24 +85,26 @@ $(document).ready(function(){
 	  sq[1].append('svcQuery', JSON.stringify(sqr[1]));
 	  
 	  fetch('/events/api/get', { method: 'POST', body: sq[1] })
-		.then(response => response.json())
+		.then(response => response[index].json())
 		.then((data) => {
 			console.log(data);
-			data.map((response) => {
-				var content = response.location !== '' ? '<span data-type="location">' + response.location + '</span>' : '',
-					readyDescription = response.content.matchAll(/<p[^>]*>(([^>]|.)*?)<\/p>/ug);
-				content += '<span data-type="description">' + readyDescription[1][0].length > 234 ? mb_strimwidth(readyDescription[1][0], 0, 234, '...') : readyDescription[1][0] + '</span>';
-				
-				var dateFormat = [
-					moment(response.date_from, 'd/m/Y'),
-					moment(response.date_to, 'd/m/Y')
-				];
-				
-				var eventCard = '<span id="date">' + response.date_to ? dateFormat.join(' - ') : dateFormat[0] + '</span><img src="' + response.titleImage + '" alt="' + response.title + '" />';
-				eventCard += '<span id="title">' + response.title + '</span><p>{content}</p><a href="/events/' + response.id + '">Show more</a>';
-				
-				$('.slider').append('<li>' + eventCard + '</li>');
+			
+			data.forEach((response, index) => {
+					content[1] = response[index].location !== '' ? '<span data-type="location">' + response[index].location + '</span>' : '';
+					readyDescription[1] = response[index].content.matchAll(/<p[^>]*>(([^>]|.)*?)<\/p>/ug);
+					content[1] += '<span data-type="description">' + readyDescription[1][1][0].length > 234 ? mb_strimwidth(readyDescription[1][1][0], 0, 234, '...') : readyDescription[1][1][0] + '</span>';
+					
+					dateFormat[1] = [
+						moment(response[index].date_from, 'd/m/Y'),
+						moment(response[index].date_to, 'd/m/Y')
+					];
+					
+					eventCard[1] += '<span id="date">' + response[index].date_to ? dateFormat[1].join(' - ') : dateFormat[1][0] + '</span><img src="' + response[index].titleImage + '" alt="' + response[index].title + '" />';
+					eventCard[1] += '<span id="title">' + response[index].title + '</span><p>' + content[1] + '</p><a href="/events/' + response[index].id + '">Show more</a>';
+			
+					responseHtml[1] += '<li>' + eventCard[1] + '</li>';
 			});
+			$('#events-body > .events-feed main .slider').html(responseHtml[1]);
 			$('.load-screen-services').addClass('list-smart-close');
 		})
 		.catch(() => { $('.load-screen-services').addClass('list-smart-close'); });

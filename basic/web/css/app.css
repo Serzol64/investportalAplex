@@ -783,15 +783,16 @@ h4.title, p.descr{
 }
 #services > main #slider-view-adaptive .service{
     width: 58vw;
-    height: 290px;
+    height: 363px;
     box-shadow: 3px -1px 4px 0px darkgrey;
     margin-left: calc(22vw / 2);
     background-color: white;
     padding-bottom: 4%;
+    margin-top: 62px;
 }
 #services > main #slider-view .service-feed .service{
     width: 26%;
-    height: 250px;
+    max-height: 300px;
     display: inline-table;
     box-shadow: 3px -1px 4px 0px darkgrey;
     margin-left: 3%;
@@ -865,12 +866,14 @@ h4.title, p.descr{
     display: block;
     text-align: justify;
     width: 90%;
-    font-size: calc(120% / 2);
-     width: 100%;
+    font-size: calc(113% / 2);
+    width: 100%;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    margin: -6px;
+    padding-top: 20px;
 }
 #services > main.gecko-fix #slider-view .service-feed .service footer .descr, #services > main.gecko-fix #slider-view-adaptive .service footer .descr{
     font-size: calc(200% / 2);

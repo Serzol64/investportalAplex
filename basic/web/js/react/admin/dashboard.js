@@ -57,15 +57,15 @@ class DataTab extends React.Component{
 			  <div>
 				<span>Managment Basic Services</span>
 				<nav>
-				  <a href="">All portal services</a>
-				  <a href="">All portal users</a>
+				  <a href="/admin?svc=dataManagment&subSVC=portalServices">All portal services</a>
+				  <a href="/admin?svc=portalUsers&subSVC=list">All portal users</a>
 				</nav>
 			  </div>
 			  <div>
 				<span>Managment Critical Services</span>
 				<nav>
-				  <a href="">Add New Service Category</a>
-				  <a href="">All New Item to current Service Category</a>
+				  <a href="/admin?svc=dataManagment&subSVC=portalServices&page=managment&contentStatus=true#add">Add New Service Category</a>
+				  <a href="/admin?svc=dataManagment&subSVC=portalServices&page=managment&contentStatus=false#add">All New Item to current Service Category</a>
 				</nav>
 			  </div>
 			</section>

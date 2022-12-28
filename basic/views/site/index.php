@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 use app\models\News;
-
+use app\models\PortalServicesCategory;
 
 $this->title = 'Welcome to Investportal!';
 ?>
@@ -288,17 +288,94 @@ $this->title = 'Welcome to Investportal!';
 				<header id="slider-controller-adaptive"><img src="/images/icons/slider-contorls/back.png" alt="Назад"></header>
 				<header id="slider-controller"><img src="/images/icons/slider-contorls/back.png" alt="Назад"></header>
 				<main id="slider-view-adaptive">
-                
+					<?php
+					for($i = 0; $i < count($interactiveFeed['services']['mobile']); $i++){
+						$currentData = $interactiveFeed['services']['mobile'][$i];
+						$currentImage = PortalServicesCategory::find()->where(['id' => $currentData['cat']])->one();
+						
+						preg_match_all('#<p[^>]*>(\X*?)</p>#', $currentData['description'], $matches);
+						$descriptionMatherial = strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0]));
+						
+						$meta = Html::tag('h4', $currentData['title'], ['class' => 'title']);
+						$meta .= Html::tag('span', $currentData['region'] . ", " . $currentData['country'], ['class' => 'location']);
+						$meta .= Html::tag('p', $descriptionMatherial, ['class' => 'descr']);
+							
+						$header = Html::tag('header', Html::tag('h3', $currentImage->name));
+						$body = Html::tag('main', Html::img($currentImage->icon, ['alt' => $currentData['cat']]));
+						$footer = Html::tag('footer', $meta);
+						
+						$responseSVC = Html::tag('div', $header . $body . $footer, ['class' => 'service-content']);
+						echo Html::tag('div', $responseSVC, ['class' => 'service']);
+					}
+					?>
                 </main>
 				<main id="slider-view">
                     <div class="service-feed">
-				
-                    </div>
-                    <div class="service-feed" id="hide">
-                        
-                    </div>
-                    <div class="service-feed" id="hide">
+						<?php
+						for($i = 0; $i < count($interactiveFeed['services']['desktop']['last']); $i++){
+							$currentData = $interactiveFeed['services']['desktop']['last'][$i];
+							$currentImage = PortalServicesCategory::find()->where(['id' => $currentData['cat']])->one();
 						
+							preg_match_all('#<p[^>]*>(\X*?)</p>#', $currentData['description'], $matches);
+							$descriptionMatherial = strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0]));
+							
+							$meta = Html::tag('h4', $currentData['title'], ['class' => 'title']);
+							$meta .= Html::tag('span', $currentData['region'] . ", " . $currentData['country'], ['class' => 'location']);
+							$meta .= Html::tag('p', $descriptionMatherial, ['class' => 'descr']);
+								
+							$header = Html::tag('header', Html::tag('h3', $currentImage->name));
+							$body = Html::tag('main', Html::img($currentImage->icon, ['alt' => $currentData['cat']]));
+							$footer = Html::tag('footer', $meta);
+						
+							$responseSVC = Html::tag('div', $header . $body . $footer, ['class' => 'service-content']);
+							echo Html::tag('div', $responseSVC, ['class' => 'service']);
+						}
+						?>
+                    </div>
+                    <div class="service-feed" id="hide">
+                        <?php
+                        for($i = 0; $i < count($interactiveFeed['services']['desktop']['prelast']); $i++){
+							$currentData = $interactiveFeed['services']['desktop']['prelast'][$i];
+							$currentImage = PortalServicesCategory::find()->where(['id' => $currentData['cat']])->one();
+						
+							preg_match_all('#<p[^>]*>(\X*?)</p>#', $currentData['description'], $matches);
+							$descriptionMatherial = strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0]));
+							
+							$meta = Html::tag('h4', $currentData['title'], ['class' => 'title']);
+							$meta .= Html::tag('span', $currentData['region'] . ", " . $currentData['country'], ['class' => 'location']);
+							$meta .= Html::tag('p', $descriptionMatherial, ['class' => 'descr']);
+								
+							$header = Html::tag('header', Html::tag('h3', $currentImage->name));
+							$body = Html::tag('main', Html::img($currentImage->icon, ['alt' => $currentData['cat']]));
+							$footer = Html::tag('footer', $meta);
+						
+						
+							$responseSVC = Html::tag('div', $header . $body . $footer, ['class' => 'service-content']);
+							echo Html::tag('div', $responseSVC, ['class' => 'service']);
+						}
+						?>
+                    </div>
+                    <div class="service-feed" id="hide">
+						<?php
+						for($i = 0; $i < count($interactiveFeed['services']['desktop']['old']); $i++){
+							$currentData = $interactiveFeed['services']['desktop']['old'][$i];
+							$currentImage = PortalServicesCategory::find()->where(['id' => $currentData['cat']])->one();
+							
+							preg_match_all('#<p[^>]*>(\X*?)</p>#', $currentData['description'], $matches);
+							$descriptionMatherial = strlen(strip_tags(htmlspecialchars_decode($matches[1][0]))) > 234 ? mb_strimwidth(strip_tags(htmlspecialchars_decode($matches[1][0])), 0, 234, '...') : strip_tags(htmlspecialchars_decode($matches[1][0]));
+							
+							$meta = Html::tag('h4', $currentData['title'], ['class' => 'title']);
+							$meta .= Html::tag('span', $currentData['region'] . ", " . $currentData['country'], ['class' => 'location']);
+							$meta .= Html::tag('p', $descriptionMatherial, ['class' => 'descr']);
+								
+							$header = Html::tag('header', Html::tag('h3', $currentImage->name));
+							$body = Html::tag('main', Html::img($currentImage->icon, ['alt' => $currentData['cat']]));
+							$footer = Html::tag('footer', $meta);
+						
+							$responseSVC = Html::tag('div', $header . $body . $footer, ['class' => 'service-content']);
+							echo Html::tag('div', $responseSVC, ['class' => 'service']);
+						}
+						?>
                     </div>
                 </main>
 				<footer id="slider-controller-adaptive"><img src="/images/icons/slider-contorls/go.png" alt="Вперёд"></footer>
@@ -478,7 +555,7 @@ $this->title = 'Welcome to Investportal!';
 				<header id="slider-controller"><img src="/images/icons/slider-contorls/back.png" alt="Назад"></header>
 				<main id="slider-view-adaptive">
 			<?php
-				if($interactiveFeed['objects']['estates']['adaptive']){
+				if(isset($interactiveFeed['objects']['estates']['adaptive'])){
 					for($i = 0; $i < count($interactiveFeed['objects']['estates']['adaptive']); $i++){
 						if($i < 8){
 			?>
@@ -648,7 +725,7 @@ $this->title = 'Welcome to Investportal!';
 				<main id="slider-view">
 					 <div class="estat-feed">
 					<?php
-					if($interactiveFeed['objects']['estates']['last']){
+					if(isset($interactiveFeed['objects']['estates']['last'])){
 						for($i = 0; $i < count($interactiveFeed['objects']['estates']['last']); $i++){
 					?>
                         <div class="estat">
@@ -732,7 +809,7 @@ $this->title = 'Welcome to Investportal!';
                     <?php } } ?>
                      <div class="estat-feed" id="hide">
 					<?php
-					if($interactiveFeed['objects']['estates']['prelast']){
+					if(isset($interactiveFeed['objects']['estates']['prelast'])){
 						for($i = 0; $i < count($interactiveFeed['objects']['estates']['prelast']); $i++){
 					?>
                         <div class="estat">
@@ -816,7 +893,7 @@ $this->title = 'Welcome to Investportal!';
                     <?php } } ?>
                      <div class="estat-feed" id="hide">
 					<?php
-					if($interactiveFeed['objects']['estates']['old']){
+					if(isset($interactiveFeed['objects']['estates']['old'])){
 						for($i = 0; $i < count($interactiveFeed['objects']['estates']['old']); $i++){
 					?>
                         <div class="estat">

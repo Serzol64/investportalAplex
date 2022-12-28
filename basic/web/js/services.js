@@ -69,42 +69,13 @@ $(document).ready(function(){
     searchEl.val(currentV);
   });
   
-  $('#newSVCForm > .newServiceForm div[data-modalpart=\'content\'] footer#formUI button, #newSVCForm > .newServiceForm div[data-modalpart=\'header\'] .formStep #step').click(function(e,t){
-	  let stepList = $('#newSVCForm > .newServiceForm div[data-modalpart=\'header\'] .formStep #step, #newSVCForm > .newServiceForm div[data-modalpart=\'content\'] .formStep #step');
+  $('').click(function(e,t){
 	  
-	  for(let i = 0; i < stepList.length; i++){
-		  let currentStep = stepList.eq(i).hasClass('active');
-		  
-		  if(e.target.nodeName === 'li'){
-			  if(i === 2 && currentStep){
-				  stepList.removeClass('active');
-				  stepList.eq(3).addClass('active');
-				  $('#newSVCForm > .newServiceForm div[data-modalpart=\'content\'] footer#formUI button').html('Finish');
-			  }
-			  else{
-				  stepList.removeClass('active');
-				  stepList.eq($(this).index()).addClass('active');
-				  
-				  if($('#newSVCForm > .newServiceForm div[data-modalpart=\'content\'] footer#formUI button').html() === 'Finish'){ $('#newSVCForm > .newServiceForm div[data-modalpart=\'content\'] footer#formUI *').html('Countine'); }
-				  
-			  }
-		  }
-		  else if(e.target.nodeName === 'button'){
-			  if(i === 3 && currentStep){
-				  stepList.removeClass('active');
-				  
-			  }
-			  else if(i === 2 && currentStep){
-				  stepList.removeClass('active');
-				  $(this).text('Finish');
-			  }
-			  else{
-				  stepList.removeClass('active');
-				  stepList.eq(i + 1).addClass('active');
-			  }
-		  }
-	  }
   });
+  $('').change(function(e,t){
+	  
+  });
+  
   
   
   $('.newSVCFormContent > ul li select#country').change(regionAutoList);

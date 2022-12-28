@@ -174,9 +174,9 @@ if (!count(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS))){
 		else if($_GET['command'] == 'valid'){
 			if(isset($_POST['query'])){
 				$query = json_decode($_POST['query'], true);
-				if(isset($query['multivalidator'])){
+				if(isset($query['multiValidator'])){
 					$multivalid = [];
-					for($i = 0; $i < count($query['multivalidator']['label']); $i++){ $multiValid[] = validData($query['multivalidator']['label'][$i], $query['multivalidator']['value'][$i]); }
+					for($i = 0; $i < count($query['multiValidator']['label']); $i++){ $multiValid[] = validData($query['multiValidator']['label'][$i], $query['multiValidator']['value'][$i]); }
 					$validResponse = $multiValid;
 				}
 				else{

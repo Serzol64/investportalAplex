@@ -65,13 +65,6 @@ $this->title = 'Portal services';
         </section>
         <div id="newSVCForm" class="modal">
 			<section class="newServiceForm">
-				<div data-modalpart="header">
-					<ul class="formStep">
-					  <li id="step" class="active">Enter basic information about the service</li>
-					  <li id="step">Decide on the operation of logic or other functions inside the service</li>
-					  <li id="step">Provide parameters to the functionality of your service</li>
-					</ul>
-				</div>
 				<div data-modalpart="content">
 					<main id="formUI">
 						<section class="formStep">
@@ -124,8 +117,6 @@ $this->title = 'Portal services';
 								  
 								</div>
 							  </section>
-							</div>
-							<div id="step">
 							  <section id="formStepUI">
 								<div class="content">
 									<div id="tab" class="active">
@@ -166,9 +157,9 @@ $this->title = 'Portal services';
 											</label>
 										</li>  
 										<li>
-											<h4>Presentation</h4>
+											<h4>Presentation(PPTX, PPSX, ODP, PDF, PPT, PPS file formats requires)</h4>
 											<label>
-												<span>Upload presentation file(PPTX, PPSX, ODP, PDF, PPT, PPS file formats requires)</span>
+												<span>Upload presentation file</span>
 												<input type="file" id="presentation" accept="application/mspowerpoint, application/vnd.ms-powerpoint, application/powerpoint, application/x-mspowerpoint, application/vnd.oasis.opendocument.presentation, application/pdf"/>
 										    </label>
 										</li>
@@ -178,31 +169,12 @@ $this->title = 'Portal services';
 										</li> 
 									  </ul>
 								  </div>
-	
 								</div>
 							  </section>
-							</div>
-							<div id="step">
 							  <section id="formStepUI">
 								<div class="content">
 								  <div id="tab" class="active">
 									  <nav>
-										<div class="wf">
-											<h4>Input offer term</h4>
-											<textarea class="editor-component" id="terms" name="terms"></textarea>
-										</div>
-										<div class="wf">
-											<h4>Adding offer questions</h4>
-											<div class="add-questions">
-												<header>
-													<div>
-														<input type="text" id="question" placeholder="Input service FAQ question" />
-														<textarea class="editor-component" placeholder="Input service answer for FAQ question" id="answer" name="answer"></textarea>
-													</div>
-												</header>
-												<main><button>Add question</button></main>
-											</div>
-										</div>
 										<div class="wf">
 											<h4>Offer contacts</h4>
 											<ul class="contactDataForm">
@@ -228,7 +200,7 @@ $this->title = 'Portal services';
 						</section>
 			 </main>
 			 <footer id="formUI">
-							<button>Countine</button>
+							<button>Send offer</button>
 			  </footer>
 				</div>
 			</section>

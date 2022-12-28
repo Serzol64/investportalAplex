@@ -25,7 +25,7 @@ class AdminController extends Controller{
 	}
     public function actionIndex(){
 		$sessionData = Yii::$app->session;
-		if(!$sessionData->isActive && !$sessionData->get('adminUser')){ return $this->redirect(['admin/auth'], 301); }
+		if(!$sessionData->get('adminUser')){ return $this->redirect(['admin/auth'], 301); }
 		else{
 			$pgUI = '';
 			$this->layout = "adminPortal";
@@ -149,7 +149,7 @@ class AdminController extends Controller{
 	}
 	public function actionAuth(){
 		$sessionData = Yii::$app->session;
-		if($sessionData->isActive && $sessionData->get('adminUser')){ return $this->redirect(['admin/index'], 301); }
+		if($sessionData->get('adminUser')){ return $this->redirect(['admin/index'], 301); }
 		else{
 			$this->layout = "adminAuth";
 			$this->view->registerCssFile("/css/admin/auth.css");

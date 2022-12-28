@@ -145,7 +145,7 @@ class NewsController extends Controller{
 		return $serviceResponse;
 	}
 	public function actionEventsservice($type){
-		$serviceResponse = array();
+		$serviceResponse = [];
 		$esd = Event::find();
 		
 		if($type == 'get'){

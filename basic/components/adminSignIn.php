@@ -37,6 +37,7 @@ class adminSignIn extends Component{
 		$isValid = FALSE;
 		
 		$sessionData = Yii::$app->session;
+		$sessionData->open();
 		
 		$vLogin = '';
 		$vMail = '';
