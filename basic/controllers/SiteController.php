@@ -138,12 +138,14 @@ class SiteController extends Controller{
 		$serviceDataQuery = [':service' => $id];
 		$currentServiceQuery = [
 			Yii::$app->db->createCommand('SELECT id, title FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
-			Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.description")) as "description",  JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.term")) as "term", JSON_EXTRACT(meta, "$.accessRole") as "private" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
+			Yii::$app->db->createCommand('SELECT JSON_EXTRACT(meta, "$.isOffer") as "isOffer", JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.description")) as "description",  JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.term")) as "term", JSON_EXTRACT(meta, "$.accessRole") as "private" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
 			Yii::$app->db->createCommand('SELECT JSON_EXTRACT(proc, "$.send") as "send", JSON_EXTRACT(proc, "$.control") as "control" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryOne(),
 			Yii::$app->db->createCommand('SELECT JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.faqService[*].question")) as "question",  JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.faqService[*].answer")) as "answer" FROM serviceList WHERE id=:service')->bindValues($serviceDataQuery)->queryAll(),
 		];
-
-		return $this->render('servicePage', ['servicePage' => $currentServiceQuery]);
+		
+		
+		$currentOfferQuery = Yii::$app->db->createCommand('SELECT title, JSON_UNQUOTE(JSON_EXTRACT(meta, "$.seoData.description")) as "description" FROM serviceList WHERE id=:service AND JSON_EXTRACT(meta, "$.isOffer") = true')->bindValues($serviceDataQuery)->queryOne();
+		return $this->render('servicePage', ['servicePage' => $currentServiceQuery, 'offerPage' => $currentOfferQuery]);
 	}
 	public function actionServicePageForm($id, $pagetype){
 
@@ -273,6 +275,39 @@ class SiteController extends Controller{
 								Yii::$app->response->statusCode = 403;
 								$cuData[] = 'Operation not found!';
 							break;
+						}
+					}
+					else if(isset($_GET['o']) && isset($_POST['svcQuery'])){
+						$oq = $_GET['o'];
+						$oqd = Json::decode($_POST['svcQuery'], true);
+						$serviceLake = [new PortalServices(), PortalServices::find()];
+						
+						if($oq == 'newServiceOffer'){
+							$lastId = $serviceLake[1]->orderBy('id desc')->limit(1)->all();
+						
+							if($lastId){
+								foreach($lastId as $code){ $newId = $code->id + 1; }
+							}
+							else{ $newId = 1; }
+
+							$serviceLake[0]->id = $newId;
+							$serviceLake[0]->title = $oqd['title'];
+							$serviceLake[0]->created = date('Y-m-d H:i:s');
+
+							if($oqd['meta']){ $serviceLake[0]->meta = $oqd['meta']; }
+							if($oqd['content']){ $serviceLake[0]->content = $oqd['content']; }
+							if($oqd['proc']){ $serviceLake[0]->proc = $oqd['proc']; }
+
+							if($serviceLake[0]->save()){ $cuData['redirect'] = Url::to(['site/service-page', 'id' => $newId]); }
+							else{
+								Yii::$app->response->statusCode = 502;
+								$cuData[] = 'Send error!';
+							}
+							
+						}
+						else{
+							Yii::$app->response->statusCode = 403;
+							$cuData[] = 'Operation not found!';
 						}
 					}
 					

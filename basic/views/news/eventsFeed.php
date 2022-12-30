@@ -13,31 +13,6 @@ $this->title = 'Events';
             <a href="<?php echo Url::to(['site/index']); ?>">Main</a> <span id="delimeter"> / </span> <a href="<?php echo Url::to(['news/events-feed']); ?>" class="active">Events</a>
      </section>
      <section class="section" id="events">
-            <div id="events-header">
-				<form id="events-search" href="#">
-					<h2>Events filter search</h2>
-					<section class="content">
-						<select id="require" name="eventRegion">
-							<option>Location</option>
-							<?php foreach($ep as $df){ if($df->location){ echo Html::tag('option', $df->location, ['value' => $df->location]); } } ?>
-						</select>
-						<select id="require" name="eventType">
-							<option>Type</option>
-							<?php foreach($ep as $df){ if($df->type){ echo Html::tag('option', $df->type, ['value' => $df->type]); } } ?>
-						</select>
-						<select id="require" name="eventCategory">
-							<option>Tematic</option>
-							<?php foreach($ep as $df){ if($df->tematic){ echo Html::tag('option', $df->tematic, ['value' => $df->tematic]); } } ?>
-						</select>
-					</section>
-					<section class="footer">
-						<ul id="period">
-							<li><input type="text" data-pm="from" placeholder="From period" onfocus="(this.type='date')" /></li>
-							<li><input type="text" data-pm="to" placeholder="To period" onfocus="(this.type='date')" /></li>
-						</ul>
-					</section>
-				</form>
-			</div>
 			<div id="events-body">
 				<section class="events-feed">
 					<main>

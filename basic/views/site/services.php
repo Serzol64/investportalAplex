@@ -82,7 +82,7 @@ $this->title = 'Portal services';
 											  <span>Upload the logo of your organization for which you are publishing an offer</span>
 											  <label>
 												<span>Upload logo file</span>
-												<input type="file" id="logo" accept="image/*"/>
+												<input type="file" id="logo" accept="image/*" data-logo=""/>
 											  </label>
 											</li>
 											<li>
@@ -123,7 +123,7 @@ $this->title = 'Portal services';
 									  <ul class="SVCData">
 										<li>
 											<h4>Brief description of the offer</h4>
-											<textarea ></textarea>
+											<textarea></textarea>
 										</li>
 										<li>
 											<h4>Full information on the service offer</h4>
@@ -148,20 +148,6 @@ $this->title = 'Portal services';
 										<li>
 											<h4>Location and infrastructure</h4>
 											<textarea></textarea>
-										</li>
-										<li>
-											<h4>Photogallery</h4>
-											<label>
-												<span>Upload image files</span>
-												<input type="file" id="gallery" accept="image/*" multiple />
-											</label>
-										</li>  
-										<li>
-											<h4>Presentation(PPTX, PPSX, ODP, PDF, PPT, PPS file formats requires)</h4>
-											<label>
-												<span>Upload presentation file</span>
-												<input type="file" id="presentation" accept="application/mspowerpoint, application/vnd.ms-powerpoint, application/powerpoint, application/x-mspowerpoint, application/vnd.oasis.opendocument.presentation, application/pdf"/>
-										    </label>
 										</li>
 										<li>
 											<h4>More information</h4>

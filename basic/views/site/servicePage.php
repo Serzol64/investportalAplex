@@ -19,10 +19,11 @@ $svcSecure = $servicePage[1]['private'] != 'public' ? isset($_COOKIE['portalId']
 			<header class="svcMeta">
                 <div data-group="metaData">
                     <div data-block="title">
-                        <h2><?php echo $servicePage[0]['title']; ?></h2>
-                        <span><?php echo Html::decode($servicePage[1]['description']); ?></span>
+                        <h2><?php echo isset($offerPage['description']) ? $offerPage['title'] : $servicePage[0]['title']; ?></h2>
+                        <span><?php echo isset($offerPage['description']) ? Html::decode($offerPage['description']) : Html::decode($servicePage[1]['description']); ?></span>
                     </div>
                     <div data-block="form">
+				<?php if(!isset($servicePage[1]['isOffer'])){ ?>
                         <button data-svcLink="<?php echo $servicePage[0]['id']; ?>">
                             <?php
                                 if($servicePage[2]['send'] != '' && $servicePage[2]['control'] != ''){ 
@@ -34,14 +35,18 @@ $svcSecure = $servicePage[1]['private'] != 'public' ? isset($_COOKIE['portalId']
                                 }
                             ?>
                         </button>
+               <?php } ?>
                     </div>
                 </div>
             </header>
             <main class="svcContent">
+		<?php if(!isset($servicePage[1]['isOffer'])){ ?>
                 <h3>Service terms</h3>
                 <div><?php echo Html::decode($servicePage[1]['term']); ?></div>
+        <?php } ?>
             </main>
             <footer class="svcFooter">
+		<?php if(!isset($servicePage[1]['isOffer'])){ ?>
                 <h3>FAQ</h3>
                 <ul>
                     <?php for($i = 0; $i < count($servicePage[3]); $i++){ ?>
@@ -51,6 +56,7 @@ $svcSecure = $servicePage[1]['private'] != 'public' ? isset($_COOKIE['portalId']
                         </li>
                     <?php } ?>
                 </ul>
+        <?php } ?>
             </footer>
         </section>
  </main>

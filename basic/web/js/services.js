@@ -69,11 +69,58 @@ $(document).ready(function(){
     searchEl.val(currentV);
   });
   
-  $('').click(function(e,t){
-	  
+  $('.newServiceForm > div[data-modalpart=\'content\'] footer#formUI button').click(function(e,t){
+	  var offerQuery = new FormData();
+	  let sendQuery = {
+			  title: $('.newSVCFormContent > ul li:eq(0) *:nth-last-child(1)').val(),
+			  meta: {
+				isOffer: true,
+				seoData: {
+					categoryId: $('.newSVCFormContent > ul li:eq(2) *:nth-last-child(1)').val(),
+					country: $('.newSVCFormContent > ul li:eq(3) *:nth-last-child(1)').val(),
+					region: $('.newSVCFormContent > ul li:eq(4) *:nth-last-child(1)').val(),
+					logo: $('.newSVCFormContent > ul li:nth-child(2) label input').data('logo'),
+					parameters: {
+						description: $('.SVCData > li:eq(0) textarea').val(),
+						information: $('.SVCData > li:eq(1) textarea').val(),
+					}
+				}
+			  },
+			  content: {
+				  data: {
+					  priceList: $('.SVCData > li:eq(2) textarea').val(),
+					  advantages: $('.SVCData > li:eq(3) textarea').val(),
+					  disadvantages: $('.SVCData > li:eq(4) textarea').val(),
+					  privelegies: $('.SVCData > li:eq(5) textarea').val(),
+					  infrastructure: $('.SVCData > li:eq(6) textarea').val(),
+					  more: $('.SVCData > li:eq(7) textarea').val()
+				  }
+			  },
+			  proc: {
+					parameters: {
+						contactName: $('.contactDataForm > li:eq(0) input').val(),
+						contactPhone: $('.contactDataForm > li:eq(1) input').val(),
+						contactMail: $('.contactDataForm > li:eq(2) input').val()
+					}		
+			  }
+		  };
+	 
+	 offerQuery.append('svcQuery', JSON.stringify(sendQuery));
+	 fetch('/services/api/2/post?o=newServiceOffer', {method: 'POST', body: offerQuery})
+		.then(response => response.json())
+		.then(data => window.location.assign(data.redirect))
+		.catch((error) => {
+			alert('The request could not be sent! Try again later...');
+		});
   });
-  $('').change(function(e,t){
-	  
+  $('.newSVCFormContent > ul li:nth-child(2) label input').change(function(e,t){
+	  const file = e.target.files[0];
+	
+	  const reader = new FileReader();
+	  reader.onloadend = () => {
+		$(this).data('logo', reader.result);
+	 };
+	reader.readAsDataURL(file);
   });
   
   
